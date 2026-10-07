@@ -1028,7 +1028,7 @@ html[data-phase="evening"] .water-canvas {
 
 .photo-composition .photo:nth-child(1) img {
   aspect-ratio: 4/3;
-  object-position: 50% 38%;
+  object-position: 50% 100%;
 }
 
 .photo-composition .photo:nth-child(2) {
