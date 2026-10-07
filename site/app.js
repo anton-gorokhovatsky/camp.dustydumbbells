@@ -35,7 +35,7 @@ let environment;
 let weatherFailed = false;
 
 const captions = {
-  morning: "Пробежка по набережной.\nМоре слева, горы впереди.",
+  morning: "Пробежка по набережной.\nМоре рядом, горы впереди.",
   day: "Зайти в гавань. Посмотреть на лодки.\nОставить время для себя.",
   evening: "Проводить солнце за горы.\nОстаться ещё ненадолго.",
   night: "Гавань стихает, свет уходит.\nЗавтра снова будет утро.",
@@ -313,9 +313,9 @@ dialog.addEventListener("close", () =>
   photoTrigger?.focus({ preventScroll: true }),
 );
 
-// Water and rain are decorative layers; all content remains normal HTML.
+// Water, rain and air are decorative layers; all content remains normal HTML.
 // Stop work offscreen, in background tabs, in dialogs, and when paused.
-const waters = [...document.querySelectorAll(".water-canvas, .rain-canvas")].map(
+const waters = [...document.querySelectorAll(".water-canvas, .rain-canvas, .air-canvas")].map(
   (canvas) => ({
     canvas,
     context: canvas.getContext("2d"),
@@ -335,6 +335,27 @@ function drawWater(water, time) {
   const amplitude = 2 + clamp(wind / 15) * 14;
   const drift = Math.sin((direction * Math.PI) / 180);
   const color = environment.phase === "night" ? "178,210,220" : "255,242,211";
+  // Flowing lines suggest the air around the postcard. Wind changes their
+  // curvature and drift; this shares the sea's pause and visibility lifecycle.
+  if (water.canvas.classList.contains("air-canvas")) {
+    ctx.strokeStyle = environment.css["--accent"];
+    ctx.lineWidth = 0.65;
+    for (let row = 0; row < 30; row++) {
+      const baseline = (row / 29) * height;
+      ctx.beginPath();
+      for (let x = 0; x <= width + 8; x += 8) {
+        const reach = Math.exp(-Math.pow((x / width - 0.74) * 3, 2));
+        const curl = Math.sin(row * 0.11 + time * drift * 0.09);
+        const y = baseline + reach * (
+          Math.sin(x / width * 5 + row * 0.045 + time * 0.08) * height * 0.17 +
+          curl * amplitude * 2
+        );
+        if (x === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+    }
+  }
   if (water.canvas.classList.contains("water-canvas")) {
     for (let row = 0; row < 34; row++) {
       const depth = row / 34;
@@ -448,6 +469,7 @@ setInterval(() => {
   if (Date.now() - state.fetchTime > 30 * 60 * 1000) loadWeather();
 }, 60_000);
 
+$("[data-gallery-label]").textContent = `Все ${photos.length} фотографий`;
 $(".interactive-time").hidden = false;
 $(".weather-control").hidden = false;
 for (const controls of document.querySelectorAll(

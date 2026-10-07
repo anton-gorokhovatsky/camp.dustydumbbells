@@ -1,4 +1,4 @@
-import { readFile, writeFile, mkdir, rm } from "node:fs/promises";
+import { readFile, writeFile, mkdir, rm, readdir } from "node:fs/promises";
 import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
@@ -111,25 +111,13 @@ const gallery = [9, 4, 10, 3, 5]
   .join("\n");
 
 const siteFiles = {};
-const originalHTML = await readFile(
-  path.join(root, "source/pages/index.html"),
-  "utf8",
-);
-const footerSocials = [
-  ["website", "https://dustydumbbells.com/", "Сайт Пыльных Гантелей"],
-  ["telegram", "https://t.me/dusty_dumbbells", "Сообщество DD в Telegram"],
-]
-  .map(([kind, url, label]) => {
-    const fragment = originalHTML.match(
-      new RegExp(
-        `<li class="t-sociallinks__item t-sociallinks__item_${kind}">([\\s\\S]*?)</li>`,
-      ),
-    )?.[1];
-    const svg = fragment?.match(/<svg[\s\S]*?<\/svg>/)?.[0];
-    if (!svg) throw new Error(`Missing original ${kind} footer icon`);
-    return `<a href="${url}" target="_blank" rel="noreferrer" aria-label="${label}">${svg}</a>`;
-  })
-  .join("");
+await mkdir(path.join(output, "fonts"), { recursive: true });
+for (const file of await readdir(path.join(root, "site/fonts"))) {
+  if (!/\.(woff2|txt)$/.test(file)) continue;
+  const bytes = await readFile(path.join(root, "site/fonts", file));
+  await writeFile(path.join(output, "fonts", file), bytes);
+  siteFiles[`fonts/${file}`] = createHash("sha256").update(bytes).digest("hex");
+}
 for (const file of [
   "index.html",
   "styles.css",
@@ -143,8 +131,7 @@ for (const file of [
     .replaceAll("{{BASE}}", base)
     .replaceAll("{{SITE}}", site.href)
     .replace("{{SCHEDULE}}", program)
-    .replace("{{GALLERY}}", gallery)
-    .replace("{{FOOTER_SOCIALS}}", footerSocials);
+    .replace("{{GALLERY}}", gallery);
   // A new publication must also refresh cached styles and module dependencies.
   if (file.endsWith(".html")) {
     content = content.replace(

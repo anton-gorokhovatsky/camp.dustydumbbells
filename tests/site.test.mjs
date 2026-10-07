@@ -134,22 +134,22 @@ test("weather validates timestamp and metrics; missing, future, stale or malform
   assert.equal(url.searchParams.get("timezone"), "Europe/Istanbul");
 });
 
-test("footer palettes keep readable white text across time and weather", () => {
+test("primary actions retain text contrast across time and weather", () => {
   const luminance = (hex) =>
     hex
       .match(/[a-f0-9]{2}/gi)
       .map((v) => parseInt(v, 16) / 255)
       .map((v) => (v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4))
       .reduce((sum, v, i) => sum + v * [0.2126, 0.7152, 0.0722][i], 0);
-  const white = luminance("#f7f7f7");
   for (const scenario of ["actual", ...Object.keys(SCENARIOS)])
     for (let minutes = 0; minutes < 1440; minutes += 20) {
       const { css } = environmentAt({ date: now, minutes, scenario });
-      for (const key of ["--footer-top", "--footer-bottom"])
-        assert(
-          (white + 0.05) / (luminance(css[key]) + 0.05) >= 4.5,
-          `${scenario} ${minutes} ${key}`,
-        );
+      const ink = luminance(css["--signal-ink"]);
+      const background = luminance(css["--signal"]);
+      assert(
+        (Math.max(ink, background) + 0.05) / (Math.min(ink, background) + 0.05) >= 4.5,
+        `${scenario} ${minutes} action contrast`,
+      );
     }
 });
 

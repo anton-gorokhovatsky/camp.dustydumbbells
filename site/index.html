@@ -1,143 +1,61 @@
 <!doctype html>
 <html lang="ru" data-phase="day" data-motion="off">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#e9e9d9" />
-    <link rel="canonical" href="{{SITE}}" />
-    <title>DD Camp — Анталья, 12–25 октября 2027</title>
-    <meta
-      name="description"
-      content="Море, солнце и тёплый ветер. Проживи день в Анталье вместе с Пыльными Гантелями. Предварительная программа кэмпа 2027."
-    />
-    <link
-      rel="preload"
-      href="{{BASE}}assets/0f3cda7be3e2-MuseoSansCyrl900Ital.woff"
-      as="font"
-      type="font/woff"
-      crossorigin
-    />
-    <link
-      rel="preload"
-      href="{{BASE}}assets/ff03bef9a6e3-MuseoSansCyrl300.woff"
-      as="font"
-      type="font/woff"
-      crossorigin
-    />
-    <link rel="stylesheet" href="./styles.css" />
-    <script type="module" src="./app.js"></script>
-  </head>
-  <body id="top">
-    <a class="skip-link" href="#about">К содержанию</a>
-    <header class="header">
-      <a href="#top" class="brand" aria-label="DD Camp — в начало"
-        ><img
-          src="{{BASE}}assets/bd7e17e9090f-Group_1486.svg"
-          width="468"
-          height="101"
-          alt="DUSTY"
-      /></a>
-      <p class="header-place">
-        Анталья, Турция <span>36°52′ N · 30°38′ E</span>
-      </p>
-      <nav aria-label="Основная навигация" class="desktop-nav">
-        <a href="#about">Кэмп</a><a href="#program">Программа</a
-        ><a href="#travel">Поездка</a>
-      </nav>
-      <details class="mobile-menu">
-        <summary>Меню <span aria-hidden="true">＋</span></summary>
-        <nav aria-label="Мобильная навигация">
-          <a href="#day">Прожить день</a><a href="#about">Кэмп</a
-          ><a href="#program">Программа</a><a href="#travel">Поездка</a
-          ><a href="#next">Следующий сезон</a>
-        </nav>
-      </details>
-    </header>
-
-    <main>
-      <section class="hero" aria-labelledby="hero-title">
-        <div class="hero-content">
-          <p class="eyebrow">Пыльные Гантели / Каникулы / 21+</p>
-          <h1 id="hero-title"><img src="{{BASE}}assets/1474b376a14d-Frame_4103.svg" width="240" height="38" alt="DD CAMP" /></h1>
-          <p class="hero-line">Море, солнце<br />и тёплый ветер.</p>
-          <div class="hero-dates">
-            <p><time datetime="2027-10-12">12</time>—<time datetime="2027-10-25">25</time></p>
-            <span>октября 2027 · Анталья, Турция</span>
-            <small>Предварительные даты следующего кэмпа</small>
-          </div>
-          <div class="hero-actions">
-            <a class="inline-link" href="#day">Побыть в Анталье <span aria-hidden="true">↘</span></a>
-            <a href="#program" class="hero-program">Программа поездки ↓</a>
-          </div>
-        </div>
-        <figure class="hero-portrait">
-          <div class="track-frame">
-            <span class="track-number" aria-hidden="true">01</span>
-            <a href="{{BASE}}assets/83bb3847840c-IMG_6969.JPG" data-photo="0" aria-label="Увеличить: участники DD бегут по набережной">
-              <img src="{{BASE}}assets/83bb3847840c-IMG_6969.JPG" width="1170" height="1755" fetchpriority="high" alt="Участники DD на пробежке: море, горы и красная дорожка набережной" />
-            </a>
-          </div>
-          <figcaption><span>DD на побережье / Кадр из прошлой поездки</span><a href="#day" class="hero-clock">Свет Антальи <span data-scene-time></span> ↘</a></figcaption>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f3f2e9" />
+  <link rel="canonical" href="{{SITE}}" />
+  <title>DD Camp — Анталья, 12–25 октября 2027</title>
+  <meta name="description" content="К морю. К своим. Спортивные каникулы Пыльных Гантелей в Анталье. Почувствуй свет, море и тёплый ветер. Предварительная программа 12–25 октября 2027." />
+  <link rel="preload" href="./fonts/cormorant-garamond-normal-bb505ca590.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="./fonts/cormorant-garamond-italic-f2e930fee7.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="./fonts/golos-text-normal-2f175b8fc4.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="./styles.css" />
+  <script type="module" src="./app.js"></script>
+</head>
+<body id="top">
+  <a class="skip-link" href="#about">К содержанию</a>
+  <header class="header page-shell">
+    <a href="#top" class="brand" aria-label="DD Camp — в начало"><span class="brand-dd">dd</span><span class="brand-caption">Пыльные Гантели<br />на каникулах</span></a>
+    <p class="header-place">Анталья, Турция<span>36°52′ N · 30°38′ E</span></p>
+    <nav aria-label="Основная навигация" class="desktop-nav"><a href="#about">О кэмпе</a><a href="#program">Программа</a><a href="#travel">Поездка <span aria-hidden="true">↓</span></a></nav>
+    <details class="mobile-menu"><summary>Меню <span aria-hidden="true">＋</span></summary><nav aria-label="Мобильная навигация"><a href="#day">Свет и погода</a><a href="#about">О кэмпе</a><a href="#memories">Фотографии</a><a href="#program">Программа</a><a href="#travel">Поездка</a></nav></details>
+  </header>
+  <main>
+    <section class="hero page-shell" aria-labelledby="hero-title">
+      <div class="hero-kicker"><p class="eyebrow">Спортивные каникулы / Анталья</p><span class="eyebrow">Осень 2027 · 21+</span></div>
+      <h1 id="hero-title">К морю. <em>К своим.</em></h1>
+      <div class="hero-grid">
+        <figure class="hero-people photo">
+          <a href="{{BASE}}assets/83bb3847840c-IMG_6969.JPG" data-photo="0" aria-label="Увеличить: участники DD бегут по набережной"><img src="{{BASE}}assets/83bb3847840c-IMG_6969.JPG" width="1170" height="1755" fetchpriority="high" alt="Участники DD бегут вдоль моря, на фоне гор и пальм" /><span class="photo-zoom" aria-hidden="true">↗</span></a>
+          <figcaption>01 — Начать утро вместе</figcaption>
         </figure>
-      </section>
-      <div class="running-track">
-        <div class="track-lanes" aria-hidden="true">
-          <div class="track-lane"><span class="lane-number">1</span><div class="lane-window"><div class="lane-run"><span>БЕГ &nbsp;↗&nbsp; МОРЕ &nbsp;↗&nbsp; ПЫЛЬНЫЕ ГАНТЕЛИ &nbsp;↗&nbsp; АНТАЛЬЯ &nbsp;↗&nbsp; </span><span>БЕГ &nbsp;↗&nbsp; МОРЕ &nbsp;↗&nbsp; ПЫЛЬНЫЕ ГАНТЕЛИ &nbsp;↗&nbsp; АНТАЛЬЯ &nbsp;↗&nbsp; </span></div></div></div>
-          <div class="track-lane"><span class="lane-number">2</span><div class="lane-window"><div class="lane-run"><span>ВЕЛОСИПЕД &nbsp;↗&nbsp; ПЛАВАНИЕ &nbsp;↗&nbsp; ГОРЫ &nbsp;↗&nbsp; КАНИКУЛЫ &nbsp;↗&nbsp; </span><span>ВЕЛОСИПЕД &nbsp;↗&nbsp; ПЛАВАНИЕ &nbsp;↗&nbsp; ГОРЫ &nbsp;↗&nbsp; КАНИКУЛЫ &nbsp;↗&nbsp; </span></div></div></div>
+        <div class="hero-trip">
+          <svg class="sun-mark" viewBox="0 0 80 80" aria-hidden="true"><circle cx="40" cy="40" r="14"/><path d="M40 1v13m0 52v13M1 40h13m52 0h13M12 12l9 9m38 38 9 9M12 68l9-9m38-38 9-9M25 4l5 12m20 48 5 12M4 25l12 5m48 20 12 5M4 55l12-5m48-20 12-5M25 76l5-12m20-48 5-12"/></svg>
+          <p class="hero-intro">Море, солнце<br />и тёплый ветер.<br />В компании DD.</p>
+          <div class="hero-dates"><p><time datetime="2027-10-12">12</time><span>—</span><time datetime="2027-10-25">25</time></p><span>октября 2027</span></div>
+          <p class="season-status">Предварительные даты.<br />Набор ещё не объявлен.</p>
+          <a class="button" href="#program">Программа <span aria-hidden="true">↓</span></a>
         </div>
-        <div class="track-controls motion-controls" hidden><span>У каждого — свой темп</span><button class="text-button" type="button" data-motion-toggle aria-pressed="true">Включить движение</button></div>
+        <section id="day" class="sea-scene" aria-labelledby="sea-title">
+          <h2 id="sea-title" class="sr-only">Свет и погода Антальи</h2>
+          <div class="sea-photo" aria-hidden="true">
+            <img class="scene-photo scene-morning" src="{{BASE}}assets/8a89a2afe085-IMG_6946.JPG" width="1680" height="2520" alt="" />
+            <img class="scene-photo scene-day" src="{{BASE}}assets/edb1b4c73141-IMG_6953.JPG" width="1680" height="2520" alt="" />
+            <img class="scene-photo scene-evening" src="{{BASE}}assets/d152e032841c-IMG_6948.JPG" width="893" height="1339" alt="" />
+            <img class="scene-photo scene-night" src="{{BASE}}assets/f075a66a2bb1-IMG_6961.JPG" width="1680" height="2520" alt="" />
+          </div>
+          <canvas class="water-canvas" aria-hidden="true"></canvas><canvas class="rain-canvas" aria-hidden="true"></canvas>
+          <div class="scene-stamp"><span class="live-dot" aria-hidden="true"></span><span data-scene-time>Анталья</span></div>
+          <div class="scene-copy"><p id="scene-caption">Зайти в гавань. Посмотреть на лодки. Оставить время для себя.</p></div>
+        </section>
       </div>
-
-      <section
-        id="about"
-        class="about section-pad"
-        aria-labelledby="about-title"
-      >
-        <div class="about-layout">
-          <div class="about-copy">
-            <p class="eyebrow">01 / Наша компания</p>
-            <h2 id="about-title">Вектор задаём мы.<br /><span>Маршрут строишь ты.</span></h2>
-            <p class="lead">Утренние пробежки по побережью, силовые под открытым небом, живописные райды и невероятные закаты.</p>
-            <p>DD собирают компанию, готовят тренировки и маршруты. Ты выбираешь нагрузку, отдых и занятия на свободный вечер — вместе со всеми или по своему плану.</p>
-            <p>Можно приехать ради тренировок. Можно чередовать бег с морем, книгой и долгими ужинами. Участие в программе не превращает каникулы в обязательное расписание.</p>
-            <a class="inline-link" href="https://t.me/doroninvdele/1167" target="_blank" rel="noreferrer">О кэмпе в карточках Виктора <span aria-hidden="true">↗</span></a>
-          </div>
-          <div class="about-pictures">
-            <figure class="photo photo-runners"><a href="{{BASE}}assets/b6b2c773dc5b-IMG_6970.JPG" data-photo="1" aria-label="Увеличить: пробежка DD вдоль моря"><img src="{{BASE}}assets/b6b2c773dc5b-IMG_6970.JPG" width="1170" height="1755" loading="lazy" alt="Двое бегунов в майках DD рядом с морем и пальмами" /><span class="photo-zoom" aria-hidden="true">↗</span></a><figcaption>01 / В своей компании</figcaption></figure>
-            <figure class="photo photo-coast"><a href="{{BASE}}assets/8a89a2afe085-IMG_6946.JPG" data-photo="7" aria-label="Увеличить: побережье Антальи"><img src="{{BASE}}assets/8a89a2afe085-IMG_6946.JPG" width="1680" height="2520" loading="lazy" alt="Набережная у моря, впереди — горы Антальи" /><span class="photo-zoom" aria-hidden="true">↗</span></a><figcaption>02 / Море всегда рядом</figcaption></figure>
-          </div>
-        </div>
-      </section>
-
-      <section id="day" class="sea-scene" aria-labelledby="sea-title">
-        <div class="sea-photo" aria-hidden="true">
-          <img class="scene-photo scene-morning" src="{{BASE}}assets/fa0d8cd37eaa-IMG_6949.JPG" width="1008" height="1692" loading="lazy" alt="" />
-          <img class="scene-photo scene-day" src="{{BASE}}assets/edb1b4c73141-IMG_6953.JPG" width="1680" height="2520" loading="lazy" alt="" />
-          <img class="scene-photo scene-evening" src="{{BASE}}assets/d152e032841c-IMG_6948.JPG" width="893" height="1339" loading="lazy" alt="" />
-          <img class="scene-photo scene-night" src="{{BASE}}assets/f075a66a2bb1-IMG_6961.JPG" width="1680" height="2520" loading="lazy" alt="" />
-        </div>
-        <canvas class="water-canvas" aria-hidden="true"></canvas>
-        <canvas class="rain-canvas" aria-hidden="true"></canvas>
-        <div class="scene-copy">
-          <p class="eyebrow">02 / Один день в Анталье</p>
-          <h2 id="sea-title">Сначала —<br />к морю.</h2>
-          <p id="scene-caption">Зайти в гавань. Посмотреть на лодки.
-Оставить время для себя.</p>
-        </div>
-        <div class="scene-controls" hidden>
-          <div class="scene-control-label"><span data-scene-time></span><span>Выбери свой час ↓</span></div>
-          <div class="time-stops" aria-label="Свет над морем">
-            <button type="button" data-time="morning" aria-pressed="false">Утро</button><button type="button" data-time="day" aria-pressed="false">День</button><button type="button" data-time="evening" aria-pressed="false">Закат</button><button type="button" data-time="night" aria-pressed="false">Ночь</button>
-          </div>
-          <button type="button" class="text-button" data-now hidden>Вернуться в сейчас ↗</button>
-        </div>
-        <span class="scene-note">Архивные кадры DD / свет — художественный просмотр</span>
-      </section>
-
-      <div id="day-controls" class="day-section section-pad">
+      <div class="hero-bottom"><p class="scene-note">Архивные кадры DD / свет — художественный просмотр</p><div class="scene-controls" hidden><span class="control-label">Прожить день</span><div class="time-stops" aria-label="Свет над морем"><button type="button" data-time="morning" aria-pressed="false">Утро</button><button type="button" data-time="day" aria-pressed="false">День</button><button type="button" data-time="evening" aria-pressed="false">Закат</button><button type="button" data-time="night" aria-pressed="false">Ночь</button></div><button type="button" class="text-button" data-now hidden>Сейчас ↗</button></div></div>
+    </section>
+      <div id="day-controls" class="day-section page-shell">
         <div class="day-instrument">
           <div class="instrument-top">
-            <span id="time-mode">Дневной этюд</span
+            <span id="time-mode">Свет Антальи</span
             ><span id="today-label">Анталья · UTC+3</span>
           </div>
           <div class="clock-face">
@@ -176,7 +94,7 @@
             </p></noscript
           >
           <p id="time-explanation" class="small-note">
-            Дневной этюд Антальи. Для управления светом нужен JavaScript. Это
+            Свет Антальи. Для управления светом нужен JavaScript. Это
             настроение места, а не прогноз на октябрь 2027 года.
           </p>
         </div>
@@ -255,11 +173,20 @@
         </div>
       </div>
 
-      <section id="memories" class="memories section-pad" aria-labelledby="memories-title">
+    <section id="about" class="about page-shell section-space" aria-labelledby="about-title">
+      <div class="section-meta"><p class="eyebrow">01 / Наша компания</p><span>Бег · Велосипед · Плавание · Горы</span></div>
+      <h2 id="about-title">Вектор задаём мы.<br /><em>Маршрут строишь ты.</em></h2>
+      <div class="about-layout">
+        <figure class="about-photo photo"><a href="{{BASE}}assets/b6b2c773dc5b-IMG_6970.JPG" data-photo="1" aria-label="Увеличить: пробежка DD вдоль моря"><img src="{{BASE}}assets/b6b2c773dc5b-IMG_6970.JPG" width="1170" height="1755" loading="lazy" alt="Бегуны в майках DD на набережной рядом с морем" /><span class="photo-zoom" aria-hidden="true">↗</span></a><figcaption>Тот самый маршрут — у воды</figcaption></figure>
+        <div class="about-copy"><p class="lead">Утренние пробежки по побережью, силовые под открытым небом, живописные райды и невероятные закаты.</p><p>DD собирают компанию, готовят тренировки и маршруты. Ты выбираешь нагрузку, отдых и занятия на свободный вечер — вместе со всеми или по своему плану.</p><p>Можно приехать ради тренировок. Можно чередовать бег с морем, книгой и долгими ужинами. Участие в программе не превращает каникулы в обязательное расписание.</p><a class="inline-link" href="https://t.me/doroninvdele/1167" target="_blank" rel="noreferrer">О кэмпе в карточках Виктора <span aria-hidden="true">↗</span></a></div>
+        <div class="about-aside"><span class="aside-star" aria-hidden="true">✳</span><p>У каждого —<br /><em>свой темп.</em></p><span class="small-note">Общий маршрут.<br />Свобода выбирать.</span></div>
+      </div>
+    </section>
+      <section id="memories" class="memories page-shell section-space" aria-labelledby="memories-title">
         <div class="section-heading">
           <div>
-            <p class="eyebrow">03 / Из дневника DD</p>
-            <h2 id="memories-title">За пределами<br />дорожки.</h2>
+            <p class="eyebrow">02 / Дневник поездки</p>
+            <h2 id="memories-title">Между<br /><em>тренировками.</em></h2>
           </div>
           <p class="memories-intro">
             Вода, горы и свои люди.<br />Кадры из прошлой поездки DD.
@@ -273,19 +200,19 @@
           class="inline-link gallery-open"
           href="{{BASE}}assets/83bb3847840c-IMG_6969.JPG"
           data-photo="0"
-          >Все 11 фотографий <span aria-hidden="true">↗</span></a
+          ><span data-gallery-label>Открыть фотографию</span> <span aria-hidden="true">↗</span></a
         >
       </section>
 
       <section
         id="program"
-        class="program section-pad"
+        class="program section-space"
         aria-labelledby="program-title"
       >
         <div class="program-heading">
           <div>
-            <p class="eyebrow">04 / Предварительная программа</p>
-            <h2 id="program-title">Две недели.<br />В своём темпе.</h2>
+            <p class="eyebrow">03 / Программа</p>
+            <h2 id="program-title">Две недели.<br /><em>В своём темпе.</em></h2>
           </div>
           <div class="program-intro">
             <p>Бег, велосипед, плавание, горы.<br />И время просто пожить.</p>
@@ -299,6 +226,7 @@
             </p>
           </div>
         </div>
+        <nav class="week-nav" aria-label="Недели программы"><a href="#week-one">12–18 октября <span aria-hidden="true">↓</span></a><a href="#week-two">19–25 октября <span aria-hidden="true">↓</span></a></nav>
         <div class="program-list">{{SCHEDULE}}</div>
         <p class="program-footnote">
           DDLong — наша длительная пробежка. В свободные вечера можно предложить
@@ -308,13 +236,13 @@
 
       <section
         id="travel"
-        class="travel section-pad"
+        class="travel page-shell section-space"
         aria-labelledby="travel-title"
       >
-        <p class="eyebrow">05 / Собраться в дорогу</p>
+        <p class="eyebrow">04 / Поездка</p>
         <div class="travel-layout">
           <div class="travel-title">
-            <h2 id="travel-title">Собраться<br />в Анталью.</h2>
+            <h2 id="travel-title">Ближе<br /><em>к морю.</em></h2>
             <p>
               Наша точка на побережье — Коньяалты.<br />Море рядом. Горы на
               горизонте.
@@ -383,86 +311,17 @@
         </div>
       </section>
 
-      <section id="next" class="ending" aria-labelledby="ending-title">
-        <div class="ending-content">
-          <p class="eyebrow">Пыльные Гантели · Анталья · 2027</p>
-          <h2 id="ending-title">До встречи<br />у моря.</h2>
-          <p>
-            12–25 октября. Пока — ориентир.<br />Подробности следующего сезона
-            появятся позже.
-          </p>
-          <a
-            class="button-light"
-            href="https://t.me/dusty_dumbbells"
-            target="_blank"
-            rel="noreferrer"
-            >Сообщество DD в Telegram <span aria-hidden="true">↗</span></a
-          ><a href="#day" class="ending-day"
-            >Ещё немного побыть здесь <span aria-hidden="true">↑</span></a
-          >
-        </div>
-      </section>
-    </main>
-
-    <footer class="dusty-footer" id="footer">
-      <div class="footer-ticker" aria-hidden="true">
-        <div class="ticker-track">
-          <span
-            >It costs 0.00 to be a nice camp (21+) &nbsp;↗&nbsp; It costs 0.00
-            to be a nice camp (21+) &nbsp;↗&nbsp;</span
-          ><span
-            >It costs 0.00 to be a nice camp (21+) &nbsp;↗&nbsp; It costs 0.00
-            to be a nice camp (21+) &nbsp;↗&nbsp;</span
-          >
-        </div>
-      </div>
-      <a
-        href="#top"
-        class="dusty-wordmark"
-        aria-label="Пыльные Гантели — в начало"
-        ><img
-          src="{{BASE}}assets/bd7e17e9090f-Group_1486.svg"
-          width="468"
-          height="101"
-          alt="DUSTY"
-          loading="lazy"
-      /></a>
-      <nav class="footer-socials" aria-label="Пыльные Гантели в интернете">
-        {{FOOTER_SOCIALS}}
-      </nav>
-      <p class="footer-copyright">© DUSTY DUMBBELLS, 2026</p>
-      <p class="footer-motto">It costs 0.00 to be a nice camp (21+)</p>
-      <a class="footer-privacy" href="{{BASE}}privacy/"
-        >Политика конфиденциальности</a
-      >
-      <div class="footer-atmosphere" hidden>
-        <p>Свет Антальи <span data-scene-time></span></p>
-        <div class="time-stops" aria-label="Свет в футере">
-          <button type="button" data-time="morning" aria-pressed="false">
-            Утро</button
-          ><button type="button" data-time="day" aria-pressed="false">
-            День</button
-          ><button type="button" data-time="evening" aria-pressed="false">
-            Закат</button
-          ><button type="button" data-time="night" aria-pressed="false">
-            Ночь
-          </button>
-        </div>
-        <div class="footer-actions">
-          <button type="button" class="text-button" data-now hidden>
-            Вернуться в сейчас ↗</button
-          ><button
-            type="button"
-            class="text-button"
-            data-motion-toggle
-            aria-pressed="false"
-          >
-            Остановить движение
-          </button>
-        </div>
-      </div>
-    </footer>
-
+    <section id="next" class="ending page-shell section-space" aria-labelledby="ending-title">
+      <canvas class="air-canvas" aria-hidden="true"></canvas>
+      <div class="ending-copy"><p class="eyebrow">DD Camp / Анталья / 2027</p><h2 id="ending-title">До встречи<br /><em>у моря.</em></h2><p>12–25 октября. Пока — ориентир.<br />Подробности следующего сезона появятся позже.</p><a class="button" href="https://t.me/dusty_dumbbells" target="_blank" rel="noreferrer">Сообщество DD <span aria-hidden="true">↗</span></a><a class="inline-link" href="#day">Ещё немного побыть здесь <span aria-hidden="true">↑</span></a></div>
+      <figure class="ending-postcard"><img src="{{BASE}}assets/8a89a2afe085-IMG_6946.JPG" width="1680" height="2520" loading="lazy" alt="Пустая набережная, море и горы Антальи" /><figcaption>Море всегда рядом.<span>Из поездки Пыльных Гантелей</span></figcaption></figure>
+    </section>
+  </main>
+  <footer class="footer page-shell" id="footer">
+    <div class="footer-main"><a href="#top" class="brand" aria-label="DD Camp — в начало"><span class="brand-dd">dd</span><span class="brand-caption">Пыльные Гантели<br />на каникулах</span></a><p>It costs 0.00 to be a nice camp <span>(21+)</span></p><nav aria-label="Пыльные Гантели в интернете"><a href="https://dustydumbbells.com/" target="_blank" rel="noreferrer">Сайт DD ↗</a><a href="https://t.me/dusty_dumbbells" target="_blank" rel="noreferrer">Telegram ↗</a></nav></div>
+    <div class="footer-atmosphere" hidden><p>Свет Антальи <span data-scene-time></span></p><div class="time-stops" aria-label="Свет в футере"><button type="button" data-time="morning" aria-pressed="false">Утро</button><button type="button" data-time="day" aria-pressed="false">День</button><button type="button" data-time="evening" aria-pressed="false">Закат</button><button type="button" data-time="night" aria-pressed="false">Ночь</button></div><button type="button" class="text-button" data-motion-toggle aria-pressed="false">Остановить движение</button></div>
+    <div class="footer-bottom"><p>© Dusty Dumbbells, 2026</p><a href="{{BASE}}privacy/">Политика конфиденциальности</a><a href="#top">Наверх ↑</a></div>
+  </footer>
     <dialog id="gallery" aria-labelledby="gallery-caption">
       <div class="gallery-toolbar">
         <span id="gallery-counter"></span
