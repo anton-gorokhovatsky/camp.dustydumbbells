@@ -91,10 +91,10 @@ const program = schedule
     return `<article class="program-day" data-date="${date}" data-rest="${rest}"><h3 class="program-date"><time datetime="${date}"><b>${day}</b><span>октября</span></time></h3><p class="program-weekday">${weekday.format(new Date(`${date}T12:00:00+03:00`))}</p><ul class="program-events">${rows}</ul></article>`;
   })
   .join("\n");
-const gallery = [8, 3, 5]
+const gallery = [9, 3, 5]
   .map((index, order) => {
     const photo = photos[index];
-    return `<figure class="photo"><a href="${base}assets/${photo.file}" data-photo="${index}" aria-label="Увеличить: ${escapeHTML(photo.alt)}"><img src="${base}assets/${photo.file}" alt="${escapeHTML(photo.alt)}" width="${index === 5 ? 893 : 1680}" height="${index === 5 ? 1339 : 2520}" loading="lazy"><span class="photo-zoom" aria-hidden="true">↗</span></a><figcaption>${String(order + 2).padStart(2, "0")} — ${["К морю", "По пути", "До темноты"][order]}</figcaption></figure>`;
+    return `<figure class="photo"><a href="${base}assets/${photo.file}" data-photo="${index}" aria-label="Увеличить: ${escapeHTML(photo.alt)}"><img src="${base}assets/${photo.file}" alt="${escapeHTML(photo.alt)}" width="${index === 5 ? 893 : 1680}" height="${index === 5 ? 1339 : 2520}" loading="lazy"><span class="photo-zoom" aria-hidden="true">↗</span></a><figcaption>${String(order + 2).padStart(2, "0")} — ${["Выше моря", "По пути", "До темноты"][order]}</figcaption></figure>`;
   })
   .join("\n");
 

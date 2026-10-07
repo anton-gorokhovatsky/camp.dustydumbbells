@@ -14,13 +14,13 @@
   font-display: swap;
 }
 :root {
-  --paper: #e9e9d9;
-  --ink: #183b41;
+  --paper: #f6f1e5;
+  --ink: #163c4d;
   --muted: #405953;
-  --accent: #ad3424;
+  --accent: #b21818;
   --water: #477f81;
   --line: rgba(24, 59, 65, 0.27);
-  --panel: #dde3d6;
+  --panel: #eee6d8;
   --light-x: 65%;
   --light-y: 20%;
   --light-color: #e6d58c;
@@ -29,7 +29,7 @@
   --haze: 0.05;
   --rain: 0;
   --sun-fill: 50%;
-  --grain-opacity: 0.04;
+  --grain-opacity: 0.02;
   --photo-overlay: rgba(24, 60, 60, 0.06);
   --scene-tint: rgba(20, 59, 67, 0.14);
   --gutter: clamp(1.25rem, 4vw, 5rem);
@@ -305,7 +305,7 @@ svg {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 50% 52%;
+  object-position: 50% 65%;
   filter: saturate(var(--photo-saturation)) brightness(var(--photo-brightness));
   transition: filter 1.6s;
 }
@@ -313,10 +313,10 @@ svg {
   content: "";
   background: linear-gradient(
     180deg,
-    rgba(4, 20, 25, 0.68),
-    rgba(4, 20, 25, 0.05) 38%,
-    rgba(4, 20, 25, 0.25) 58%,
-    rgba(4, 20, 25, 0.86)
+    rgba(4, 20, 43, 0.42),
+    transparent 28%,
+    rgba(4, 20, 35, 0.08) 50%,
+    rgba(4, 20, 35, 0.65)
   );
   z-index: 1;
 }
@@ -328,7 +328,7 @@ svg {
       transparent 65%
     ),
     var(--photo-overlay);
-  opacity: 0.32;
+  opacity: 0.22;
   mix-blend-mode: soft-light;
   z-index: 0;
   transition: background 1.4s;
@@ -400,6 +400,40 @@ svg {
   font-size: 0.65rem;
   letter-spacing: 0.015em;
   color: #e4e9e6;
+}
+.header {
+  background: rgba(6, 29, 49, 0.5);
+}
+.hero-eyebrow > span {
+  background: rgba(6, 29, 49, 0.84);
+  padding: 0.45rem 0.65rem;
+}
+.water-canvas {
+  mask-image: linear-gradient(transparent 25%, #000 65%);
+}
+.scene-controls {
+  margin-top: 1.5rem;
+  max-width: 27rem;
+}
+.scene-copy > .eyebrow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 2rem;
+}
+.scene-controls .time-stops {
+  gap: 0.8rem;
+}
+.scene-controls .time-stops button {
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid rgba(255, 249, 236, 0.6);
+  min-height: 44px;
+}
+.scene-controls .time-stops button[aria-pressed="true"],
+.scene-controls .time-stops button:hover {
+  background: #fff9ec;
+  color: #183b41;
+  border-bottom: 3px solid #fff9ec;
 }
 .day-section {
   display: grid;
@@ -671,8 +705,8 @@ svg {
 }
 .about-layout {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10%;
+  grid-template-columns: 1.12fr 0.88fr;
+  gap: 7%;
   align-items: center;
 }
 .photo {
@@ -689,7 +723,7 @@ svg {
   transition: filter 1.5s;
 }
 .photo-runners img {
-  aspect-ratio: 4/4.7;
+  aspect-ratio: 2/3;
   object-position: center 55%;
 }
 .photo figcaption,
@@ -733,9 +767,9 @@ svg {
 .sea-scene {
   position: relative;
   isolation: isolate;
-  min-height: 760px;
+  min-height: max(760px, 90svh);
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   background: var(--water);
   color: #fff9ec;
   overflow: clip;
@@ -750,7 +784,7 @@ svg {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 50% 54%;
+  object-position: 50% 65%;
   filter: brightness(var(--photo-brightness)) saturate(var(--photo-saturation));
   transition: filter 1.5s;
 }
@@ -761,10 +795,11 @@ svg {
   background:
     linear-gradient(
       90deg,
-      rgba(5, 30, 40, 0.75),
-      rgba(5, 30, 40, 0.45) 65%,
-      rgba(5, 30, 40, 0.18)
+      rgba(3, 25, 43, 0.67),
+      rgba(3, 25, 43, 0.18) 48%,
+      transparent 80%
     ),
+    linear-gradient(0deg, rgba(3, 25, 43, 0.7), transparent 60%),
     var(--scene-tint);
   transition: background 1.5s;
 }
@@ -775,15 +810,15 @@ svg {
   height: 100%;
   z-index: -1;
   pointer-events: none;
-  opacity: 0.4;
+  opacity: 0.22;
 }
 .scene-copy {
-  padding: 6rem var(--gutter);
+  padding: 4rem var(--gutter) 5rem;
   max-width: 65rem;
 }
 .scene-copy h2 {
   font-size: clamp(3.6rem, 2.5rem + 5vw, 8rem);
-  margin: 2.5rem 0;
+  margin: 1.8rem 0;
   line-height: 0.97;
 }
 .scene-copy > p:last-child {
@@ -994,7 +1029,8 @@ svg {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(90deg, rgba(21, 27, 31, 0.74), rgba(21, 27, 31, 0.36)),
+    linear-gradient(90deg, rgba(13, 24, 38, 0.64), rgba(13, 24, 38, 0.04)),
+    linear-gradient(0deg, rgba(13, 24, 38, 0.45), transparent 60%),
     var(--scene-tint);
 }
 .ending-content {
@@ -2019,5 +2055,229 @@ h3 {
   }
   .footer-copyright {
     margin-top: 0.3rem;
+  }
+}
+
+/* Photography carries the journey; controls sit along its edge. */
+.hero-photo-note {
+  left: var(--gutter);
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.hero-landscape img {
+  object-position: 50% 65%;
+}
+.sea-photo img {
+  position: absolute;
+  inset: 0;
+  transition:
+    opacity 1s,
+    filter 1s;
+}
+.sea-photo .sea-evening {
+  opacity: 0;
+  object-position: 50% 55%;
+}
+html[data-phase="evening"] .sea-photo .sea-day {
+  opacity: 0;
+}
+html[data-phase="evening"] .sea-photo .sea-evening {
+  opacity: 1;
+}
+.scene-explore {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 3rem;
+  min-height: 48px;
+  margin-top: 1.8rem;
+  border-bottom: 1px solid rgba(255, 249, 236, 0.6);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+.scene-explore span {
+  font-size: 1.5rem;
+}
+.day-section {
+  grid-template-columns: minmax(0, 1.7fr) minmax(0, 0.8fr);
+  column-gap: 4%;
+  row-gap: 1.5rem;
+  padding-block: 2rem;
+  background: var(--paper);
+}
+.day-instrument {
+  display: grid;
+  grid-template-columns: 7rem minmax(0, 1fr);
+  column-gap: 1.5rem;
+  row-gap: 0.65rem;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+}
+.instrument-top {
+  grid-column: 1/-1;
+}
+.day-instrument .clock-face {
+  position: static;
+  transform: none;
+  width: auto;
+  align-self: center;
+  text-align: left;
+}
+.day-instrument .clock-face #local-time {
+  font-size: 2.5rem;
+  line-height: 1;
+}
+.day-instrument .clock-face #phase-label {
+  font-size: 0.65rem;
+  margin-top: 0.65rem;
+}
+.interactive-time {
+  min-width: 0;
+}
+.day-section #day-range {
+  margin: 0 0 0.35rem;
+}
+.day-section .instrument-actions {
+  margin-top: 0.25rem;
+  gap: 1rem;
+}
+.day-instrument > .small-note,
+.day-instrument > noscript {
+  grid-column: 1/-1;
+  margin-top: 0.25rem;
+}
+.day-section .weather-strip {
+  grid-column: 2;
+  grid-row: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.35rem;
+  border: 0;
+  border-left: 1px solid var(--line);
+  padding: 0 0 0 1.8rem;
+}
+.day-section .weather-details {
+  margin: 0;
+  width: 100%;
+}
+.day-section .weather-details summary {
+  justify-content: space-between;
+  gap: 1rem;
+}
+.day-section .weather-panel {
+  position: static;
+  width: 100%;
+  padding: 0.5rem 0 0;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+.day-section .sun-clock {
+  height: 6rem;
+  margin-top: 0.5rem;
+}
+.day-section .sun-times {
+  font-size: 0.6rem;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.day-section .sun-times > span:nth-child(2) {
+  max-width: none;
+}
+.day-section .weather-summary {
+  flex-wrap: wrap;
+}
+.day-section #weather-wind {
+  margin: 0;
+}
+.photo-runners img {
+  aspect-ratio: 2/3;
+}
+@media (max-width: 1000px) {
+  .day-section {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .day-section .weather-strip {
+    grid-column: 1;
+    grid-row: auto;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0 1rem;
+    padding: 1rem 0 0;
+    border-left: 0;
+    border-top: 1px solid var(--line);
+  }
+  .day-section .weather-details {
+    grid-column: 1/-1;
+  }
+  .day-section .weather-panel {
+    max-width: 36rem;
+  }
+}
+@media (max-width: 720px) {
+  .hero-landscape img {
+    object-position: 45% 55%;
+  }
+  .hero-photo-note {
+    flex-wrap: wrap;
+    gap: 0.3rem 1rem;
+  }
+  .sea-scene {
+    min-height: max(660px, 85svh);
+  }
+  .sea-photo img {
+    object-position: 50% 65%;
+  }
+  .sea-photo::after {
+    background:
+      linear-gradient(0deg, rgba(3, 25, 43, 0.78), rgba(3, 25, 43, 0.05) 90%),
+      var(--scene-tint);
+  }
+  .scene-copy {
+    padding: 3rem var(--gutter) 4.5rem;
+  }
+  .scene-explore {
+    max-width: 100%;
+    gap: 2rem;
+  }
+  .day-section {
+    padding-block: 1.5rem;
+  }
+  .day-instrument {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
+  }
+  .day-instrument .clock-face {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .day-instrument .clock-face #phase-label {
+    margin: 0;
+    font-size: 0.75rem;
+  }
+  .day-section .instrument-actions {
+    justify-content: space-between;
+    gap: 0.25rem 1rem;
+  }
+  .day-section .weather-strip {
+    align-items: center;
+  }
+  .day-section .weather-summary {
+    gap: 0.6rem;
+  }
+  .day-section #weather-wind {
+    grid-row: auto;
+    grid-column: auto;
+    max-width: 10rem;
+    text-align: right;
+  }
+  .day-section .weather-details {
+    grid-row: auto;
   }
 }

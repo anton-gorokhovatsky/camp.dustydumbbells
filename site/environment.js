@@ -52,60 +52,60 @@ export function solarDay(date = new Date()) {
 
 const palettes = {
   night: {
-    footerTop: "#283752",
-    footerBottom: "#102b3c",
-    paper: "#152e3b",
+    footerTop: "#0b1640",
+    footerBottom: "#17438d",
+    paper: "#0b2444",
     ink: "#f2eedf",
     muted: "#bed0d3",
     accent: "#ffb293",
-    water: "#18394a",
-    panel: "#1c3947",
+    water: "#174a76",
+    panel: "#123353",
     light: "#7796b3",
-    tint: [9, 24, 55],
-    brightness: 0.59,
-    saturation: 0.74,
+    tint: [12, 34, 94],
+    brightness: 0.78,
+    saturation: 0.99,
   },
   morning: {
-    footerTop: "#884b43",
-    footerBottom: "#2f586b",
-    paper: "#efe6d4",
+    footerTop: "#b34637",
+    footerBottom: "#214d89",
+    paper: "#f9ecde",
     ink: "#25434c",
     muted: "#4d6263",
     accent: "#a93625",
     water: "#718e91",
-    panel: "#e3dac6",
+    panel: "#f0dfcd",
     light: "#ffbd82",
-    tint: [187, 105, 59],
+    tint: [232, 145, 82],
     brightness: 1.04,
-    saturation: 0.92,
+    saturation: 1.05,
   },
   day: {
     footerTop: "#b21818",
     footerBottom: "#1a4297",
-    paper: "#e9e9d9",
-    ink: "#183b41",
+    paper: "#f6f1e5",
+    ink: "#163c4d",
     muted: "#405953",
-    accent: "#ad3424",
+    accent: "#b21818",
     water: "#477f81",
-    panel: "#dde3d6",
+    panel: "#eee6d8",
     light: "#e6d58c",
-    tint: [29, 90, 82],
+    tint: [25, 114, 163],
     brightness: 1.06,
     saturation: 1.07,
   },
   evening: {
-    footerTop: "#92432d",
-    footerBottom: "#29365a",
-    paper: "#ead4b9",
+    footerTop: "#a03b28",
+    footerBottom: "#373678",
+    paper: "#fae1c5",
     ink: "#402d35",
     muted: "#684942",
     accent: "#932a23",
     water: "#946b67",
-    panel: "#ddc3a7",
+    panel: "#efd2b2",
     light: "#f2985c",
-    tint: [145, 54, 28],
-    brightness: 0.89,
-    saturation: 0.91,
+    tint: [211, 91, 37],
+    brightness: 0.99,
+    saturation: 1.08,
   },
 };
 const rgb = (hex) =>
@@ -248,8 +248,8 @@ export function environmentAt({
         Math.round(
           mix(
             mix(value, rgb(right[key])[i], smooth),
-            [57, 74, 85][i],
-            clouds * 0.28 + rain * 0.1,
+            [39, 63, 104][i],
+            clouds * 0.08 + rain * 0.04,
           ),
         )
           .toString(16)
@@ -284,20 +284,20 @@ export function environmentAt({
       "--light-y": `${Math.round(70 - sun * 65)}%`,
       "--photo-saturation": (
         mix(left.saturation, right.saturation, smooth) -
-        clouds * 0.24 +
-        uv * 0.08
+        clouds * 0.08 +
+        uv * 0.04
       ).toFixed(3),
       "--photo-brightness": (
         mix(left.brightness, right.brightness, smooth) -
-        clouds * 0.12 -
-        rain * 0.04
+        clouds * 0.055 -
+        rain * 0.02
       ).toFixed(3),
-      "--haze": (0.02 + humidity * 0.1 + clouds * 0.12).toFixed(3),
+      "--haze": (0.015 + humidity * 0.035 + clouds * 0.04).toFixed(3),
       "--rain": rain.toFixed(3),
-      "--grain-opacity": (0.03 + humidity * 0.025).toFixed(3),
+      "--grain-opacity": (0.015 + humidity * 0.012).toFixed(3),
       "--sun-fill": `${((minute / 1439) * 100).toFixed(1)}%`,
-      "--photo-overlay": `rgba(${tint.join(",")},${(0.08 + darkness * 0.19 + clouds * 0.12).toFixed(3)})`,
-      "--scene-tint": `rgba(${tint.join(",")},${(0.08 + darkness * 0.2 + rain * 0.09).toFixed(3)})`,
+      "--photo-overlay": `rgba(${tint.join(",")},${(0.03 + darkness * 0.12 + clouds * 0.03).toFixed(3)})`,
+      "--scene-tint": `rgba(${tint.join(",")},${(0.04 + darkness * 0.15 + rain * 0.035).toFixed(3)})`,
     },
   };
 }
