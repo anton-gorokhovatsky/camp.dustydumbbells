@@ -27,15 +27,15 @@
     <link rel="stylesheet" href="./styles.css" />
     <script type="module" src="./app.js"></script>
   </head>
-  <body>
+  <body id="top">
     <a class="skip-link" href="#about">К содержанию</a>
     <header class="header">
       <a href="#top" class="brand" aria-label="DD Camp — в начало"
         ><img
-          src="{{BASE}}assets/1474b376a14d-Frame_4103.svg"
-          width="240"
-          height="38"
-          alt="DD Camp"
+          src="{{BASE}}assets/bd7e17e9090f-Group_1486.svg"
+          width="468"
+          height="101"
+          alt="DUSTY"
       /></a>
       <p class="header-place">
         Анталья, Турция <span>36°52′ N · 30°38′ E</span>
@@ -54,166 +54,84 @@
       </details>
     </header>
 
-    <main id="top">
+    <main>
       <section class="hero" aria-labelledby="hero-title">
-        <div class="hero-landscape" aria-hidden="true">
-          <img
-            src="{{BASE}}assets/8a89a2afe085-IMG_6946.JPG"
-            width="1680"
-            height="2520"
-            fetchpriority="high"
-            alt=""
-          />
-          <div class="hero-light"></div>
-        </div>
         <div class="hero-content">
-          <div class="hero-eyebrow">
-            <span>Пыльные Гантели у моря</span
-            ><span class="hero-year">Сезон / 2027</span>
+          <p class="eyebrow">Пыльные Гантели / Каникулы / 21+</p>
+          <h1 id="hero-title"><img src="{{BASE}}assets/1474b376a14d-Frame_4103.svg" width="240" height="38" alt="DD CAMP" /></h1>
+          <p class="hero-line">Море, солнце<br />и тёплый ветер.</p>
+          <div class="hero-dates">
+            <p><time datetime="2027-10-12">12</time>—<time datetime="2027-10-25">25</time></p>
+            <span>октября 2027 · Анталья, Турция</span>
+            <small>Предварительные даты следующего кэмпа</small>
           </div>
-          <h1 id="hero-title">
-            <img
-              src="{{BASE}}assets/1474b376a14d-Frame_4103.svg"
-              width="240"
-              height="38"
-              alt="DD CAMP"
-            />
-          </h1>
-          <div class="hero-bottom">
-            <p class="hero-line">Море, солнце<br />и тёплый ветер.</p>
-            <div class="hero-dates">
-              <p>
-                <time datetime="2027-10-12">12</time>—<time
-                  datetime="2027-10-25"
-                  >25</time
-                >
-                октября
-              </p>
-              <span>Анталья · предварительные даты</span>
-            </div>
+          <div class="hero-actions">
+            <a class="inline-link" href="#day">Побыть в Анталье <span aria-hidden="true">↘</span></a>
+            <a href="#program" class="hero-program">Программа поездки ↓</a>
           </div>
-          <a class="hero-link" href="#day"
-            >Сначала — побыть здесь <span aria-hidden="true">↓</span></a
-          >
         </div>
-        <div class="hero-photo-note">
-          <span>Из поездки DD. Свет меняется вместе с Антальей.</span>
-          <span data-scene-time></span>
-        </div>
+        <figure class="hero-portrait">
+          <div class="track-frame">
+            <span class="track-number" aria-hidden="true">01</span>
+            <a href="{{BASE}}assets/83bb3847840c-IMG_6969.JPG" data-photo="0" aria-label="Увеличить: участники DD бегут по набережной">
+              <img src="{{BASE}}assets/83bb3847840c-IMG_6969.JPG" width="1170" height="1755" fetchpriority="high" alt="Участники DD на пробежке: море, горы и красная дорожка набережной" />
+            </a>
+          </div>
+          <figcaption><span>DD на побережье / Кадр из прошлой поездки</span><a href="#day" class="hero-clock">Свет Антальи <span data-scene-time></span> ↘</a></figcaption>
+        </figure>
       </section>
+      <div class="running-track">
+        <div class="track-lanes" aria-hidden="true">
+          <div class="track-lane"><span class="lane-number">1</span><div class="lane-window"><div class="lane-run"><span>БЕГ &nbsp;↗&nbsp; МОРЕ &nbsp;↗&nbsp; ПЫЛЬНЫЕ ГАНТЕЛИ &nbsp;↗&nbsp; АНТАЛЬЯ &nbsp;↗&nbsp; </span><span>БЕГ &nbsp;↗&nbsp; МОРЕ &nbsp;↗&nbsp; ПЫЛЬНЫЕ ГАНТЕЛИ &nbsp;↗&nbsp; АНТАЛЬЯ &nbsp;↗&nbsp; </span></div></div></div>
+          <div class="track-lane"><span class="lane-number">2</span><div class="lane-window"><div class="lane-run"><span>ВЕЛОСИПЕД &nbsp;↗&nbsp; ПЛАВАНИЕ &nbsp;↗&nbsp; ГОРЫ &nbsp;↗&nbsp; КАНИКУЛЫ &nbsp;↗&nbsp; </span><span>ВЕЛОСИПЕД &nbsp;↗&nbsp; ПЛАВАНИЕ &nbsp;↗&nbsp; ГОРЫ &nbsp;↗&nbsp; КАНИКУЛЫ &nbsp;↗&nbsp; </span></div></div></div>
+        </div>
+        <div class="track-controls motion-controls" hidden><span>У каждого — свой темп</span><button class="text-button" type="button" data-motion-toggle aria-pressed="true">Включить движение</button></div>
+      </div>
 
       <section
         id="about"
         class="about section-pad"
         aria-labelledby="about-title"
       >
-        <div class="section-heading">
-          <p class="eyebrow">01 / Вместе, в своём темпе</p>
-          <span class="section-coordinate" aria-hidden="true"
-            >DD ↗ ANTALYA</span
-          >
-        </div>
-        <h2 id="about-title" class="display-title">
-          Вектор задаём мы.<br /><span>Маршрут строишь ты.</span>
-        </h2>
         <div class="about-layout">
-          <figure class="photo photo-runners">
-            <a
-              href="{{BASE}}assets/83bb3847840c-IMG_6969.JPG"
-              data-photo="0"
-              aria-label="Увеличить: участники DD бегут по набережной"
-              ><img
-                src="{{BASE}}assets/83bb3847840c-IMG_6969.JPG"
-                width="1170"
-                height="1755"
-                loading="lazy"
-                alt="Участники DD бегут по прибрежной дорожке; впереди пальмы и горы"
-              /><span class="photo-zoom" aria-hidden="true">↗</span></a
-            >
-            <figcaption>01 — На побережье, вместе с DD</figcaption>
-          </figure>
           <div class="about-copy">
-            <p class="lead">
-              Утренние пробежки по побережью, силовые под открытым небом,
-              живописные райды и невероятные закаты.
-            </p>
-            <p>
-              Можно приехать ради тренировок. Можно чередовать бег с морем,
-              книгой и долгими ужинами. Участие в программе не превращает
-              каникулы в обязательное расписание.
-            </p>
-            <p>
-              DD собирают компанию, готовят тренировки и маршруты. Ты выбираешь
-              нагрузку, отдых и занятия на свободный вечер — вместе со всеми или
-              по своему плану.
-            </p>
-            <p class="about-source">
-              О нашем формате —
-              <a
-                href="https://t.me/doroninvdele/1167"
-                target="_blank"
-                rel="noreferrer"
-                >в карточках Виктора Доронина ↗</a
-              >
-            </p>
-            <a class="inline-link" href="#program"
-              >Посмотреть программу <span aria-hidden="true">↘</span></a
-            >
+            <p class="eyebrow">01 / Наша компания</p>
+            <h2 id="about-title">Вектор задаём мы.<br /><span>Маршрут строишь ты.</span></h2>
+            <p class="lead">Утренние пробежки по побережью, силовые под открытым небом, живописные райды и невероятные закаты.</p>
+            <p>DD собирают компанию, готовят тренировки и маршруты. Ты выбираешь нагрузку, отдых и занятия на свободный вечер — вместе со всеми или по своему плану.</p>
+            <p>Можно приехать ради тренировок. Можно чередовать бег с морем, книгой и долгими ужинами. Участие в программе не превращает каникулы в обязательное расписание.</p>
+            <a class="inline-link" href="https://t.me/doroninvdele/1167" target="_blank" rel="noreferrer">О кэмпе в карточках Виктора <span aria-hidden="true">↗</span></a>
+          </div>
+          <div class="about-pictures">
+            <figure class="photo photo-runners"><a href="{{BASE}}assets/b6b2c773dc5b-IMG_6970.JPG" data-photo="1" aria-label="Увеличить: пробежка DD вдоль моря"><img src="{{BASE}}assets/b6b2c773dc5b-IMG_6970.JPG" width="1170" height="1755" loading="lazy" alt="Двое бегунов в майках DD рядом с морем и пальмами" /><span class="photo-zoom" aria-hidden="true">↗</span></a><figcaption>01 / В своей компании</figcaption></figure>
+            <figure class="photo photo-coast"><a href="{{BASE}}assets/8a89a2afe085-IMG_6946.JPG" data-photo="7" aria-label="Увеличить: побережье Антальи"><img src="{{BASE}}assets/8a89a2afe085-IMG_6946.JPG" width="1680" height="2520" loading="lazy" alt="Набережная у моря, впереди — горы Антальи" /><span class="photo-zoom" aria-hidden="true">↗</span></a><figcaption>02 / Море всегда рядом</figcaption></figure>
           </div>
         </div>
       </section>
 
       <section id="day" class="sea-scene" aria-labelledby="sea-title">
         <div class="sea-photo" aria-hidden="true">
-          <img
-            class="sea-day"
-            src="{{BASE}}assets/edb1b4c73141-IMG_6953.JPG"
-            width="1680"
-            height="2520"
-            loading="lazy"
-            alt=""
-          />
-          <img
-            class="sea-evening"
-            src="{{BASE}}assets/d152e032841c-IMG_6948.JPG"
-            width="893"
-            height="1339"
-            loading="lazy"
-            alt=""
-          />
+          <img class="scene-photo scene-morning" src="{{BASE}}assets/fa0d8cd37eaa-IMG_6949.JPG" width="1008" height="1692" loading="lazy" alt="" />
+          <img class="scene-photo scene-day" src="{{BASE}}assets/edb1b4c73141-IMG_6953.JPG" width="1680" height="2520" loading="lazy" alt="" />
+          <img class="scene-photo scene-evening" src="{{BASE}}assets/d152e032841c-IMG_6948.JPG" width="893" height="1339" loading="lazy" alt="" />
+          <img class="scene-photo scene-night" src="{{BASE}}assets/f075a66a2bb1-IMG_6961.JPG" width="1680" height="2520" loading="lazy" alt="" />
         </div>
         <canvas class="water-canvas" aria-hidden="true"></canvas>
+        <canvas class="rain-canvas" aria-hidden="true"></canvas>
         <div class="scene-copy">
-          <p class="eyebrow">
-            <span>02 / Свет, воздух, вода</span><span data-scene-time></span>
-          </p>
-          <h2 id="sea-title">Место для<br />своего ритма.</h2>
-          <p id="scene-caption">
-            День длинный. Море рядом.<br />Можно никуда не спешить.
-          </p>
-          <div class="scene-controls" hidden>
-            <div class="time-stops" aria-label="Свет над морем">
-              <button type="button" data-time="morning" aria-pressed="false">
-                Утро</button
-              ><button type="button" data-time="day" aria-pressed="false">
-                День</button
-              ><button type="button" data-time="evening" aria-pressed="false">
-                Закат</button
-              ><button type="button" data-time="night" aria-pressed="false">
-                Ночь
-              </button>
-            </div>
-            <button type="button" class="text-button" data-now hidden>
-              Вернуться в сейчас ↗
-            </button>
-          </div>
-          <a class="scene-explore" href="#day-controls"
-            >Прожить день в Анталье <span aria-hidden="true">↓</span></a
-          >
+          <p class="eyebrow">02 / Один день в Анталье</p>
+          <h2 id="sea-title">Сначала —<br />к морю.</h2>
+          <p id="scene-caption">Зайти в гавань. Посмотреть на лодки.
+Оставить время для себя.</p>
         </div>
-        <span class="scene-note"
-          >Снимок из поездки DD · свет и рябь меняются</span
-        >
+        <div class="scene-controls" hidden>
+          <div class="scene-control-label"><span data-scene-time></span><span>Выбери свой час ↓</span></div>
+          <div class="time-stops" aria-label="Свет над морем">
+            <button type="button" data-time="morning" aria-pressed="false">Утро</button><button type="button" data-time="day" aria-pressed="false">День</button><button type="button" data-time="evening" aria-pressed="false">Закат</button><button type="button" data-time="night" aria-pressed="false">Ночь</button>
+          </div>
+          <button type="button" class="text-button" data-now hidden>Вернуться в сейчас ↗</button>
+        </div>
+        <span class="scene-note">Архивные кадры DD / свет — художественный просмотр</span>
       </section>
 
       <div id="day-controls" class="day-section section-pad">
@@ -337,6 +255,28 @@
         </div>
       </div>
 
+      <section id="memories" class="memories section-pad" aria-labelledby="memories-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">03 / Из дневника DD</p>
+            <h2 id="memories-title">За пределами<br />дорожки.</h2>
+          </div>
+          <p class="memories-intro">
+            Вода, горы и свои люди.<br />Кадры из прошлой поездки DD.
+          </p>
+        </div>
+        <div class="photo-composition">
+          {{GALLERY}}
+          <p class="memory-note">Вечер тоже часть кэмпа.<span>Кадры из прошлой поездки DD. Без обязательной программы на свободный вечер.</span></p>
+        </div>
+        <a
+          class="inline-link gallery-open"
+          href="{{BASE}}assets/83bb3847840c-IMG_6969.JPG"
+          data-photo="0"
+          >Все 11 фотографий <span aria-hidden="true">↗</span></a
+        >
+      </section>
+
       <section
         id="program"
         class="program section-pad"
@@ -344,8 +284,8 @@
       >
         <div class="program-heading">
           <div>
-            <p class="eyebrow">03 / Две недели у моря</p>
-            <h2 id="program-title">Движение.<br />И всё вокруг.</h2>
+            <p class="eyebrow">04 / Предварительная программа</p>
+            <h2 id="program-title">Две недели.<br />В своём темпе.</h2>
           </div>
           <div class="program-intro">
             <p>Бег, велосипед, плавание, горы.<br />И время просто пожить.</p>
@@ -366,25 +306,6 @@
         </p>
       </section>
 
-      <section class="memories section-pad" aria-labelledby="memories-title">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">04 / Уже было. Хочется ещё.</p>
-            <h2 id="memories-title">Между<br />тренировками</h2>
-          </div>
-          <p class="memories-intro">
-            Вода, горы и свои люди.<br />Кадры из прошлой поездки DD.
-          </p>
-        </div>
-        <div class="photo-composition">{{GALLERY}}</div>
-        <a
-          class="inline-link gallery-open"
-          href="{{BASE}}assets/83bb3847840c-IMG_6969.JPG"
-          data-photo="0"
-          >Все 11 фотографий <span aria-hidden="true">↗</span></a
-        >
-      </section>
-
       <section
         id="travel"
         class="travel section-pad"
@@ -393,7 +314,7 @@
         <p class="eyebrow">05 / Собраться в дорогу</p>
         <div class="travel-layout">
           <div class="travel-title">
-            <h2 id="travel-title">Встретимся<br />в Анталье.</h2>
+            <h2 id="travel-title">Собраться<br />в Анталью.</h2>
             <p>
               Наша точка на побережье — Коньяалты.<br />Море рядом. Горы на
               горизонте.
@@ -463,16 +384,6 @@
       </section>
 
       <section id="next" class="ending" aria-labelledby="ending-title">
-        <div class="ending-photo" aria-hidden="true">
-          <img
-            src="{{BASE}}assets/d152e032841c-IMG_6948.JPG"
-            width="893"
-            height="1339"
-            loading="lazy"
-            alt=""
-          />
-        </div>
-        <canvas class="water-canvas" aria-hidden="true"></canvas>
         <div class="ending-content">
           <p class="eyebrow">Пыльные Гантели · Анталья · 2027</p>
           <h2 id="ending-title">До встречи<br />у моря.</h2>
@@ -485,7 +396,7 @@
             href="https://t.me/dusty_dumbbells"
             target="_blank"
             rel="noreferrer"
-            >Быть рядом с DD <span aria-hidden="true">↗</span></a
+            >Сообщество DD в Telegram <span aria-hidden="true">↗</span></a
           ><a href="#day" class="ending-day"
             >Ещё немного побыть здесь <span aria-hidden="true">↑</span></a
           >

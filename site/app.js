@@ -35,10 +35,10 @@ let environment;
 let weatherFailed = false;
 
 const captions = {
-  morning: "Выйти к воде, пока город просыпается.\nНачать день в своём темпе.",
-  day: "День длинный. Море рядом.\nМожно никуда не спешить.",
+  morning: "Пробежка по набережной.\nМоре слева, горы впереди.",
+  day: "Зайти в гавань. Посмотреть на лодки.\nОставить время для себя.",
   evening: "Проводить солнце за горы.\nОстаться ещё ненадолго.",
-  night: "Шум моря. Тёмный горизонт.\nЗавтра снова будет утро.",
+  night: "Гавань стихает, свет уходит.\nЗавтра снова будет утро.",
 };
 
 function updateScene(announce = false) {
@@ -114,6 +114,9 @@ function updateScene(announce = false) {
       String(state.minutes !== null && button.dataset.time === phase),
     );
   $("#scene-caption").textContent = captions[phase];
+  $(".scene-note").textContent = phase === "night"
+    ? "Ночной свет — обработка дневного кадра DD"
+    : "Архивные кадры DD / свет — художественный просмотр";
   const scenario = SCENARIOS[state.scenario];
   const weather = state.weather;
   $("#weather-description").textContent = scenario
@@ -310,9 +313,9 @@ dialog.addEventListener("close", () =>
   photoTrigger?.focus({ preventScroll: true }),
 );
 
-// Water is a light, decorative layer; all content remains normal HTML.
+// Water and rain are decorative layers; all content remains normal HTML.
 // Stop work offscreen, in background tabs, in dialogs, and when paused.
-const waters = [...document.querySelectorAll(".water-canvas")].map(
+const waters = [...document.querySelectorAll(".water-canvas, .rain-canvas")].map(
   (canvas) => ({
     canvas,
     context: canvas.getContext("2d"),
@@ -332,30 +335,32 @@ function drawWater(water, time) {
   const amplitude = 2 + clamp(wind / 15) * 14;
   const drift = Math.sin((direction * Math.PI) / 180);
   const color = environment.phase === "night" ? "178,210,220" : "255,242,211";
-  for (let row = 0; row < 34; row++) {
-    const depth = row / 34;
-    const baseline = height * (0.43 + depth * 0.62);
-    ctx.beginPath();
-    for (let x = -20; x <= width + 20; x += 12) {
-      const y =
-        baseline +
-        Math.sin(
-          x * (0.012 - depth * 0.006) + row * 1.65 + time * drift * 0.7,
-        ) *
-          amplitude *
-          (0.3 + depth) +
-        Math.sin(x * 0.032 + time * 0.65 + row) * 2;
-      if (x === -20) ctx.moveTo(x, y);
-      else ctx.lineTo(x, y);
+  if (water.canvas.classList.contains("water-canvas")) {
+    for (let row = 0; row < 34; row++) {
+      const depth = row / 34;
+      const baseline = height * (0.43 + depth * 0.62);
+      ctx.beginPath();
+      for (let x = -20; x <= width + 20; x += 12) {
+        const y =
+          baseline +
+          Math.sin(
+            x * (0.012 - depth * 0.006) + row * 1.65 + time * drift * 0.7,
+          ) *
+            amplitude *
+            (0.3 + depth) +
+          Math.sin(x * 0.032 + time * 0.65 + row) * 2;
+        if (x === -20) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.strokeStyle = `rgba(${color},${0.08 + depth * 0.18})`;
+      ctx.lineWidth = 0.5 + depth * 0.7;
+      ctx.stroke();
     }
-    ctx.strokeStyle = `rgba(${color},${0.08 + depth * 0.18})`;
-    ctx.lineWidth = 0.5 + depth * 0.7;
-    ctx.stroke();
   }
-  if (rain > 0) {
+  if (rain > 0 && water.canvas.classList.contains("rain-canvas")) {
     ctx.strokeStyle = `rgba(${color},${rain * 0.3})`;
     ctx.lineWidth = 0.7;
-    for (let i = 0; i < 70; i++) {
+    for (let i = 0; i < 140; i++) {
       const x =
         ((((i * 137.3 + time * drift * 27) % (width + 80)) + width + 80) %
           (width + 80)) -
@@ -445,7 +450,9 @@ setInterval(() => {
 
 $(".interactive-time").hidden = false;
 $(".weather-control").hidden = false;
-$(".scene-controls").hidden = false;
+for (const controls of document.querySelectorAll(
+  ".scene-controls, .motion-controls",
+)) controls.hidden = false;
 $(".footer-atmosphere").hidden = false;
 updateScene();
 loadWeather();
