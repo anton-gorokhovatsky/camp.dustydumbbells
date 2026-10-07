@@ -198,3 +198,22 @@ test("complete programme, correct 2027 weekdays, meaningful links and local imag
     assert.equal(createHash("sha256").update(bytes).digest("hex"), expected);
   }
 });
+
+test("browser styles and the entire module graph use the publication revision", async () => {
+  const release = JSON.parse(await read("release.json"));
+  const html = await read("index.html");
+  const references = [...html.matchAll(/(?:src|href)="(\.\/[^\"]+\.(?:css|js)\?[^\"]+)"/g)]
+    .map((match) => match[1]);
+  assert.equal(references.length, 2, "Styles and the entry module must be versioned");
+  for (const file of ["app.js", "environment.js"]) {
+    const imports = [...(await read(file)).matchAll(/\bfrom "(\.\/[^\"]+)"/g)];
+    assert(imports.length > 0);
+    references.push(...imports.map((match) => match[1]));
+  }
+  for (const reference of references) {
+    const url = new URL(reference, release.site);
+    assert.equal(url.searchParams.get("v"), release.commit, reference);
+    assert((await stat(new URL(`../dist/${reference}`, import.meta.url))).isFile());
+  }
+  assert((await read("privacy/index.html")).includes(`privacy.css?v=${release.commit}`));
+});

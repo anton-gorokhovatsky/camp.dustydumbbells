@@ -69,7 +69,7 @@ for (const [sourceName, builtName] of [
   // This catches accidental changes to copy, layout, inline styles, or behavior.
   let restored = built;
   if (sourceName === "privacy.html") {
-    const titleStyle = `<link rel="stylesheet" href="${release.base}privacy.css" data-policy-title-wrap>`;
+    const titleStyle = `<link rel="stylesheet" href="${release.base}privacy.css?v=${encodeURIComponent(release.commit)}" data-policy-title-wrap>`;
     assert(built.includes(titleStyle));
     restored = restored.replace(titleStyle, "");
   }

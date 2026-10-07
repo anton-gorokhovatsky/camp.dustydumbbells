@@ -12,6 +12,17 @@ const site = new URL(
     "https://anton-gorokhovatsky.github.io/camp.dustydumbbells/",
 );
 const base = site.pathname.replace(/\/?$/, "/");
+let commit = process.env.GITHUB_SHA || "uncommitted";
+if (commit === "uncommitted") {
+  try {
+    commit = execFileSync("git", ["rev-parse", "HEAD"], {
+      cwd: root,
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "ignore"],
+    }).trim();
+  } catch {}
+}
+const assetVersion = encodeURIComponent(commit);
 const manifest = JSON.parse(
   await readFile(path.join(root, "source/manifest.json"), "utf8"),
 );
@@ -60,7 +71,7 @@ for (const [input, target] of [
   if (input === "privacy.html") {
     html = html.replace(
       "</head>",
-      `<link rel="stylesheet" href="${base}privacy.css" data-policy-title-wrap></head>`,
+      `<link rel="stylesheet" href="${base}privacy.css?v=${assetVersion}" data-policy-title-wrap></head>`,
     );
   }
   await writeFile(path.join(output, target), html);
@@ -134,6 +145,18 @@ for (const file of [
     .replace("{{SCHEDULE}}", program)
     .replace("{{GALLERY}}", gallery)
     .replace("{{FOOTER_SOCIALS}}", footerSocials);
+  // A new publication must also refresh cached styles and module dependencies.
+  if (file.endsWith(".html")) {
+    content = content.replace(
+      /((?:src|href)="\.\/[^"?]+\.(?:css|js))"/g,
+      `$1?v=${assetVersion}"`,
+    );
+  } else if (file.endsWith(".js")) {
+    content = content.replace(
+      /\bfrom "(\.\/[^"?]+\.js)"/g,
+      `from "$1?v=${assetVersion}"`,
+    );
+  }
   await writeFile(path.join(output, file), content);
   siteFiles[file] = createHash("sha256").update(content).digest("hex");
 }
@@ -146,16 +169,6 @@ for (const [source, file] of [
   siteFiles[file] = createHash("sha256").update(bytes).digest("hex");
 }
 
-let commit = process.env.GITHUB_SHA || "uncommitted";
-if (commit === "uncommitted") {
-  try {
-    commit = execFileSync("git", ["rev-parse", "HEAD"], {
-      cwd: root,
-      encoding: "utf8",
-      stdio: ["ignore", "pipe", "ignore"],
-    }).trim();
-  } catch {}
-}
 await writeFile(path.join(output, ".nojekyll"), "");
 await writeFile(
   path.join(output, "release.json"),
