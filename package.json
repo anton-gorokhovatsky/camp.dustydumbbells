@@ -2,14 +2,19 @@
   "name": "camp.dustydumbbells",
   "version": "1.0.0",
   "private": true,
-  "description": "Faithful static migration of camp.dustydumbbells.com to GitHub Pages",
+  "description": "DD Camp in Antalya: light, weather, community and a provisional 2027 programme",
   "type": "module",
-  "engines": { "node": ">=22" },
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "build": "node scripts/build.mjs",
     "check": "node scripts/check.mjs",
-    "test": "npm run build && npm run check",
+    "test": "npm run build && npm run check && node --test tests/*.test.mjs",
     "dev": "npm run build && node scripts/serve.mjs",
     "preview": "node scripts/serve.mjs"
+  },
+  "dependencies": {
+    "suncalc": "2.1.1"
   }
 }

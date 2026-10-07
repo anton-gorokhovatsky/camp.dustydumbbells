@@ -1,0 +1,5 @@
+/* Keep the original policy layout, but let its long title fit narrow screens. */
+#rec1018049386 .t050__title {
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
