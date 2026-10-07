@@ -1,0 +1,3 @@
+# Preserve the imported source byte for byte, including its existing whitespace.
+source/pages/** -text -whitespace
+source/assets/** -text -whitespace linguist-vendored=true

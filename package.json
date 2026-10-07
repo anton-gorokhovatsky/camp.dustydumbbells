@@ -1,0 +1,15 @@
+{
+  "name": "camp.dustydumbbells",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Faithful static migration of camp.dustydumbbells.com to GitHub Pages",
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "check": "node scripts/check.mjs",
+    "test": "npm run build && npm run check",
+    "dev": "npm run build && node scripts/serve.mjs",
+    "preview": "node scripts/serve.mjs"
+  }
+}
