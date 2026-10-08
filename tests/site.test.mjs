@@ -10,7 +10,9 @@ import {
   weatherURL,
   SCENARIOS,
 } from "../dist/environment.js";
-import { season, schedule, photos } from "../site/content.js";
+import { season, schedule, photos, photoUse } from "../site/content.js";
+
+import { typograph } from "../site/typography.js";
 
 const read = (file) =>
   readFile(new URL(`../dist/${file}`, import.meta.url), "utf8");
@@ -86,7 +88,7 @@ test("all day and weather states have finite values, distinct palettes and bound
   }
 });
 
-test("reading surfaces maintain at least 4.5:1 contrast for body, secondary text and accent in every phase", () => {
+test("opaque environment palette tokens retain 4.5:1 contrast in every phase", () => {
   const luminance = (hex) => {
     const rgb = hex
       .match(/[a-f0-9]{2}/gi)
@@ -134,7 +136,7 @@ test("weather validates timestamp and metrics; missing, future, stale or malform
   assert.equal(url.searchParams.get("timezone"), "Europe/Istanbul");
 });
 
-test("primary actions retain text contrast across time and weather", () => {
+test("environment signal tokens retain text contrast across time and weather", () => {
   const luminance = (hex) =>
     hex
       .match(/[a-f0-9]{2}/gi)
@@ -172,15 +174,14 @@ test("complete programme, correct 2027 weekdays, meaningful links and local imag
   const release = JSON.parse(await read("release.json"));
   assert.equal((html.match(/<h1\b/g) || []).length, 1);
   assert.equal((html.match(/class="program-day"/g) || []).length, 15);
-  assert(html.includes("Предварительная программа · 2027"));
-  assert(html.includes("Набор на следующий сезон ещё не объявлен"));
+  assert(html.includes("Программа · 2027"));
   assert(!html.includes("#form"));
   assert(!html.includes("{{"));
   assert(html.includes('<p class="program-weekday">вторник</p>'));
   assert(html.includes(`href="${release.base}privacy/"`));
   for (const { date, events } of schedule) {
     assert(html.includes(`data-date="${date}"`));
-    for (const [, title] of events) assert(html.includes(title));
+    for (const [, title] of events) assert(html.replaceAll("\u00a0", " ").includes(title));
   }
   const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map((match) => match[1]);
   assert.equal(new Set(ids).size, ids.length, "IDs must be unique");
@@ -201,19 +202,48 @@ test("complete programme, correct 2027 weekdays, meaningful links and local imag
 
 test("browser styles and the entire module graph use the publication revision", async () => {
   const release = JSON.parse(await read("release.json"));
-  const html = await read("index.html");
-  const references = [...html.matchAll(/(?:src|href)="(\.\/[^\"]+\.(?:css|js)\?[^\"]+)"/g)]
-    .map((match) => match[1]);
-  assert.equal(references.length, 2, "Styles and the entry module must be versioned");
-  for (const file of ["app.js", "environment.js"]) {
-    const imports = [...(await read(file)).matchAll(/\bfrom "(\.\/[^\"]+)"/g)];
-    assert(imports.length > 0);
-    references.push(...imports.map((match) => match[1]));
+  const references = [];
+  for (const parent of ["index.html", "direction/index.html"]) {
+    const html = await read(parent);
+    const entries = [...html.matchAll(/(?:src|href)="(\.\/[^\"]+\.(?:css|js)\?[^\"]+)"/g)];
+    assert.equal(entries.length, 2, `${parent}: styles and the entry module must be versioned`);
+    references.push(...entries.map((match) => ({ reference: match[1], parent })));
   }
-  for (const reference of references) {
-    const url = new URL(reference, release.site);
+  for (const file of ["app.js", "environment.js", "direction/screen.js", "direction/forecast.js"]) {
+    const imports = [...(await read(file)).matchAll(/\bfrom "(\.{1,2}\/[^\"]+)"/g)];
+    assert(imports.length > 0);
+    references.push(...imports.map((match) => ({ reference: match[1], parent: file })));
+  }
+  for (const { reference, parent } of references) {
+    const url = new URL(reference, new URL(parent, release.site));
     assert.equal(url.searchParams.get("v"), release.commit, reference);
-    assert((await stat(new URL(`../dist/${reference}`, import.meta.url))).isFile());
+    assert((await stat(new URL(reference, new URL(`../dist/${parent}`, import.meta.url)))).isFile());
   }
   assert((await read("privacy/index.html")).includes(`privacy.css?v=${release.commit}`));
+});
+
+
+test("each archive photo has one placement on the authored page", async () => {
+  const assigned = Object.values(photoUse).flat();
+  assert.deepEqual([...assigned].sort((a, b) => a - b), photos.map((_, index) => index));
+  const html = await read("index.html");
+  const placed = [...html.matchAll(/<img\b[^>]*\bsrc="([^"]+)"/g)].map(match => match[1]);
+  // The first deck card is in HTML; the remaining cards are added by the module.
+  placed.push(...photoUse.cover.slice(1).map(index => photos[index].file));
+  for (const photo of photos) {
+    assert.equal(placed.filter(src => src.endsWith(photo.file)).length, 1, photo.file);
+  }
+});
+
+test("prose typography binds meaningful groups and is idempotent", () => {
+  const samples = [
+    ["И на море, и в горах", "И\u00a0на\u00a0море, и\u00a0в\u00a0горах"],
+    ["12–25 октября; 15–20 км; 3,5 м/с", "12–25\u00a0октября; 15–20\u00a0км; 3,5\u00a0м/с"],
+    ["DDLong — наша длительная пробежка...", "DDLong\u00a0— наша длительная пробежка…"],
+    ["It costs 0.00 to be a nice camp 21+", "It costs 0.00 to be a nice camp 21+"],
+  ];
+  for (const [input, output] of samples) {
+    assert.equal(typograph(input), output);
+    assert.equal(typograph(output), output);
+  }
 });

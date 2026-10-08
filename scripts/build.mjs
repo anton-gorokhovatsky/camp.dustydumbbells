@@ -4,6 +4,7 @@ import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 import { schedule, photos, season } from "../site/content.js";
+import { typograph } from "../site/typography.js";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const output = path.join(root, "dist");
@@ -100,9 +101,9 @@ const programDays = schedule
           `<li>${time ? `<time datetime="${date}T${time}:00+03:00">${time}</time>` : "<time></time>"}<span>${escapeHTML(title)}</span></li>`,
       )
       .join("");
-    return `<article class="program-day" data-date="${date}" data-rest="${rest}"><${dateHeading} class="program-date"><time datetime="${date}"><b>${day}</b><span>октября</span></time></${dateHeading}><p class="program-weekday">${weekday.format(new Date(`${date}T12:00:00+03:00`))}</p><ul class="program-events">${rows}</ul></article>`;
+    return `<article class="program-day" data-date="${date}" data-rest="${rest}"><div class="program-date-group"><${dateHeading} class="program-date"><time datetime="${date}"><b>${day}</b><span>октября</span></time></${dateHeading}><p class="program-weekday">${weekday.format(new Date(`${date}T12:00:00+03:00`))}</p></div><ul class="program-events">${rows}</ul></article>`;
   });
-const program = `<div class="program-arrival">${programDays[0]}</div><div class="program-weeks"><section class="program-week" aria-labelledby="week-one"><h3 class="week-heading" id="week-one">Первая неделя / 12–18 октября</h3>${programDays.slice(1, 8).join("\n")}</section><section class="program-week" aria-labelledby="week-two"><h3 class="week-heading" id="week-two">Вторая неделя / 19–25 октября</h3>${programDays.slice(8).join("\n")}</section></div>`;
+const program = `<div class="program-arrival">${programDays[0]}</div><div class="program-weeks"><section class="program-week" aria-labelledby="week-one"><h3 class="week-heading" id="week-one"><span class="week-label">Первая неделя</span><span class="week-period"><span class="date-range">12–18</span> октября</span></h3><div class="week-days">${programDays.slice(1, 8).join("\n")}</div></section><section class="program-week" aria-labelledby="week-two"><h3 class="week-heading" id="week-two"><span class="week-label">Вторая неделя</span><span class="week-period"><span class="date-range">19–25</span> октября</span></h3><div class="week-days">${programDays.slice(8).join("\n")}</div></section></div>`;
 const gallery = [9, 4, 10, 3, 5]
   .map((index, order) => {
     const photo = photos[index];
@@ -125,13 +126,25 @@ for (const file of [
   "app.js",
   "environment.js",
   "content.js",
+  "typography.js",
+  "direction/index.html",
+  "direction/screen.css",
+  "direction/screen.js",
+  "direction/forecast.js",
 ]) {
-  let content = await readFile(path.join(root, "site", file), "utf8");
+  // Both local review routes use the same page, so the accepted cover cannot drift.
+  const input = file === "direction/index.html" ? "index.html" : file;
+  let content = await readFile(path.join(root, "site", input), "utf8");
+  if (file === "direction/index.html") content = content.replaceAll('./direction/', './');
   content = content
     .replaceAll("{{BASE}}", base)
     .replaceAll("{{SITE}}", site.href)
     .replace("{{SCHEDULE}}", program)
     .replace("{{GALLERY}}", gallery);
+  // Only text nodes in the authored page; preserved original and attributes stay intact.
+  if (file === 'index.html' || file === 'direction/index.html') {
+    content = content.split(/(<[^>]+>)/g).map(part => part.startsWith('<') ? part : typograph(part)).join('');
+  }
   // A new publication must also refresh cached styles and module dependencies.
   if (file.endsWith(".html")) {
     content = content.replace(
@@ -140,12 +153,19 @@ for (const file of [
     );
   } else if (file.endsWith(".js")) {
     content = content.replace(
-      /\bfrom "(\.\/[^"?]+\.js)"/g,
+      /\bfrom "(\.{1,2}\/[^"?]+\.js)"/g,
       `from "$1?v=${assetVersion}"`,
     );
   }
+  await mkdir(path.dirname(path.join(output, file)), { recursive: true });
   await writeFile(path.join(output, file), content);
   siteFiles[file] = createHash("sha256").update(content).digest("hex");
+}
+await mkdir(path.join(output, "direction/media"), { recursive: true });
+for (const file of await readdir(path.join(root, "site/direction/media"))) {
+  const bytes = await readFile(path.join(root, "site/direction/media", file));
+  await writeFile(path.join(output, "direction/media", file), bytes);
+  siteFiles[`direction/media/${file}`] = createHash("sha256").update(bytes).digest("hex");
 }
 for (const [source, file] of [
   ["index.js", "suncalc.js"],

@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ru" data-phase="day" data-motion="off">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex" />
+  <meta name="theme-color" content="#efeadd" />
+  <title>Пыльные гантели на каникулах — первый экран</title>
+  <link rel="preload" href="{{BASE}}assets/0f3cda7be3e2-MuseoSansCyrl900Ital.woff" as="font" type="font/woff" crossorigin />
+  <link rel="stylesheet" href="./screen.css" />
+  <script type="module" src="./screen.js"></script>
+</head>
+<body>
+  <header class="masthead">
+    <div class="site-menu">
+      <button type="button" class="menu-toggle" aria-expanded="false" aria-controls="site-navigation" hidden><span class="menu-label">Меню</span><span class="menu-icon" aria-hidden="true"></span></button>
+      <nav id="site-navigation" aria-label="По сайту">
+        <a class="nav-link" href="{{BASE}}#about">О кэмпе</a>
+        <a class="nav-link" href="{{BASE}}#program">Программа</a>
+        <a class="nav-link" href="{{BASE}}#travel">Как добраться</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <section class="cover" aria-labelledby="title">
+      <div class="landscape" aria-hidden="true">
+        <img class="view view-morning" src="{{BASE}}assets/8a89a2afe085-IMG_6946.JPG" alt="" width="1680" height="2520" />
+        <img class="view view-day" src="{{BASE}}assets/edb1b4c73141-IMG_6953.JPG" alt="" width="1680" height="2520" fetchpriority="high" />
+        <img class="view view-evening" src="{{BASE}}assets/d152e032841c-IMG_6948.JPG" alt="" width="893" height="1339" />
+        <img class="view view-night" src="./media/kaleici-night.jpg" alt="" width="1920" height="720" />
+        <div class="sunlight"></div>
+        <canvas id="atmosphere"></canvas>
+      </div>
+      <p class="trip-details"><span>Анталья, Турция</span><span>12–25 октября 2027</span></p>
+      <div class="cover-story">
+        <div class="invitation">
+          <h1 id="title" aria-label="Пыльные гантели на каникулах">
+            <span class="club-mark" aria-hidden="true"><img src="{{BASE}}assets/bd7e17e9090f-Group_1486.svg" alt="" width="468" height="101" /></span>
+            <span class="holiday" aria-hidden="true">на каникулах</span>
+          </h1>
+          <p class="intro">Море, солнце и&nbsp;тёплый ветер вместо пыльных манежей и&nbsp;серых будней.</p>
+          <a class="program-link" href="{{BASE}}#program">Смотреть программу</a>
+        </div>
+        <figure class="team-print">
+          <div class="stack-peek stack-peek-back" aria-hidden="true" hidden><img src="{{BASE}}assets/fa0d8cd37eaa-IMG_6949.JPG" alt="" /></div>
+          <div class="stack-peek stack-peek-next" aria-hidden="true" hidden><img src="{{BASE}}assets/b6b2c773dc5b-IMG_6970.JPG" alt="" /></div>
+          <div class="print-label"><span>Кэмп в Фетхие, 2025</span><button type="button" id="photo-count" aria-label="Открыть галерею: 11 фотографий" hidden>01 / 11</button></div>
+          <a href="{{BASE}}assets/83bb3847840c-IMG_6969.JPG" class="team-photo" id="open-photo" aria-label="Увеличить фотографию: участники DD бегут у моря"><img src="{{BASE}}assets/83bb3847840c-IMG_6969.JPG" width="1170" height="1755" alt="Участники Пыльных Гантелей бегут по дорожке вдоль моря" /></a>
+          <figcaption><span id="photo-caption">Пробежка у моря</span></figcaption>
+        </figure>
+      </div>
+      <div class="cover-bottom">
+        <button type="button" class="live-weather" data-open-forecast title="Прогноз на сегодня" hidden>
+          <span class="weather-dot" aria-hidden="true"></span>
+          <span>Сейчас в Анталье <span id="local-clock"></span></span>
+          <span id="current-air">Загружаем…</span>
+          <span id="current-condition"></span>
+        </button>
+        <p class="camp-motto" lang="en">It costs 0.00 to be a nice camp <span>21+</span></p>
+      </div>
+    </section>
+    <div class="photo-credit"><details><summary>Фотографии</summary><p>Снимки кэмпа — архив DD. Ночной Калеичи — <a href="https://commons.wikimedia.org/wiki/File:Panoramic_View_of_Kaleici_at_Night_-_panoramio.jpg">Tevfik Teker</a>, <a href="https://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>. Фотография кадрирована по размеру экрана.</p></details></div>
+  </main>
+  <dialog id="photo-dialog" aria-label="Фотографии DD">
+    <button type="button" id="close-photo" aria-label="Закрыть фотографию">Закрыть</button>
+    <img src="{{BASE}}assets/83bb3847840c-IMG_6969.JPG" alt="Участники Пыльных Гантелей бегут по дорожке вдоль моря" width="1170" height="1755" />
+    <p id="large-caption">Пробежка у моря / 1 из 11</p>
+    <nav class="gallery-controls" aria-label="Фотографии"><button type="button" id="previous-large">Назад</button><button type="button" id="next-large">Дальше</button></nav>
+  </dialog>
+  <dialog id="forecast-dialog" aria-labelledby="forecast-title">
+    <div class="forecast-heading"><div><p id="forecast-date"></p><h2 id="forecast-title">Погода в Анталье</h2></div><button type="button" id="close-forecast">Закрыть</button></div>
+    <p id="forecast-status" role="status">Загружаем прогноз…</p>
+    <div id="forecast-content" hidden>
+      <dl class="forecast-summary"><div><dt>Сейчас</dt><dd id="forecast-current">—</dd></div><div><dt>За день</dt><dd id="forecast-range">—</dd></div><div><dt>Осадки за день</dt><dd id="forecast-rain">—</dd></div><div><dt>УФ-индекс, максимум</dt><dd id="forecast-uv">—</dd></div></dl>
+      <dl class="forecast-details"><div><dt>Ветер</dt><dd id="current-wind">—</dd></div><div><dt>Влажность</dt><dd id="current-humidity">—</dd></div><div><dt>Восход / закат</dt><dd id="sun-times">—</dd></div></dl>
+      <p class="forecast-caption">По часам · время Антальи</p>
+      <div class="hourly-scroll" role="region" aria-label="Почасовой прогноз" tabindex="0"><table><thead><tr><th scope="col">Время</th><th scope="col">Погода</th><th scope="col">Воздух</th><th scope="col">Ощущается</th><th scope="col">Осадки</th><th scope="col">Ветер</th></tr></thead><tbody id="hourly-rows"></tbody></table></div>
+    </div>
+    <div class="forecast-source"><p><a href="https://open-meteo.com/">Open-Meteo</a><span id="weather-source"></span></p><button type="button" id="retry-weather">Обновить прогноз</button></div>
+  </dialog>
+  <p class="sr-only" id="scene-status" aria-live="polite"></p>
+</body>
+</html>
