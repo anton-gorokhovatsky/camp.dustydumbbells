@@ -1,0 +1,97 @@
+/* Approved calendar poster. Screen-only scope preserves the existing print layout. */
+@media screen{
+#program[data-calendar-style=poster]{max-width:none;padding-top:2rem;padding-bottom:5rem;overflow-wrap:anywhere}
+#program[data-calendar-style=poster] .chapter-heading{margin-bottom:2.5rem}
+#program[data-calendar-style=poster] h2{font:italic 900 clamp(1.75rem,6.5vw,6.3rem)/1.02 'Museo DD',Arial,sans-serif;letter-spacing:-.04em;overflow-wrap:anywhere;max-width:12ch}
+#program[data-calendar-style=poster] .program-intro{max-width:32rem;font-size:1.1rem;line-height:1.5}
+#program[data-calendar-style=poster] .program-intro p+p{font-size:.9rem;margin-top:1.2rem}
+#program[data-calendar-style=poster] .week-nav{gap:1rem 2rem;margin-bottom:3rem}
+#program[data-calendar-style=poster] .week-nav a{padding:.65rem 0;color:inherit;border-radius:0}
+#program[data-calendar-style=poster] .program-events>li>span{overflow-wrap:anywhere;hyphens:auto}
+#program[data-calendar-style=poster] .program-notes{margin-top:4rem;max-width:45rem}
+#program[data-calendar-style=poster] .program-day{container-type:inline-size}
+#program[data-calendar-style=poster] .program-date b{white-space:nowrap;overflow-wrap:normal}
+#program[data-calendar-style=poster] .program-date time{flex-wrap:wrap}
+#program[data-calendar-style=poster] .program-date span{white-space:nowrap;overflow-wrap:normal}
+#program[data-calendar-style=poster] .program-arrival{max-width:none;margin-bottom:4rem}
+#program[data-calendar-style=poster] .program-arrival .program-day{display:grid;grid-template-columns:7rem minmax(0,1fr);gap:2rem;padding:1.5rem 0;border-top:1px solid #ffffff55}
+#program[data-calendar-style=poster] .program-arrival .program-date b{font-size:4rem}
+#program[data-calendar-style=poster] .program-arrival .program-events{font-size:1.25rem;max-width:35rem}
+#program[data-calendar-style=poster]{--poster-field:#fc754f;--poster-ink:#15383d;background:var(--poster-field);color:var(--poster-ink)}
+#program[data-calendar-style=poster] .week-nav a:focus-visible{outline-color:#15383d;box-shadow:0 0 0 2px #fff}
+#program[data-calendar-style=poster] .section-label{font-weight:600;letter-spacing:.13em}
+#program[data-calendar-style=poster] .chapter-heading{max-width:none;display:grid;grid-template-columns:minmax(0,1.7fr) minmax(15rem,.7fr);align-items:end;gap:clamp(2rem,5vw,5rem);margin-bottom:2.5rem}
+#program[data-calendar-style=poster] h2{font-size:clamp(2rem,7.5vw,7rem);max-width:14ch;text-transform:uppercase;line-height:.96;text-wrap:balance;hyphens:none}
+#program[data-calendar-style=poster] .program-intro{font-size:1rem;max-width:24rem}
+#program[data-calendar-style=poster] .program-intro p+p{font-size:.9375rem}
+#program[data-calendar-style=poster] .week-nav{margin-bottom:2rem}
+#program[data-calendar-style=poster] .program-weeks{display:block}
+#program[data-calendar-style=poster] .program-week+.program-week{margin-top:3rem}
+#program[data-calendar-style=poster] .week-heading{display:flex;flex-direction:row;flex-wrap:wrap;align-items:baseline;justify-content:space-between;border-top:2px solid;padding:1rem 0;margin-bottom:0;gap:.5rem 2rem}
+#program[data-calendar-style=poster] .week-label{color:inherit;font-size:1rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em}
+#program[data-calendar-style=poster] .week-period{font-size:1.15rem}
+#program[data-calendar-style=poster] .week-days .program-day,
+#program[data-calendar-style=poster] .program-arrival .program-day{display:grid;grid-template-columns:clamp(6rem,10vw,9rem) minmax(0,1fr);gap:clamp(1.25rem,3vw,3rem);align-items:center;padding:1.35rem 0;border-top:1px solid #15383d55}
+#program[data-calendar-style=poster] .program-date b{font-size:clamp(5rem,8vw,7rem);line-height:.9;letter-spacing:-.045em}
+#program[data-calendar-style=poster] .program-date time{gap:.5rem}
+#program[data-calendar-style=poster] .program-date span{font-size:.875rem}
+#program[data-calendar-style=poster] .program-weekday{color:inherit;font-size:.875rem;margin-top:.3rem}
+#program[data-calendar-style=poster] .program-events{font:italic 900 clamp(1.5rem,2.7vw,2.6rem)/1.16 'Museo DD',Arial,sans-serif;letter-spacing:-.025em;gap:1.2rem}
+#program[data-calendar-style=poster] .program-events li,
+#program[data-calendar-style=poster] .program-events li:has(time:empty){grid-template-columns:4.3rem minmax(0,1fr);gap:1rem}
+#program[data-calendar-style=poster] .program-day:not([data-rest=true]) .program-events li:has(time:empty){font:350 1.3rem/1.45 'Akt DD',Arial,sans-serif;letter-spacing:0}
+#program[data-calendar-style=poster] .program-events time{font:450 1rem/1.4 'Akt DD',Arial,sans-serif;color:inherit;letter-spacing:0}
+#program[data-calendar-style=poster] .program-events>li>span{grid-column:2;hyphens:none;text-wrap:balance}
+#program[data-calendar-style=poster] .program-day[data-rest=true] .program-date b{color:transparent;-webkit-text-stroke:2px var(--poster-ink)}
+#program[data-calendar-style=poster] .program-day[data-rest=true] .program-events{font-size:clamp(2rem,3.8vw,3.5rem);max-width:24ch}
+#program[data-calendar-style=poster] .program-arrival .program-day{border-color:#15383d55}
+#program[data-calendar-style=poster] .program-arrival{margin-bottom:2rem}
+#program[data-calendar-style=poster] .program-arrival .program-date b{font-size:5rem}
+#program[data-calendar-style=poster] .program-arrival .program-events{font:350 1.2rem/1.4 'Akt DD',Arial,sans-serif;letter-spacing:0}
+#program[data-calendar-style=poster] .program-arrival .program-events li{display:grid}
+#program[data-calendar-style=poster] .program-notes{margin-top:2.5rem}
+#program[data-calendar-style=poster] .program-notes{border-top:2px solid;padding-top:2rem}
+@media(max-width:1000px){
+#program[data-calendar-style=poster] .chapter-heading{display:block}
+#program[data-calendar-style=poster] .program-intro{margin-top:1.5rem}
+}
+@media(max-width:760px){
+#program[data-calendar-style=poster]{padding-top:1.2rem;padding-bottom:3rem}
+#program[data-calendar-style=poster] h2{font-size:clamp(1.75rem,11vw,3.5rem);max-width:12ch}
+#program[data-calendar-style=poster] .chapter-heading{margin-bottom:1.8rem}
+#program[data-calendar-style=poster] .program-intro{font-size:1rem}
+#program[data-calendar-style=poster] .program-intro p+p{font-size:.8125rem;margin-top:.8rem}
+#program[data-calendar-style=poster] .week-nav{margin-bottom:2rem;gap:.5rem 1.4rem}
+#program[data-calendar-style=poster] .program-arrival{margin-bottom:2.5rem}
+#program[data-calendar-style=poster] .program-arrival .program-day{grid-template-columns:5rem minmax(0,1fr);gap:1.3rem}
+#program[data-calendar-style=poster] .program-arrival .program-date b{font-size:3.5rem}
+#program[data-calendar-style=poster] .program-arrival .program-events{font-size:1rem}
+#program[data-calendar-style=poster] .program-date-group{display:block}
+#program[data-calendar-style=poster] .program-date time{flex-direction:column}
+#program[data-calendar-style=poster] h2{font-size:clamp(1.5rem,12vw,4rem)}
+#program[data-calendar-style=poster] .program-intro p+p{font-size:.875rem}
+#program[data-calendar-style=poster] .week-heading{font-size:1rem;gap:.3rem}
+#program[data-calendar-style=poster] .week-label{font-size:.8125rem}
+#program[data-calendar-style=poster] .week-period{font-size:.9375rem}
+#program[data-calendar-style=poster] .week-days .program-day,
+#program[data-calendar-style=poster] .program-arrival .program-day{grid-template-columns:5.25rem minmax(0,1fr);gap:1rem;padding:1.35rem 0;align-items:start}
+#program[data-calendar-style=poster] .program-date b{font-size:4.75rem}
+#program[data-calendar-style=poster] .program-date span,
+#program[data-calendar-style=poster] .program-weekday{font-size:.8125rem}
+#program[data-calendar-style=poster] .program-events{font-size:1.4rem;gap:1.2rem}
+#program[data-calendar-style=poster] .program-events li,
+#program[data-calendar-style=poster] .program-events li:has(time:empty){grid-template-columns:minmax(0,1fr);gap:.4rem}
+#program[data-calendar-style=poster] .program-events>li>span{grid-column:1}
+#program[data-calendar-style=poster] .program-events time{font-size:.875rem}
+#program[data-calendar-style=poster] .program-day:not([data-rest=true]) .program-events li:has(time:empty){font-size:1rem}
+#program[data-calendar-style=poster] .program-day[data-rest=true] .program-events{font-size:1.75rem}
+#program[data-calendar-style=poster] .program-arrival .program-events{font-size:1rem}
+#program[data-calendar-style=poster] .program-arrival .program-date b{font-size:3.5rem}
+}
+@container(max-width:21em){
+#program[data-calendar-style=poster] .program-arrival .program-day,
+#program[data-calendar-style=poster] .week-days .program-day{grid-template-columns:minmax(0,1fr);gap:1.1rem}
+#program[data-calendar-style=poster] .program-date-group{display:flex;flex-wrap:wrap;align-items:baseline;gap:.5rem 1rem}
+#program[data-calendar-style=poster] .program-date time{display:flex;flex-direction:row;align-items:baseline;gap:.5rem}
+}
+}

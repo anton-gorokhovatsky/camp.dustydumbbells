@@ -205,8 +205,9 @@ test("browser styles and the entire module graph use the publication revision", 
   const references = [];
   for (const parent of ["index.html", "direction/index.html"]) {
     const html = await read(parent);
-    const entries = [...html.matchAll(/(?:src|href)="(\.\/[^\"]+\.(?:css|js)\?[^\"]+)"/g)];
-    assert.equal(entries.length, 2, `${parent}: styles and the entry module must be versioned`);
+    const entries = [...html.matchAll(/(?:src|href)="(\.\/[^\"]+\.(?:css|js)(?:\?[^\"]*)?)"/g)];
+    assert(entries.some(match => match[1].split('?')[0].endsWith('.css')), parent + ': page needs styles');
+    assert(entries.some(match => match[1].split('?')[0].endsWith('.js')), parent + ': page needs an entry module');
     references.push(...entries.map((match) => ({ reference: match[1], parent })));
   }
   for (const file of ["app.js", "environment.js", "direction/screen.js", "direction/forecast.js"]) {

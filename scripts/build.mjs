@@ -129,6 +129,7 @@ for (const file of [
   "typography.js",
   "direction/index.html",
   "direction/screen.css",
+  "direction/program-poster.css",
   "direction/screen.js",
   "direction/forecast.js",
 ]) {
