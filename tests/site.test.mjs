@@ -210,9 +210,9 @@ test("browser styles and the entire module graph use the publication revision", 
     assert(entries.some(match => match[1].split('?')[0].endsWith('.js')), parent + ': page needs an entry module');
     references.push(...entries.map((match) => ({ reference: match[1], parent })));
   }
-  for (const file of ["app.js", "environment.js", "direction/screen.js", "direction/forecast.js", "direction/travel-ticket.js"]) {
+  for (const file of ["app.js", "environment.js", "direction/screen.js", "direction/navigation.js", "direction/atmosphere.js", "direction/forecast.js", "direction/travel-ticket.js"]) {
     const imports = [...(await read(file)).matchAll(/\bfrom "(\.{1,2}\/[^\"]+)"/g)];
-    assert(imports.length > 0);
+    if (!["direction/navigation.js", "direction/atmosphere.js"].includes(file)) assert(imports.length > 0);
     references.push(...imports.map((match) => ({ reference: match[1], parent: file })));
   }
   for (const { reference, parent } of references) {

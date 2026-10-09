@@ -1,0 +1,146 @@
+/* Shared roles across the invitation, zine, poster, ticket and guide. */
+:root{
+  --font-text:'Akt DD','Museo DD',Arial,sans-serif;
+  --font-title:'Museo DD',Arial,sans-serif;
+  --type-body:clamp(1rem,.96rem + .15vw,1.0625rem);
+  --type-lead:clamp(1.125rem,1rem + .5vw,1.5rem);
+  --type-section:clamp(2.25rem,4.6vw,4.75rem);
+  --type-subhead:clamp(1.65rem,2.8vw,2.75rem);
+  --type-compact-title:clamp(1.5rem,2.2vw,2.2rem);
+  --type-label:clamp(.8125rem,.77rem + .1vw,.875rem);
+  --type-caption:clamp(.8125rem,.73rem + .25vw,.9375rem);
+  --space-close:.5rem;--space-text:1rem;--space-block:1.5rem;
+  --space-group:clamp(2rem,3.5vw,3.5rem);
+  --space-section:clamp(4rem,7vw,7rem);
+  --nav-clearance:6rem;
+  --ease-out:cubic-bezier(.2,.7,.2,1);
+  --duration-quick:160ms;--duration-state:240ms;
+  --link-offset:.22em;
+}
+html{scroll-padding-top:var(--nav-clearance)}
+html[data-navigation-ready=true]{scroll-behavior:smooth}
+html[data-motion=off]{scroll-behavior:auto}
+body{font-family:var(--font-text);font-weight:400;transition:background-color 900ms ease}
+h3,h4,h5{margin-top:0}
+:is(h1,h2,h3,h4,h5)[tabindex="-1"]:focus-visible{outline:2px solid currentColor;outline-offset:6px;box-shadow:none}
+body[tabindex="-1"]:focus-visible{outline:none;box-shadow:none}
+.chapter{--chapter-pad:var(--space-section);padding-block:var(--chapter-pad);scroll-margin-top:calc(1.25rem - var(--chapter-pad))}
+#program[data-calendar-style=poster]{--chapter-pad:calc(var(--nav-clearance) + 1.25rem);padding-top:var(--chapter-pad)}
+#travel[data-travel-style=ticket]{--travel-pad:calc(var(--nav-clearance) + 1.25rem);padding-top:var(--travel-pad);scroll-margin-top:calc(1.25rem - var(--travel-pad))}
+.running-guide{--guide-pad-top:calc(var(--nav-clearance) + 1.25rem)}
+.chapter h2,#travel[data-travel-style=ticket] h2,.running-guide h2{font-size:var(--type-section);line-height:1.06;letter-spacing:-.035em}
+.chapter-heading{margin-bottom:var(--space-group)}
+.section-label,.memory-context,.journey-meta .section-label,.guide-heading>.section-label{font-size:var(--type-label);font-weight:450;line-height:1.4;letter-spacing:.035em}
+.about-copy>p:not(.section-label):not(.chapter-lead),#travel[data-travel-style] article p,.guide-section-lead,.program-contact p,.guide-columns p,.running-route p,.guide-inline-note p,.guide-place-groups p{font-size:var(--type-body);line-height:1.65}
+.chapter-lead,.chapter-heading>.chapter-lead,.journey-lead,.guide-intro{font-size:var(--type-lead);line-height:1.5}
+.about-copy h2{margin-bottom:var(--space-block)}
+.about-copy>p:not(.section-label){margin-bottom:var(--space-text)}
+.running-guide h3,.hotels-heading h3{font-size:var(--type-subhead);line-height:1.12;letter-spacing:-.025em}
+#travel[data-travel-style] article h3,.program-contact h3,.weather-heading h2{font-size:var(--type-compact-title);line-height:1.15;letter-spacing:-.025em}
+.print-label{font-size:clamp(.6875rem,.64rem + .12vw,.75rem);font-weight:450;letter-spacing:.035em}
+.print-caption,.archive-print figcaption,.hotel-images figcaption,.journey-photo-caption{font-size:var(--type-caption);line-height:1.45}
+.print-label,.photo-position,.forecast-brief dd,.forecast-hours,.ticket-dates,.program-events time,.currency-rates{font-variant-numeric:tabular-nums}
+.forecast-brief dt,.forecast-caption,.forecast-hours time,.hour-condition{font-size:var(--type-label);line-height:1.4}
+.forecast-brief dd{margin-top:var(--space-close)}
+.forecast-timeline{gap:var(--space-block)}
+[data-weather=unavailable] .weather-section,body:has(.site-menu:not([data-ready])) .weather-section{min-height:0;padding-block:var(--space-group)}
+.forecast-hours{scroll-padding-inline:0}
+.forecast-hours li{gap:.5rem}
+.forecast-hours [aria-current=time] time{text-decoration:underline;text-underline-offset:.25em}
+.program-contact{display:block;margin-top:var(--space-group);padding-top:var(--space-block)}
+.program-contact p{max-width:46ch}
+.program-contact>a{margin-top:.75rem;font-size:var(--type-body)}
+.program-contact h3{margin-bottom:.75rem}
+.guide-heading{align-items:start;row-gap:1.25rem;margin-bottom:var(--space-group)}
+.guide-section+.guide-section{margin-top:var(--space-group)}
+.guide-section[open] .guide-detail-body{animation:detail-arrival var(--duration-state) var(--ease-out)}
+@keyframes detail-arrival{from{opacity:.65;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+
+/* One floating disclosure. Both the button and the panel use the same material. */
+.masthead{padding:1.25rem var(--gutter)}
+.menu-toggle,.masthead[data-scrolled=true] .menu-toggle,.menu-toggle[aria-expanded=true]{
+  min-width:9rem;min-height:52px;justify-content:space-between;gap:1rem;
+  padding:.75rem 1.1rem;border-radius:999px;font:450 .9375rem/1.4 var(--font-text);
+  background:var(--glass-fill);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);
+  color:var(--glass-ink);box-shadow:inset 0 0 0 1px var(--glass-edge),var(--glass-shadow);filter:none;
+  transition:background-color var(--duration-quick),box-shadow var(--duration-quick),transform var(--duration-quick);
+}
+.menu-icon{position:relative;display:block;width:24px;height:24px;flex:none;border:0;transform:none}
+[data-open=true] .menu-icon{transform:none}
+.menu-icon path{stroke:currentColor;stroke-width:1.7;stroke-linecap:round;transform-origin:12px 12px;transition:transform var(--duration-state) var(--ease-out)}
+.menu-toggle[aria-expanded=true] .menu-stroke-top{transform:rotate(45deg) translateY(4px)}
+.menu-toggle[aria-expanded=true] .menu-stroke-bottom{transform:rotate(-45deg) translateY(-4px)}
+.site-menu nav{width:21rem;max-width:calc(100vw - 2 * var(--gutter));padding:.65rem;top:calc(100% + .65rem);border-radius:1.7rem;transform-origin:100% 0;color-scheme:light}
+.site-menu[data-ready] nav{max-height:var(--menu-height);overflow:auto;overscroll-behavior:contain}
+.nav-link{position:relative;display:flex;flex:none;min-height:56px;padding:.85rem 1rem;gap:1rem;align-items:center;border-radius:.65rem;font:450 1rem/1.45 var(--font-text);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:var(--link-offset);transition:background-color var(--duration-quick),text-decoration-thickness var(--duration-quick)}
+.nav-link+.nav-link{border-top:1px solid #163b4914}
+.nav-link[aria-current=location]{font-weight:650;background:#163b4909;text-decoration-thickness:2px}
+.nav-link[aria-current=location]::before{content:'';position:absolute;left:.35rem;top:1rem;bottom:1rem;width:2px;border-radius:2px;background:currentColor}
+.guide-contents a[aria-current=location],.week-nav a[aria-current=location]{font-weight:650;text-decoration-thickness:2px;text-underline-offset:var(--link-offset)}
+.menu-toggle:active,.masthead[data-scrolled=true] .menu-toggle:active,.menu-toggle[aria-expanded=true]:active{background:#ffffffa8;transform:translateY(1px)}
+.nav-link:active{background:#163b491a;transform:none;text-decoration-thickness:2px}
+.site-menu:not([data-ready]) nav{max-height:none;padding:0;border-radius:0}
+.site-menu:not([data-ready]) .nav-link{border:0;padding:.5rem;font-size:1rem}
+.masthead:has(.site-menu:not([data-ready])){position:static;justify-content:flex-start}
+.site-menu:not([data-ready]){width:100%}
+.masthead:has(.site-menu:not([data-ready]))+main .cover{padding-top:1rem}
+
+/* Text transitions retain their foreground on every field. */
+:is(.quiet-link,.week-nav a,.stay-options a,.footer-links a,.footer-legal a,.photo-credit a,.program-contact>a,.running-guide a,#travel[data-travel-style] a:not(.journey-photo>a)){
+  text-underline-offset:var(--link-offset);text-decoration-skip-ink:auto;
+  transition:text-decoration-thickness var(--duration-quick),background-color var(--duration-quick);
+}
+:is(.quiet-link,.week-nav a,.stay-options a,.footer-links a,.footer-legal a,.program-contact>a,.running-guide a):active{text-decoration-thickness:2px;text-underline-offset:var(--link-offset);transform:none}
+.program-link,.archive-print>a,.team-photo,.memory-frame img,.journey-photo img,.hotel-name{transition:background-color var(--duration-quick),filter var(--duration-state),transform var(--duration-state) var(--ease-out),box-shadow var(--duration-state)}
+.program-link{font-weight:450}
+.archive-print>a:focus-visible,.team-photo:focus-visible,dialog button:focus-visible,.menu-toggle:focus-visible,.nav-link:focus-visible{outline:2px solid var(--glass-ink);outline-offset:4px;box-shadow:0 0 0 2px #fff}
+.nav-link:focus-visible{outline-offset:-3px;box-shadow:none}
+button:disabled{cursor:default;opacity:.5}
+@media(hover:hover) and (pointer:fine){
+ .menu-toggle:hover,.masthead[data-scrolled=true] .menu-toggle:hover,.menu-toggle[aria-expanded=true]:hover{background:#ffffffc4}
+ .nav-link:hover{background:#163b490e;text-decoration-thickness:2px}
+ :is(.quiet-link,.week-nav a,.stay-options a,.footer-links a,.footer-legal a):hover{color:inherit;text-decoration-thickness:2px}
+ .archive-print>a:hover,.team-photo:hover{box-shadow:none}
+ .archive-print>a:hover img,.team-photo:hover img,.memory-frame>a:hover img,.journey-photo>a:hover img{filter:brightness(1.045)}
+}
+
+/* Weather stays behind the clear content plane. Different sections keep their roles. */
+.view,.sunlight,.weather-veil{transition:none}
+[data-environment-ready=true] .view{transition:opacity 1s ease,filter 1s ease}
+.sunlight{opacity:var(--sun-opacity,.5)}
+[data-environment-ready=true] .sunlight{transition:background 1400ms ease,opacity 1400ms ease}
+[data-phase=night] .sunlight{opacity:0}
+.view-night{filter:saturate(var(--photo-saturation)) brightness(var(--photo-brightness))}
+.weather-veil{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(157,185,200,var(--cloud-veil,0)),rgba(187,204,212,var(--fog-veil,0)) 58%,transparent 90%)}
+[data-environment-ready=true] .weather-veil{transition:background 1400ms ease}
+#atmosphere{opacity:.8;z-index:4}
+#travel[data-travel-style=ticket]{--ticket-backdrop:color-mix(in srgb,var(--water,#789ca2) 32%,#376e88);transition:background-color 900ms ease}
+
+@supports(corner-shape:superellipse(1.5)){.site-menu nav{border-radius:2.5rem;corner-shape:superellipse(1.5)}}
+@media(max-width:760px){
+ :root{--nav-clearance:4.75rem;--space-section:4rem}
+ .masthead{padding:.75rem var(--gutter)}
+ .menu-toggle,.masthead[data-scrolled=true] .menu-toggle,.menu-toggle[aria-expanded=true]{min-width:8.1rem;min-height:48px;padding:.65rem 1rem;font-size:.875rem}
+ .nav-link{min-height:52px;font-size:1rem;padding:.8rem .9rem}
+ .trip-details{padding-right:8rem}
+ .chapter h2,#travel[data-travel-style=ticket] h2,.running-guide h2{font-size:clamp(2.25rem,9.5vw,3.5rem)}
+ .print-label{font-size:.6875rem;line-height:1.35}
+ .print-caption{font-size:.75rem;min-height:32px}
+ .weather-heading h2{font-size:1.75rem}
+ .guide-heading>.section-label{margin-bottom:var(--space-block)}
+ .has-guide-disclosures .guide-summary h3{font-size:var(--type-subhead)}
+ .cover-bottom,.weather-now{font-size:.75rem}
+ .camp-footer{padding-top:var(--space-group)}
+}
+@media(max-width:420px){.site-menu nav{padding:.5rem}.trip-details{font-size:.6875rem;padding-right:8rem}.trip-details span{white-space:normal}}
+@media(max-width:760px) and (max-height:620px){
+ .cover{height:auto;min-height:100dvh;grid-template-rows:auto auto auto;row-gap:1rem}
+ .cover-story{grid-template-rows:auto auto auto 44px;row-gap:1rem}
+ .team-print{width:min(62vw,13rem);margin-block:.5rem}
+}
+@container(max-width:17em){.trip-details{padding:3.5rem 0 0}.print-label{font-size:.625rem}.cover-bottom,.weather-now{font-size:.6875rem}}
+@media(prefers-reduced-motion:reduce){
+ html[data-navigation-ready=true]{scroll-behavior:auto}
+ *,*::before,*::after{animation:none!important;transition:none!important}
+}
+@media print{.masthead{display:none}.chapter{padding:0}.program-contact{color:black}.weather-section,.running-guide{display:none}}

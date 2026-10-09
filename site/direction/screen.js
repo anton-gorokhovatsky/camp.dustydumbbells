@@ -2,6 +2,8 @@ import { photos, photoUse } from "../content.js";
 import { typograph } from "../typography.js";
 import { environmentAt, placeClock, clockText, solarDay, normalizeWeather, weatherLabel, windDirection } from "../environment.js";
 import { forecastURL, normalizeForecast, forecastCondition, dayText, decimal, temperature } from "./forecast.js";
+import { paintAtmosphere } from "./atmosphere.js";
+import { setupNavigation } from "./navigation.js";
 
 const root = document.documentElement;
 const $ = (selector) => document.querySelector(selector);
@@ -17,55 +19,27 @@ let lastFrame = 0;
 let elapsed = 0;
 let onScreen = true;
 let isLoading = false;
+let positionedForecastDay = null;
 const canvas = $('#atmosphere');
 const context = canvas.getContext('2d');
 let width = 1, height = 1;
 
 function render() {
   const date = new Date();
+  const firstRender = !model;
   model = environmentAt({ date, weather });
   root.dataset.phase = model.phase;
   root.dataset.motion = moving ? 'on' : 'off';
   for (const [name, value] of Object.entries(model.css)) root.style.setProperty(name, value);
   $('#local-clock').textContent = typograph(clockText(placeClock(date).minutes));
+  updateForecastHour();
   draw();
   scheduleFrame();
+  if (firstRender) requestAnimationFrame(() => { root.dataset.environmentReady = 'true'; });
 }
 
 function draw() {
-  if (!context || !model) return;
-  context.clearRect(0, 0, width, height);
-  // Broken, shallow reflections follow the sea, not the text or paper print.
-  context.lineWidth = .65;
-  const wind = Math.min(14, model.wind);
-  const startY = model.phase === 'morning' ? .61 : ['evening', 'night'].includes(model.phase) ? .78 : .57;
-  for (let i = 0; i < (model.phase === 'night' ? 0 : 45); i++) {
-    const y = height * startY + (i / 45) * height * (1 - startY);
-    const x = ((i * 137.13 + elapsed * wind * 1.3) % (width + 220)) - 110;
-    const size = 18 + (i % 8) * 8;
-    context.strokeStyle = `rgba(239,243,214,${.04 + (i % 5) * .02})`;
-    context.beginPath();
-    context.moveTo(x, y);
-    context.quadraticCurveTo(x + size / 2, y + Math.sin(elapsed * .7 + i) * (1 + wind * .2), x + size, y);
-    context.stroke();
-  }
-  if (model.rain > 0) {
-    context.strokeStyle = `rgba(220,235,246,${model.rain * .5})`;
-    context.lineWidth = .7;
-    for (let i = 0; i < 170; i++) {
-      const x = ((i * 93.31 - elapsed * wind * 8) % (width + 120) + width + 120) % (width + 120) - 60;
-      const y = (i * 81.93 + elapsed * 390) % (height + 100) - 50;
-      context.beginPath();context.moveTo(x, y);context.lineTo(x - 5 - wind * .75, y + 23);context.stroke();
-    }
-  }
-  if (model.wind > 8) {
-    context.strokeStyle = 'rgba(242,241,220,.14)';
-    for (let i = 0; i < 9; i++) {
-      const x = ((elapsed * 75 + i * 231) % (width + 320)) - 160;
-      const y = height * (.55 + (i % 4) * .09);
-      context.beginPath();context.moveTo(x, y);context.quadraticCurveTo(x + 80, y - 25, x + 170, y - 4);context.stroke();
-    }
-  }
+  paintAtmosphere(context, model, width, height, elapsed);
 }
 
 function shouldMove() { return moving && !document.hidden && onScreen && !document.querySelector('dialog[open]'); }
@@ -93,8 +67,15 @@ new ResizeObserver(() => {
   draw();
 }).observe(canvas);
 new IntersectionObserver(([entry]) => { onScreen = entry.isIntersecting; scheduleFrame(); }).observe(canvas);
-document.addEventListener('visibilitychange', () => { if (!document.hidden && moving) render(); scheduleFrame(); });
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden) {
+    render();
+    if (Date.now() - lastWeatherAttempt >= 30 * 60 * 1000) loadWeather();
+  }
+  scheduleFrame();
+});
 reduced.addEventListener('change', () => { moving = !reduced.matches; render(); });
+window.addEventListener('online', () => { if (!weather || !forecast) loadWeather(); });
 
 // The scene follows real weather; today's forecast is an open section after the cover.
 async function loadWeather() {
@@ -129,7 +110,8 @@ setInterval(() => {
 }, 60000);
 
 function renderWeather() {
-  $('#current-air').textContent = typograph(weather ? temperature(weather.temperature) : '');
+  root.dataset.weather = isLoading ? 'loading' : forecast ? 'ready' : 'unavailable';
+  $('#current-air').textContent = typograph(weather ? temperature(weather.temperature) : isLoading ? '…' : '—');
   $('#current-condition').textContent = typograph(weather ? weatherLabel(weather) : '');
   $('#forecast-date').textContent = typograph(dayText(new Date()));
   $('#forecast-status').hidden = Boolean(forecast);
@@ -157,8 +139,20 @@ function renderWeather() {
     return row;
   });
   $('#hourly-rows').replaceChildren(...rows);
+  updateForecastHour();
   const current = $('#hourly-rows [aria-current=time]');
-  if (current) $('.forecast-hours').scrollLeft = Math.max(0, current.offsetLeft - $('.forecast-hours').offsetLeft);
+  if (current && positionedForecastDay !== forecast.day) {
+    $('.forecast-hours').scrollLeft = Math.max(0, current.offsetLeft - $('.forecast-hours').offsetLeft);
+    positionedForecastDay = forecast.day;
+  }
+}
+function updateForecastHour() {
+  if (!forecast) return;
+  const hour = Math.floor(placeClock().minutes / 60);
+  for (const row of document.querySelectorAll('#hourly-rows li')) {
+    if (Number(row.querySelector('time').textContent.slice(0, 2)) === hour) row.setAttribute('aria-current', 'time');
+    else row.removeAttribute('aria-current');
+  }
 }
 $('.weather-inline').hidden = false;
 
@@ -307,52 +301,6 @@ $('#close-photo').addEventListener('click', () => dialog.close());
 dialog.addEventListener('keydown', event => { if (event.key === 'ArrowRight') { event.preventDefault(); stepGallery(1); } if (event.key === 'ArrowLeft') { event.preventDefault(); stepGallery(-1); } });
 dialog.addEventListener('close', () => { galleryTrigger.focus({ preventScroll: true }); scheduleFrame(); });
 dialog.addEventListener('click', event => { if (event.target !== dialog) return; const box = dialog.getBoundingClientRect(); if (event.clientX < box.left || event.clientX > box.right || event.clientY < box.top || event.clientY > box.bottom) dialog.close(); });
-const siteMenu = $('.site-menu');
-const menuSummary = $('.menu-toggle');
-const siteNavigation = $('#site-navigation');
-const masthead = $('.masthead');
-function updateMasthead() {
-  masthead.dataset.scrolled = String(window.scrollY > 24);
-}
-window.addEventListener('scroll', updateMasthead, { passive: true });
-updateMasthead();
-function closeMenu(focus = false) {
-  siteMenu.dataset.open = 'false';
-  menuSummary.setAttribute('aria-expanded', 'false');
-  $('.menu-label').textContent = typograph('Меню');
-  if (focus) menuSummary.focus();
-}
-siteMenu.dataset.ready = 'true';
-menuSummary.hidden = false;
-function fitMenu() {
-  const height = Math.max(0, window.innerHeight - siteNavigation.getBoundingClientRect().top - 16);
-  siteNavigation.style.setProperty('--menu-height', `${height}px`);
-}
-menuSummary.addEventListener('click', () => {
-  const open = siteMenu.dataset.open !== 'true';
-  siteMenu.dataset.open = String(open);
-  menuSummary.setAttribute('aria-expanded', String(open));
-  $('.menu-label').textContent = typograph(open ? 'Закрыть' : 'Меню');
-  if (open) fitMenu();
-});
-window.addEventListener('resize', () => { if (siteMenu.dataset.open === 'true') fitMenu(); });
-for (const link of siteMenu.querySelectorAll('a')) link.addEventListener('click', () => closeMenu());
-document.addEventListener('click', event => {
-  if (!siteMenu.contains(event.target)) closeMenu();
-});
-document.addEventListener('keydown', (event) => {
-  if (event.key !== 'Escape') return;
-  if (siteMenu.dataset.open === 'true') closeMenu(true);
-});
+setupNavigation(reduced);
 render();
 loadWeather();
-
-// Current destinations are explicit, while every week remains available.
-function markDestination() {
-  document.querySelectorAll('.nav-link, .week-nav a').forEach(link => {
-    if (link.hash === location.hash) link.setAttribute('aria-current', 'location');
-    else link.removeAttribute('aria-current');
-  });
-}
-window.addEventListener('hashchange', markDestination);
-markDestination();

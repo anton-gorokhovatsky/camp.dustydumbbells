@@ -139,6 +139,9 @@ for (const file of [
   "direction/memories-zine.css",
   "direction/travel-ticket.css",
   "direction/travel-ticket.js",
+  "direction/interface.css",
+  "direction/navigation.js",
+  "direction/atmosphere.js",
   "direction/screen.js",
   "direction/forecast.js",
 ]) {

@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="./direction/program-poster.css" />
   <link rel="stylesheet" href="./direction/memories-zine.css" />
   <link rel="stylesheet" href="./direction/travel-ticket.css" />
+  <link rel="stylesheet" href="./direction/interface.css" />
   <script type="module" src="./direction/screen.js"></script>
   <script type="module" src="./direction/travel-ticket.js"></script>
 </head>
@@ -20,7 +21,7 @@
   <a class="skip-link" href="#about">К содержанию</a>
   <header class="masthead">
     <div class="site-menu">
-      <button type="button" class="menu-toggle" aria-expanded="false" aria-controls="site-navigation" hidden><span class="menu-label">Меню</span><span class="menu-icon" aria-hidden="true"></span></button>
+      <button type="button" class="menu-toggle" aria-expanded="false" aria-controls="site-navigation" hidden><span class="menu-label">Меню</span><svg class="menu-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path class="menu-stroke-top" d="M4 8H20"/><path class="menu-stroke-bottom" d="M4 16H20"/></svg></button>
       <nav id="site-navigation" aria-label="По сайту">
         <a class="nav-link" href="#about">О кэмпе</a>
         <a class="nav-link" href="#program">Программа</a>
@@ -37,6 +38,7 @@
         <img class="view view-evening" src="{{BASE}}assets/d152e032841c-IMG_6948.JPG" alt="" width="893" height="1339" />
         <img class="view view-night" src="{{BASE}}direction/media/kaleici-night.jpg" alt="" width="1920" height="720" />
         <div class="sunlight"></div>
+        <div class="weather-veil"></div>
         <canvas id="atmosphere"></canvas>
       </div>
       <p class="trip-details"><span>Анталья, Турция</span><span>12–25 октября 2027</span></p>
@@ -67,7 +69,7 @@
 
     <section id="weather" class="weather-section" aria-labelledby="weather-title">
       <div class="weather-heading"><h2 id="weather-title">Сегодня в Анталье</h2><p class="forecast-date" id="forecast-date"></p></div>
-      <p id="forecast-status" role="status">Загружаем прогноз…</p>
+      <p id="forecast-status" role="status">Прогноз временно недоступен.</p>
       <div id="forecast-content" hidden>
         <dl class="forecast-brief"><div><dt>Воздух за день</dt><dd id="forecast-range"></dd></div><div><dt>Ветер сейчас</dt><dd id="current-wind"></dd></div><div><dt>Осадки за день</dt><dd id="forecast-rain"></dd></div><div><dt>Восход / закат</dt><dd id="sun-times"></dd></div></dl>
         <div class="forecast-timeline"><p class="forecast-caption">По часам</p><div class="forecast-hours" role="region" aria-label="Почасовой прогноз, время Антальи" tabindex="0"><ol id="hourly-rows"></ol></div></div>

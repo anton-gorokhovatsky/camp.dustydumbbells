@@ -167,6 +167,28 @@ export const phaseLabels = {
   night: "Тихая ночь",
 };
 
+// WMO conditions describe the current phenomenon even when the precipitation
+// interval is zero. Strengths below are bounded artistic responses, not mm/h.
+export function weatherEffects(weather) {
+  const code = weather?.code;
+  const snowCodes = [71, 73, 75, 77, 85, 86];
+  const rainfall = new Map([[51,.12],[53,.22],[55,.32],[56,.18],[57,.35],
+    [61,.22],[63,.5],[65,.8],[66,.3],[67,.65],[80,.35],[81,.65],[82,.9],
+    [95,.65],[96,.85],[99,.9]]);
+  const precipitation = clamp((weather?.precipitation ?? 0) / 5);
+  const snowing = snowCodes.includes(code);
+  const rain = snowing ? 0 : Math.max(precipitation, rainfall.get(code) ?? 0);
+  const snow = snowing ? Math.max(precipitation, [75,86].includes(code) ? .8 : .3) : 0;
+  const fog = code === 45 ? .65 : code === 48 ? .9 : 0;
+  const clouds = Math.max(clamp((weather?.clouds ?? 0) / 100), code === 3 ? .8 : 0);
+  const wind = Math.min(24, weather?.wind ?? 1.5);
+  const gust = Math.max(wind, Math.min(30, weather?.gust ?? wind));
+  const direction = weather?.direction ?? 230;
+  // The meteorological bearing says where the wind comes from.
+  const drift = -Math.sin(direction * Math.PI / 180);
+  return { rain, snow, fog, clouds, wind, gust, direction, drift };
+}
+
 export function environmentAt({
   date = new Date(),
   minutes = null,
@@ -195,9 +217,10 @@ export function environmentAt({
   const left = palettes[fromPhase],
     right = palettes[toPhase];
   const selected = SCENARIOS[scenario] || weather;
-  const clouds = (selected?.clouds ?? 0) / 100;
+  const effects = weatherEffects(selected);
+  const clouds = effects.clouds;
   const humidity = (selected?.humidity ?? 40) / 100;
-  const rain = clamp((selected?.precipitation ?? 0) / 5);
+  const rain = effects.rain;
   const altitude = getPosition(
     localDate(solar.day, minute),
     PLACE.latitude,
@@ -245,8 +268,9 @@ export function environmentAt({
     altitude,
     scenario,
     weather: selected,
-    wind: selected?.wind ?? 1.5,
-    direction: selected?.direction ?? 230,
+    effects,
+    wind: effects.wind,
+    direction: effects.direction,
     rain,
     css: {
       "--paper": surface.paper,
@@ -264,15 +288,18 @@ export function environmentAt({
       "--light-y": `${Math.round(70 - sun * 65)}%`,
       "--photo-saturation": (
         mix(left.saturation, right.saturation, smooth) -
-        clouds * 0.08 +
+        clouds * 0.2 +
         uv * 0.04
       ).toFixed(3),
       "--photo-brightness": (
         mix(left.brightness, right.brightness, smooth) -
-        clouds * 0.055 -
-        rain * 0.02
+        clouds * 0.12 -
+        rain * 0.045
       ).toFixed(3),
-      "--haze": (0.015 + humidity * 0.035 + clouds * 0.04).toFixed(3),
+      "--haze": (0.015 + humidity * 0.025 + clouds * 0.035 + effects.fog * .07).toFixed(3),
+      "--sun-opacity": (phase === 'night' ? 0 : .5 * (1 - clouds * .88) * (1 - effects.fog * .8)).toFixed(3),
+      "--cloud-veil": (clouds * .16 * (phase === 'night' ? .45 : 1)).toFixed(3),
+      "--fog-veil": (effects.fog * .3).toFixed(3),
       "--rain": rain.toFixed(3),
       "--grain-opacity": (0.015 + humidity * 0.012).toFixed(3),
       "--sun-fill": `${((minute / 1439) * 100).toFixed(1)}%`,
@@ -330,12 +357,15 @@ export function normalizeWeather(payload, now = new Date()) {
     stamp: stamp.toISOString(),
     time: current.time.slice(11, 16),
     code: number(current.weather_code, 0, 99),
+    gust: number(current.wind_gusts_10m, 0, 120),
   };
 }
 export function weatherLabel(weather) {
   if (!weather) return "Свет Антальи";
   if (weather.code >= 95) return "Гроза";
-  if (weather.precipitation > 0 || (weather.code >= 51 && weather.code <= 82))
+  if ([71,73,75,77,85,86].includes(weather.code)) return "Снег";
+  if ([51,53,55,56,57].includes(weather.code)) return "Морось";
+  if (weather.precipitation > 0 || [61,63,65,66,67,80,81,82].includes(weather.code))
     return "Дождь";
   if (weather.code === 45 || weather.code === 48) return "Туман";
   return weather.clouds > 75
