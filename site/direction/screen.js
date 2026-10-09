@@ -309,6 +309,7 @@ dialog.addEventListener('close', () => { galleryTrigger.focus({ preventScroll: t
 dialog.addEventListener('click', event => { if (event.target !== dialog) return; const box = dialog.getBoundingClientRect(); if (event.clientX < box.left || event.clientX > box.right || event.clientY < box.top || event.clientY > box.bottom) dialog.close(); });
 const siteMenu = $('.site-menu');
 const menuSummary = $('.menu-toggle');
+const siteNavigation = $('#site-navigation');
 const masthead = $('.masthead');
 function updateMasthead() {
   masthead.dataset.scrolled = String(window.scrollY > 24);
@@ -323,12 +324,18 @@ function closeMenu(focus = false) {
 }
 siteMenu.dataset.ready = 'true';
 menuSummary.hidden = false;
+function fitMenu() {
+  const height = Math.max(0, window.innerHeight - siteNavigation.getBoundingClientRect().top - 16);
+  siteNavigation.style.setProperty('--menu-height', `${height}px`);
+}
 menuSummary.addEventListener('click', () => {
   const open = siteMenu.dataset.open !== 'true';
   siteMenu.dataset.open = String(open);
   menuSummary.setAttribute('aria-expanded', String(open));
   $('.menu-label').textContent = typograph(open ? 'Закрыть' : 'Меню');
+  if (open) fitMenu();
 });
+window.addEventListener('resize', () => { if (siteMenu.dataset.open === 'true') fitMenu(); });
 for (const link of siteMenu.querySelectorAll('a')) link.addEventListener('click', () => closeMenu());
 document.addEventListener('click', event => {
   if (!siteMenu.contains(event.target)) closeMenu();

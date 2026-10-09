@@ -77,6 +77,18 @@
 .hotel-photo-source a{display:inline-flex;align-items:center;min-height:44px}
 .hotel-return a{display:inline-flex;align-items:center;min-height:44px;font-size:.875rem}
 .hotel-preview[hidden]{display:none}
+.hotel-picker{min-inline-size:0;margin:0 0 1.5rem;padding:0;border:0;display:grid}
+.hotel-picker[hidden]{display:none}
+.hotel-picker legend{font-size:.875rem;line-height:1.5;margin-bottom:.75rem}
+.hotel-picker label{display:flex;align-items:center;gap:min(.8rem,2vw);min-height:44px;padding:.75rem min(.65rem,2vw);border-bottom:1px solid #153b4926;cursor:pointer;transition:background .15s}
+.hotel-picker input{flex:none;width:20px;height:20px;accent-color:#153b49;margin:0}
+.hotel-picker label>span{min-width:0;font-size:1.0625rem;line-height:1.4}
+.hotel-picker small{display:block;font-size:.8125rem;margin-top:.2rem}
+.hotel-picker label:has(:checked){background:#ffffff45}
+.hotel-picker label:hover{background:#ffffff60}
+.hotel-picker label:has(:focus-visible){outline:3px solid #153b49;outline-offset:3px;position:relative;z-index:1}
+.has-hotel-choice .hotel-contents,.has-hotel-choice .hotel-return{display:none}
+.has-hotel-choice .hotel-list>li{margin:0;padding:0;border:0}
 .has-hotel-preview .hotel-contents,.has-hotel-preview .hotel-return{display:none}
 .has-hotel-preview .hotel-list{position:relative;min-height:max(34rem,var(--hotel-preview-height,0px))}
 .has-hotel-preview .hotel-list>li{width:27%;margin:0;padding:0 0 .75rem;border:0;border-bottom:1px solid #153b4926}
@@ -93,7 +105,7 @@
 @keyframes hotel-arrival{from{opacity:.55;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 
 /* An open guide groups related details and gives independent subjects more space. */
-.running-guide{background:#edf3f3;color:#153b49;padding:5rem var(--gutter) 4rem;max-width:none;overflow-wrap:anywhere;scroll-margin-top:6rem}
+.running-guide{--guide-pad-top:5rem;background:#edf3f3;color:#153b49;padding:var(--guide-pad-top) var(--gutter) 4rem;max-width:none;overflow-wrap:anywhere;scroll-margin-top:calc(1.25rem - var(--guide-pad-top))}
 .guide-heading{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem 4rem;align-items:end;margin-bottom:4rem}
 .guide-heading>.section-label{grid-column:1/-1;margin:0;font-size:.8125rem}
 .running-guide h2{font:italic 900 clamp(3rem,5.5vw,6rem)/.98 'Museo DD',Arial,sans-serif;letter-spacing:-.035em;margin:0}
@@ -111,6 +123,20 @@
 .guide-section{--guide-section-inset:0rem;scroll-margin-top:calc(1.25rem - var(--guide-section-inset))}
 .guide-section+.guide-section{--guide-section-inset:3rem;margin-top:4rem;padding-top:var(--guide-section-inset);border-top:1px solid #153b4933}
 .running-guide h3{font:italic 900 clamp(2rem,3.1vw,3.25rem)/1.08 'Museo DD',Arial,sans-serif;letter-spacing:-.025em;margin:0 0 1.25rem;text-wrap:balance}
+.guide-summary{list-style:none;display:grid;grid-template-columns:minmax(0,1fr) 24px;column-gap:.75rem;cursor:pointer;padding:.35rem 0}
+.guide-summary::marker{content:''}
+.guide-summary::-webkit-details-marker{display:none}
+.guide-summary h3{grid-column:1/-1;margin:0 0 .6rem}
+.guide-topic-note{grid-column:1;font-size:.9375rem;line-height:1.6;max-width:51ch}
+.guide-toggle{grid-column:2;grid-row:2;align-self:center;justify-self:center;width:.65rem;height:.65rem;border-bottom:2px solid currentColor;border-right:2px solid currentColor;transform:rotate(45deg);transition:transform .15s}
+.guide-section[open]>.guide-summary .guide-toggle{transform:rotate(225deg)}
+.guide-summary:hover h3{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.18em}
+.guide-summary:active{opacity:.8}
+.guide-summary:focus-visible{outline:3px solid #153b49;outline-offset:6px;border-radius:4px}
+.guide-detail-body{padding-top:1.75rem}
+.has-guide-disclosures .guide-contents{display:none}
+.has-guide-disclosures .guide-section+.guide-section{--guide-section-inset:1.25rem;margin-top:1.25rem}
+.has-guide-disclosures .guide-endnote{margin-top:2rem}
 .guide-section-lead{font-size:1.0625rem;line-height:1.6;max-width:57ch;margin-bottom:1.5rem}
 .running-guide h4{font-size:1.2rem;line-height:1.35;font-weight:650;margin:0 0 .6rem}
 .guide-columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2.5rem}
@@ -169,7 +195,7 @@
  .hotel-images img{border-radius:.75rem}
  .hotel-preview-meta{margin-top:.65rem;gap:.25rem 1rem}
  .hotel-preview{margin-top:.75rem}
- .running-guide{padding-top:3rem;padding-bottom:3rem;hyphens:manual}
+ .running-guide{--guide-pad-top:3rem;padding-bottom:3rem;hyphens:manual}
  .guide-heading{display:block;margin-bottom:2rem}
  .guide-heading>.section-label{margin-bottom:1.5rem}
  .running-guide h2{font-size:clamp(3rem,10vw,5rem);margin-bottom:1.5rem}
@@ -180,6 +206,9 @@
  .guide-columns{grid-template-columns:minmax(0,1fr);gap:2rem}
  .guide-section+.guide-section{--guide-section-inset:2rem;margin-top:3rem}
  .running-guide h3{font-size:clamp(2rem,7vw,2.75rem)}
+ .has-guide-disclosures .guide-summary h3{font-size:clamp(1.6rem,6vw,2.1rem)}
+ .has-guide-disclosures .guide-topic-note{font-size:.875rem}
+ .guide-detail-body{padding-top:1.25rem}
  .running-route{grid-template-columns:1fr;gap:.75rem;padding:1.5rem 0}
  .route-measure{flex-direction:row;flex-wrap:wrap;align-items:baseline;gap:.5rem 1rem}
  .route-measure>strong{font-size:2rem}
@@ -210,7 +239,7 @@
  #travel[data-travel-style=route] article h3{font-size:1.8rem}
 }
 @media(max-width:420px){
- .travel-ticket{--ticket-pad:1rem}
+ .travel-ticket{--ticket-pad:min(1rem,4vw)}
  .ticket-dates time>span{font-size:.75rem}
  #travel[data-travel-style=ticket] .ticket-information article h3{font-size:1.5rem}
  .hotel-images{grid-template-columns:1fr;gap:1.4rem}

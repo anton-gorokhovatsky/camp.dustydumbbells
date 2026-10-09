@@ -95,3 +95,12 @@
 #program[data-calendar-style=poster] .program-date time{display:flex;flex-direction:row;align-items:baseline;gap:.5rem}
 }
 }
+/* The programme leads directly to the existing community contact. */
+.program-contact{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:2rem;margin-top:2.5rem;padding-top:2rem;border-top:1px solid currentColor}
+.program-contact>div{min-width:0;max-width:100%}
+.program-contact h3{font:italic 900 clamp(1.7rem,2.4vw,2.5rem)/1.1 'Museo DD',Arial,sans-serif;letter-spacing:-.025em;margin:0 0 .7rem}
+.program-contact p{font-size:1.0625rem;line-height:1.6;max-width:46ch}
+.program-contact>a{display:inline-flex;align-items:center;min-height:44px;max-width:100%;font-size:1.0625rem;line-height:1.5;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.2em;flex-shrink:0}
+.program-contact>a:hover{text-decoration-thickness:2px}
+.program-contact>a:focus-visible{outline:3px solid currentColor;outline-offset:5px}
+@media(max-width:700px){.program-contact{display:block}.program-contact p{font-size:1rem}.program-contact>a{margin-top:1rem;max-width:100%}}

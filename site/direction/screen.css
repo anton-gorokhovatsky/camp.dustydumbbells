@@ -36,7 +36,8 @@ img{display:block;max-width:100%}
 [data-open=true] .menu-icon{transform:rotate(90deg)}
 .site-menu[data-ready] nav{display:none}
 .site-menu[data-open=true] nav{display:flex}
-.site-menu nav{display:flex;flex-direction:column;align-items:stretch;position:absolute;right:0;top:calc(100% + .7rem);width:280px;max-width:calc(100vw - 3rem);padding:1.1rem .8rem;border-radius:1.8rem}
+.site-menu nav{display:flex;flex-direction:column;align-items:stretch;position:absolute;right:0;top:calc(100% + .7rem);width:280px;max-width:calc(100vw - 2 * var(--gutter));padding:1.1rem .8rem;border-radius:1.8rem}
+.site-menu[data-ready] nav{max-height:var(--menu-height,calc(100dvh - 8rem));overflow-y:auto;overscroll-behavior:contain}
 .nav-link{display:flex;align-items:center;min-height:48px;padding:.7rem .8rem;font-size:1rem;border-radius:.7rem;text-align:left}
 .nav-link:hover{background:#ffffff40}
 .masthead[data-scrolled=true] .menu-toggle{filter:drop-shadow(0 1px 5px #06212dcc)}
