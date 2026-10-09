@@ -5,7 +5,7 @@
 :root {
   --paper:#f3f2e9;--ink:#222a25;--panel:#e7eadc;--muted:#51594c;--line:#23392944;
   --light-color:#e6d58c;--light-x:60%;--light-y:30%;--photo-saturation:1.07;--photo-brightness:1.06;--haze:.04;
-  --reading-surface:color-mix(in srgb,var(--water,#245768) 35%,#143747);
+  --reading-surface:var(--environment-reading,#365a66);
   --cream:#f7f7f7;--gutter:clamp(1.5rem,4.5vw,6rem);
   --glass-fill:rgb(255 255 255 / .68);--glass-blur:blur(26px) saturate(1.15);
   --glass-edge:rgb(255 255 255 / .42);--glass-shadow:0 8px 32px #052b391c;
@@ -212,7 +212,7 @@ body{isolation:isolate}
 .travel-copy h3{font:italic 900 1.65rem/1.2 'Museo DD',Arial,sans-serif;margin:0 0 .8rem}
 .travel-copy p{font-size:1.0625rem;line-height:1.65}
 .travel-copy .program-link{margin-top:1.2rem}
-.camp-footer{padding:5rem var(--gutter) 1.3rem;margin-top:4rem;background:linear-gradient(180deg,transparent,color-mix(in srgb,var(--accent) 35%,#082a3d) 65%)}
+.camp-footer{padding:5rem var(--gutter) 1.3rem;margin-top:4rem;background:linear-gradient(180deg,transparent,var(--environment-footer,#1b3d49) 65%)}
 .footer-motto{text-align:center;font:italic 900 clamp(1rem,2vw,1.75rem)/1.4 'Museo DD',Arial,sans-serif;margin-bottom:3rem}
 .footer-motto span{white-space:nowrap}
 .footer-wordmark{display:block;max-width:1600px;margin:0 auto 4rem}

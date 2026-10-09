@@ -68,23 +68,24 @@ const guide = document.querySelector('#running-guide');
 if (guide) {
   const chapters = [...guide.querySelectorAll('details.guide-section')];
   const narrow = window.matchMedia('(max-width: 999px)');
-  const openedOnPhone = new Map(chapters.map(chapter => [chapter.id, false]));
+  const topicView = guide.dataset.guideMode === 'topics';
+  const openedTopics = new Map(chapters.map(chapter => [chapter.id, false]));
   function openDestination(hash) {
     const destination = document.getElementById(hash.slice(1));
     const chapter = destination?.closest('details.guide-section');
     if (!chapter) return;
     chapter.open = true;
-    openedOnPhone.set(chapter.id, true);
+    openedTopics.set(chapter.id, true);
   }
   function adaptGuide() {
-    guide.classList.toggle('has-guide-disclosures', narrow.matches);
+    guide.classList.toggle('has-guide-disclosures', topicView || narrow.matches);
     for (const chapter of chapters) {
       const containsFocus = chapter.contains(document.activeElement);
-      chapter.open = !narrow.matches || openedOnPhone.get(chapter.id) || containsFocus;
+      chapter.open = !(topicView || narrow.matches) || openedTopics.get(chapter.id) || containsFocus;
     }
   }
   for (const chapter of chapters) chapter.addEventListener('toggle', () => {
-    if (narrow.matches) openedOnPhone.set(chapter.id, chapter.open);
+    if (topicView || narrow.matches) openedTopics.set(chapter.id, chapter.open);
   });
   guide.addEventListener('click', event => {
     const link = event.target.closest('a[href^="#run-"]');

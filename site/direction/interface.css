@@ -114,7 +114,10 @@ button:disabled{cursor:default;opacity:.5}
 .weather-veil{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(157,185,200,var(--cloud-veil,0)),rgba(187,204,212,var(--fog-veil,0)) 58%,transparent 90%)}
 [data-environment-ready=true] .weather-veil{transition:background 1400ms ease}
 #atmosphere{opacity:.8;z-index:4}
-#travel[data-travel-style=ticket]{--ticket-backdrop:color-mix(in srgb,var(--water,#789ca2) 32%,#376e88);transition:background-color 900ms ease}
+#travel[data-travel-style=ticket]{--ticket-backdrop:var(--environment-ticket,#386b81)}
+@media(prefers-reduced-motion:no-preference){
+ #memories[data-memory-style=zine],#program[data-calendar-style=poster],#travel[data-travel-style=ticket],.running-guide{transition:background-color 900ms ease}
+}
 
 @supports(corner-shape:superellipse(1.5)){.site-menu nav{border-radius:2.5rem;corner-shape:superellipse(1.5)}}
 @media(max-width:760px){

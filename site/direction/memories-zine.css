@@ -16,7 +16,7 @@
 .memory-number{font-size:.75rem;white-space:nowrap}
 
 /* 3. Three large asymmetric editorial spreads. */
-#memories[data-memory-style=zine]{background:#c7f2b7;color:#153c3e;margin-inline:0;padding-top:2rem;padding-bottom:clamp(4rem,8vw,8rem);overflow-wrap:normal}
+#memories[data-memory-style=zine]{background:var(--environment-zine,#c7f2b7);color:#153c3e;margin-inline:0;padding-top:2rem;padding-bottom:clamp(4rem,8vw,8rem);overflow-wrap:normal}
 [data-memory-style=zine] .memory-intro{display:grid;grid-template-columns:minmax(0,1.8fr) minmax(0,1fr);gap:0 clamp(2rem,5vw,5rem);align-items:end;margin-bottom:clamp(2.5rem,4vw,4rem)}
 [data-memory-style=zine] .memory-meta{grid-column:1/-1;display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:.5rem 2rem;margin-bottom:1.5rem}
 [data-memory-style=zine] .memory-meta .memory-context{margin:0}

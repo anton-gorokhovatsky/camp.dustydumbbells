@@ -17,8 +17,8 @@
 #program[data-calendar-style=poster] .program-arrival .program-day{display:grid;grid-template-columns:7rem minmax(0,1fr);gap:2rem;padding:1.5rem 0;border-top:1px solid #ffffff55}
 #program[data-calendar-style=poster] .program-arrival .program-date b{font-size:4rem}
 #program[data-calendar-style=poster] .program-arrival .program-events{font-size:1.25rem;max-width:35rem}
-#program[data-calendar-style=poster]{--poster-field:#fc754f;--poster-ink:#15383d;background:var(--poster-field);color:var(--poster-ink)}
-#program[data-calendar-style=poster] .week-nav a:focus-visible{outline-color:#15383d;box-shadow:0 0 0 2px #fff}
+#program[data-calendar-style=poster]{--poster-field:var(--environment-poster,#fc754f);--poster-ink:#15383d;background:var(--poster-field);color:var(--poster-ink)}
+#program[data-calendar-style=poster] .week-nav a:focus-visible{outline-color:var(--poster-ink);box-shadow:0 0 0 2px #fff}
 #program[data-calendar-style=poster] .section-label{font-weight:600;letter-spacing:.13em}
 #program[data-calendar-style=poster] .chapter-heading{max-width:none;display:grid;grid-template-columns:minmax(0,1.7fr) minmax(15rem,.7fr);align-items:end;gap:clamp(2rem,5vw,5rem);margin-bottom:2.5rem}
 #program[data-calendar-style=poster] h2{font-size:clamp(2rem,7.5vw,7rem);max-width:14ch;text-transform:uppercase;line-height:.96;text-wrap:balance;hyphens:none}

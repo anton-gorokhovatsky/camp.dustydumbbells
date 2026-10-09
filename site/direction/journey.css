@@ -1,0 +1,70 @@
+/* Refine the selected zine, poster and ticket together. Their compositions,
+   colours, photographs and interaction roles remain in their own stylesheets. */
+.journey-pages{
+  --journey-title:clamp(2.25rem,4.6vw,4.75rem);
+  --journey-group:clamp(2rem,3.5vw,3.5rem);
+}
+.journey-pages .chapter h2,.journey-pages [data-memory-style=zine] .memory-intro h2,
+.journey-pages #travel[data-travel-style=ticket] h2,.journey-pages .running-guide h2{
+  font-size:var(--journey-title);line-height:1.06;letter-spacing:-.035em;
+}
+.journey-pages #program[data-calendar-style=poster] h2{font-size:var(--journey-title);line-height:1.06}
+.journey-pages :is(.chapter-lead,.journey-lead,.guide-intro){font-size:var(--type-lead);line-height:1.5}
+.journey-pages :is(.chapter-heading,.memory-intro,.journey-heading,.guide-heading){margin-bottom:var(--journey-group)}
+.journey-pages :is(#hotels-title,.hotel-list>li,.week-heading,.guide-section){scroll-margin-top:calc(var(--nav-clearance) + 1.25rem)}
+
+/* The three alternating photo spreads keep their large photographs. */
+.journey-pages [data-memory-style=zine] .memory-collection{gap:clamp(3rem,5vw,5rem)}
+.journey-pages [data-memory-style=zine] .memory-caption{font-size:clamp(2.25rem,4.6vw,4.75rem);line-height:1.08}
+.journey-pages [data-memory-style=zine] .memory-name{overflow-wrap:normal;hyphens:auto}
+.journey-pages .october h2{font:450 clamp(1.4rem,2.2vw,2rem)/1.3 var(--font-text);letter-spacing:-.02em}
+
+/* The coral poster keeps its consecutive weeks and emphatic dates.
+   Activities are prose; dates and rest days retain the poster's character. */
+.journey-pages #program[data-calendar-style=poster] .program-week+.program-week{margin-top:var(--journey-group)}
+.journey-pages #program[data-calendar-style=poster] .program-date b{font-size:clamp(3.5rem,5vw,5rem)}
+.journey-pages #program[data-calendar-style=poster] .program-events,
+.journey-pages #program[data-calendar-style=poster] .program-day[data-rest=true] .program-events{
+  font:450 clamp(1.125rem,1.6vw,1.5rem)/1.45 var(--font-text);letter-spacing:0;gap:1rem;max-width:none;
+}
+.journey-pages #program[data-calendar-style=poster] .program-day:not([data-rest=true]) .program-events li:has(time:empty){font:inherit}
+.journey-pages #program[data-calendar-style=poster] .program-events>li>span{text-wrap:pretty;hyphens:auto}
+.journey-pages #program[data-calendar-style=poster] .program-notes{margin-top:var(--journey-group);padding-top:1.5rem;border-top-width:1px}
+.journey-pages .program-contact{margin-top:2rem;padding-top:1.5rem}
+
+/* The matte ticket keeps its shared frame, perforation and date group. */
+.journey-pages .ticket-destination{font-size:clamp(3rem,5.5vw,5.5rem)}
+.journey-pages .ticket-dates strong{font-size:clamp(3rem,4.5vw,4.75rem)}
+.journey-pages #travel[data-travel-style] article h3{font:550 clamp(1.25rem,1.8vw,1.65rem)/1.3 var(--font-text);letter-spacing:-.015em}
+.journey-pages .hotels-heading h3{font:550 clamp(1.4rem,2.2vw,2rem)/1.3 var(--font-text);letter-spacing:-.025em}
+.journey-pages .has-hotel-preview .hotel-list{min-height:max(30rem,var(--hotel-preview-height,0px))}
+.journey-pages .has-hotel-preview .hotel-images figure:nth-child(2){margin-top:1.5rem}
+.journey-pages #travel[data-travel-style=ticket]{padding-bottom:var(--space-group)}
+
+/* Six independent native subjects retain all the original guide content. */
+.journey-pages .guide-section,.journey-pages .has-guide-disclosures .guide-section+.guide-section{
+  --guide-section-inset:0rem;margin-top:0;padding-top:0;border-top:1px solid #153b4933;
+}
+.journey-pages .guide-section:last-child{border-bottom:1px solid #153b4933}
+.journey-pages .guide-summary{grid-template-columns:minmax(12rem,.7fr) minmax(0,1fr) 24px;gap:1rem;padding:1.5rem 0;align-items:center;min-height:88px}
+.journey-pages .running-guide .guide-summary h3{grid-column:1;font:450 clamp(1.2rem,2vw,1.75rem)/1.3 var(--font-text);letter-spacing:-.025em;margin:0}
+.journey-pages .guide-topic-note{grid-column:2;font-size:.9375rem;font-weight:350}
+.journey-pages .guide-toggle{grid-column:3;grid-row:1}
+.journey-pages .guide-detail-body{padding:1rem 0 3rem}
+.journey-pages .running-guide h4{font-size:1.125rem;font-weight:550}
+
+@media(max-width:760px){
+ .journey-pages{--journey-title:clamp(1.65rem,8.7vw,3rem)}
+ .journey-pages .chapter h2,.journey-pages #program[data-calendar-style=poster] h2,
+ .journey-pages [data-memory-style=zine] .memory-intro h2,.journey-pages #travel[data-travel-style=ticket] h2,.journey-pages .running-guide h2{font-size:var(--journey-title);hyphens:auto;overflow-wrap:normal}
+ .journey-pages [data-memory-style=zine] .memory-caption{font-size:clamp(1.8rem,8.7vw,3rem)}
+ .journey-pages #program[data-calendar-style=poster] .program-date b{font-size:3.5rem}
+ .journey-pages #program[data-calendar-style=poster] .program-events,
+ .journey-pages #program[data-calendar-style=poster] .program-day[data-rest=true] .program-events{font-size:1.125rem}
+ .journey-pages .october h2{font-size:1.4rem}
+ .journey-pages .guide-summary{grid-template-columns:minmax(0,1fr) 24px;gap:.35rem 1rem;min-height:92px;padding:1.25rem 0}
+ .journey-pages .guide-topic-note{grid-column:1;font-size:.875rem}
+ .journey-pages .guide-toggle{grid-column:2;grid-row:1/3}
+ .journey-pages .running-guide .guide-summary h3{font-size:1.25rem}
+ .journey-pages .guide-detail-body{padding:.5rem 0 2rem}
+}

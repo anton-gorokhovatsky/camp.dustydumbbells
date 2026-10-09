@@ -1,0 +1,309 @@
+/* The published journey: one setting, with a different pace for life,
+   the programme and reference material. The cover and menu keep their baseline. */
+.journey-pages{
+  --trip-paper:color-mix(in srgb,var(--water,#789ca2) 4%,#f6f8f4);
+  --trip-ink:#163b49;--trip-muted:#44616b;--trip-line:#163b4929;
+  --trip-accent:#a84432;--trip-gap:clamp(2rem,5vw,5rem);
+  color:var(--trip-ink);background:var(--trip-paper);font-weight:350;
+  transition:background-color 900ms ease;
+}
+.journey-pages>.chapter,.journey-pages>#memories,.journey-pages>.running-guide{
+  max-width:1500px;margin-inline:auto;padding-inline:var(--gutter);
+}
+.journey-pages .chapter{--chapter-pad:clamp(4.5rem,7vw,7rem)}
+.journey-pages :is(h2,h3,h4){text-wrap:pretty}
+.journey-pages .chapter h2,.journey-pages #travel[data-travel-style=ticket] h2,
+.journey-pages .running-guide h2{
+  font:italic 900 clamp(2.5rem,4.5vw,4.5rem)/1.08 var(--font-title);
+  letter-spacing:-.035em;max-width:18ch;text-transform:none;
+}
+.journey-pages .section-label,.journey-pages .memory-context{
+  font-size:.8125rem;font-weight:450;letter-spacing:.025em;
+}
+.journey-pages .chapter-lead,.journey-pages .journey-lead,.journey-pages .guide-intro{
+  font-size:clamp(1.125rem,1.5vw,1.375rem);font-weight:350;line-height:1.55;
+}
+.journey-pages :is(.about-copy>p:not(.section-label):not(.chapter-lead),.ticket-information article p,
+ .program-notes,.guide-section-lead,.guide-columns p,.running-route p,.guide-place-groups p){
+  font-size:1rem;font-weight:350;line-height:1.7;
+}
+.journey-pages :is(#hotels-title,.hotel-list>li,.week-heading,.guide-section){scroll-margin-top:calc(var(--nav-clearance) + 1.25rem)}
+.journey-pages :is(a,summary,[tabindex]):focus-visible{
+  outline:2px solid var(--trip-ink);outline-offset:5px;box-shadow:0 0 0 2px var(--trip-paper);
+}
+
+/* Weather is still an open half-screen, in the same light as the following pages. */
+.journey-pages .weather-section{
+  min-height:max(340px,50dvh);padding:2.5rem var(--gutter);gap:2rem;
+  color:var(--trip-ink);background:color-mix(in srgb,var(--water,#789ca2) 8%,var(--trip-paper));
+  backdrop-filter:none;-webkit-backdrop-filter:none;border-bottom:1px solid var(--trip-line);
+}
+.journey-pages .weather-heading,.journey-pages #forecast-content{width:100%;max-width:1370px;margin-inline:auto}
+.journey-pages .weather-heading h2{font:450 1.375rem/1.3 var(--font-text);letter-spacing:-.02em}
+.journey-pages .forecast-date,.journey-pages .forecast-brief dt,.journey-pages .forecast-caption,
+.journey-pages .forecast-hours time,.journey-pages .hour-condition{color:var(--trip-muted)}
+.journey-pages .forecast-date{font-size:.875rem}
+.journey-pages .forecast-brief dd{font:450 clamp(1.35rem,2vw,1.8rem)/1.3 var(--font-text);margin-top:.5rem}
+.journey-pages .forecast-timeline{border-top:1px solid var(--trip-line);padding-top:1.25rem;gap:2rem}
+.journey-pages .forecast-hours li>span:not(.hour-condition){font-weight:400;font-size:1.25rem}
+.journey-pages .forecast-hours [aria-current=time] time{font-weight:650;text-decoration:none}
+.journey-pages .forecast-hours [aria-current=time]{border-left:2px solid var(--trip-ink);padding-left:.75rem}
+
+/* A person, a coastline, then three moments in one photographic composition. */
+.journey-pages .about-layout{grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:var(--trip-gap);align-items:center}
+.journey-pages .about-copy{max-width:39rem}
+.journey-pages .about-copy h2{max-width:12ch;margin-bottom:1.5rem}
+.journey-pages .about-copy .chapter-lead{max-width:32ch;margin-bottom:1.5rem}
+.journey-pages .about-copy>p:not(.section-label){margin-bottom:1rem}
+.journey-pages .about-print{width:min(100%,390px);transform:none;padding:.5rem;justify-self:end}
+.journey-pages .archive-print figcaption{font-size:.8125rem;line-height:1.4;min-height:36px}
+.journey-pages #memories[data-memory-style=zine]{
+  background:none;color:var(--trip-ink);padding-top:1rem;padding-bottom:clamp(4rem,6vw,6rem);
+}
+.journey-pages [data-memory-style=zine] .memory-intro{
+  grid-template-columns:1.2fr 1fr;gap:0 var(--trip-gap);align-items:end;margin-bottom:2.5rem;
+}
+.journey-pages [data-memory-style=zine] .memory-meta{margin-bottom:.75rem}
+.journey-pages [data-memory-style=zine] .memory-intro h2{
+  font:italic 900 clamp(2.25rem,3.5vw,3.75rem)/1.08 var(--font-title);letter-spacing:-.035em;
+}
+.journey-pages [data-memory-style=zine] .memory-intro h2 span{display:inline}
+.journey-pages [data-memory-style=zine] .memory-description{
+  font:350 1rem/1.6 var(--font-text);max-width:32ch;margin:0;
+}
+.journey-pages [data-memory-style=zine] .memory-collection{
+  display:grid;grid-template-columns:3fr 4.5fr 3.5fr;gap:clamp(1rem,2.5vw,2.5rem);align-items:start;
+}
+.journey-pages [data-memory-style=zine] .memory-frame:nth-child(1){margin-top:4rem}
+.journey-pages [data-memory-style=zine] .memory-frame:nth-child(3){margin-top:7rem}
+.journey-pages [data-memory-style=zine] .memory-frame>a{display:block;border-radius:1.3rem}
+.journey-pages [data-memory-style=zine] .memory-frame .memory-image{
+  width:100%;max-width:none;transform:none;padding:.4rem;border-radius:1.3rem;
+  background:var(--glass-fill);box-shadow:inset 0 0 0 1px var(--glass-edge);
+}
+.journey-pages [data-memory-style=zine] .memory-frame img{
+  height:auto;aspect-ratio:2/3;object-fit:contain;border-radius:1rem;box-shadow:none;
+}
+.journey-pages [data-memory-style=zine] .memory-frame .memory-caption{
+  display:flex;flex-direction:row;align-items:baseline;justify-content:space-between;
+  gap:.75rem;margin:.75rem .35rem 0;font:450 1rem/1.4 var(--font-text);letter-spacing:0;
+}
+.journey-pages [data-memory-style=zine] .memory-name{font:inherit;max-width:none;hyphens:none;text-wrap:pretty;text-underline-offset:.22em}
+.journey-pages [data-memory-style=zine] .memory-number{order:1;font:400 .75rem/1.4 var(--font-text);color:var(--trip-muted)}
+.journey-pages [data-memory-style=zine] .memory-frame>a:focus-visible .memory-image{outline:2px solid var(--trip-ink);outline-offset:4px;border-radius:1.3rem}
+.journey-pages .october{
+  display:grid;grid-template-columns:1.1fr 1fr;align-items:center;gap:var(--trip-gap);
+  max-width:1500px;margin:auto;padding:0 var(--gutter) clamp(4rem,6vw,6rem);
+}
+.journey-pages .october h2{font:450 clamp(1.35rem,2vw,1.8rem)/1.25 var(--font-text);letter-spacing:-.02em;margin-bottom:1rem}
+.journey-pages .october h2 br{display:none}
+.journey-pages .october-copy>p:not(.section-label){font-size:.9375rem;line-height:1.6;max-width:44ch}
+.journey-pages .october-temperatures{gap:1.5rem}
+.journey-pages .october-temperatures dt{font-size:.75rem;color:var(--trip-muted)}
+.journey-pages .october-temperatures dd{font:450 clamp(1.3rem,2vw,1.8rem)/1.3 var(--font-text);white-space:nowrap;margin-top:.5rem}
+.journey-pages .climate-note{font-size:.75rem;color:var(--trip-muted);margin-top:1rem}
+
+/* Two readable weeks. The events carry the information; the dates orient it. */
+.journey-pages #program[data-calendar-style=poster]{
+  --poster-ink:var(--trip-ink);--chapter-pad:clamp(4.5rem,7vw,7rem);
+  padding-block:var(--chapter-pad);background:none;color:var(--trip-ink);
+  border-top:1px solid var(--trip-line);
+}
+.journey-pages #program[data-calendar-style=poster] .chapter-heading{
+  display:grid;grid-template-columns:1.2fr 1fr;align-items:end;gap:var(--trip-gap);margin-bottom:2rem;
+}
+.journey-pages #program[data-calendar-style=poster] h2{font:italic 900 clamp(2.5rem,4.5vw,4.5rem)/1.08 var(--font-title);letter-spacing:-.035em;max-width:15ch;text-transform:none}
+.journey-pages #program[data-calendar-style=poster] .section-label{font-weight:450;letter-spacing:.025em}
+.journey-pages #program[data-calendar-style=poster] .program-intro{max-width:44ch;font-size:1rem;font-weight:350;line-height:1.65;margin:0}
+.journey-pages #program[data-calendar-style=poster] .program-intro p+p{font-size:.8125rem;margin-top:1rem;color:var(--trip-muted)}
+.journey-pages #program[data-calendar-style=poster] .week-nav{margin:0 0 1.5rem;gap:2rem}
+.journey-pages #program[data-calendar-style=poster] .week-nav a{font-size:.875rem}
+.journey-pages #program[data-calendar-style=poster] .program-arrival{margin-bottom:2.5rem}
+.journey-pages #program[data-calendar-style=poster] .program-arrival .program-day{
+  grid-template-columns:6rem minmax(0,1fr);min-height:0;padding:1rem 0;border-color:var(--trip-line);
+}
+.journey-pages #program[data-calendar-style=poster] .program-weeks{display:grid;grid-template-columns:1fr 1fr;gap:var(--trip-gap)}
+.journey-pages #program[data-calendar-style=poster] .program-week+.program-week{margin-top:0}
+.journey-pages #program[data-calendar-style=poster] .week-heading{border-top:2px solid var(--trip-accent);padding:1rem 0;gap:.5rem 1rem}
+.journey-pages #program[data-calendar-style=poster] .week-label{font:550 .875rem/1.4 var(--font-text);letter-spacing:0;text-transform:none}
+.journey-pages #program[data-calendar-style=poster] .week-period{font-size:.875rem;color:var(--trip-muted)}
+.journey-pages #program[data-calendar-style=poster] .week-days .program-day{
+  grid-template-columns:4rem minmax(0,1fr);gap:1.5rem;align-items:start;
+  min-height:9rem;padding:1.25rem 0;border-color:var(--trip-line);
+}
+.journey-pages #program[data-calendar-style=poster] .program-date-group{display:block}
+.journey-pages #program[data-calendar-style=poster] .program-date time{display:flex;flex-direction:column;gap:.35rem;align-items:start}
+.journey-pages #program[data-calendar-style=poster] .program-date b,
+.journey-pages #program[data-calendar-style=poster] .program-day[data-rest=true] .program-date b,
+.journey-pages #program[data-calendar-style=poster] .program-arrival .program-date b{
+  font:450 2.5rem/1 var(--font-text);letter-spacing:-.04em;color:var(--trip-ink);-webkit-text-stroke:0;
+}
+.journey-pages #program[data-calendar-style=poster] .program-date span,
+.journey-pages #program[data-calendar-style=poster] .program-weekday{font-size:.75rem;line-height:1.4;color:var(--trip-muted)}
+.journey-pages #program[data-calendar-style=poster] .program-events,
+.journey-pages #program[data-calendar-style=poster] .program-day[data-rest=true] .program-events,
+.journey-pages #program[data-calendar-style=poster] .program-arrival .program-events{
+  font:400 1.0625rem/1.5 var(--font-text);letter-spacing:0;gap:.85rem;max-width:none;
+}
+.journey-pages #program[data-calendar-style=poster] .program-day:not([data-rest=true]) .program-events li:has(time:empty){font:inherit}
+.journey-pages #program[data-calendar-style=poster] .program-events li,
+.journey-pages #program[data-calendar-style=poster] .program-events li:has(time:empty){grid-template-columns:3.2rem minmax(0,1fr);gap:.75rem}
+.journey-pages #program[data-calendar-style=poster] .program-events time{font:400 .8125rem/1.5 var(--font-text);color:var(--trip-muted)}
+.journey-pages #program[data-calendar-style=poster] .program-events>li>span{grid-column:2;text-wrap:pretty}
+.journey-pages #program[data-calendar-style=poster] .program-day[data-rest=true] .program-events{color:var(--trip-accent)}
+.journey-pages #program[data-calendar-style=poster] .program-notes{
+  display:grid;grid-template-columns:1fr 2fr;gap:var(--trip-gap);max-width:none;
+  border-top:1px solid var(--trip-line);padding-top:1.5rem;margin-top:1.5rem;font-size:.875rem;
+}
+.journey-pages .program-notes p+p{margin-top:0;max-width:64ch}
+.journey-pages .program-contact{display:flex;align-items:start;justify-content:space-between;gap:2rem;padding-top:1.5rem;border-color:var(--trip-line)}
+.journey-pages .program-contact h3{font:550 1.25rem/1.3 var(--font-text);letter-spacing:0}
+.journey-pages .program-contact p{font-size:.9375rem;font-weight:350}
+.journey-pages .program-contact>a{font-size:.9375rem;margin:0}
+
+/* The travel document becomes information alongside a photograph. */
+.journey-pages #travel[data-travel-style=ticket]{
+  --journey-ink:var(--trip-ink);--journey-muted:var(--trip-muted);
+  --travel-pad:clamp(4.5rem,7vw,7rem);padding-block:var(--travel-pad);
+  background:none;color:var(--trip-ink);border-top:1px solid var(--trip-line);
+  padding-bottom:clamp(2.5rem,4vw,4rem);
+}
+.journey-pages #travel[data-travel-style=ticket] .journey-heading{grid-template-columns:1.2fr 1fr;gap:.75rem var(--trip-gap);color:inherit;margin-bottom:2.5rem}
+.journey-pages .journey-meta{margin-bottom:.75rem}
+.journey-pages .journey-lead{max-width:42ch}
+.journey-pages .travel-ticket{padding:0;background:none;backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:none;border-radius:0}
+.journey-pages .ticket-top{grid-template-columns:1fr 1fr;gap:var(--trip-gap);border-bottom:1px solid var(--trip-line);padding-bottom:1.5rem;margin-bottom:2.5rem}
+.journey-pages .ticket-top::before,.journey-pages .ticket-top::after{display:none}
+.journey-pages .ticket-destination{font:450 1.5rem/1.2 var(--font-text);letter-spacing:-.025em}
+.journey-pages .ticket-dates{justify-content:start;gap:3rem}
+.journey-pages .ticket-dates dt,.journey-pages .ticket-dates time>span{font-size:.75rem;color:var(--trip-muted)}
+.journey-pages .ticket-dates strong{font:450 2rem/1 var(--font-text)}
+.journey-pages .ticket-body{grid-template-columns:1fr 1fr;gap:var(--trip-gap);align-items:center}
+.journey-pages .ticket-body .journey-photo{width:min(100%,365px);justify-self:start}
+.journey-pages .ticket-body .journey-photo-frame{padding:.5rem;background:var(--glass-fill);box-shadow:inset 0 0 0 1px var(--glass-edge)}
+.journey-pages .ticket-body .journey-photo img{border-radius:1.25rem}
+.journey-pages .ticket-information{gap:2rem}
+.journey-pages #travel[data-travel-style] article h3{font:550 1.25rem/1.35 var(--font-text);letter-spacing:-.015em;margin-bottom:.65rem}
+.journey-pages .stay-jump{margin-top:.5rem;font-size:.9375rem}
+.journey-pages .hotel-directory{margin-top:3.5rem;padding-top:2rem;border-color:var(--trip-line)}
+.journey-pages .hotels-heading h3{font:550 1.75rem/1.2 var(--font-text);letter-spacing:-.025em}
+.journey-pages .hotel-name>span{font-weight:450}
+.journey-pages .hotel-description{font-weight:350;color:var(--trip-muted)}
+.journey-pages .has-hotel-preview .hotel-list{min-height:max(30rem,var(--hotel-preview-height,0px))}
+.journey-pages .has-hotel-preview .hotel-list>li{width:29%}
+.journey-pages .has-hotel-preview .hotel-preview{width:66%}
+.journey-pages .has-hotel-preview .hotel-images figure:nth-child(2){margin-top:0}
+.journey-pages .hotel-preview-title{font-size:1rem;font-weight:500;margin-bottom:1rem}
+.journey-pages .hotel-images{gap:1rem}
+.journey-pages .hotel-images img{box-shadow:none}
+.journey-pages .hotel-picker label:has(:checked),.journey-pages .has-hotel-preview .is-previewed .hotel-name{background:#163b490b}
+.journey-pages #travel .hotel-name:hover,.journey-pages .hotel-picker label:hover{background:#163b4912;transform:none}
+
+/* Six subjects form an index of the city. All original prose remains in the disclosures. */
+.journey-pages .running-guide{
+  --guide-pad-top:clamp(4.5rem,7vw,7rem);padding-bottom:var(--guide-pad-top);
+  background:none;color:var(--trip-ink);border-top:1px solid var(--trip-line);
+}
+.journey-pages .guide-heading{grid-template-columns:1.2fr 1fr;gap:1rem var(--trip-gap);margin-bottom:3rem}
+.journey-pages .guide-heading>.section-label{margin:0}
+.journey-pages .guide-layout{display:block}
+.journey-pages .running-guide:not(.has-guide-disclosures) .guide-contents{position:static;display:flex;flex-wrap:wrap;gap:.25rem 1.5rem;margin-bottom:2rem}
+.journey-pages .running-guide:not(.has-guide-disclosures) .guide-contents p{flex-basis:100%}
+.journey-pages .guide-byline{font-size:.8125rem;color:var(--trip-muted);font-weight:350}
+.journey-pages .guide-section,.journey-pages .has-guide-disclosures .guide-section+.guide-section{
+  --guide-section-inset:0rem;margin-top:0;padding-top:0;border-top:1px solid var(--trip-line);
+}
+.journey-pages .guide-section:last-child{border-bottom:1px solid var(--trip-line)}
+.journey-pages .guide-summary{grid-template-columns:minmax(12rem,.7fr) minmax(0,1fr) 24px;gap:1rem;padding:1.5rem 0;align-items:center;min-height:88px}
+.journey-pages .running-guide .guide-summary h3{grid-column:1;font:450 clamp(1.2rem,2vw,1.75rem)/1.3 var(--font-text);letter-spacing:-.025em;margin:0}
+.journey-pages .guide-topic-note{grid-column:2;font-size:.9375rem;font-weight:350;color:var(--trip-muted)}
+.journey-pages .guide-toggle{grid-column:3;grid-row:1}
+.journey-pages .guide-summary:hover{background:#163b4905}
+.journey-pages .guide-detail-body{padding:1rem 0 3rem}
+.journey-pages .running-guide h4{font-size:1.125rem;font-weight:550}
+.journey-pages .running-route{grid-template-columns:9rem minmax(0,1fr);padding:1.25rem 0;gap:2rem}
+.journey-pages .route-measure>strong{font:450 1.5rem/1.25 var(--font-text);letter-spacing:-.025em}
+.journey-pages .route-measure>span{color:var(--trip-muted)}
+.journey-pages .running-route p{max-width:64ch}
+.journey-pages .currency-reference{background:#163b4906;box-shadow:none}
+.journey-pages .guide-endnote,.journey-pages .has-guide-disclosures .guide-endnote{margin:1.5rem 0 0;max-width:76ch;font-size:.8125rem;color:var(--trip-muted)}
+
+
+@media(max-width:1000px){
+ .journey-pages #program[data-calendar-style=poster] .chapter-heading{display:block}
+ .journey-pages #program[data-calendar-style=poster] .program-intro{margin-top:1.5rem}
+ .journey-pages #program[data-calendar-style=poster] .program-weeks{gap:2rem}
+ .journey-pages #program[data-calendar-style=poster] .week-days .program-day{grid-template-columns:3.5rem minmax(0,1fr);gap:1rem}
+ .journey-pages #program[data-calendar-style=poster] .program-events li{display:block}
+ .journey-pages #program[data-calendar-style=poster] .program-events time{display:block;margin-bottom:.2rem}
+ .journey-pages #program[data-calendar-style=poster] .program-events time:empty{display:none}
+}
+@media(max-width:760px){
+ .journey-pages .weather-section{padding:2rem var(--gutter);gap:1.75rem}
+ .journey-pages .weather-heading{display:flex;flex-wrap:wrap;gap:.5rem 1rem}
+ .journey-pages .weather-heading h2{font-size:1.2rem}
+ .journey-pages .forecast-date{margin:0}
+ .journey-pages .forecast-timeline{display:block}
+ .journey-pages .forecast-brief{gap:1.5rem 1rem}
+ .journey-pages .chapter{--chapter-pad:3.5rem}
+ .journey-pages .chapter h2,.journey-pages #travel[data-travel-style=ticket] h2,.journey-pages .running-guide h2{font-size:clamp(1.65rem,8.7vw,3rem);hyphens:auto;overflow-wrap:normal}
+ .journey-pages .about-layout{display:block}
+ .journey-pages .about-print{width:min(82%,330px);margin:2.5rem 0 0 auto}
+ .journey-pages #memories[data-memory-style=zine]{padding-top:.5rem;padding-bottom:3rem}
+ .journey-pages [data-memory-style=zine] .memory-intro{display:block;margin-bottom:2rem}
+ .journey-pages [data-memory-style=zine] .memory-description{margin-top:1rem;max-width:36ch}
+ .journey-pages [data-memory-style=zine] .memory-intro h2{font-size:clamp(2rem,8vw,2.75rem)}
+ .journey-pages [data-memory-style=zine] .memory-collection{display:block}
+ .journey-pages [data-memory-style=zine] .memory-frame:nth-child(1){width:78%;margin:0 0 2rem}
+ .journey-pages [data-memory-style=zine] .memory-frame:nth-child(2){width:100%;margin:0 0 2rem}
+ .journey-pages [data-memory-style=zine] .memory-frame:nth-child(3){width:88%;margin:0 0 0 auto}
+ .journey-pages [data-memory-style=zine] .memory-frame .memory-caption{font-size:.9375rem}
+ .journey-pages .october{display:block;padding-bottom:3rem}
+ .journey-pages .october-climate{margin-top:1.5rem}
+ .journey-pages .october-temperatures{gap:1rem}
+ .journey-pages .october-temperatures dd{font-size:1.2rem}
+ .journey-pages #program[data-calendar-style=poster]{--chapter-pad:3.5rem}
+ .journey-pages #program[data-calendar-style=poster] h2{font-size:clamp(1.65rem,8.7vw,3rem);hyphens:auto;overflow-wrap:normal}
+ .journey-pages #program[data-calendar-style=poster] .program-weeks{display:block}
+ .journey-pages #program[data-calendar-style=poster] .program-week+.program-week{margin-top:2.5rem}
+ .journey-pages #program[data-calendar-style=poster] .week-days .program-day{min-height:0;padding:1.25rem 0}
+ .journey-pages #program[data-calendar-style=poster] .program-date b{font-size:2.25rem}
+ .journey-pages #program[data-calendar-style=poster] .program-events{font-size:1rem}
+ .journey-pages #program[data-calendar-style=poster] .program-events li:has(time:empty){display:block}
+ .journey-pages #program[data-calendar-style=poster] .program-notes{display:block}
+ .journey-pages .program-notes p+p{margin-top:1rem}
+ .journey-pages .program-contact{display:block}
+ .journey-pages .program-contact>a{margin-top:1rem}
+ .journey-pages #travel[data-travel-style=ticket]{--travel-pad:3.5rem}
+ .journey-pages #travel[data-travel-style=ticket] .journey-heading{display:block;margin-bottom:2rem}
+ .journey-pages .journey-lead{margin-top:1.25rem}
+ .journey-pages .ticket-top{grid-template-columns:1fr;gap:1.5rem;margin-bottom:2rem}
+ .journey-pages .ticket-dates{gap:2.5rem}
+ .journey-pages .ticket-body{display:flex;flex-direction:column-reverse;gap:2rem;align-items:stretch}
+ .journey-pages .ticket-body .journey-photo{width:82%;margin-left:auto}
+ .journey-pages .hotel-directory{margin-top:2.5rem}
+ .journey-pages .hotels-heading h3{font-size:1.5rem}
+ .journey-pages .running-guide{--guide-pad-top:3.5rem}
+ .journey-pages .guide-heading{display:block;margin-bottom:2rem}
+ .journey-pages .guide-heading>.section-label{margin-bottom:.75rem}
+ .journey-pages .guide-heading h2{margin-bottom:1.25rem}
+ .journey-pages .guide-summary{grid-template-columns:minmax(0,1fr) 24px;gap:.35rem 1rem;min-height:92px;padding:1.25rem 0}
+ .journey-pages .guide-topic-note{grid-column:1;font-size:.875rem}
+ .journey-pages .guide-toggle{grid-column:2;grid-row:1/3}
+ .journey-pages .running-guide .guide-summary h3{font-size:1.25rem}
+ .journey-pages .running-route{display:block}
+ .journey-pages .route-measure{margin-bottom:.75rem}
+ .journey-pages .guide-detail-body{padding:.5rem 0 2rem}
+}
+@container(max-width:21em){
+ .journey-pages #program[data-calendar-style=poster] .week-days .program-day,
+ .journey-pages #program[data-calendar-style=poster] .program-arrival .program-day{grid-template-columns:minmax(0,1fr);gap:1rem}
+ .journey-pages #program[data-calendar-style=poster] .program-date-group{display:flex;flex-wrap:wrap;align-items:baseline;gap:.5rem .75rem}
+ .journey-pages #program[data-calendar-style=poster] .program-date time{flex-direction:row;align-items:baseline;gap:.5rem}
+}
+@media(prefers-reduced-motion:reduce){.journey-pages{transition:none}}
+@media print{
+ .journey-pages{background:#fff;color:#000}
+ .journey-pages #program[data-calendar-style=poster] .program-weeks{display:block}
+ .journey-pages #program[data-calendar-style=poster] .program-events,.journey-pages #program[data-calendar-style=poster] .program-day[data-rest=true] .program-events{color:#000}
+}

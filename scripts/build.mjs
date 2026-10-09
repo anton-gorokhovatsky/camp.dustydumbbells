@@ -140,6 +140,7 @@ for (const file of [
   "direction/travel-ticket.css",
   "direction/travel-ticket.js",
   "direction/interface.css",
+  "direction/journey.css",
   "direction/navigation.js",
   "direction/atmosphere.js",
   "direction/screen.js",

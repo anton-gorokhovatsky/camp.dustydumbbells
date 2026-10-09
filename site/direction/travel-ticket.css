@@ -24,12 +24,12 @@
 .journey-photo>a:active .journey-photo-frame{filter:brightness(.96)}
 
 /* A single glass ticket gives the destination and the arrival/departure dates a shared frame. */
-#travel[data-travel-style=ticket]{--ticket-backdrop:#376e88;background:var(--ticket-backdrop)}
+#travel[data-travel-style=ticket]{--ticket-backdrop:var(--environment-ticket,#386b81);background:var(--ticket-backdrop)}
 [data-travel-style=ticket] .journey-heading{display:grid;grid-template-columns:1fr 1fr;gap:0 3rem;color:#fff}
 [data-travel-style=ticket] .journey-meta{grid-column:1/-1}
 #travel[data-travel-style=ticket] h2{font-size:clamp(2rem,3.4vw,3.5rem);margin:0}
 [data-travel-style=ticket] .journey-lead{align-self:end;max-width:38ch}
-.travel-ticket{--ticket-pad:clamp(1.5rem,3.5vw,3.5rem);background:var(--glass-fill);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);box-shadow:inset 0 0 0 1px var(--glass-edge),var(--glass-shadow);border-radius:3rem;corner-shape:superellipse(1.5);padding:var(--ticket-pad);position:relative}
+.travel-ticket{--ticket-pad:clamp(1.5rem,3.5vw,3.5rem);background:var(--glass-fill);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);box-shadow:inset 0 0 0 1px var(--glass-edge),var(--glass-shadow);border-radius:3rem;corner-shape:superellipse(1.5);padding:var(--ticket-pad);position:relative;color-scheme:light}
 .ticket-top{position:relative;display:grid;grid-template-columns:1.1fr 1fr;align-items:center;gap:2rem;padding-bottom:2rem;margin-bottom:2.5rem;border-bottom:2px dashed #153b493b}
 .ticket-top::before,.ticket-top::after{content:'';position:absolute;bottom:-1rem;width:2rem;height:2rem;border-radius:50%;background:var(--ticket-backdrop);pointer-events:none}
 .ticket-top::before{left:calc(-1 * var(--ticket-pad) - 1rem)}
@@ -105,7 +105,7 @@
 @keyframes hotel-arrival{from{opacity:.55;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 
 /* An open guide groups related details and gives independent subjects more space. */
-.running-guide{--guide-pad-top:5rem;background:#edf3f3;color:#153b49;padding:var(--guide-pad-top) var(--gutter) 4rem;max-width:none;overflow-wrap:anywhere;scroll-margin-top:calc(1.25rem - var(--guide-pad-top))}
+.running-guide{--guide-pad-top:5rem;background:var(--environment-guide,#edf3f3);color:#153b49;padding:var(--guide-pad-top) var(--gutter) 4rem;max-width:none;overflow-wrap:anywhere;scroll-margin-top:calc(1.25rem - var(--guide-pad-top))}
 .guide-heading{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem 4rem;align-items:end;margin-bottom:4rem}
 .guide-heading>.section-label{grid-column:1/-1;margin:0;font-size:.8125rem}
 .running-guide h2{font:italic 900 clamp(3rem,5.5vw,6rem)/.98 'Museo DD',Arial,sans-serif;letter-spacing:-.035em;margin:0}

@@ -111,6 +111,26 @@ const mixColor = (left, right, amount) =>
   `rgb(${rgb(left)
     .map((v, i) => Math.round(mix(v, rgb(right)[i], amount)))
     .join(" ")})`;
+
+// Keep the selected pigments and readable content planes. All sections use
+// the same solar interpolation and weather cast as the photographic scene.
+const pageFields = {
+  morning: { reading: '#455d63', zine: '#d6edb9', poster: '#ffa276', ticket: '#416b77', guide: '#f2eee1', footer: '#233e47' },
+  day: { reading: '#365a66', zine: '#c7f2b7', poster: '#fc754f', ticket: '#386b81', guide: '#edf3f3', footer: '#1b3d49' },
+  evening: { reading: '#55494d', zine: '#d6d8ad', poster: '#eda17e', ticket: '#5b5b6f', guide: '#f2e6d9', footer: '#373742' },
+  night: { reading: '#152f3b', zine: '#a0bbaa', poster: '#d59a84', ticket: '#254757', guide: '#b8c9ce', footer: '#102d37' },
+};
+const blendHex = (left, right, amount) => '#' + rgb(left)
+  .map((value, index) => Math.round(mix(value, rgb(right)[index], amount)).toString(16).padStart(2, '0'))
+  .join('');
+function pagePalette(from, to, amount, effects) {
+  const overcast = clamp(effects.clouds * .24 + effects.rain * .06 + effects.fog * .14 + effects.snow * .1, 0, .44);
+  return Object.fromEntries(Object.keys(pageFields.day).map(role => {
+    const pigment = blendHex(pageFields[from][role], pageFields[to][role], amount);
+    const cast = ['reading', 'ticket', 'footer'].includes(role) ? '#244654' : '#93aab2';
+    return [`--environment-${role}`, blendHex(pigment, cast, overcast)];
+  }));
+}
 export const SCENARIOS = Object.freeze({
   clear: {
     clouds: 5,
@@ -273,6 +293,7 @@ export function environmentAt({
     direction: effects.direction,
     rain,
     css: {
+      ...pagePalette(fromPhase, toPhase, smooth, effects),
       "--paper": surface.paper,
       "--ink": surface.ink,
       "--muted": surface.muted,
