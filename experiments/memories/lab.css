@@ -1,0 +1,143 @@
+/* Local concepts only. The canonical page and published build never load this file. */
+.memories-lab{background:#183c45;color:#f7f7f7}
+.memories-lab-header{display:flex;align-items:center;justify-content:space-between;gap:2rem;padding:2rem var(--gutter)}
+.memories-lab-header img{width:140px}
+.memories-lab a,.memory-review a{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.2em}
+.memories-lab a:hover,.memory-review a:hover{text-decoration-thickness:2px}
+.memories-lab-home{padding:2rem var(--gutter) 6rem;max-width:1800px;margin:auto}
+.lab-kicker{font-size:.875rem;margin-bottom:1.2rem}
+.memories-lab h1{font:italic 900 clamp(3.5rem,9vw,9rem)/.96 'Museo DD',Arial,sans-serif;letter-spacing:-.04em}
+.lab-description{font-size:1.2rem;max-width:32rem;margin:1.5rem 0 3.5rem;line-height:1.5}
+.memory-concepts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2rem}
+.concept-preview{display:block;border-radius:1.4rem;corner-shape:superellipse(1.6);box-shadow:0 10px 32px #071e332b;transition:transform .2s}
+.concept-preview img{width:100%;height:auto;aspect-ratio:8/5;object-fit:cover;border-radius:inherit;corner-shape:inherit}
+.concept-preview:hover{transform:translateY(-4px)}
+.concept-copy{margin-top:1.25rem}
+.concept-number{font-size:.875rem;opacity:.8}
+.concept-copy h2{font:italic 900 clamp(1.6rem,2.2vw,2.4rem)/1.15 'Museo DD',Arial,sans-serif;margin:.5rem 0 .8rem}
+.concept-copy>p:last-child{font-size:1rem;line-height:1.5;max-width:34rem}
+
+#memories[data-memory-style]{margin-inline:calc(-1*var(--gutter));padding:1.5rem var(--gutter) 5rem;scroll-margin-top:0;max-width:none;min-width:0}
+#memories[data-memory-style] .memory-review{display:flex;flex-wrap:wrap;gap:.25rem 1.5rem;padding:0 7rem 1.5rem 0;font-size:.8125rem;line-height:1.5}
+.memory-review a{min-height:44px;display:inline-flex;align-items:center}
+.memory-review a[aria-current=page]{font-weight:700;text-decoration-thickness:2px}
+.memory-intro h2{font:italic 900 clamp(3rem,7.8vw,8rem)/.98 'Museo DD',Arial,sans-serif;letter-spacing:-.04em;hyphens:auto}
+.memory-intro h2 span{display:block}
+.memory-context{font-size:.8125rem;letter-spacing:.04em;margin-bottom:1.1rem}
+.memory-description{font-size:1.125rem;line-height:1.5;max-width:30rem;margin-top:1.5rem;text-wrap:pretty}
+.memory-frame{min-width:0;margin:0}
+.memory-image{display:block;min-width:0}
+.memory-frame>a{display:block;color:inherit;border-radius:1.5rem;corner-shape:superellipse(1.6)}
+.memory-frame img{width:100%;height:auto;border-radius:1.5rem;corner-shape:superellipse(1.6);transition:filter .25s,transform .25s}
+.memory-frame>a:hover img{filter:brightness(1.08)}
+.memory-frame>a:active img{filter:brightness(.92)}
+.memory-frame>a:focus-visible{outline:3px solid currentColor;outline-offset:7px}
+.memory-caption{display:flex;justify-content:space-between;gap:1rem;margin-top:1rem;align-items:baseline;font-size:1rem;line-height:1.4}
+.memory-name{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.2em}
+.memory-number{font-size:.75rem;white-space:nowrap}
+
+/* 1. A native film strip: a title panel followed by full, uncropped photographs. */
+#memories[data-memory-style=film]{background:#102c35;color:#f7f7f7}
+[data-memory-style=film] .memory-strip{display:flex;gap:2.2rem;align-items:end;overflow-x:auto;scroll-snap-type:x proximity;scrollbar-color:#f7f7f7 #ffffff20;scrollbar-width:thin;scroll-padding-inline:0;padding:.8rem .5rem 1.8rem;min-width:0}
+[data-memory-style=film] .memory-intro{flex:0 0 clamp(22rem,36vw,34rem);align-self:center;scroll-snap-align:start;padding-right:1rem}
+[data-memory-style=film] .memory-intro h2{font-size:clamp(3rem,5.1vw,5rem)}
+[data-memory-style=film] .memory-description{font-size:1.2rem;max-width:22rem}
+[data-memory-style=film] .memory-frame{flex:0 0 auto;width:calc(clamp(22rem,64svh,42rem)*2/3);scroll-snap-align:start}
+[data-memory-style=film] .memory-frame img{aspect-ratio:2/3;object-fit:contain}
+[data-memory-style=film] .film-controls{display:flex;justify-content:flex-end;gap:1rem;margin-top:1rem}
+.film-controls button{min-width:88px;min-height:44px;padding:.5rem 1rem;border-radius:999px;background:var(--glass-fill);backdrop-filter:var(--glass-blur);color:var(--glass-ink);box-shadow:inset 0 0 0 1px var(--glass-edge);transition:background .2s,transform .2s}
+.film-controls button:hover:not(:disabled){background:#ffffffdf}
+.film-controls button:active:not(:disabled){transform:scale(.96)}
+.film-controls button:disabled{opacity:.4;cursor:default}
+
+/* 2. Soft openings in the sea-coloured field; a single matte rim around each image. */
+[data-memory-style=portholes] .memory-intro{text-align:center;margin:0 auto 1.5rem}
+[data-memory-style=portholes] .memory-intro h2{font-size:clamp(3rem,6.6vw,6.7rem)}
+[data-memory-style=portholes] .memory-intro h2 span{display:inline}
+[data-memory-style=portholes] .memory-description{margin-inline:auto}
+[data-memory-style=portholes] .memory-collection{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(1.5rem,4vw,4rem);align-items:start}
+[data-memory-style=portholes] .memory-frame:first-child{margin-top:1.5rem}
+[data-memory-style=portholes] .memory-frame:last-child{margin-top:1.5rem}
+[data-memory-style=portholes] .memory-image{padding:.5rem;border-radius:50%;background:var(--glass-fill);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);box-shadow:inset 0 0 0 1px var(--glass-edge),var(--glass-shadow)}
+[data-memory-style=portholes] .memory-frame img{aspect-ratio:4/5;object-fit:cover;object-position:50% 65%;border-radius:50%;corner-shape:round}
+[data-memory-style=portholes] .memory-frame>a{border-radius:45% 45% 1rem 1rem;corner-shape:round}
+[data-memory-style=portholes] .memory-caption{padding:.75rem .75rem 0;font-size:1.0625rem}
+
+/* 3. Three large asymmetric editorial spreads. */
+#memories[data-memory-style=zine]{background:#c7f2b7;color:#153c3e;margin-inline:0;padding-top:2rem;padding-bottom:clamp(4rem,8vw,8rem);overflow-wrap:normal}
+[data-memory-style=zine] .memory-intro{display:grid;grid-template-columns:minmax(0,1.8fr) minmax(0,1fr);gap:0 clamp(2rem,5vw,5rem);align-items:end;margin-bottom:clamp(2.5rem,4vw,4rem)}
+[data-memory-style=zine] .memory-meta{grid-column:1/-1;display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:.5rem 2rem;margin-bottom:1.5rem}
+[data-memory-style=zine] .memory-meta .memory-context{margin:0}
+#memories[data-memory-style=zine] .memory-review{margin:0;padding:0;font-size:.8125rem}
+[data-memory-style=zine] .memory-intro h2{font-size:clamp(3rem,6vw,6rem);line-height:.98}
+[data-memory-style=zine] .memory-intro h2 span{display:block}
+[data-memory-style=zine] .memory-description{margin:0 0 .4rem;font-size:clamp(1.125rem,1.6vw,1.4rem);line-height:1.5;max-width:25ch}
+[data-memory-style=zine] .memory-collection{display:grid;gap:clamp(4rem,8vw,8rem)}
+[data-memory-style=zine] .memory-frame>a{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:clamp(2rem,4.5vw,4.5rem);align-items:center;border-radius:0}
+[data-memory-style=zine] .memory-image{width:100%;max-width:36rem;justify-self:end;transform:rotate(-1deg)}
+[data-memory-style=zine] .memory-frame img{border-radius:2rem;corner-shape:superellipse(1.6);box-shadow:0 8px 24px #153c3e18}
+[data-memory-style=zine] .memory-caption{display:flex;flex-direction:column;align-items:start;gap:.8rem;margin:0;font:italic 900 clamp(3rem,7vw,7rem)/1.02 'Museo DD',Arial,sans-serif;letter-spacing:-.035em;min-width:0}
+[data-memory-style=zine] .memory-name{margin:0;font:inherit;text-decoration-thickness:1px;text-underline-offset:.12em;text-wrap:balance;hyphens:auto}
+[data-memory-style=zine] .memory-number{font:450 .875rem/1.4 'Akt DD',Arial,sans-serif;letter-spacing:0;order:-1}
+[data-memory-style=zine] .memory-frame:nth-child(2) .memory-image{grid-column:2;grid-row:1;justify-self:start;transform:rotate(1deg)}
+[data-memory-style=zine] .memory-frame:nth-child(2) .memory-caption{grid-column:1;grid-row:1}
+[data-memory-style=zine] .memory-frame:last-child .memory-image{transform:rotate(-.7deg)}
+[data-memory-style=zine] .memory-frame>a:hover .memory-name{ text-decoration-thickness:2px }
+[data-memory-style=zine] .memory-frame>a:focus-visible{outline:none}
+[data-memory-style=zine] .memory-frame>a:focus-visible .memory-image{outline:3px solid currentColor;outline-offset:8px;border-radius:2rem;corner-shape:superellipse(1.6)}
+[data-memory-style=zine] .memory-frame>a:focus-visible .memory-name{text-decoration-thickness:3px}
+
+@media(max-width:900px){
+ .memory-concepts{grid-template-columns:1fr;gap:3rem}
+ .memory-concept{display:grid;grid-template-columns:1.2fr 1fr;gap:1.5rem;align-items:center}
+ .concept-copy{margin:0}
+ [data-memory-style=film] .memory-intro{flex-basis:22rem}
+ [data-memory-style=portholes] .memory-collection{gap:1.5rem}
+ [data-memory-style=portholes] .memory-caption{display:block;font-size:.9375rem}
+ [data-memory-style=portholes] .memory-number{display:block;margin-top:.4rem}
+ [data-memory-style=zine] .memory-intro{grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:0 2rem}
+ [data-memory-style=zine] .memory-intro h2{font-size:clamp(3rem,6.8vw,5rem)}
+ [data-memory-style=zine] .memory-description{font-size:1rem}
+}
+@media(max-width:600px){
+ .memories-lab-header{padding:1.5rem var(--gutter);gap:1rem;font-size:.875rem}
+ .memories-lab-header img{width:110px}
+ .memories-lab-home{padding-top:1.5rem}
+ .memories-lab h1{font-size:clamp(3.1rem,14vw,5rem)}
+ .lab-description{font-size:1rem;margin-bottom:2.5rem}
+ .memory-concept{display:block}
+ .concept-copy{margin-top:1rem}
+ #memories[data-memory-style]{padding-top:.75rem;padding-bottom:3rem}
+ #memories[data-memory-style] .memory-review{padding-right:5rem;gap:0 1rem;font-size:.75rem}
+ .memory-intro h2{font-size:clamp(2rem,9vw,3rem)}
+ .memory-context{font-size:.75rem;margin-bottom:1rem}
+ .memory-description{font-size:1rem;margin-top:1.2rem}
+ [data-memory-style=film] .memory-strip{display:grid;grid-template-columns:minmax(0,1fr);gap:2.5rem;overflow:visible;padding:0;scroll-snap-type:none}
+ [data-memory-style=film] .memory-intro{padding:0}
+ [data-memory-style=film] .memory-intro h2{font-size:clamp(2rem,9vw,3rem)}
+ [data-memory-style=film] .memory-description{font-size:1rem}
+ [data-memory-style=film] .memory-frame{width:100%;max-width:24rem;justify-self:center}
+ [data-memory-style=film] .film-controls{display:none}
+ [data-memory-style=portholes] .memory-intro{margin-bottom:3rem}
+ [data-memory-style=portholes] .memory-intro h2{font-size:clamp(2rem,9vw,3rem)}
+ [data-memory-style=portholes] .memory-intro h2 span{display:block}
+ [data-memory-style=portholes] .memory-collection{grid-template-columns:minmax(0,1fr);gap:3rem;padding:.5rem}
+ [data-memory-style=portholes] .memory-frame{width:85%;margin:0!important}
+ [data-memory-style=portholes] .memory-frame:nth-child(2){justify-self:end}
+ [data-memory-style=portholes] .memory-frame:nth-child(3){justify-self:start}
+ [data-memory-style=portholes] .memory-caption{display:flex;font-size:1rem}
+ [data-memory-style=portholes] .memory-number{display:inline;margin:0}
+ #memories[data-memory-style=zine]{padding-top:1.25rem}
+ [data-memory-style=zine] .memory-meta{margin-bottom:1.25rem;gap:.25rem 1rem}
+ [data-memory-style=zine] .memory-intro{display:block;margin-bottom:2.5rem}
+ [data-memory-style=zine] .memory-intro h2{font-size:clamp(2rem,10vw,3.5rem)}
+ [data-memory-style=zine] .memory-intro h2 span{display:block}
+ [data-memory-style=zine] .memory-description{margin-top:1.25rem;max-width:29ch}
+ [data-memory-style=zine] .memory-collection{gap:3.5rem;padding-inline:.2rem}
+ [data-memory-style=zine] .memory-frame>a{grid-template-columns:minmax(0,1fr);gap:1.25rem}
+ [data-memory-style=zine] .memory-image{width:100%;max-width:26rem;justify-self:center;transform:rotate(-.7deg)}
+ [data-memory-style=zine] .memory-frame:nth-child(2) .memory-image,[data-memory-style=zine] .memory-frame:nth-child(2) .memory-caption{grid-column:auto;grid-row:auto}
+ [data-memory-style=zine] .memory-frame:nth-child(2) .memory-image{justify-self:center;transform:rotate(.7deg)}
+ [data-memory-style=zine] .memory-caption{font-size:clamp(2.5rem,11vw,3.5rem);gap:.5rem}
+}
+@media(prefers-reduced-motion:reduce){.memory-frame img,.film-controls button,.concept-preview{transition:none}}

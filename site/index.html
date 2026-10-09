@@ -11,7 +11,10 @@
   <link rel="preload" href="{{BASE}}fonts/akt-variable-e3b50a6331.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="stylesheet" href="./direction/screen.css" />
   <link rel="stylesheet" href="./direction/program-poster.css" />
+  <link rel="stylesheet" href="./direction/memories-zine.css" />
+  <link rel="stylesheet" href="./direction/travel-ticket.css" />
   <script type="module" src="./direction/screen.js"></script>
+  <script type="module" src="./direction/travel-ticket.js"></script>
 </head>
 <body id="top">
   <a class="skip-link" href="#about">К содержанию</a>
@@ -85,15 +88,9 @@
           <figcaption>Утренние пробежки по побережью</figcaption>
         </figure>
       </div>
-      <div id="memories" class="memories">
-        <div class="chapter-heading"><h2>Между тренировками</h2><p>Живописные райды, походы в горы и невероятные закаты.</p></div>
-        <div class="memory-photos">
-          <figure class="archive-print"><a href="{{BASE}}assets/92d933d13edb-IMG_6960.JPG" data-photo="9" data-gallery="memories" aria-label="Увеличить: вид с горной тропы"><img src="{{BASE}}assets/92d933d13edb-IMG_6960.JPG" width="1680" height="2520" loading="lazy" alt="Вид с горной тропы на лес, побережье и море"></a><figcaption>Выше, к горам</figcaption></figure>
-          <figure class="archive-print"><a href="{{BASE}}assets/c96ccc7869b3-IMG_6968.JPG" data-photo="4" data-gallery="memories" aria-label="Увеличить: прогулка по пирсу"><img src="{{BASE}}assets/c96ccc7869b3-IMG_6968.JPG" width="1680" height="2520" loading="lazy" alt="Участники DD идут по пирсу у моря"></a><figcaption>Время у моря</figcaption></figure>
-          <figure class="archive-print"><a href="{{BASE}}assets/1aa538bb2c2c-IMG_6954.JPG" data-photo="3" data-gallery="memories" aria-label="Увеличить: бегуны на набережной"><img src="{{BASE}}assets/1aa538bb2c2c-IMG_6954.JPG" width="1680" height="2520" loading="lazy" alt="Группа бегунов уходит по набережной к горам"></a><figcaption>Навстречу горам</figcaption></figure>
-        </div>
-      </div>
-    </section>
+      </section>
+
+    <section id="memories" class="memories" data-memory-style="zine" aria-labelledby="memory-title"><div class="memory-intro"><div class="memory-meta"><p class="memory-context">Кэмп в Фетхие, 2025</p></div><h2 id="memory-title"><span>Между</span> <span>тренировками</span></h2><p class="memory-description">Живописные райды, походы в горы и невероятные закаты.</p></div><p class="sr-only" id="memory-open">Открыть фотографию.</p><div class="memory-collection"><figure id="memory-1" class="memory-frame" aria-labelledby="memory-name-1"><a href="{{BASE}}assets/92d933d13edb-IMG_6960.JPG" data-photo="9" data-gallery="memories" aria-labelledby="memory-name-1" aria-describedby="memory-open"><span class="memory-image"><img src="{{BASE}}assets/92d933d13edb-IMG_6960.JPG" width="1680" height="2520" loading="eager" alt="Вид с горной тропы на лес, побережье и море"></span><div class="memory-caption"><span class="memory-number" aria-hidden="true">1 / 3</span><h3 class="memory-name" id="memory-name-1">Выше, к горам</h3></div></a></figure><figure id="memory-2" class="memory-frame" aria-labelledby="memory-name-2"><a href="{{BASE}}assets/c96ccc7869b3-IMG_6968.JPG" data-photo="4" data-gallery="memories" aria-labelledby="memory-name-2" aria-describedby="memory-open"><span class="memory-image"><img src="{{BASE}}assets/c96ccc7869b3-IMG_6968.JPG" width="1680" height="2520" loading="eager" alt="Участники DD идут по пирсу у моря"></span><div class="memory-caption"><span class="memory-number" aria-hidden="true">2 / 3</span><h3 class="memory-name" id="memory-name-2">Время у моря</h3></div></a></figure><figure id="memory-3" class="memory-frame" aria-labelledby="memory-name-3"><a href="{{BASE}}assets/1aa538bb2c2c-IMG_6954.JPG" data-photo="3" data-gallery="memories" aria-labelledby="memory-name-3" aria-describedby="memory-open"><span class="memory-image"><img src="{{BASE}}assets/1aa538bb2c2c-IMG_6954.JPG" width="1680" height="2520" loading="eager" alt="Группа бегунов уходит по набережной к горам"></span><div class="memory-caption"><span class="memory-number" aria-hidden="true">3 / 3</span><h3 class="memory-name" id="memory-name-3">Навстречу горам</h3></div></a></figure></div></section>
 
     <section class="chapter october" aria-labelledby="october-title">
       <div class="october-copy"><p class="section-label">Анталья в октябре</p><h2 id="october-title">Тёплое море.<br>Осеннее солнце.</h2><p>Октябрь — благоприятный месяц, чтобы совместить тренировки и отдых на средиземноморском побережье.</p></div>
@@ -111,17 +108,9 @@
       <div class="program-notes"><p>DDLong — наша длительная пробежка.</p><p>В расписании есть свободные вечера, которые мы оставили для творчества участников. Если вы готовы организовать ужин, вечеринку, просмотр кино или настольные игры, пригласив участников кэмпа, то всё в ваших руках.</p></div>
     </section>
 
-    <section id="travel" class="chapter travel" aria-labelledby="travel-title">
-      <div class="chapter-heading"><div><p class="section-label">Как добраться</p><h2 id="travel-title">Билеты, жильё и трансфер</h2></div><p class="chapter-lead">Ты бронируешь билеты, жильё и трансфер — мы берём на себя спорт и развлечения.</p></div>
-      <div class="travel-layout">
-        <figure class="archive-print travel-print"><a href="{{BASE}}assets/f075a66a2bb1-IMG_6961.JPG" data-photo="10" aria-label="Увеличить: гавань Антальи"><img src="{{BASE}}assets/f075a66a2bb1-IMG_6961.JPG" width="1680" height="2520" loading="lazy" alt="Яхты и мачты на фоне гор"></a><figcaption>В гавани Антальи</figcaption></figure>
-        <div class="travel-copy">
-          <article><h3>Когда приезжать</h3><p>День приезда — 11 октября, день отъезда — 25 октября 2027 года. Мы предлагаем присоединиться к нашему тренировочному лагерю на любой срок в любые удобные для вас даты.</p></article>
-          <article><h3>Где остановиться</h3><p>Для проживания предусмотрены апартаменты, гостиницы или виллы — выбор за вами. Советуем рассмотреть варианты в районе Коньяалты, рядом с одноимённым парком.</p><a class="quiet-link" href="https://yandex.ru/maps?ol=geo&amp;text=%D1%80%D0%B0%D0%B9%D0%BE%D0%BD%20%D0%9A%D0%BE%D0%BD%D1%8C%D1%8F%D0%B0%D0%BB%D1%82%D1%8B&amp;sll=30.642226,36.864936&amp;sspn=0.267987,0.366369&amp;si=u0tmvreakmgp6zrvy9ejcw99bm" target="_blank" rel="noreferrer">Коньяалты на карте</a><ul class="stay-options" aria-label="Варианты размещения"><li><a href="https://www.trip.com/w/S8BLpUZ7eT2" target="_blank" rel="noreferrer">Aspendos Seaside</a></li><li><a href="https://www.trip.com/w/eyyc5lh7eT2" target="_blank" rel="noreferrer">Bomo Suites</a></li><li><a href="https://www.trip.com/w/IfhdgKf7eT2" target="_blank" rel="noreferrer">Four Hills Hotel</a></li><li><a href="https://www.trip.com/w/h25rv7OteT2" target="_blank" rel="noreferrer">Trend Suites Cycle</a></li><li><a href="https://www.trip.com/w/sm7rQaQteT2" target="_blank" rel="noreferrer">Sealife Family Resort</a></li></ul></article>
-          <article><h3>Пыльные гантели</h3><p>Познакомиться с нами и узнать больше о жизни сообщества можно в Telegram.</p><a class="program-link" href="https://t.me/dusty_dumbbells" target="_blank" rel="noreferrer">Сообщество DD</a></article>
-        </div>
-      </div>
-    </section>
+    <section id="travel" class="chapter travel" data-travel-style="ticket" aria-labelledby="travel-title"><header class="journey-heading"><div class="journey-meta"><p class="section-label">Как добраться · Анталья, Турция</p></div><h2 id="travel-title">Билеты, жильё и трансфер</h2><p class="journey-lead">Ты бронируешь билеты, жильё и трансфер — мы берём на себя спорт и развлечения.</p></header><div class="travel-ticket"><div class="ticket-top"><p class="ticket-destination">Анталья</p><dl class="ticket-dates" aria-label="Даты поездки"><div><dt>Приезд</dt><dd><time datetime="2027-10-11"><strong>11</strong><span>октября 2027</span></time></dd></div><div><dt>Отъезд</dt><dd><time datetime="2027-10-25"><strong>25</strong><span>октября 2027</span></time></dd></div></dl></div><div class="ticket-body"><figure class="journey-photo" aria-labelledby="journey-photo-name"><a href="{{BASE}}assets/f075a66a2bb1-IMG_6961.JPG" data-photo="10" aria-labelledby="journey-photo-name" aria-describedby="journey-photo-help"><span class="journey-photo-frame"><img src="{{BASE}}assets/f075a66a2bb1-IMG_6961.JPG" width="1680" height="2520" loading="eager" alt="Яхты и мачты на фоне гор"></span><span id="journey-photo-name" class="journey-photo-caption">В гавани Антальи</span></a></figure><div class="ticket-information"><article><h3>Когда приезжать</h3><p>День приезда — 11 октября, день отъезда — 25 октября 2027 года. Мы предлагаем присоединиться к нашему тренировочному лагерю на любой срок в любые удобные для вас даты.</p></article><article><h3>Где остановиться</h3><p>Для проживания предусмотрены апартаменты, гостиницы или виллы — выбор за вами. Советуем рассмотреть варианты в районе Коньяалты, рядом с одноимённым парком.</p><a class="quiet-link" href="https://yandex.ru/maps?ol=geo&amp;text=%D1%80%D0%B0%D0%B9%D0%BE%D0%BD%20%D0%9A%D0%BE%D0%BD%D1%8C%D1%8F%D0%B0%D0%BB%D1%82%D1%8B&amp;sll=30.642226,36.864936&amp;sspn=0.267987,0.366369&amp;si=u0tmvreakmgp6zrvy9ejcw99bm" target="_blank" rel="noreferrer">Коньяалты на карте</a><p class="stay-jump"><a href="#hotels-title">Отели и апартаменты</a></p></article><article><h3>Пыльные гантели</h3><p>Познакомиться с нами и узнать больше о жизни сообщества можно в Telegram.</p><a class="program-link" href="https://t.me/dusty_dumbbells" target="_blank" rel="noreferrer">Сообщество DD</a></article></div></div>{{HOTELS}}</div><p class="sr-only" id="journey-photo-help">Открыть фотографию.</p><p class="guide-invitation"><a href="#running-guide">Где бегать, пить кофе и жить в Анталье</a></p></section>
+
+    {{RUNNING_GUIDE}}
   </main>
   <footer class="camp-footer" id="footer">
     <p class="footer-motto" lang="en">It costs 0.00 to be a nice camp <span>21+</span></p>

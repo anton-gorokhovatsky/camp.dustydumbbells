@@ -210,7 +210,7 @@ test("browser styles and the entire module graph use the publication revision", 
     assert(entries.some(match => match[1].split('?')[0].endsWith('.js')), parent + ': page needs an entry module');
     references.push(...entries.map((match) => ({ reference: match[1], parent })));
   }
-  for (const file of ["app.js", "environment.js", "direction/screen.js", "direction/forecast.js"]) {
+  for (const file of ["app.js", "environment.js", "direction/screen.js", "direction/forecast.js", "direction/travel-ticket.js"]) {
     const imports = [...(await read(file)).matchAll(/\bfrom "(\.{1,2}\/[^\"]+)"/g)];
     assert(imports.length > 0);
     references.push(...imports.map((match) => ({ reference: match[1], parent: file })));
@@ -234,6 +234,32 @@ test("each archive photo has one placement on the authored page", async () => {
   for (const photo of photos) {
     assert.equal(placed.filter(src => src.endsWith(photo.file)).length, 1, photo.file);
   }
+});
+
+test("the published page combines the selected zine, ticket and guide with complete original destinations", async () => {
+  const html = await read("index.html");
+  const release = JSON.parse(await read("release.json"));
+  const hotels = JSON.parse(await readFile(new URL("../site/data/hotels.json", import.meta.url), "utf8"));
+  const currency = JSON.parse(await readFile(new URL("../site/data/currency.json", import.meta.url), "utf8"));
+  assert(html.includes('id="memories" class="memories" data-memory-style="zine"'));
+  assert.equal((html.match(/class="memory-frame"/g) || []).length, 3);
+  assert(html.includes('data-travel-style="ticket"'));
+  assert(!html.includes('Все варианты') && !html.includes('experiments/') && !html.includes('noindex'));
+  assert.equal(hotels.length, 5);
+  for (const hotel of hotels) {
+    assert.equal(html.split(`href="${hotel.booking}"`).length - 1, 1, hotel.name);
+    assert(html.includes(`id="hotel-${hotel.id}"`));
+    for (const photo of hotel.photos) {
+      const src = `${release.base}direction/media/hotels/${photo.file}`;
+      assert.equal(html.split(`src="${src}"`).length - 1, 1, photo.file);
+      assert((await stat(new URL(`../dist/direction/media/hotels/${photo.file}`, import.meta.url))).isFile());
+    }
+  }
+  for (const id of ['run-routes','run-districts','run-food','run-essentials','run-shops','run-community']) {
+    assert(html.includes(`id="${id}"`) && html.includes(`href="#${id}"`), id);
+  }
+  assert(html.includes(`datetime="${currency.effectiveDate}"`));
+  assert(html.includes('https://t.me/begmonrun/304') && html.includes('https://t.me/Slk425/847'));
 });
 
 test("prose typography binds meaningful groups and is idempotent", () => {

@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="ru" data-phase="day" data-motion="off">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="canonical" href="https://anton-gorokhovatsky.github.io{{BASE}}" />
+  <meta name="description" content="Пыльные гантели на каникулах. Анталья, 12–25 октября 2027. Программа тренировок, отдых у моря и компания DD." />
+  <meta name="theme-color" content="#efeadd" />
+  <title>Пыльные гантели на каникулах — Анталья, 12–25 октября 2027</title>
+  <link rel="preload" href="{{BASE}}assets/0f3cda7be3e2-MuseoSansCyrl900Ital.woff" as="font" type="font/woff" crossorigin />
+  <link rel="preload" href="{{BASE}}fonts/akt-variable-e3b50a6331.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="./direction/screen.css?v={{REVISION}}" />
+  <link rel="stylesheet" href="./direction/program-poster.css?v={{REVISION}}" />
+  <script type="module" src="./direction/screen.js?v={{REVISION}}"></script>
+</head>
+<body id="top">
+  <a class="skip-link" href="#about">К содержанию</a>
+  <header class="masthead">
+    <div class="site-menu">
+      <button type="button" class="menu-toggle" aria-expanded="false" aria-controls="site-navigation" hidden><span class="menu-label">Меню</span><span class="menu-icon" aria-hidden="true"></span></button>
+      <nav id="site-navigation" aria-label="По сайту">
+        <a class="nav-link" href="#about">О кэмпе</a>
+        <a class="nav-link" href="#program">Программа</a>
+        <a class="nav-link" href="#travel">Как добраться</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <section class="cover" aria-labelledby="title">
+      <div class="landscape" aria-hidden="true">
+        <img class="view view-morning" src="{{BASE}}assets/8a89a2afe085-IMG_6946.JPG" alt="" width="1680" height="2520" />
+        <img class="view view-day" src="{{BASE}}assets/edb1b4c73141-IMG_6953.JPG" alt="" width="1680" height="2520" fetchpriority="high" />
+        <img class="view view-evening" src="{{BASE}}assets/d152e032841c-IMG_6948.JPG" alt="" width="893" height="1339" />
+        <img class="view view-night" src="{{BASE}}direction/media/kaleici-night.jpg" alt="" width="1920" height="720" />
+        <div class="sunlight"></div>
+        <canvas id="atmosphere"></canvas>
+      </div>
+      <p class="trip-details"><span>Анталья, Турция</span><span>12–25 октября 2027</span></p>
+      <div class="cover-story">
+        <div class="invitation">
+          <h1 id="title" aria-label="Пыльные гантели на каникулах">
+            <span class="club-mark" aria-hidden="true"><img src="{{BASE}}assets/bd7e17e9090f-Group_1486.svg" alt="" width="468" height="101" /></span>
+            <span class="holiday" aria-hidden="true">на <wbr>каникулах</span>
+          </h1>
+          <p class="intro">Море, солнце и&nbsp;тёплый ветер вместо пыльных манежей и&nbsp;серых будней.</p>
+          <a class="program-link" href="#program">Смотреть программу</a>
+        </div>
+        <figure class="team-print" aria-label="Стопка фотографий: кэмп в Фетхие, 2025">
+          <div class="print-card" data-depth="0" data-index="0">
+            <div class="print-label"><span>Кэмп в Фетхие, 2025</span><span class="photo-position">1 / 3</span></div>
+            <a href="{{BASE}}assets/83bb3847840c-IMG_6969.JPG" class="team-photo" id="open-photo" aria-label="Увеличить фотографию: участники DD бегут у моря"><img src="{{BASE}}assets/83bb3847840c-IMG_6969.JPG" width="1170" height="1755" alt="Участники Пыльных Гантелей бегут по дорожке вдоль моря"></a>
+            <p class="print-caption" id="photo-caption">Пробежка у моря</p>
+          </div>
+        </figure>
+      </div>
+      <div class="cover-bottom">
+        <div class="weather-inline" hidden>
+          <p class="weather-now"><span>Сейчас в Анталье <span id="local-clock"></span></span><span id="current-air"></span><span id="current-condition"></span></p>
+        </div>
+        <p class="camp-motto" lang="en">It costs 0.00 to be a nice camp <span>21+</span></p>
+      </div>
+    </section>
+
+    <section id="weather" class="weather-section" aria-labelledby="weather-title">
+      <div class="weather-heading"><h2 id="weather-title">Сегодня в Анталье</h2><p class="forecast-date" id="forecast-date"></p></div>
+      <p id="forecast-status" role="status">Загружаем прогноз…</p>
+      <div id="forecast-content" hidden>
+        <dl class="forecast-brief"><div><dt>Воздух за день</dt><dd id="forecast-range"></dd></div><div><dt>Ветер сейчас</dt><dd id="current-wind"></dd></div><div><dt>Осадки за день</dt><dd id="forecast-rain"></dd></div><div><dt>Восход / закат</dt><dd id="sun-times"></dd></div></dl>
+        <div class="forecast-timeline"><p class="forecast-caption">По часам</p><div class="forecast-hours" role="region" aria-label="Почасовой прогноз, время Антальи" tabindex="0"><ol id="hourly-rows"></ol></div></div>
+      </div>
+    </section>
+
+    <section id="about" class="chapter about" aria-labelledby="about-title">
+      <div class="about-layout">
+        <div class="about-copy">
+          <p class="section-label">О кэмпе</p>
+          <h2 id="about-title">Мы зададим вектор</h2>
+          <p class="chapter-lead">А как двигаться по программе кэмпа — решаешь ты сам.</p>
+          <p>Нас ждут разнообразные тренировки, путешествия, вкусная еда, чайные церемонии, уютные кинопоказы, шумные вечеринки и заслуженный насыщенный отдых.</p>
+          <p>Если ты с нами — выбирай активности, которые тебе откликаются.</p>
+          <a class="quiet-link" href="https://t.me/doroninvdele/1167" target="_blank" rel="noreferrer">О кэмпе в карточках Виктора Доронина</a>
+        </div>
+        <figure class="archive-print about-print">
+          <a href="{{BASE}}assets/b6b2c773dc5b-IMG_6970.JPG" data-photo="1" aria-label="Увеличить: участники DD на дорожке у моря"><img src="{{BASE}}assets/b6b2c773dc5b-IMG_6970.JPG" width="1170" height="1755" loading="lazy" alt="Участники DD на прибрежной беговой дорожке"></a>
+          <figcaption>Утренние пробежки по побережью</figcaption>
+        </figure>
+      </div>
+      <div id="memories" class="memories">
+        <div class="chapter-heading"><h2>Между тренировками</h2><p>Живописные райды, походы в горы и невероятные закаты.</p></div>
+        <div class="memory-photos">
+          <figure class="archive-print"><a href="{{BASE}}assets/92d933d13edb-IMG_6960.JPG" data-photo="9" data-gallery="memories" aria-label="Увеличить: вид с горной тропы"><img src="{{BASE}}assets/92d933d13edb-IMG_6960.JPG" width="1680" height="2520" loading="lazy" alt="Вид с горной тропы на лес, побережье и море"></a><figcaption>Выше, к горам</figcaption></figure>
+          <figure class="archive-print"><a href="{{BASE}}assets/c96ccc7869b3-IMG_6968.JPG" data-photo="4" data-gallery="memories" aria-label="Увеличить: прогулка по пирсу"><img src="{{BASE}}assets/c96ccc7869b3-IMG_6968.JPG" width="1680" height="2520" loading="lazy" alt="Участники DD идут по пирсу у моря"></a><figcaption>Время у моря</figcaption></figure>
+          <figure class="archive-print"><a href="{{BASE}}assets/1aa538bb2c2c-IMG_6954.JPG" data-photo="3" data-gallery="memories" aria-label="Увеличить: бегуны на набережной"><img src="{{BASE}}assets/1aa538bb2c2c-IMG_6954.JPG" width="1680" height="2520" loading="lazy" alt="Группа бегунов уходит по набережной к горам"></a><figcaption>Навстречу горам</figcaption></figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter october" aria-labelledby="october-title">
+      <div class="october-copy"><p class="section-label">Анталья в октябре</p><h2 id="october-title">Тёплое море.<br>Осеннее солнце.</h2><p>Октябрь — благоприятный месяц, чтобы совместить тренировки и отдых на средиземноморском побережье.</p></div>
+      <div class="october-climate"><dl class="october-temperatures"><div><dt>Воздух днём</dt><dd>25–27°</dd></div><div><dt>Воздух ночью</dt><dd>14–19°</dd></div><div><dt>Температура воды</dt><dd>22–25°</dd></div></dl>
+      <p class="climate-note">Обычная температура в октябре, °C</p></div>
+    </section>
+
+    <section id="program" data-calendar-style="poster" class="chapter program" aria-labelledby="program-title">
+      <div class="chapter-heading">
+        <div><p class="section-label">Программа · 2027</p><h2 id="program-title">Две недели на<wbr> каникулах</h2></div>
+        <div class="program-intro"><p>Наш график активностей продуман так, чтобы каждый участник мог выбрать комфортный для себя тренировочный план.</p><p>Все часы — по времени Антальи.<br>Участие в активностях — по желанию.</p></div>
+      </div>
+      <nav class="week-nav" aria-label="Недели программы"><a href="#week-one">12–18 октября</a><a href="#week-two">19–25 октября</a></nav>
+      <div class="program-list"><div class="program-arrival"><article class="program-day" data-date="2027-10-11" data-rest="false"><div class="program-date-group"><h3 class="program-date"><time datetime="2027-10-11"><b>11</b><span>октября</span></time></h3><p class="program-weekday">понедельник</p></div><ul class="program-events"><li><time></time><span>Прилёт, заселение, встреча с морем</span></li></ul></article></div><div class="program-weeks"><section class="program-week" aria-labelledby="week-one"><h3 class="week-heading" id="week-one"><span class="week-label">Первая неделя</span><span class="week-period"><span class="date-range">12–18</span> октября</span></h3><div class="week-days"><article class="program-day" data-date="2027-10-12" data-rest="false"><div class="program-date-group"><h4 class="program-date"><time datetime="2027-10-12"><b>12</b><span>октября</span></time></h4><p class="program-weekday">вторник</p></div><ul class="program-events"><li><time datetime="2027-10-12T09:00:00+03:00">09:00</time><span>Лёгкая пробежка, 60 минут</span></li><li><time datetime="2027-10-12T19:00:00+03:00">19:00</time><span>Приветственный ужин</span></li></ul></article>
+<article class="program-day" data-date="2027-10-13" data-rest="false"><div class="program-date-group"><h4 class="program-date"><time datetime="2027-10-13"><b>13</b><span>октября</span></time></h4><p class="program-weekday">среда</p></div><ul class="program-events"><li><time datetime="2027-10-13T08:00:00+03:00">08:00</time><span>Скоростная тренировка DD</span></li><li><time datetime="2027-10-13T17:00:00+03:00">17:00</time><span>Лёгкий бег, велозаезд или плавание</span></li></ul></article>
+<article class="program-day" data-date="2027-10-14" data-rest="false"><div class="program-date-group"><h4 class="program-date"><time datetime="2027-10-14"><b>14</b><span>октября</span></time></h4><p class="program-weekday">четверг</p></div><ul class="program-events"><li><time datetime="2027-10-14T09:00:00+03:00">09:00</time><span>Кросс 15–20 км в горах или поход</span></li><li><time datetime="2027-10-14T19:30:00+03:00">19:30</time><span>Общий ужин в ресторане или на вилле</span></li></ul></article>
+<article class="program-day" data-date="2027-10-15" data-rest="true"><div class="program-date-group"><h4 class="program-date"><time datetime="2027-10-15"><b>15</b><span>октября</span></time></h4><p class="program-weekday">пятница</p></div><ul class="program-events"><li><time></time><span>День отдыха</span></li></ul></article>
+<article class="program-day" data-date="2027-10-16" data-rest="false"><div class="program-date-group"><h4 class="program-date"><time datetime="2027-10-16"><b>16</b><span>октября</span></time></h4><p class="program-weekday">суббота</p></div><ul class="program-events"><li><time datetime="2027-10-16T08:00:00+03:00">08:00</time><span>Скоростная тренировка DD</span></li><li><time datetime="2027-10-16T17:00:00+03:00">17:00</time><span>Лёгкий бег, велозаезд или плавание</span></li></ul></article>
+<article class="program-day" data-date="2027-10-17" data-rest="false"><div class="program-date-group"><h4 class="program-date"><time datetime="2027-10-17"><b>17</b><span>октября</span></time></h4><p class="program-weekday">воскресенье</p></div><ul class="program-events"><li><time datetime="2027-10-17T09:00:00+03:00">09:00</time><span>Лёгкая пробежка, 60 минут</span></li><li><time></time><span>Свободный вечер</span></li></ul></article>
+<article class="program-day" data-date="2027-10-18" data-rest="false"><div class="program-date-group"><h4 class="program-date"><time datetime="2027-10-18"><b>18</b><span>октября</span></time></h4><p class="program-weekday">понедельник</p></div><ul class="program-events"><li><time datetime="2027-10-18T08:00:00+03:00">08:00</time><span>DDLong — длительная пробежка</span></li></ul></article></div></section><section class="program-week" aria-labelledby="week-two"><h3 class="week-heading" id="week-two"><span class="week-label">Вторая неделя</span><span class="week-period"><span class="date-range">19–25</span> октября</span></h3><div class="week-days"><article class="program-day" data-date="2027-10-19" data-rest="true"><div class="program-date-group"><h4 class="program-date"><time datetime="2027-10-19"><b>19</b><span>октября</span></time></h4><p class="program-weekday">вторник</p></div><ul class="program-events"><li><time></time><span>День отдыха и поездка в Каш</span></li></ul></article>
+<article class="program-day" data-date="2027-10-20" data-rest="false"><div class="program-date-group"><h4 class="program-date"><time datetime="2027-10-20"><b>20</b><span>октября</span></time></h4><p class="program-weekday">среда</p></div><ul class="program-events"><li><time datetime="2027-10-20T09:00:00+03:00">09:00</time><span>Скоростная тренировка DD</span></li><li><time datetime="2027-10-20T17:00:00+03:00">17:00</time><span>Лёгкий бег, велозаезд или плавание</span></li></ul></article>
+<article class="program-day" data-date="2027-10-21" data-rest="false"><div class="program-date-group"><h4 class="program-date"><time datetime="2027-10-21"><b>21</b><span>октября</span></time></h4><p class="program-weekday">четверг</p></div><ul class="program-events"><li><time datetime="2027-10-21T09:00:00+03:00">09:00</time><span>Кросс 15–20 км в горах или поход</span></li><li><time datetime="2027-10-21T19:30:00+03:00">19:30</time><span>Общий ужин в ресторане или на вилле</span></li></ul></article>
+<article class="program-day" data-date="2027-10-22" data-rest="false"><div class="program-date-group"><h4 class="program-date"><time datetime="2027-10-22"><b>22</b><span>октября</span></time></h4><p class="program-weekday">пятница</p></div><ul class="program-events"><li><time datetime="2027-10-22T09:00:00+03:00">09:00</time><span>Лёгкая пробежка, 60 минут</span></li><li><time></time><span>Свободный вечер</span></li></ul></article>
+<article class="program-day" data-date="2027-10-23" data-rest="false"><div class="program-date-group"><h4 class="program-date"><time datetime="2027-10-23"><b>23</b><span>октября</span></time></h4><p class="program-weekday">суббота</p></div><ul class="program-events"><li><time datetime="2027-10-23T09:00:00+03:00">09:00</time><span>Скоростная тренировка DD</span></li><li><time datetime="2027-10-23T17:00:00+03:00">17:00</time><span>Лёгкий бег, велозаезд или плавание</span></li></ul></article>
+<article class="program-day" data-date="2027-10-24" data-rest="false"><div class="program-date-group"><h4 class="program-date"><time datetime="2027-10-24"><b>24</b><span>октября</span></time></h4><p class="program-weekday">воскресенье</p></div><ul class="program-events"><li><time datetime="2027-10-24T09:00:00+03:00">09:00</time><span>Лёгкая пробежка, 60 минут</span></li><li><time></time><span>Свободный вечер</span></li></ul></article>
+<article class="program-day" data-date="2027-10-25" data-rest="false"><div class="program-date-group"><h4 class="program-date"><time datetime="2027-10-25"><b>25</b><span>октября</span></time></h4><p class="program-weekday">понедельник</p></div><ul class="program-events"><li><time datetime="2027-10-25T08:00:00+03:00">08:00</time><span>DDLong — длительная пробежка</span></li><li><time></time><span>Отъезд</span></li></ul></article></div></section></div></div>
+      <div class="program-notes"><p>DDLong — наша длительная пробежка.</p><p>В расписании есть свободные вечера, которые мы оставили для творчества участников. Если вы готовы организовать ужин, вечеринку, просмотр кино или настольные игры, пригласив участников кэмпа, то всё в ваших руках.</p></div>
+    </section>
+
+    <section id="travel" class="chapter travel" aria-labelledby="travel-title">
+      <div class="chapter-heading"><div><p class="section-label">Как добраться</p><h2 id="travel-title">Билеты, жильё и трансфер</h2></div><p class="chapter-lead">Ты бронируешь билеты, жильё и трансфер — мы берём на себя спорт и развлечения.</p></div>
+      <div class="travel-layout">
+        <figure class="archive-print travel-print"><a href="{{BASE}}assets/f075a66a2bb1-IMG_6961.JPG" data-photo="10" aria-label="Увеличить: гавань Антальи"><img src="{{BASE}}assets/f075a66a2bb1-IMG_6961.JPG" width="1680" height="2520" loading="lazy" alt="Яхты и мачты на фоне гор"></a><figcaption>В гавани Антальи</figcaption></figure>
+        <div class="travel-copy">
+          <article><h3>Когда приезжать</h3><p>День приезда — 11 октября, день отъезда — 25 октября 2027 года. Мы предлагаем присоединиться к нашему тренировочному лагерю на любой срок в любые удобные для вас даты.</p></article>
+          <article><h3>Где остановиться</h3><p>Для проживания предусмотрены апартаменты, гостиницы или виллы — выбор за вами. Советуем рассмотреть варианты в районе Коньяалты, рядом с одноимённым парком.</p><a class="quiet-link" href="https://yandex.ru/maps?ol=geo&amp;text=%D1%80%D0%B0%D0%B9%D0%BE%D0%BD%20%D0%9A%D0%BE%D0%BD%D1%8C%D1%8F%D0%B0%D0%BB%D1%82%D1%8B&amp;sll=30.642226,36.864936&amp;sspn=0.267987,0.366369&amp;si=u0tmvreakmgp6zrvy9ejcw99bm" target="_blank" rel="noreferrer">Коньяалты на карте</a><ul class="stay-options" aria-label="Варианты размещения"><li><a href="https://www.trip.com/w/S8BLpUZ7eT2" target="_blank" rel="noreferrer">Aspendos Seaside</a></li><li><a href="https://www.trip.com/w/eyyc5lh7eT2" target="_blank" rel="noreferrer">Bomo Suites</a></li><li><a href="https://www.trip.com/w/IfhdgKf7eT2" target="_blank" rel="noreferrer">Four Hills Hotel</a></li><li><a href="https://www.trip.com/w/h25rv7OteT2" target="_blank" rel="noreferrer">Trend Suites Cycle</a></li><li><a href="https://www.trip.com/w/sm7rQaQteT2" target="_blank" rel="noreferrer">Sealife Family Resort</a></li></ul></article>
+          <article><h3>Пыльные гантели</h3><p>Познакомиться с нами и узнать больше о жизни сообщества можно в Telegram.</p><a class="program-link" href="https://t.me/dusty_dumbbells" target="_blank" rel="noreferrer">Сообщество DD</a></article>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="camp-footer" id="footer">
+    <p class="footer-motto" lang="en">It costs 0.00 to be a nice camp <span>21+</span></p>
+    <div class="footer-wordmark"><img src="{{BASE}}assets/bd7e17e9090f-Group_1486.svg" alt="DUSTY" width="468" height="101"></div>
+    <div class="footer-links"><p>Анталья, Турция<br>12–25 октября 2027</p><nav aria-label="Пыльные гантели в интернете"><a href="https://dustydumbbells.com/" target="_blank" rel="noreferrer">Сайт DD</a><a href="https://t.me/dusty_dumbbells" target="_blank" rel="noreferrer">Telegram</a></nav><a href="#top">В начало</a></div>
+    <div class="footer-legal"><p>© Dusty Dumbbells, 2026</p><a href="{{BASE}}privacy/">Политика конфиденциальности</a></div>
+    <div class="photo-credit"><p>Ночной Калеичи — <a href="https://commons.wikimedia.org/wiki/File:Panoramic_View_of_Kaleici_at_Night_-_panoramio.jpg">Tevfik Teker</a>, <a href="https://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>. Снимок кадрирован. Погодные данные — <a href="https://open-meteo.com/">Open-Meteo</a>.</p></div>
+  </footer>
+
+  <dialog id="photo-dialog" aria-label="Фотографии DD">
+    <button type="button" id="close-photo" aria-label="Закрыть фотографию">Закрыть</button>
+    <img alt="" width="1170" height="1755" />
+    <p id="large-caption"></p>
+    <nav class="gallery-controls" aria-label="Фотографии"><button type="button" id="previous-large">Назад</button><button type="button" id="next-large">Дальше</button></nav>
+  </dialog>
+  <p class="sr-only" id="scene-status" aria-live="polite"></p>
+</body>
+</html>

@@ -1,0 +1,307 @@
+/* Local experiments. Shared typefaces, glass material, gallery and navigation remain in screen.css. */
+.travel-lab{background:#153b49;color:#f7f7f7;overflow-wrap:anywhere}
+.travel-lab-header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:2rem;padding:2rem var(--gutter)}
+.travel-lab-header img{width:150px;height:auto}
+.travel-lab-header a{display:inline-flex;align-items:center;min-height:44px}
+.travel-lab :is(a){text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.2em}
+.travel-lab a:focus-visible{outline:3px solid #fff;outline-offset:5px}
+.travel-lab a:hover{text-decoration-thickness:2px}
+.travel-lab a:active{opacity:.7}
+.travel-lab-home{padding:2rem var(--gutter) 6rem;max-width:1800px;margin:auto}
+.lab-kicker{font-size:.875rem;margin-bottom:1.5rem}
+.travel-lab h1{font:italic 900 clamp(3.5rem,7vw,7rem)/1 'Museo DD',Arial,sans-serif;letter-spacing:-.04em;margin-bottom:1.5rem}
+.lab-description{font-size:1.125rem;max-width:40rem;margin-bottom:4rem}
+.travel-concepts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2rem}
+.travel-concept{min-width:0}
+.concept-preview{display:block;border-radius:1.5rem;corner-shape:superellipse(1.5);transition:filter .18s}
+.concept-preview img{width:100%;height:auto;aspect-ratio:1.6;object-fit:cover;border-radius:inherit;box-shadow:0 8px 24px #08293433}
+.concept-preview:hover{filter:brightness(1.06)}
+.concept-copy{margin-top:1.5rem}
+.concept-number{font-size:.8125rem;margin-bottom:.5rem}
+.concept-copy h2{font:italic 900 clamp(1.5rem,2.2vw,2.4rem)/1.1 'Museo DD',Arial,sans-serif;margin:0 0 1rem;letter-spacing:-.025em}
+.concept-copy h2 a{display:inline-block;min-height:44px}
+.concept-copy>p:last-child{font-size:1rem;line-height:1.6;max-width:34ch}
+
+#travel[data-travel-style]{--journey-ink:#153b49;--journey-muted:#284956;max-width:none;margin:0;scroll-margin-top:-100px;padding:6rem var(--gutter) clamp(4rem,8vw,8rem);color:var(--journey-ink);overflow-wrap:anywhere;hyphens:manual}
+#travel[data-travel-style] .journey-heading{max-width:100%;margin-bottom:3rem}
+.journey-meta{display:flex;align-items:baseline;flex-wrap:wrap;gap:.5rem 2rem;margin-bottom:1.8rem;padding-right:0}
+#travel[data-travel-style] .section-label{margin:0;font-size:.8125rem}
+.journey-review{font-size:.8125rem}
+.journey-review a{display:inline-flex;align-items:center;min-height:44px}
+#travel[data-travel-style] h2{margin:0 0 1rem;font-size:clamp(2.25rem,4.4vw,4.4rem);max-width:17ch;line-height:1.02}
+.journey-lead{font-size:clamp(1.1rem,1.5vw,1.4rem);line-height:1.55;max-width:43rem}
+#travel[data-travel-style] article h3{font:italic 900 clamp(1.65rem,2.2vw,2.2rem)/1.12 'Museo DD',Arial,sans-serif;letter-spacing:-.025em;margin:0 0 .8rem;text-wrap:balance}
+#travel[data-travel-style] article p{font-size:1.0625rem;line-height:1.65;max-width:50ch}
+#travel[data-travel-style] :is(a:not(.journey-photo>a)){color:inherit;text-decoration-line:underline;text-decoration-thickness:1px;text-underline-offset:.22em;transition:text-decoration-thickness .15s,color .15s}
+#travel[data-travel-style] :is(a:not(.journey-photo>a)):hover{text-decoration-thickness:2px}
+#travel[data-travel-style] :is(a:not(.journey-photo>a)):active{text-underline-offset:.3em}
+#travel[data-travel-style] a:focus-visible{outline:3px solid var(--journey-ink);outline-offset:5px;box-shadow:none}
+#travel[data-travel-style] .program-link{padding:.55rem 0;margin-top:.5rem;min-height:44px;background:none;backdrop-filter:none;-webkit-backdrop-filter:none;border-radius:0;box-shadow:none}
+#travel[data-travel-style] .stay-options{gap:.1rem 1.5rem;margin-top:.75rem}
+#travel[data-travel-style] .stay-options a{min-height:44px;padding:.55rem 0;font-size:.9375rem}
+.journey-photo{min-width:0;width:100%;margin:0}
+.journey-photo>a{display:block;border-radius:1.8rem;corner-shape:superellipse(1.5)}
+.journey-photo-frame{display:block;background:var(--glass-fill);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);padding:.5rem;border-radius:1.8rem;corner-shape:superellipse(1.5);box-shadow:inset 0 0 0 1px var(--glass-edge),var(--glass-shadow)}
+.journey-photo img{width:100%;height:auto;aspect-ratio:2/3;object-fit:contain;border-radius:1.45rem;corner-shape:superellipse(1.5);transition:filter .18s}
+.journey-photo-caption{display:inline-block;font-size:.8125rem;margin-top:.75rem;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.22em}
+.journey-photo>a:hover img{filter:brightness(1.08)}
+.journey-photo>a:hover .journey-photo-caption{text-decoration-thickness:2px}
+.journey-photo>a:active .journey-photo-frame{filter:brightness(.96)}
+
+/* A single glass ticket gives the destination and the arrival/departure dates a shared frame. */
+#travel[data-travel-style=ticket]{--ticket-backdrop:#376e88;background:var(--ticket-backdrop)}
+[data-travel-style=ticket] .journey-heading{display:grid;grid-template-columns:1fr 1fr;gap:0 3rem;color:#fff}
+[data-travel-style=ticket] .journey-meta{grid-column:1/-1}
+#travel[data-travel-style=ticket] h2{font-size:clamp(2rem,3.4vw,3.5rem);margin:0}
+[data-travel-style=ticket] .journey-lead{align-self:end;max-width:38ch}
+[data-travel-style=ticket] .journey-review a:focus-visible{outline-color:#fff}
+.travel-ticket{--ticket-pad:clamp(1.5rem,3.5vw,3.5rem);background:var(--glass-fill);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);box-shadow:inset 0 0 0 1px var(--glass-edge),var(--glass-shadow);border-radius:3rem;corner-shape:superellipse(1.5);padding:var(--ticket-pad);position:relative}
+.ticket-top{position:relative;display:grid;grid-template-columns:1.1fr 1fr;align-items:center;gap:2rem;padding-bottom:2rem;margin-bottom:2.5rem;border-bottom:2px dashed #153b493b}
+.ticket-top::before,.ticket-top::after{content:'';position:absolute;bottom:-1rem;width:2rem;height:2rem;border-radius:50%;background:var(--ticket-backdrop);pointer-events:none}
+.ticket-top::before{left:calc(-1 * var(--ticket-pad) - 1rem)}
+.ticket-top::after{right:calc(-1 * var(--ticket-pad) - 1rem)}
+.ticket-destination{font:italic 900 clamp(3rem,7.3vw,7.5rem)/1 'Museo DD',Arial,sans-serif;letter-spacing:-.035em}
+.ticket-dates{display:flex;flex-wrap:wrap;justify-content:space-between;gap:2rem}
+.ticket-dates dt{font-size:.875rem;margin-bottom:.3rem}
+.ticket-dates time{display:flex;flex-direction:column}
+.ticket-dates strong{font:italic 900 clamp(3.5rem,5.5vw,5.5rem)/1 'Museo DD',Arial,sans-serif}
+.ticket-dates time>span{font-size:.875rem;margin-top:.4rem}
+.ticket-body{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:clamp(2rem,5vw,5rem);align-items:start}
+.ticket-body .journey-photo{max-width:26rem;justify-self:center}
+.ticket-body .journey-photo-frame{padding:0;background:none;backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:none}
+.ticket-body .journey-photo img{border-radius:1.8rem}
+.ticket-information{display:grid;gap:2.5rem}
+.stay-jump{margin-top:.5rem}
+.stay-jump a{display:inline-flex;align-items:center;min-height:44px}
+.hotel-directory{margin-top:3rem;padding-top:2.5rem;border-top:1px solid #153b493b}
+.hotels-heading{margin-bottom:1.5rem}
+.hotels-heading h3{font:italic 900 clamp(1.8rem,2.8vw,2.8rem)/1.1 'Museo DD',Arial,sans-serif;letter-spacing:-.025em;margin-bottom:.7rem}
+.hotels-heading>p{font-size:.9375rem}
+#hotels-title{scroll-margin-top:1.25rem}
+.hotel-contents{display:flex;flex-wrap:wrap;gap:.25rem 1.5rem;margin:0 0 2rem;scroll-margin-top:1.25rem}
+.hotel-contents a{display:inline-flex;align-items:center;min-height:44px;font-size:.875rem}
+.hotel-contents:focus-visible{outline:3px solid var(--journey-ink);outline-offset:6px;border-radius:4px}
+.hotel-list{list-style:none;padding:0;margin:0}
+.hotel-list>li{scroll-margin-top:1.25rem}
+.hotel-list>li:focus{outline:none}
+.hotel-list>li+li{margin-top:2rem;padding-top:2rem;border-top:1px solid #153b4933}
+#travel[data-travel-style=ticket] .hotel-list a.hotel-name{display:block;max-width:100%;padding:.85rem .75rem;margin-left:-.75rem;border-radius:.75rem;corner-shape:superellipse(1.5);text-decoration:none;transition:background .2s,transform .2s}
+.hotel-name>span{display:block;font-size:clamp(1.4rem,2.2vw,2rem);line-height:1.25;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.18em}
+.hotel-name>small{display:block;margin-top:.45rem;font-size:.8125rem;line-height:1.4}
+.hotel-description{font-size:.9375rem;line-height:1.55;max-width:34ch;margin-top:.15rem}
+#travel .hotel-name:hover{background:#ffffff38;transform:translateX(4px)}
+.hotel-name:hover>span{text-decoration-thickness:2px}
+#travel .hotel-name:active{background:#ffffff60;transform:translateX(2px)}
+.hotel-preview{margin-top:1.4rem}
+.hotel-preview-title{font-size:1.25rem;font-weight:600;margin-bottom:1.5rem}
+.hotel-images{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;align-items:start}
+.hotel-images figure{margin:0;min-width:0}
+.hotel-images img{display:block;width:100%;height:auto;border-radius:1.15rem;corner-shape:superellipse(1.5);box-shadow:0 10px 25px #123d501c}
+.hotel-images figcaption{font-size:.8125rem;line-height:1.45;margin-top:.7rem}
+.hotel-preview-meta{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:.5rem 1.5rem;margin-top:1.25rem}
+.hotel-photo-source{font-size:.8125rem;line-height:1.6}
+.hotel-photo-source a{display:inline-flex;align-items:center;min-height:44px}
+.hotel-return a{display:inline-flex;align-items:center;min-height:44px;font-size:.875rem}
+.hotel-preview[hidden]{display:none}
+.has-hotel-preview .hotel-contents,.has-hotel-preview .hotel-return{display:none}
+.has-hotel-preview .hotel-list{position:relative;min-height:max(34rem,var(--hotel-preview-height,0px))}
+.has-hotel-preview .hotel-list>li{width:27%;margin:0;padding:0 0 .75rem;border:0;border-bottom:1px solid #153b4926}
+.has-hotel-preview .hotel-list>li+li{padding-top:.5rem}
+.has-hotel-preview .hotel-name{min-height:0}
+.has-hotel-preview .hotel-name>span{font-size:clamp(1.35rem,1.75vw,1.9rem)}
+.has-hotel-preview .hotel-description{font-size:.875rem}
+.has-hotel-preview .is-previewed .hotel-name{background:#ffffff38}
+.has-hotel-preview .hotel-preview{position:absolute;right:0;top:0;width:69%;margin:0;animation:hotel-arrival .22s ease-out}
+.has-hotel-preview .hotel-images figure:nth-child(2){margin-top:3rem}
+.guide-invitation{margin-top:2rem;color:#fff;font-size:1.0625rem}
+.guide-invitation a{display:inline-flex;align-items:center;min-height:44px}
+#travel .guide-invitation a:focus-visible{outline-color:#fff}
+@keyframes hotel-arrival{from{opacity:.55;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* An open guide groups related details and gives independent subjects more space. */
+.running-guide{background:#edf3f3;color:#153b49;padding:5rem var(--gutter) 4rem;max-width:none;overflow-wrap:anywhere;scroll-margin-top:6rem}
+.guide-heading{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem 4rem;align-items:end;margin-bottom:4rem}
+.guide-heading>.section-label{grid-column:1/-1;margin:0;font-size:.8125rem}
+.running-guide h2{font:italic 900 clamp(3rem,5.5vw,6rem)/.98 'Museo DD',Arial,sans-serif;letter-spacing:-.035em;margin:0}
+.guide-intro{font-size:clamp(1.125rem,1.5vw,1.4rem);line-height:1.55;max-width:43ch}
+.guide-byline{font-size:.875rem;line-height:1.65;max-width:48ch;margin-top:1rem}
+.guide-source-period{white-space:nowrap}
+.running-guide a{color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.2em;transition:text-decoration-thickness .15s}
+.running-guide a:hover{text-decoration-thickness:2px}
+.running-guide a:active{text-underline-offset:.3em}
+.running-guide a:focus-visible{outline:3px solid #153b49;outline-offset:4px;border-radius:2px}
+.guide-layout{display:grid;grid-template-columns:minmax(10rem,.26fr) minmax(0,1fr);gap:4rem;align-items:start}
+.guide-contents{position:sticky;top:7rem;display:grid;align-content:start}
+.guide-contents p{font-size:.8125rem;margin-bottom:.65rem}
+.guide-contents a{font-size:.9375rem;min-height:44px;display:flex;align-items:center;width:fit-content}
+.guide-section{--guide-section-inset:0rem;scroll-margin-top:calc(1.25rem - var(--guide-section-inset))}
+.guide-section+.guide-section{--guide-section-inset:3rem;margin-top:4rem;padding-top:var(--guide-section-inset);border-top:1px solid #153b4933}
+.running-guide h3{font:italic 900 clamp(2rem,3.1vw,3.25rem)/1.08 'Museo DD',Arial,sans-serif;letter-spacing:-.025em;margin:0 0 1.25rem;text-wrap:balance}
+.guide-section-lead{font-size:1.0625rem;line-height:1.6;max-width:57ch;margin-bottom:1.5rem}
+.running-guide h4{font-size:1.2rem;line-height:1.35;font-weight:650;margin:0 0 .6rem}
+.guide-columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2.5rem}
+.guide-columns article{min-width:0}
+.guide-place-groups{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,17rem),1fr));gap:2.5rem 1.75rem;align-items:start}
+.guide-place-groups article{min-width:0}
+.guide-place-groups p{font-size:1rem;line-height:1.65;max-width:53ch}
+.guide-place-groups p+.guide-places{margin-top:1rem}
+.guide-place-groups h5{font-size:.9375rem;line-height:1.5;font-weight:500;margin:.8rem 0 .25rem}
+.guide-place-groups .guide-places+h5{margin-top:1rem}
+.guide-columns p,.running-route p,.guide-inline-note p{font-size:1rem;line-height:1.65;max-width:53ch}
+.guide-columns p+p{margin-top:.75rem}
+.guide-columns p+h4,.guide-columns ul+h4{margin-top:1.8rem}
+.running-routes{display:grid}
+.running-route{display:grid;grid-template-columns:10rem minmax(0,1fr);gap:2rem;padding:1.6rem 0;border-top:1px solid #153b4926}
+.route-measure{display:flex;flex-direction:column;gap:.5rem}
+.route-measure>strong{font:italic 900 clamp(1.8rem,2.7vw,2.8rem)/1 'Museo DD',Arial,sans-serif;letter-spacing:-.025em}
+.route-measure>span{font-size:.8125rem;line-height:1.5}
+.running-route h4{margin-bottom:.4rem}
+.running-route h4 a{display:inline-block;padding:.35rem 0;min-height:44px}
+.guide-places{list-style:none;padding:0;margin:0}
+.guide-places li{display:flex;flex-direction:column;align-items:start;padding:.4rem 0 .8rem;gap:.15rem}
+.guide-places strong{font-size:1rem;font-weight:600;line-height:1.5}
+.guide-places a{display:inline-block;padding:.3rem 0;min-height:32px}
+.guide-places span{font-size:.9375rem;line-height:1.6;max-width:39ch}
+.guide-inline-note{margin-top:2rem;padding-top:1.5rem;border-top:1px solid #153b4926}
+.guide-inline-note p{max-width:70ch}
+.currency-reference{align-self:start;background:#153b490a;padding:1.5rem;border-radius:1.5rem;corner-shape:superellipse(1.5)}
+.currency-date{font-size:.8125rem;line-height:1.6;margin-bottom:1rem}
+.currency-rates>div{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:1rem;padding:.85rem 0;border-top:1px solid #153b4926}
+.currency-rates dt{font-size:.9375rem;line-height:1.5}
+.currency-rates dd{font-size:1.35rem;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+.currency-note,.currency-source{font-size:.8125rem;line-height:1.65;margin-top:.9rem}
+.currency-source a{display:inline-block;min-height:32px;padding:.3rem 0}
+.guide-endnote{max-width:70ch;font-size:.875rem;line-height:1.7;margin:3rem 0 0 calc((100% - 4rem) * .20635 + 4rem)}
+@media(max-width:1100px){
+ .guide-layout{gap:2.5rem;grid-template-columns:10rem minmax(0,1fr)}
+ .guide-columns{gap:2rem}
+ .running-route{grid-template-columns:8rem minmax(0,1fr);gap:1.5rem}
+ .guide-endnote{margin-left:12.5rem}
+}
+@media(max-width:999px){
+ .hotel-preview-title{display:none}
+ .hotel-images{max-width:45rem}
+ .guide-layout{display:block}
+ .guide-contents{position:static;display:flex;flex-wrap:wrap;gap:.25rem 1.5rem;padding-bottom:2rem;margin-bottom:2.5rem;border-bottom:1px solid #153b4933}
+ .guide-contents p{flex-basis:100%;margin:0}
+ .guide-contents a{min-height:44px}
+ .guide-endnote{margin-left:0}
+}
+@media(max-width:700px){
+ .hotel-directory{padding-top:2rem;margin-top:2.5rem}
+ .hotels-heading h3{font-size:1.65rem}
+ .hotel-name>span{font-size:1.4rem}
+ .hotel-images{gap:1rem}
+ .hotel-images img{border-radius:.75rem}
+ .hotel-preview-meta{margin-top:.65rem;gap:.25rem 1rem}
+ .hotel-preview{margin-top:.75rem}
+ .running-guide{padding-top:3rem;padding-bottom:3rem;hyphens:manual}
+ .guide-heading{display:block;margin-bottom:2rem}
+ .guide-heading>.section-label{margin-bottom:1.5rem}
+ .running-guide h2{font-size:clamp(3rem,10vw,5rem);margin-bottom:1.5rem}
+ .guide-intro{font-size:1.0625rem}
+ .guide-byline{font-size:.8125rem}
+ .guide-contents{gap:.2rem 1rem;margin-bottom:2rem}
+ .guide-contents a{font-size:.875rem}
+ .guide-columns{grid-template-columns:minmax(0,1fr);gap:2rem}
+ .guide-section+.guide-section{--guide-section-inset:2rem;margin-top:3rem}
+ .running-guide h3{font-size:clamp(2rem,7vw,2.75rem)}
+ .running-route{grid-template-columns:1fr;gap:.75rem;padding:1.5rem 0}
+ .route-measure{flex-direction:row;flex-wrap:wrap;align-items:baseline;gap:.5rem 1rem}
+ .route-measure>strong{font-size:2rem}
+ .running-route h4{font-size:1.125rem}
+ .currency-reference{padding:1.25rem}
+}
+
+/* A line means sequence, not a geographic route or a new map widget. */
+#travel[data-travel-style=route]{--journey-ink:#f4f7ef;--journey-muted:#e0eddf;background:#103d48}
+[data-travel-style=route] .journey-heading{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:0 4rem}
+[data-travel-style=route] .journey-meta{grid-column:1/-1}
+#travel[data-travel-style=route] h2{font-size:clamp(3rem,5.8vw,6rem);margin:0}
+[data-travel-style=route] .journey-lead{align-self:end;max-width:35ch}
+.route-layout{display:grid;grid-template-columns:minmax(0,.72fr) minmax(0,1.28fr);gap:clamp(3rem,8vw,8rem);align-items:start}
+.route-layout .journey-photo{max-width:29rem;position:sticky;top:7rem;transform:rotate(-2deg)}
+.route-stops{list-style:none;display:grid;gap:0;margin:0;padding:0;min-width:0;container-type:inline-size;container-name:journey-route}
+.route-stops>li{position:relative;display:grid;grid-template-columns:4rem minmax(0,1fr);gap:1.6rem;padding-bottom:3.5rem;min-width:0}
+.route-stops>li:last-child{padding-bottom:0}
+.route-number{position:relative;z-index:1;background:#bced9d;color:#103d48;border-radius:50%;width:3rem;height:3rem;display:grid;place-items:center;font:italic 900 1.5rem/1 'Museo DD',Arial,sans-serif}
+.route-line{position:absolute;top:3rem;left:-.6rem;width:4.2rem;height:calc(100% - 3rem);overflow:visible;pointer-events:none}
+.route-line path{fill:none;stroke:#bced9d;stroke-width:2;vector-effect:non-scaling-stroke}
+#travel[data-travel-style=route] article h3{font-size:clamp(2rem,3vw,3rem);color:#bced9d}
+[data-travel-style=route] article{padding-top:.35rem}
+
+/* The district and the authored accommodation links form an open directory. */
+#travel[data-travel-style=neighbourhood]{background:#d9dffa}
+[data-travel-style=neighbourhood] .journey-heading{display:grid;grid-template-columns:1fr 1fr;gap:0 3rem;margin-bottom:2.5rem}
+[data-travel-style=neighbourhood] .journey-meta{grid-column:1/-1}
+#travel[data-travel-style=neighbourhood] h2{font-size:clamp(2rem,3.4vw,3.5rem);margin:0}
+[data-travel-style=neighbourhood] .journey-lead{align-self:end;max-width:38ch}
+.district-name{font:italic 900 clamp(3rem,11vw,11rem)/1.1 'Museo DD',Arial,sans-serif;letter-spacing:-.045em;margin-bottom:2.5rem}
+.district-layout{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);gap:clamp(2rem,5vw,5rem);align-items:start}
+.district-layout .journey-photo{width:100%;max-width:28rem;justify-self:end;transform:rotate(2deg)}
+.district-stays .quiet-link{font-size:1rem}
+#travel[data-travel-style=neighbourhood] .stay-options{display:block;margin-top:1.4rem}
+[data-travel-style=neighbourhood] .stay-options li{border-top:1px solid #153b4945}
+#travel[data-travel-style=neighbourhood] .stay-options a{font:italic 900 clamp(1.65rem,3.3vw,3.5rem)/1.2 'Museo DD',Arial,sans-serif;letter-spacing:-.025em;padding:.75rem 0;min-height:56px;max-width:100%}
+.district-notes{display:grid;grid-template-columns:1.25fr .75fr;gap:clamp(2rem,5vw,5rem);margin-top:4rem;padding-top:2.5rem;border-top:1px solid #153b4945}
+
+/* Keep the prose wide when enlarged text makes the route rail too expensive. */
+@container journey-route (max-width:16rem){
+ #travel[data-travel-style=route] .route-stops>li{grid-template-columns:minmax(0,1fr);gap:.75rem;padding-bottom:2.5rem}
+ .route-line{display:none}
+ #travel[data-travel-style=route] .route-number{width:2rem;height:2rem;font-size:1.25rem}
+ [data-travel-style=route] .route-stops article{padding-top:0}
+}
+
+@media(max-width:960px){
+ .travel-concepts{grid-template-columns:1fr;gap:3rem}
+ .travel-concept{display:grid;grid-template-columns:1.2fr 1fr;gap:2rem;align-items:center}
+ .concept-copy{margin:0}
+ .ticket-top{grid-template-columns:1fr}
+ .ticket-dates{justify-content:start;gap:5rem}
+ .ticket-body{grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:2rem}
+ .route-layout{grid-template-columns:minmax(0,.7fr) minmax(0,1.3fr);gap:2rem}
+ .route-stops>li{grid-template-columns:3rem minmax(0,1fr);gap:1.25rem}
+ .district-layout{grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:2rem}
+}
+@media(max-width:700px){
+ #travel[data-travel-style]{padding-top:6rem;padding-bottom:4rem;hyphens:auto}
+ #travel[data-travel-style] .journey-heading{display:block;margin-bottom:2.5rem}
+ .journey-meta{margin-bottom:1.5rem;gap:.3rem 1.5rem}
+ #travel[data-travel-style] h2{font-size:clamp(2.5rem,8vw,3.5rem);max-width:16ch}
+ #travel[data-travel-style] .journey-lead{margin-top:1.25rem;font-size:1.0625rem;max-width:38ch}
+ #travel[data-travel-style] article p{font-size:1rem}
+ .travel-ticket{--ticket-pad:1.5rem;border-radius:2rem}
+ .ticket-top{gap:1.5rem;padding-bottom:1.5rem;margin-bottom:2rem}
+ .ticket-destination{font-size:clamp(2.5rem,9vw,4rem)}
+ .ticket-dates{justify-content:space-between;gap:1rem}
+ .ticket-dates strong{font-size:3.5rem}
+ .ticket-body{grid-template-columns:1fr;gap:2.5rem}
+ .ticket-body .journey-photo{max-width:23rem}
+ .ticket-information{gap:2rem}
+ .route-layout{grid-template-columns:1fr;gap:3rem}
+ .route-layout .journey-photo{position:static;transform:rotate(-1deg);width:85%;max-width:24rem;justify-self:center;order:2}
+ .route-stops>li{grid-template-columns:2.8rem minmax(0,1fr);gap:1rem;padding-bottom:3rem}
+ .route-number{width:2.8rem;height:2.8rem}
+ .route-line{top:2.8rem;left:-.5rem;width:3.8rem;height:calc(100% - 2.8rem)}
+ #travel[data-travel-style=route] article h3{font-size:1.8rem}
+ .district-name{font-size:clamp(2.8rem,11vw,5rem);margin-bottom:2rem}
+ .district-layout,.district-notes{grid-template-columns:1fr;gap:2.5rem}
+ .district-layout .journey-photo{justify-self:center;width:85%;max-width:24rem;transform:rotate(1deg)}
+ .district-notes{margin-top:3rem;padding-top:2rem}
+ #travel[data-travel-style=neighbourhood] .stay-options a{font-size:clamp(1.75rem,5.5vw,2.5rem)}
+}
+@media(max-width:420px){
+ .travel-lab-header{padding:1.5rem var(--gutter);gap:1rem;font-size:.8125rem}
+ .travel-lab-header img{width:110px}
+ .travel-lab-home{padding-top:1.5rem}
+ .travel-lab h1{font-size:3.2rem}
+ .lab-description{font-size:1rem;margin-bottom:3rem}
+ .travel-concept{display:block}
+ .concept-copy{margin-top:1rem}
+ .travel-ticket{--ticket-pad:1rem}
+ .ticket-dates time>span{font-size:.75rem}
+ #travel[data-travel-style=ticket] .ticket-information article h3{font-size:1.5rem}
+ .hotel-images{grid-template-columns:1fr;gap:1.4rem}
+}
+@media(prefers-reduced-motion:reduce){.concept-preview,.journey-photo img,.hotel-name,.running-guide a{transition:none}.hotel-preview{animation:none}}

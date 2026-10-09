@@ -1,0 +1,178 @@
+[
+  {
+    "id": "aspendos",
+    "name": "Aspendos Seaside",
+    "kind": "Апартаменты",
+    "description": "Кухня, гостиная и отдельная спальня.",
+    "descriptionSource": "https://aspendos-seaside.hmshotel.net/tr",
+    "descriptionEvidence": "Официальные фотографии двухместного апартамента: оборудованная кухня с гостиной и отдельная спальня.",
+    "booking": "https://www.trip.com/w/S8BLpUZ7eT2",
+    "source": "https://aspendos-seaside.hmshotel.net/tr",
+    "photos": [
+      {
+        "file": "aspendos-living.webp",
+        "width": 1024,
+        "height": 683,
+        "sourceDimensions": [
+          1024,
+          683
+        ],
+        "url": "https://app.hms.gen.tr/images/1084/odatipi/iki-kisilik_1.jpg?v=1603882780",
+        "caption": "Гостиная с кухней",
+        "alt": "Гостиная Aspendos Seaside: диван, обеденный стол и кухня"
+      },
+      {
+        "file": "aspendos-bedroom.webp",
+        "width": 1024,
+        "height": 683,
+        "sourceDimensions": [
+          1024,
+          683
+        ],
+        "url": "https://app.hms.gen.tr/images/1084/odatipi/iki-kisilik_7.jpg?v=1603882788",
+        "caption": "Спальня",
+        "alt": "Спальня Aspendos Seaside с большой кроватью"
+      }
+    ]
+  },
+  {
+    "id": "bomo",
+    "name": "Bomo Suites",
+    "kind": "Апартаменты",
+    "description": "В Çatı Suite — кухня и стиральная машина.",
+    "descriptionSource": "https://www.bomosuites.com/en/room/cati-suite",
+    "booking": "https://www.trip.com/w/eyyc5lh7eT2",
+    "source": "https://www.bomosuites.com/en",
+    "photos": [
+      {
+        "file": "bomo-facade.webp",
+        "width": 1280,
+        "height": 720,
+        "sourceDimensions": [
+          1920,
+          1080
+        ],
+        "url": "https://www.bomosuites.com/images/slider/2__0.jpg",
+        "caption": "Фасад",
+        "alt": "Светлый фасад Bomo Suites среди пальм и цветущих кустов"
+      },
+      {
+        "file": "bomo-balcony.webp",
+        "width": 1280,
+        "height": 855,
+        "sourceDimensions": [
+          1920,
+          1282
+        ],
+        "url": "https://www.bomosuites.com/images/room/1_cati-suite_6.jpeg",
+        "caption": "Балкон Çatı Suite",
+        "alt": "Балкон верхнего апартамента Bomo Suites с видом на улицу и деревья"
+      }
+    ]
+  },
+  {
+    "id": "four-hills",
+    "name": "Four Hills Hotel",
+    "kind": "Отель",
+    "description": "Хамам, сауна и фитнес-зал.",
+    "descriptionSource": "https://fourhills.com.tr/spa-fitness/",
+    "booking": "https://www.trip.com/w/IfhdgKf7eT2",
+    "source": "https://fourhills.com.tr/galeri-2/",
+    "photos": [
+      {
+        "file": "four-hills-facade.webp",
+        "width": 1280,
+        "height": 720,
+        "sourceDimensions": [
+          2048,
+          1152
+        ],
+        "url": "https://fourhills.com.tr/wp-content/uploads/2026/07/genel_alanlar-5.jpg",
+        "caption": "Фасад в вечернем свете",
+        "alt": "Фасад Four Hills Hotel с балконами в тёплом вечернем свете"
+      },
+      {
+        "file": "four-hills-pool.webp",
+        "width": 1280,
+        "height": 720,
+        "sourceDimensions": [
+          2048,
+          1152
+        ],
+        "url": "https://fourhills.com.tr/wp-content/uploads/2026/09/otel11.jpg",
+        "caption": "У бассейна",
+        "alt": "Бассейн и терраса с шезлонгами у Four Hills Hotel"
+      }
+    ]
+  },
+  {
+    "id": "trend",
+    "name": "Trend Suites Cycle",
+    "kind": "Апартаменты",
+    "description": "Мини-кухня, балкон и сезонный бассейн.",
+    "descriptionSource": "https://trendsuites.net/branch-trend-suites-cycle/",
+    "booking": "https://www.trip.com/w/h25rv7OteT2",
+    "source": "https://trendsuites.net/branch-trend-suites-cycle/",
+    "photos": [
+      {
+        "file": "trend-facade.webp",
+        "width": 1024,
+        "height": 683,
+        "sourceDimensions": [
+          1024,
+          683
+        ],
+        "url": "https://trendsuites.net/wp-content/uploads/2026/03/SRF2446-1024x683.jpg",
+        "caption": "Фасад и зелень",
+        "alt": "Балконы Trend Suites Cycle за пальмами и высокими кактусами"
+      },
+      {
+        "file": "trend-terrace.webp",
+        "width": 1024,
+        "height": 661,
+        "sourceDimensions": [
+          1024,
+          661
+        ],
+        "url": "https://trendsuites.net/wp-content/uploads/2026/03/SRF0191-1-1024x661.jpg",
+        "caption": "Терраса",
+        "alt": "Терраса апартамента Trend Suites Cycle со столом и шезлонгом"
+      }
+    ]
+  },
+  {
+    "id": "sealife",
+    "name": "Sealife Family Resort",
+    "kind": "Отель",
+    "description": "Курортный отель у пляжа, с бассейнами и спа.",
+    "descriptionSource": "https://www.sealifehotel.com/en",
+    "booking": "https://www.trip.com/w/sm7rQaQteT2",
+    "source": "https://www.sealifehotel.com/en/gallery",
+    "photos": [
+      {
+        "file": "sealife-facade.webp",
+        "width": 512,
+        "height": 768,
+        "sourceDimensions": [
+          512,
+          768
+        ],
+        "url": "https://cdn.extranetwork.com/property-photos/164/1623155091_T2ZFS4QDSH_medium.jpg",
+        "caption": "Отель у бассейна",
+        "alt": "Корпус Sealife Family Resort и бассейн в солнечном свете"
+      },
+      {
+        "file": "sealife-view.webp",
+        "width": 1152,
+        "height": 768,
+        "sourceDimensions": [
+          1152,
+          768
+        ],
+        "url": "https://cdn.extranetwork.com/property-photos/164/1715856812_MO2AYCEKDD_medium.jpg",
+        "caption": "Вид с балкона",
+        "alt": "Балкон Sealife Family Resort с видом на море и набережную"
+      }
+    ]
+  }
+]

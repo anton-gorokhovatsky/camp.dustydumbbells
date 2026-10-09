@@ -1,0 +1,208 @@
+/* Local experiments only. The normal build never copies this directory. */
+.calendar-lab{background:#173e48;color:#f7f7f7;min-height:100vh}
+.lab-header{display:flex;align-items:center;justify-content:space-between;gap:2rem;padding:2rem clamp(1.35rem,4.5vw,6rem)}
+.lab-header img{width:clamp(90px,12vw,170px);height:auto}
+.lab-header a,.concept-caption a,.lab-review a{display:inline-flex;align-items:center;min-height:44px;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.25em}
+.lab-header a:hover,.concept-caption a:hover,.lab-review a:hover{text-decoration-thickness:2px}
+.lab-header a:active,.concept-caption a:active,.lab-review a:active{transform:translateY(1px)}
+.lab-home{padding:3rem clamp(1.35rem,4.5vw,6rem) 6rem;max-width:1800px;margin:auto}
+.lab-eyebrow{font-size:.875rem;letter-spacing:.08em;text-transform:uppercase;margin-bottom:1.5rem}
+.lab-home h1{font:italic 900 clamp(2.7rem,7.4vw,7rem)/.98 'Museo DD',Arial,sans-serif;letter-spacing:-.035em}
+.lab-lead{max-width:32rem;font-size:1.2rem;line-height:1.5;margin-top:1.7rem}
+.concepts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2rem;margin-top:4rem}
+.concept{min-width:0}
+.concept-preview{position:relative;display:block;overflow:hidden;aspect-ratio:16/10;box-shadow:0 0 0 1px #ffffff26;border-radius:1rem;corner-shape:superellipse(1.5);transition:filter .2s,transform .2s}
+.concept-preview img{width:100%;height:auto}
+.concept-preview:hover{filter:brightness(1.12);transform:translateY(-4px)}
+.concept-preview:active{transform:translateY(1px)}
+.concept-caption{padding:1.3rem 0 0}
+.concept-caption>p:first-child{font-size:.8125rem;color:#c5d4d7;font-variant-numeric:tabular-nums}
+.concept-caption h2{font:italic 900 2.1rem/1.2 'Museo DD',Arial,sans-serif;margin:.1rem 0 .65rem}
+.concept-caption>p:last-child{font-size:1rem;line-height:1.55;max-width:25rem}
+@media(max-width:850px){.concepts{grid-template-columns:1fr;max-width:36rem;gap:3rem}.lab-home{padding-top:2rem}.lab-header{padding-top:1.1rem;padding-bottom:1.1rem}.lab-header a{font-size:.875rem}.lab-lead{font-size:1rem}}
+
+#program[data-calendar-style]{max-width:none;padding-top:2rem;padding-bottom:5rem;overflow-wrap:anywhere}
+#program .lab-review{display:flex;flex-wrap:wrap;gap:.3rem 1.6rem;margin:0 0 3rem;font-size:.875rem}
+#program .lab-review a[aria-current=page]{font-weight:650;text-decoration-thickness:2px}
+#program[data-calendar-style] .chapter-heading{margin-bottom:2.5rem}
+#program[data-calendar-style] h2{font:italic 900 clamp(1.75rem,6.5vw,6.3rem)/1.02 'Museo DD',Arial,sans-serif;letter-spacing:-.04em;overflow-wrap:anywhere;max-width:12ch}
+#program[data-calendar-style] .program-intro{max-width:32rem;font-size:1.1rem;line-height:1.5}
+#program[data-calendar-style] .program-intro p+p{font-size:.9rem;margin-top:1.2rem}
+#program[data-calendar-style] .week-nav{gap:1rem 2rem;margin-bottom:3rem}
+#program[data-calendar-style] .week-nav a{padding:.65rem 0;color:inherit;border-radius:0}
+#program[data-calendar-style] .program-events>li>span{overflow-wrap:anywhere;hyphens:auto}
+#program[data-calendar-style] .program-notes{margin-top:4rem;max-width:45rem}
+#program[data-calendar-style] .program-day{container-type:inline-size}
+#program[data-calendar-style] .program-date b{white-space:nowrap;overflow-wrap:normal}
+#program[data-calendar-style] .program-date time{flex-wrap:wrap}
+#program[data-calendar-style] .program-date span{white-space:nowrap;overflow-wrap:normal}
+#program[data-calendar-style] .program-arrival{max-width:none;margin-bottom:4rem}
+#program[data-calendar-style] .program-arrival .program-day{display:grid;grid-template-columns:7rem minmax(0,1fr);gap:2rem;padding:1.5rem 0;border-top:1px solid #ffffff55}
+#program[data-calendar-style] .program-arrival .program-date b{font-size:4rem}
+#program[data-calendar-style] .program-arrival .program-events{font-size:1.25rem;max-width:35rem}
+
+/* 01: a loose path. Dates and events share each bend, with no new controls. */
+#program[data-calendar-style=tide]{--lab-accent:#daf38e;background:var(--reading-surface)}
+#program[data-calendar-style=tide] .section-label{color:var(--lab-accent)}
+#program[data-calendar-style=tide] h2{max-width:11ch}
+#program[data-calendar-style=tide] .program-weeks{grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(3rem,8vw,9rem)}
+#program[data-calendar-style=tide] .week-heading{font-size:1.45rem;margin-bottom:1rem}
+#program[data-calendar-style=tide] .week-label{color:var(--lab-accent)}
+#program[data-calendar-style=tide] .week-days{position:relative;padding:.1rem 0 0}
+#program[data-calendar-style=tide] .week-days::before{content:'';position:absolute;inset:0 2% 0 0;pointer-events:none;opacity:.32;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='1600' viewBox='0 0 400 1600' preserveAspectRatio='none'%3E%3Cpath d='M80 0C80 130 320 60 320 200S80 270 80 400S320 470 320 600S80 670 80 800S320 870 320 1000S80 1070 80 1200S320 1270 320 1400S100 1470 100 1600' fill='none' stroke='%23daf38e' stroke-width='1.5'/%3E%3C/svg%3E") center/100% 100% no-repeat}
+#program[data-calendar-style=tide] .week-days .program-day{position:relative;display:grid;grid-template-columns:9rem minmax(0,1fr);gap:1.5rem;padding:3.3rem 0;min-height:15rem;border:0;align-items:center}
+#program[data-calendar-style=tide] .week-days .program-day:nth-child(even){grid-template-columns:minmax(0,1fr) 9rem}
+#program[data-calendar-style=tide] .week-days .program-day:nth-child(even) .program-date-group{grid-column:2;grid-row:1}
+#program[data-calendar-style=tide] .week-days .program-day:nth-child(even) .program-events{grid-column:1;grid-row:1}
+#program[data-calendar-style=tide] .program-date b{color:var(--lab-accent);font-size:clamp(4.6rem,7.8vw,7.4rem)}
+#program[data-calendar-style=tide] .program-date span{font-size:.875rem}
+#program[data-calendar-style=tide] .program-weekday{font-size:.875rem;color:#ecf3ee}
+#program[data-calendar-style=tide] .program-events{font-size:1.25rem;line-height:1.4;gap:1.25rem}
+#program[data-calendar-style=tide] .program-events li{grid-template-columns:1fr;gap:.3rem}
+#program[data-calendar-style=tide] .program-events time{font-size:.875rem;color:var(--lab-accent)}
+#program[data-calendar-style=tide] .program-day[data-rest=true] .program-events{font:italic 900 1.8rem/1.13 'Museo DD',Arial,sans-serif;letter-spacing:-.025em}
+
+/* 02: the programme is a poster, rather than a table sitting inside a panel. */
+#program[data-calendar-style=poster]{--poster-field:#fc754f;--poster-ink:#15383d;background:var(--poster-field);color:var(--poster-ink)}
+#program[data-calendar-style=poster] .lab-review a:focus-visible,#program[data-calendar-style=poster] .week-nav a:focus-visible{outline-color:#15383d;box-shadow:0 0 0 2px #fff}
+#program[data-calendar-style=poster] .section-label{font-weight:600;letter-spacing:.13em}
+#program[data-calendar-style=poster] .chapter-heading{max-width:none;display:grid;grid-template-columns:minmax(0,1.7fr) minmax(15rem,.7fr);align-items:end;gap:clamp(2rem,5vw,5rem);margin-bottom:2.5rem}
+#program[data-calendar-style=poster] h2{font-size:clamp(2rem,7.5vw,7rem);max-width:14ch;text-transform:uppercase;line-height:.96;text-wrap:balance;hyphens:none}
+#program[data-calendar-style=poster] .program-intro{font-size:1rem;max-width:24rem}
+#program[data-calendar-style=poster] .program-intro p+p{font-size:.9375rem}
+#program[data-calendar-style=poster] .week-nav{margin-bottom:2rem}
+#program[data-calendar-style=poster] .program-weeks{display:block}
+#program[data-calendar-style=poster] .program-week+.program-week{margin-top:3rem}
+#program[data-calendar-style=poster] .week-heading{display:flex;flex-direction:row;flex-wrap:wrap;align-items:baseline;justify-content:space-between;border-top:2px solid;padding:1rem 0;margin-bottom:0;gap:.5rem 2rem}
+#program[data-calendar-style=poster] .week-label{color:inherit;font-size:1rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em}
+#program[data-calendar-style=poster] .week-period{font-size:1.15rem}
+#program[data-calendar-style=poster] .week-days .program-day,
+#program[data-calendar-style=poster] .program-arrival .program-day{display:grid;grid-template-columns:clamp(6rem,10vw,9rem) minmax(0,1fr);gap:clamp(1.25rem,3vw,3rem);align-items:center;padding:1.35rem 0;border-top:1px solid #15383d55}
+#program[data-calendar-style=poster] .program-date b{font-size:clamp(5rem,8vw,7rem);line-height:.9;letter-spacing:-.045em}
+#program[data-calendar-style=poster] .program-date time{gap:.5rem}
+#program[data-calendar-style=poster] .program-date span{font-size:.875rem}
+#program[data-calendar-style=poster] .program-weekday{color:inherit;font-size:.875rem;margin-top:.3rem}
+#program[data-calendar-style=poster] .program-events{font:italic 900 clamp(1.5rem,2.7vw,2.6rem)/1.16 'Museo DD',Arial,sans-serif;letter-spacing:-.025em;gap:1.2rem}
+#program[data-calendar-style=poster] .program-events li,
+#program[data-calendar-style=poster] .program-events li:has(time:empty){grid-template-columns:4.3rem minmax(0,1fr);gap:1rem}
+#program[data-calendar-style=poster] .program-day:not([data-rest=true]) .program-events li:has(time:empty){font:350 1.3rem/1.45 'Akt DD',Arial,sans-serif;letter-spacing:0}
+#program[data-calendar-style=poster] .program-events time{font:450 1rem/1.4 'Akt DD',Arial,sans-serif;color:inherit;letter-spacing:0}
+#program[data-calendar-style=poster] .program-events>li>span{grid-column:2;hyphens:none;text-wrap:balance}
+#program[data-calendar-style=poster] .program-day[data-rest=true] .program-date b{color:transparent;-webkit-text-stroke:2px var(--poster-ink)}
+#program[data-calendar-style=poster] .program-day[data-rest=true] .program-events{font-size:clamp(2rem,3.8vw,3.5rem);max-width:24ch}
+#program[data-calendar-style=poster] .program-arrival .program-day{border-color:#15383d55}
+#program[data-calendar-style=poster] .program-arrival{margin-bottom:2rem}
+#program[data-calendar-style=poster] .program-arrival .program-date b{font-size:5rem}
+#program[data-calendar-style=poster] .program-arrival .program-events{font:350 1.2rem/1.4 'Akt DD',Arial,sans-serif;letter-spacing:0}
+#program[data-calendar-style=poster] .program-arrival .program-events li{display:grid}
+#program[data-calendar-style=poster] .program-notes{margin-top:2.5rem}
+#program[data-calendar-style=poster] .program-notes{border-top:2px solid;padding-top:2rem}
+
+/* 03: broad scenes. Horizontal movement is contained in each week. */
+#program[data-calendar-style=panorama]{background:#0d2832;color:#f7f7f7}
+#program[data-calendar-style=panorama] .section-label{color:#c1dde5}
+#program[data-calendar-style=panorama] .program-weeks{display:block}
+#program[data-calendar-style=panorama] .program-week+.program-week{margin-top:5rem}
+#program[data-calendar-style=panorama] .week-heading{font-size:1.8rem;margin-bottom:.8rem}
+#program[data-calendar-style=panorama] .week-label{color:#c1dde5}
+#program[data-calendar-style=panorama] .week-days{display:flex;overflow-x:auto;overscroll-behavior-inline:contain;scroll-snap-type:x mandatory;scrollbar-width:thin;gap:2rem;padding:1.5rem .2rem 2rem;border-top:1px solid #ffffff4d}
+#program[data-calendar-style=panorama] .week-days .program-day{position:relative;flex:0 0 calc(100% - 8rem);display:grid;grid-template-columns:.82fr 1.2fr;gap:clamp(2rem,7vw,6rem);align-items:center;min-height:29rem;padding:2rem 3.5rem 3rem 0;scroll-snap-align:start;border:0;min-width:0}
+#program[data-calendar-style=panorama] .week-days .program-day::after{content:'';position:absolute;right:0;top:8%;bottom:8%;width:1px;background:#ffffff38}
+#program[data-calendar-style=panorama] .program-date b{font-size:clamp(6rem,18vw,17rem);letter-spacing:-.06em}
+#program[data-calendar-style=panorama] .program-date span{font-size:1.1rem;margin-top:.5rem}
+#program[data-calendar-style=panorama] .program-weekday{font-size:1.3rem;color:#c1dde5;margin-top:.7rem}
+#program[data-calendar-style=panorama] .program-events{font-size:clamp(1.4rem,2.4vw,2.3rem);line-height:1.35;gap:1.75rem}
+#program[data-calendar-style=panorama] .program-events li{grid-template-columns:1fr;gap:.5rem}
+#program[data-calendar-style=panorama] .program-events time{font-size:1rem;color:#c1dde5}
+#program[data-calendar-style=panorama] .program-day[data-rest=true] .program-date b{color:#daf38e}
+#program[data-calendar-style=panorama] .program-day[data-rest=true] .program-events{font:italic 900 clamp(2rem,4vw,4rem)/1.12 'Museo DD',Arial,sans-serif}
+#program[data-calendar-style=panorama] .panorama-controls{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin:0 0 1rem}
+#program[data-calendar-style=panorama] .panorama-position{font-size:.875rem;color:#c1dde5;font-variant-numeric:tabular-nums}
+#program[data-calendar-style=panorama] .panorama-controls>div{display:flex;gap:.75rem}
+#program[data-calendar-style=panorama] .panorama-controls button{width:48px;height:48px;display:grid;place-items:center;border-radius:999px;background:var(--glass-fill);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);color:var(--glass-ink);box-shadow:inset 0 0 0 1px var(--glass-edge);transition:background .18s,transform .18s}
+#program[data-calendar-style=panorama] .panorama-controls button svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+#program[data-calendar-style=panorama] .panorama-controls button:hover:not(:disabled){background:#ffffffe0;transform:translateY(-1px)}
+#program[data-calendar-style=panorama] .panorama-controls button:active:not(:disabled){transform:translateY(1px);background:#ffffff99}
+#program[data-calendar-style=panorama] .panorama-controls button:disabled{opacity:.4;cursor:default}
+#program[data-calendar-style=panorama] .week-days:focus-visible{outline:2px solid #fff;outline-offset:5px}
+
+@media(max-width:1000px){
+ #program[data-calendar-style] .chapter-heading{display:block}
+ #program[data-calendar-style] .program-intro{margin-top:1.5rem}
+ #program[data-calendar-style=tide] .program-weeks{grid-template-columns:1fr;max-width:48rem;margin:auto;gap:5rem}
+ #program[data-calendar-style=tide] .week-days .program-day{grid-template-columns:9rem minmax(0,1fr)}
+ #program[data-calendar-style=tide] .week-days .program-day:nth-child(even){grid-template-columns:minmax(0,1fr) 9rem}
+ #program[data-calendar-style=panorama] .week-days .program-day{grid-template-columns:1fr;gap:1.3rem;align-content:start;min-height:34rem}
+}
+@media(max-width:760px){
+ #program[data-calendar-style]{padding-top:1.2rem;padding-bottom:3rem}
+ #program .lab-review{gap:.15rem 1.2rem;margin-bottom:2rem;font-size:.8125rem}
+ #program[data-calendar-style] h2{font-size:clamp(1.75rem,11vw,3.5rem);max-width:12ch}
+ #program[data-calendar-style] .chapter-heading{margin-bottom:1.8rem}
+ #program[data-calendar-style] .program-intro{font-size:1rem}
+ #program[data-calendar-style] .program-intro p+p{font-size:.8125rem;margin-top:.8rem}
+ #program[data-calendar-style] .week-nav{margin-bottom:2rem;gap:.5rem 1.4rem}
+ #program[data-calendar-style] .program-arrival{margin-bottom:2.5rem}
+ #program[data-calendar-style] .program-arrival .program-day{grid-template-columns:5rem minmax(0,1fr);gap:1.3rem}
+ #program[data-calendar-style] .program-arrival .program-date b{font-size:3.5rem}
+ #program[data-calendar-style] .program-arrival .program-events{font-size:1rem}
+ #program[data-calendar-style=tide] .program-date-group,
+ #program[data-calendar-style=poster] .program-date-group{display:block}
+ #program[data-calendar-style=tide] .program-date time,
+ #program[data-calendar-style=poster] .program-date time{flex-direction:column}
+ #program[data-calendar-style=tide] .week-heading{font-size:1.35rem}
+ #program[data-calendar-style=tide] .week-days::before{inset:0 0 0 0;opacity:.25}
+ #program[data-calendar-style=tide] .week-days .program-day{grid-template-columns:5.8rem minmax(0,1fr);gap:1.4rem;min-height:13rem;padding:2.1rem 0}
+ #program[data-calendar-style=tide] .week-days .program-day:nth-child(even){grid-template-columns:minmax(0,1fr) 5.8rem}
+ #program[data-calendar-style=tide] .program-date b{font-size:4.8rem}
+ #program[data-calendar-style=tide] .program-date span,#program[data-calendar-style=tide] .program-weekday{font-size:.8125rem}
+ #program[data-calendar-style=tide] .program-events{font-size:1.1rem;gap:1rem}
+ #program[data-calendar-style=tide] .program-events time{font-size:.8125rem}
+ #program[data-calendar-style=tide] .program-day[data-rest=true] .program-events{font-size:1.5rem}
+ #program[data-calendar-style=poster] h2{font-size:clamp(1.5rem,12vw,4rem)}
+ #program[data-calendar-style=poster] .program-intro p+p{font-size:.875rem}
+ #program[data-calendar-style=poster] .week-heading{font-size:1rem;gap:.3rem}
+ #program[data-calendar-style=poster] .week-label{font-size:.8125rem}
+ #program[data-calendar-style=poster] .week-period{font-size:.9375rem}
+ #program[data-calendar-style=poster] .week-days .program-day,
+ #program[data-calendar-style=poster] .program-arrival .program-day{grid-template-columns:5.25rem minmax(0,1fr);gap:1rem;padding:1.35rem 0;align-items:start}
+ #program[data-calendar-style=poster] .program-date b{font-size:4.75rem}
+ #program[data-calendar-style=poster] .program-date span,#program[data-calendar-style=poster] .program-weekday{font-size:.8125rem}
+ #program[data-calendar-style=poster] .program-events{font-size:1.4rem;gap:1.2rem}
+ #program[data-calendar-style=poster] .program-events li,
+ #program[data-calendar-style=poster] .program-events li:has(time:empty){grid-template-columns:minmax(0,1fr);gap:.4rem}
+ #program[data-calendar-style=poster] .program-events>li>span{grid-column:1}
+ #program[data-calendar-style=poster] .program-events time{font-size:.875rem}
+ #program[data-calendar-style=poster] .program-day:not([data-rest=true]) .program-events li:has(time:empty){font-size:1rem}
+ #program[data-calendar-style=poster] .program-day[data-rest=true] .program-events{font-size:1.75rem}
+ #program[data-calendar-style=poster] .program-arrival .program-events{font-size:1rem}
+ #program[data-calendar-style=poster] .program-arrival .program-date b{font-size:3.5rem}
+ #program[data-calendar-style=panorama] .week-heading{font-size:1.35rem}
+ #program[data-calendar-style=panorama] .week-days{gap:1.5rem;padding-top:1.3rem}
+ #program[data-calendar-style=panorama] .week-days .program-day{flex-basis:calc(100% - 2.5rem);padding:1rem 1.4rem 2rem 0;min-height:29rem;gap:1.3rem}
+ #program[data-calendar-style=panorama] .program-date b{font-size:clamp(5rem,32vw,8rem)}
+ #program[data-calendar-style=panorama] .program-date span{font-size:.875rem}
+ #program[data-calendar-style=panorama] .program-weekday{font-size:1rem}
+ #program[data-calendar-style=panorama] .program-events{font-size:1.4rem;gap:1.3rem}
+ #program[data-calendar-style=panorama] .program-events time{font-size:.8125rem}
+ #program[data-calendar-style=panorama] .program-day[data-rest=true] .program-events{font-size:1.8rem}
+ #program[data-calendar-style=panorama] .panorama-controls button{width:44px;height:44px}
+ #program[data-calendar-style=panorama] .panorama-position{font-size:.75rem}
+}
+/* Text enlargement switches the day layout instead of clipping meaningful text. */
+@container(max-width:21em){
+ #program[data-calendar-style] .program-arrival .program-day,
+ #program[data-calendar-style=tide] .week-days .program-day,
+ #program[data-calendar-style=tide] .week-days .program-day:nth-child(even),
+ #program[data-calendar-style=poster] .week-days .program-day{grid-template-columns:minmax(0,1fr);gap:1.1rem}
+ #program[data-calendar-style=tide] .week-days .program-day:nth-child(even) .program-date-group,
+ #program[data-calendar-style=tide] .week-days .program-day:nth-child(even) .program-events{grid-column:auto;grid-row:auto}
+ #program[data-calendar-style=tide] .program-date-group,
+ #program[data-calendar-style=poster] .program-date-group{display:flex;flex-wrap:wrap;align-items:baseline;gap:.5rem 1rem}
+ #program[data-calendar-style=tide] .program-date time,
+ #program[data-calendar-style=poster] .program-date time{display:flex;flex-direction:row;align-items:baseline;gap:.5rem}
+ #program[data-calendar-style=tide] .week-days::before{inset:0 0 0 55%;opacity:.12}
+ #program[data-calendar-style=panorama] .week-days .program-day{flex-basis:100%;padding-right:.5rem;min-height:0}
+ #program[data-calendar-style=panorama] .week-days .program-day::after{display:none}
+}
+@media(prefers-reduced-motion:reduce){.concept-preview,.panorama-controls button{transition:none!important}.week-days{scroll-behavior:auto}}

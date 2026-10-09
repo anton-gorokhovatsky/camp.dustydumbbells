@@ -43,7 +43,7 @@ img{display:block;max-width:100%}
 body:has(dialog[open]) .masthead{visibility:hidden}
 
 /* The viewport is a single scene: invitation on the left, large archive on the right. */
-.cover{position:relative;isolation:isolate;height:100vh;height:100dvh;padding:1.6rem var(--gutter) 1rem;color:var(--cream);background:#21455b;display:grid;grid-template-rows:48px minmax(0,1fr) 44px;row-gap:clamp(1rem,3vh,2rem);container-type:inline-size}
+.cover{position:relative;isolation:isolate;height:100vh;height:100dvh;padding:1.6rem var(--gutter) 1rem;color:var(--cream);background:#21455b;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:48px minmax(0,1fr) 44px;row-gap:clamp(1rem,3vh,2rem);container-type:inline-size}
 .landscape{position:absolute;inset:0;z-index:-2;overflow:hidden}
 .landscape::after{content:'';position:absolute;inset:0;z-index:3;background:linear-gradient(180deg,#031b32a6,transparent 65%),linear-gradient(0deg,#041e32c2,transparent 78%);pointer-events:none}
 .view{position:absolute;width:100%;height:100%;object-fit:cover;object-position:50% 62%;opacity:0;filter:saturate(var(--photo-saturation)) brightness(var(--photo-brightness));transition:opacity 1s ease,filter 1s ease}
@@ -74,7 +74,7 @@ h1>span{display:block}
 .stack-peek-back{z-index:-3;transform:rotate(-8deg) translate(-5px,-3px)}
 .stack-peek-next{z-index:-2;transform:rotate(4deg) translate(6px,0)}
 .print-label{display:flex;align-items:center;justify-content:space-between;gap:.75rem;text-transform:uppercase;font-size:.6875rem;letter-spacing:.05em;padding:.2rem .35rem .7rem}
-.print-label>span:first-child{min-width:0;line-height:1.35}
+.print-label>span:first-child{min-width:0;line-height:1.35;overflow-wrap:anywhere}
 .photo-position{white-space:nowrap}
 .team-photo{display:block;position:relative;aspect-ratio:.78;overflow:hidden;cursor:pointer;border-radius:.6rem}
 .team-photo img{width:100%;height:100%;object-fit:cover;object-position:50% 66%}
@@ -130,7 +130,7 @@ dialog p{font-size:.8125rem;padding:.5rem 0}
 }
 @media(max-width:760px) and (max-height:740px){.cover-story{gap:.5rem}.club-mark{width:80%}.holiday{font-size:9.2vw}.team-print{width:min(58vw,calc((100dvh - 19rem) * .56))}.intro{font-size:.875rem;max-width:19rem}.cover{grid-template-rows:48px minmax(0,1fr) 54px;row-gap:.4rem}}
 /* Enlarged text and very short windows may scroll; content is never cropped to fake a fit. */
-@container(max-width:17em){.cover{height:auto;min-height:100dvh;grid-template-rows:auto 1fr auto;row-gap:1rem}.cover-story{grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto auto auto;min-height:min-content;row-gap:1rem}.club-mark{width:100%}.holiday{font-size:1.75rem;white-space:normal}.trip-details span{white-space:normal}.team-print{width:min(75%,13rem)}.program-link{max-width:100%;min-height:44px}.camp-motto{font-size:.6875rem}}
+@container(max-width:17em){.cover{height:auto;min-height:100dvh;grid-template-rows:auto 1fr auto;row-gap:1rem}.cover-story{grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto auto auto;min-height:min-content;row-gap:1rem}.club-mark{width:100%}.holiday{font-size:1.75rem;white-space:normal}.trip-details{padding:3rem 0 0}.trip-details span{white-space:normal}.team-print{width:min(75%,13rem)}.program-link{max-width:100%;min-height:44px}.camp-motto{font-size:.6875rem}}
 @media(max-height:520px){.cover{height:auto;min-height:100dvh;grid-template-rows:auto 1fr auto}.cover-story{padding:1.5rem 0}.team-print{width:min(30vw,250px)}.club-mark{width:25vw}.cover-bottom{height:auto}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 @media(prefers-reduced-transparency:reduce),(prefers-contrast:more){:root{--glass-fill:#eef5f7;--glass-blur:none}}
@@ -149,7 +149,7 @@ dialog p{font-size:.8125rem;padding:.5rem 0}
 
 /* Below the invitation, a quiet sea colour carries the changing light. */
 body{isolation:isolate}
-.skip-link{position:fixed;top:.5rem;left:1rem;z-index:50;transform:translateY(-150%);padding:.8rem 1.2rem;border-radius:999px;background:#eef5f7;color:#163b49}
+.skip-link{position:fixed;top:.5rem;left:1rem;z-index:50;transform:translateY(-150%);padding:.8rem 1.2rem;max-width:calc(100vw - 2rem);overflow-wrap:anywhere;border-radius:999px;background:#eef5f7;color:#163b49}
 .skip-link:focus{transform:none}
 .chapter{padding:clamp(5rem,9vw,9rem) var(--gutter);max-width:1800px;margin:auto;scroll-margin-top:5rem;overflow-wrap:anywhere}
 .chapter h2{font:italic 900 clamp(2.4rem,5.3vw,5.5rem)/1.06 'Museo DD',Arial,sans-serif;letter-spacing:-.035em;text-wrap:balance}

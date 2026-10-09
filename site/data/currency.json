@@ -1,0 +1,22 @@
+{
+  "source": "https://www.cbr.ru/scripts/XML_daily.asp?date_req=09%2F10%2F2026",
+  "effectiveDate": "2026-10-09",
+  "fetchedAt": "2026-10-09T13:34:10.383Z",
+  "rates": {
+    "USD": {
+      "nominal": 1,
+      "value": 85.4173,
+      "rubPerUnit": 85.4173
+    },
+    "EUR": {
+      "nominal": 1,
+      "value": 95.4709,
+      "rubPerUnit": 95.4709
+    },
+    "TRY": {
+      "nominal": 10,
+      "value": 17.3777,
+      "rubPerUnit": 1.73777
+    }
+  }
+}

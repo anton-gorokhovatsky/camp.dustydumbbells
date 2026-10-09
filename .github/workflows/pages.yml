@@ -4,6 +4,9 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  schedule:
+    # 06:15 Moscow time: request today's effective quote, including weekends.
+    - cron: '15 3 * * *'
 
 permissions:
   contents: read
@@ -22,10 +25,34 @@ jobs:
           node-version: '22'
           cache: npm
       - run: npm ci
+      - name: Refresh official CBR currency rates
+        run: node scripts/update-currency.mjs
       - run: npm test
+      - name: Save validated currency snapshot for its data history
+        if: github.event_name == 'schedule'
+        uses: actions/upload-artifact@v4
+        with:
+          name: cbr-data
+          path: site/data/currency.json
+          retention-days: 1
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
+
+  currency-history:
+    if: github.event_name == 'schedule'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: cbr-data
+          path: ${{ runner.temp }}/cbr-data
+      - name: Record dated quotes on the data branch
+        run: bash scripts/archive-currency.sh "$RUNNER_TEMP/cbr-data/currency.json"
 
   deploy:
     needs: build

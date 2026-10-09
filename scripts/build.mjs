@@ -5,6 +5,8 @@ import { fileURLToPath } from "node:url";
 import path from "node:path";
 import { schedule, photos, season } from "../site/content.js";
 import { typograph } from "../site/typography.js";
+import { renderHotelDirectory } from "../site/hotel-directory.js";
+import { renderRunningGuide } from "../site/running-guide.js";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const output = path.join(root, "dist");
@@ -27,6 +29,8 @@ const assetVersion = encodeURIComponent(commit);
 const manifest = JSON.parse(
   await readFile(path.join(root, "source/manifest.json"), "utf8"),
 );
+const hotels = JSON.parse(await readFile(path.join(root, "site/data/hotels.json"), "utf8"));
+const currency = JSON.parse(await readFile(path.join(root, "site/data/currency.json"), "utf8"));
 const assets = new Map(manifest.assets.map((asset) => [asset.url, asset.file]));
 
 function localize(text, css = false) {
@@ -127,9 +131,14 @@ for (const file of [
   "environment.js",
   "content.js",
   "typography.js",
+  "data/currency.json",
+  "currency.js",
   "direction/index.html",
   "direction/screen.css",
   "direction/program-poster.css",
+  "direction/memories-zine.css",
+  "direction/travel-ticket.css",
+  "direction/travel-ticket.js",
   "direction/screen.js",
   "direction/forecast.js",
 ]) {
@@ -141,6 +150,8 @@ for (const file of [
     .replaceAll("{{BASE}}", base)
     .replaceAll("{{SITE}}", site.href)
     .replace("{{SCHEDULE}}", program)
+    .replace("{{HOTELS}}", renderHotelDirectory(hotels, `${base}direction/media/hotels/`))
+    .replace("{{RUNNING_GUIDE}}", renderRunningGuide(currency))
     .replace("{{GALLERY}}", gallery);
   // Only text nodes in the authored page; preserved original and attributes stay intact.
   if (file === 'index.html' || file === 'direction/index.html') {
@@ -163,10 +174,20 @@ for (const file of [
   siteFiles[file] = createHash("sha256").update(content).digest("hex");
 }
 await mkdir(path.join(output, "direction/media"), { recursive: true });
-for (const file of await readdir(path.join(root, "site/direction/media"))) {
+for (const entry of await readdir(path.join(root, "site/direction/media"), { withFileTypes: true })) {
+  if (!entry.isFile()) continue;
+  const file = entry.name;
   const bytes = await readFile(path.join(root, "site/direction/media", file));
   await writeFile(path.join(output, "direction/media", file), bytes);
   siteFiles[`direction/media/${file}`] = createHash("sha256").update(bytes).digest("hex");
+}
+await mkdir(path.join(output, "direction/media/hotels"), { recursive: true });
+const hotelImages = hotels.flatMap(hotel => hotel.photos.map(photo => photo.file));
+if (new Set(hotelImages).size !== hotelImages.length) throw new Error("Hotel photographs must have unique placements");
+for (const file of hotelImages) {
+  const bytes = await readFile(path.join(root, "site/direction/media/hotels", file));
+  await writeFile(path.join(output, "direction/media/hotels", file), bytes);
+  siteFiles[`direction/media/hotels/${file}`] = createHash("sha256").update(bytes).digest("hex");
 }
 for (const [source, file] of [
   ["index.js", "suncalc.js"],
