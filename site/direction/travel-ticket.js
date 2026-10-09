@@ -6,51 +6,25 @@ if (directory) {
   const rows = [...directory.querySelectorAll('[data-hotel]')];
   const picker = directory.querySelector('.hotel-picker');
   const choices = [...picker.querySelectorAll('input')];
-  const media = window.matchMedia('(min-width: 1000px) and (hover: hover) and (pointer: fine)');
+  const status = directory.querySelector('[data-hotel-status]');
   let active = rows.find(row => `#${row.id}` === location.hash)?.dataset.hotel || directory.dataset.initialHotel;
-  const resize = new ResizeObserver(entries => {
-    for (const entry of entries) {
-      if (!entry.target.hidden && media.matches) {
-        directory.style.setProperty('--hotel-preview-height', `${entry.target.getBoundingClientRect().height}px`);
-      }
-    }
-  });
-  function show(id) {
+  function show(id, announce = false) {
     if (!rows.some(row => row.dataset.hotel === id)) return;
     active = id;
     for (const row of rows) {
       const selected = row.dataset.hotel === active;
-      row.hidden = !media.matches && !selected;
+      row.hidden = !selected;
       row.classList.toggle('is-previewed', selected);
-      row.querySelector('.hotel-preview').hidden = media.matches && !selected;
     }
     for (const choice of choices) choice.checked = choice.value === active;
+    if (announce) status.textContent = `Фотографии: ${choices.find(choice => choice.checked).closest('label').textContent.trim()}`;
   }
-  function adapt() {
-    const focused = document.activeElement;
-    const focusedRow = focused.closest('[data-hotel]');
-    if (focusedRow) active = focusedRow.dataset.hotel;
-    directory.classList.toggle('has-hotel-preview', media.matches);
-    directory.classList.toggle('has-hotel-choice', !media.matches);
-    picker.hidden = media.matches;
-    show(active);
-    if (!media.matches) directory.style.removeProperty('--hotel-preview-height');
-    if (media.matches && picker.contains(focused)) {
-      rows.find(row => row.dataset.hotel === active).querySelector('.hotel-name').focus({ preventScroll: true });
-    }
-  }
-  picker.addEventListener('change', event => show(event.target.value));
-  for (const row of rows) {
-    resize.observe(row.querySelector('.hotel-preview'));
-    row.addEventListener('pointerenter', () => {
-      // Pointer movement caused by scrolling must not replace the hotel selected by keyboard.
-      const keyboardFocus = directory.contains(document.activeElement) && document.activeElement.matches(':focus-visible');
-      if (media.matches && !keyboardFocus) show(row.dataset.hotel);
-    });
-    row.addEventListener('focusin', () => { if (media.matches) show(row.dataset.hotel); });
-  }
-  media.addEventListener('change', adapt);
-  adapt();
+  // Selection and booking have separate roles on every device. CSS alone adapts
+  // their layout, so resizing and pointer movement cannot replace the selection.
+  directory.classList.add('has-hotel-choice');
+  picker.hidden = false;
+  picker.addEventListener('change', event => show(event.target.value, true));
+  show(active);
   function showDestination(hash) {
     const row = rows.find(row => `#${row.id}` === hash);
     if (row) show(row.dataset.hotel);

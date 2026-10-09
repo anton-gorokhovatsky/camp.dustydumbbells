@@ -1,5 +1,6 @@
 /* Refine the selected zine, poster and ticket together. Their compositions,
    colours, photographs and interaction roles remain in their own stylesheets. */
+main{container-name:camp-page}
 .journey-pages{
   --journey-title:clamp(2.25rem,4.6vw,4.75rem);
   --journey-group:clamp(2rem,3.5vw,3.5rem);
@@ -11,7 +12,7 @@
 .journey-pages #program[data-calendar-style=poster] h2{font-size:var(--journey-title);line-height:1.06}
 .journey-pages :is(.chapter-lead,.journey-lead,.guide-intro){font-size:var(--type-lead);line-height:1.5}
 .journey-pages :is(.chapter-heading,.memory-intro,.journey-heading,.guide-heading){margin-bottom:var(--journey-group)}
-.journey-pages :is(#hotels-title,.hotel-list>li,.week-heading,.guide-section){scroll-margin-top:calc(var(--nav-clearance) + 1.25rem)}
+.journey-pages :is(#hotels-title,.hotel-list>li,.week-heading,.guide-section){scroll-margin-top:1rem}
 
 /* The three alternating photo spreads keep their large photographs. */
 .journey-pages [data-memory-style=zine] .memory-collection{gap:clamp(3rem,5vw,5rem)}
@@ -30,15 +31,30 @@
 .journey-pages #program[data-calendar-style=poster] .program-day:not([data-rest=true]) .program-events li:has(time:empty){font:inherit}
 .journey-pages #program[data-calendar-style=poster] .program-events>li>span{text-wrap:pretty;hyphens:auto}
 .journey-pages #program[data-calendar-style=poster] .program-notes{margin-top:var(--journey-group);padding-top:1.5rem;border-top-width:1px}
-.journey-pages .program-contact{margin-top:2rem;padding-top:1.5rem}
+.journey-pages .program-contact{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:var(--space-group);margin-top:2rem;padding-top:1.5rem;border-top:1px solid #153b4933;align-items:end}
+.journey-pages .program-contact .quiet-link{font-size:var(--type-body);margin-top:.5rem}
+.journey-pages .about-copy>.quiet-link{display:flex;width:fit-content;padding-block:.45rem}
 
 /* The matte ticket keeps its shared frame, perforation and date group. */
 .journey-pages .ticket-destination{font-size:clamp(3rem,5.5vw,5.5rem)}
+.journey-pages .travel-ticket{overflow:clip}
 .journey-pages .ticket-dates strong{font-size:clamp(3rem,4.5vw,4.75rem)}
 .journey-pages #travel[data-travel-style] article h3{font:550 clamp(1.25rem,1.8vw,1.65rem)/1.3 var(--font-text);letter-spacing:-.015em}
 .journey-pages .hotels-heading h3{font:550 clamp(1.4rem,2.2vw,2rem)/1.3 var(--font-text);letter-spacing:-.025em}
-.journey-pages .has-hotel-preview .hotel-list{min-height:max(30rem,var(--hotel-preview-height,0px))}
-.journey-pages .has-hotel-preview .hotel-images figure:nth-child(2){margin-top:1.5rem}
+.journey-pages .has-hotel-choice{display:grid;grid-template-columns:minmax(13rem,.4fr) minmax(0,1fr);gap:0 var(--space-group);align-items:start}
+.journey-pages .hotel-directory{container-type:inline-size}
+.journey-pages .has-hotel-choice .hotels-heading{grid-column:1/-1}
+.journey-pages .has-hotel-choice .hotel-picker{grid-column:1;gap:.5rem;margin:0}
+.journey-pages .has-hotel-choice .hotel-list{grid-column:2;min-width:0}
+.journey-pages .hotel-picker legend{margin-bottom:.75rem}
+.journey-pages .hotel-picker label{border:1px solid #153b4933;border-radius:.75rem;padding:.75rem;gap:.65rem;min-height:56px}
+.journey-pages .hotel-picker label>span{font-size:1rem;overflow-wrap:normal}
+.journey-pages .hotel-picker label:has(:checked){border-color:#153b49;background:#ffffff60}
+#travel[data-travel-style=ticket] .has-hotel-choice a.hotel-name{padding:0 0 .5rem;margin:0;min-height:44px;border-radius:0}
+#travel[data-travel-style=ticket] .has-hotel-choice a.hotel-name:is(:hover,:active){transform:none;background:none}
+.journey-pages .has-hotel-choice .hotel-preview-title{display:none}
+.journey-pages .has-hotel-choice .hotel-description{max-width:50ch;margin:0}
+.journey-pages .has-hotel-choice .hotel-images figure:nth-child(2){margin-top:1.5rem}
 .journey-pages #travel[data-travel-style=ticket]{padding-bottom:var(--space-group)}
 
 /* Six independent native subjects retain all the original guide content. */
@@ -54,7 +70,7 @@
 .journey-pages .running-guide h4{font-size:1.125rem;font-weight:550}
 
 @media(max-width:760px){
- .journey-pages{--journey-title:clamp(1.65rem,8.7vw,3rem)}
+ .journey-pages{--journey-title:clamp(1.65rem,8.7vw,3rem);--gutter:min(1.35rem,5.5vw)}
  .journey-pages .chapter h2,.journey-pages #program[data-calendar-style=poster] h2,
  .journey-pages [data-memory-style=zine] .memory-intro h2,.journey-pages #travel[data-travel-style=ticket] h2,.journey-pages .running-guide h2{font-size:var(--journey-title);hyphens:auto;overflow-wrap:normal}
  .journey-pages [data-memory-style=zine] .memory-caption{font-size:clamp(1.8rem,8.7vw,3rem)}
@@ -67,4 +83,16 @@
  .journey-pages .guide-toggle{grid-column:2;grid-row:1/3}
  .journey-pages .running-guide .guide-summary h3{font-size:1.25rem}
  .journey-pages .guide-detail-body{padding:.5rem 0 2rem}
+ .journey-pages .program-contact{grid-template-columns:minmax(0,1fr);gap:1.5rem}
+}
+@container camp-page (max-width:44rem){
+ .journey-pages .has-hotel-choice{display:block}
+ .journey-pages .has-hotel-choice .hotel-picker{grid-template-columns:repeat(2,minmax(0,1fr));gap:.5rem;margin-bottom:1.25rem}
+ .journey-pages .hotel-picker label{padding:.6rem .5rem;gap:.45rem;align-items:center;min-height:64px}
+ .journey-pages .hotel-picker label>span{font-size:.9375rem;line-height:1.35}
+ .journey-pages .hotel-picker input{width:18px;height:18px}
+ .journey-pages .has-hotel-choice .hotel-images figure:nth-child(2){margin-top:0}
+}
+@container(max-width:18rem){
+ .journey-pages .has-hotel-choice .hotel-picker{grid-template-columns:minmax(0,1fr)}
 }

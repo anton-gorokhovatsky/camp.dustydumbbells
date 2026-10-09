@@ -12,6 +12,18 @@ export function setupNavigation(reduced) {
   let motion;
   let closing = false;
   let scrollFrame = 0;
+  let lastScroll = Math.max(0, window.scrollY);
+  let direction = 0;
+  let directionStart = lastScroll;
+  let keyboardNavigation = false;
+  document.addEventListener('keydown', () => { keyboardNavigation = true; }, true);
+  document.addEventListener('pointerdown', () => { keyboardNavigation = false; }, true);
+
+  // One measured clearance serves anchors and keyboard destinations, including
+  // enlarged text. It does not reserve the same space a second time per anchor.
+  new ResizeObserver(() => {
+    root.style.setProperty('--nav-clearance', `${Math.ceil(masthead.getBoundingClientRect().height + 16)}px`);
+  }).observe(masthead);
 
   function fitMenu() {
     const viewport = window.visualViewport;
@@ -49,6 +61,7 @@ export function setupNavigation(reduced) {
     motion?.cancel();
     motion = null;
     closing = false;
+    masthead.dataset.reading = 'false';
     menu.dataset.open = 'true';
     navigation.hidden = false;
     navigation.inert = false;
@@ -69,6 +82,7 @@ export function setupNavigation(reduced) {
   toggle.addEventListener('click', () => {
     if (menu.dataset.open !== 'true' || closing) openMenu(); else closeMenu();
   });
+  menu.addEventListener('focusin', () => { masthead.dataset.reading = 'false'; });
   menu.addEventListener('keydown', event => {
     if (event.key === 'Escape' && menu.dataset.open === 'true') {
       event.preventDefault(); closeMenu(true);
@@ -93,9 +107,10 @@ export function setupNavigation(reduced) {
     const id = target.getAttribute('aria-labelledby');
     return (id && document.getElementById(id)) || target;
   }
-  function focusDestination(target) {
+  function focusDestination(target, keyboard = keyboardNavigation) {
     const destination = headingFor(target);
     if (!destination.hasAttribute('tabindex')) destination.setAttribute('tabindex', '-1');
+    destination.dataset.navigationFocus = keyboard ? 'keyboard' : 'pointer';
     destination.focus({ preventScroll: true });
   }
   document.addEventListener('click', event => {
@@ -113,7 +128,7 @@ export function setupNavigation(reduced) {
     queueMicrotask(() => {
       if (location.hash !== url.hash) history.pushState(null, '', url.hash);
       target.scrollIntoView({ behavior: reduced.matches ? 'instant' : 'smooth', block: 'start' });
-      focusDestination(target);
+      focusDestination(target, event.detail === 0);
       requestPosition();
     });
   });
@@ -131,8 +146,23 @@ export function setupNavigation(reduced) {
 
   function updatePosition() {
     scrollFrame = 0;
-    masthead.dataset.scrolled = String(window.scrollY > 24);
-    const line = masthead.getBoundingClientRect().bottom + 48;
+    const position = Math.max(0, window.scrollY);
+    const nextDirection = Math.sign(position - lastScroll);
+    if (nextDirection && nextDirection !== direction) {
+      direction = nextDirection;
+      directionStart = lastScroll;
+    }
+    const menuHasKeyboardFocus = menu.contains(document.activeElement) && document.activeElement.matches(':focus-visible');
+    if (position <= 24 || menu.dataset.open === 'true' || menuHasKeyboardFocus) {
+      masthead.dataset.reading = 'false';
+    } else if (Math.abs(position - directionStart) >= 16) {
+      if (direction < 0) masthead.dataset.reading = 'false';
+      else masthead.dataset.reading = 'true';
+    }
+    lastScroll = position;
+    masthead.dataset.scrolled = String(position > 24);
+    // Orientation is independent of the disclosure's current visibility.
+    const line = masthead.offsetHeight + 48;
     for (const group of groups) {
       let current = null;
       for (const link of group) {

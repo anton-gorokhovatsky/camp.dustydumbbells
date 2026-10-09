@@ -18,11 +18,12 @@
   --link-offset:.22em;
 }
 html{scroll-padding-top:var(--nav-clearance)}
-html[data-navigation-ready=true]{scroll-behavior:smooth}
+html[data-navigation-ready=true]{scroll-behavior:auto}
 html[data-motion=off]{scroll-behavior:auto}
 body{font-family:var(--font-text);font-weight:400;transition:background-color 900ms ease}
 h3,h4,h5{margin-top:0}
-:is(h1,h2,h3,h4,h5)[tabindex="-1"]:focus-visible{outline:2px solid currentColor;outline-offset:6px;box-shadow:none}
+[tabindex="-1"][data-navigation-focus=pointer]:focus{outline:none;box-shadow:none}
+:is(h1,h2,h3,h4,h5)[tabindex="-1"][data-navigation-focus=keyboard]:focus-visible{outline:2px solid currentColor;outline-offset:6px;box-shadow:none}
 body[tabindex="-1"]:focus-visible{outline:none;box-shadow:none}
 .chapter{--chapter-pad:var(--space-section);padding-block:var(--chapter-pad);scroll-margin-top:calc(1.25rem - var(--chapter-pad))}
 #program[data-calendar-style=poster]{--chapter-pad:calc(var(--nav-clearance) + 1.25rem);padding-top:var(--chapter-pad)}
@@ -58,6 +59,9 @@ body[tabindex="-1"]:focus-visible{outline:none;box-shadow:none}
 
 /* One floating disclosure. Both the button and the panel use the same material. */
 .masthead{padding:1.25rem var(--gutter)}
+.masthead{transition:transform var(--duration-state) var(--ease-out),opacity var(--duration-quick)}
+.masthead[data-reading=true]:not(:has(:focus-visible)){transform:translateY(-110%);opacity:0;pointer-events:none}
+.masthead[data-reading=true]:not(:has(:focus-visible))>*{pointer-events:none}
 .menu-toggle,.masthead[data-scrolled=true] .menu-toggle,.menu-toggle[aria-expanded=true]{
   min-width:9rem;min-height:52px;justify-content:space-between;gap:1rem;
   padding:.75rem 1.1rem;border-radius:999px;font:450 .9375rem/1.4 var(--font-text);
@@ -141,7 +145,7 @@ button:disabled{cursor:default;opacity:.5}
  .cover-story{grid-template-rows:auto auto auto 44px;row-gap:1rem}
  .team-print{width:min(62vw,13rem);margin-block:.5rem}
 }
-@container(max-width:17em){.trip-details{padding:3.5rem 0 0}.print-label{font-size:.625rem}.cover-bottom,.weather-now{font-size:.6875rem}}
+@container(max-width:17em){.trip-details{padding:3.5rem 0 0}.print-label{font-size:.625rem;flex-direction:column;align-items:flex-start;gap:.35rem}.cover-bottom,.weather-now{font-size:.6875rem}}
 @media(prefers-reduced-motion:reduce){
  html[data-navigation-ready=true]{scroll-behavior:auto}
  *,*::before,*::after{animation:none!important;transition:none!important}
