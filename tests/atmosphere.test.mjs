@@ -2,6 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { environmentAt, weatherEffects, normalizeWeather, weatherLabel } from '../dist/environment.js';
 import { paintAtmosphere } from '../dist/direction/atmosphere.js';
+import { forecastCondition } from '../dist/direction/forecast.js';
 
 test('WMO rain, drizzle, snow and fog remain distinct with a zero precipitation interval', () => {
   for (const code of [51,53,55,56,57,61,63,65,66,67,80,81,82,95,96,99]) {
@@ -17,6 +18,9 @@ test('WMO rain, drizzle, snow and fog remain distinct with a zero precipitation 
   }
   assert.equal(weatherLabel({code:53,precipitation:0}), 'Морось');
   assert.equal(weatherLabel({code:63,precipitation:0}), 'Дождь');
+  for (const code of [0,1,2,3,45,48,51,53,55,56,57,61,63,65,66,67,71,73,75,77,80,81,82,85,86,95,96,99]) {
+    assert.equal(weatherLabel({code,precipitation:0,clouds:code === 0 ? 100 : 0}), forecastCondition(code), `current and hourly condition ${code}`);
+  }
   assert(weatherEffects({code:45}).fog > 0);
   assert.equal(weatherEffects({code:0}).rain,0);
   assert.equal(weatherEffects(null).rain,0);

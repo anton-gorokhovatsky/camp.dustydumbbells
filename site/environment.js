@@ -365,9 +365,13 @@ export function weatherLabel(weather) {
   if (weather.code >= 95) return "Гроза";
   if ([71,73,75,77,85,86].includes(weather.code)) return "Снег";
   if ([51,53,55,56,57].includes(weather.code)) return "Морось";
-  if (weather.precipitation > 0 || [61,63,65,66,67,80,81,82].includes(weather.code))
-    return "Дождь";
+  if ([61,63,65,66,67].includes(weather.code)) return "Дождь";
+  if ([80,81,82].includes(weather.code)) return "Ливень";
   if (weather.code === 45 || weather.code === 48) return "Туман";
+  if (weather.code === 0) return "Ясно";
+  if (weather.code === 1 || weather.code === 2) return "Переменная облачность";
+  if (weather.code === 3) return "Пасмурно";
+  if (weather.precipitation > 0) return "Дождь";
   return weather.clouds > 75
     ? "Пасмурно"
     : weather.clouds > 25
