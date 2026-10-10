@@ -105,7 +105,7 @@ const programDays = schedule
           `<li>${time ? `<time datetime="${date}T${time}:00+03:00">${time}</time>` : "<time></time>"}<span>${escapeHTML(title)}</span></li>`,
       )
       .join("");
-    return `<article class="program-day" data-date="${date}" data-rest="${rest}"><div class="program-date-group"><${dateHeading} class="program-date"><time datetime="${date}"><b>${day}</b><span>октября</span></time></${dateHeading}><p class="program-weekday">${weekday.format(new Date(`${date}T12:00:00+03:00`))}</p></div><ul class="program-events">${rows}</ul></article>`;
+    return `<article class="program-day" id="day-${date}" aria-labelledby="day-${date}-title" data-date="${date}" data-rest="${rest}"><div class="program-date-group"><${dateHeading} class="program-date" id="day-${date}-title"><time datetime="${date}"><b>${day}</b><span>октября</span></time></${dateHeading}><p class="program-weekday">${weekday.format(new Date(`${date}T12:00:00+03:00`))}</p></div><ul class="program-events">${rows}</ul></article>`;
   });
 const program = `<div class="program-arrival">${programDays[0]}</div><div class="program-weeks"><section class="program-week" aria-labelledby="week-one"><h3 class="week-heading" id="week-one"><span class="week-label">Первая неделя</span><span class="week-period"><span class="date-range">12–18</span> октября</span></h3><div class="week-days">${programDays.slice(1, 8).join("\n")}</div></section><section class="program-week" aria-labelledby="week-two"><h3 class="week-heading" id="week-two"><span class="week-label">Вторая неделя</span><span class="week-period"><span class="date-range">19–25</span> октября</span></h3><div class="week-days">${programDays.slice(8).join("\n")}</div></section></div>`;
 const gallery = [9, 4, 10, 3, 5]

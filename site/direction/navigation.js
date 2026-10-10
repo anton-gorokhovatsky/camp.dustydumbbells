@@ -124,8 +124,9 @@ export function setupNavigation(reduced) {
     if (!target) return;
     event.preventDefault();
     closeMenu(false, false);
-    // Later listeners reveal guide/hotel content before the native smooth scroll.
-    queueMicrotask(() => {
+    // A frame follows the whole event dispatch: guide/hotel listeners have
+    // revealed the destination before scrolling and assigning heading focus.
+    requestAnimationFrame(() => {
       if (location.hash !== url.hash) history.pushState(null, '', url.hash);
       target.scrollIntoView({ behavior: reduced.matches ? 'instant' : 'smooth', block: 'start' });
       focusDestination(target, event.detail === 0);

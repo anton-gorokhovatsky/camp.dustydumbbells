@@ -37,6 +37,10 @@ main{container-name:camp-page}
 .journey-pages [data-memory-style=zine] .memory-caption{font-size:clamp(2.25rem,4.2vw,4.25rem);line-height:1.08}
 .journey-pages [data-memory-style=zine] .memory-name{overflow-wrap:normal;hyphens:auto}
 .journey-pages [data-memory-style=zine] .memory-note{font:400 var(--type-body)/1.65 var(--font-text);letter-spacing:0;max-width:32ch;margin-top:.5rem;text-wrap:pretty}
+.journey-pages [data-memory-style=zine] .memory-day{font:450 var(--type-body)/1.5 var(--font-text);letter-spacing:0;display:inline-flex;align-items:center;min-height:44px;margin-top:.5rem;color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:var(--link-offset)}
+.journey-pages [data-memory-style=zine] .memory-day:hover{text-decoration-thickness:2px}
+.journey-pages [data-memory-style=zine] .memory-day:focus-visible{outline:3px solid currentColor;outline-offset:5px}
+.journey-pages [data-memory-style=zine] .memory-day:active{opacity:.8}
 .journey-pages .memory-outro{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:1rem 2rem;margin-top:var(--journey-group);padding-top:1.5rem;border-top:1px solid #153c3e33}
 .journey-pages .memory-outro p{font-size:var(--type-lead);line-height:1.5;max-width:39ch}
 .journey-pages .memory-outro a{font-size:var(--type-body);min-height:44px;display:inline-flex;align-items:center}
@@ -62,6 +66,18 @@ main{container-name:camp-page}
 .journey-pages .program-contact{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:var(--space-group);margin-top:2rem;padding-top:1.5rem;border-top:1px solid #153b4933;align-items:end}
 .journey-pages .program-contact .quiet-link{font-size:var(--type-body);margin-top:.5rem}
 .journey-pages .about-copy>.quiet-link{display:flex;width:fit-content;padding-block:.45rem}
+.journey-pages .program-notes a{color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:var(--link-offset)}
+.journey-pages .program-notes a:hover{text-decoration-thickness:2px}
+.journey-pages .program-notes a:focus-visible{outline:3px solid currentColor;outline-offset:5px}
+.journey-pages .program-day[id]{scroll-margin-top:1rem}
+.journey-pages .ticket-information .quiet-link{display:flex;width:fit-content;align-items:center;min-height:44px;margin-top:.5rem}
+.journey-pages .ticket-information{gap:var(--space-group)}
+.journey-pages #run-airport{scroll-margin-top:1rem}
+.journey-pages .guide-return{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:var(--space-group);margin-top:var(--space-group);padding-top:var(--space-group);border-top:1px solid #153b4933;align-items:center}
+.journey-pages .running-guide .guide-return h3{font:italic 900 var(--type-compact-title)/1.15 var(--font-title);letter-spacing:-.025em;margin:0 0 .75rem}
+.journey-pages .guide-return p{font-size:var(--type-body);line-height:1.65;max-width:43ch}
+.journey-pages .guide-return nav{display:grid;justify-items:start;gap:.25rem}
+.journey-pages .guide-return a{display:flex;align-items:center;min-height:44px;font-size:var(--type-body)}
 
 /* The matte ticket keeps its shared frame, perforation and date group. */
 .journey-pages .ticket-destination{font-size:clamp(3rem,5.5vw,5.5rem)}
@@ -138,6 +154,7 @@ main{container-name:camp-page}
  .journey-pages .running-guide .guide-summary h3{font-size:1.25rem}
  .journey-pages .guide-detail-body{padding:.5rem 0 2rem}
  .journey-pages .program-contact{grid-template-columns:minmax(0,1fr);gap:1.5rem}
+ .journey-pages .guide-return{grid-template-columns:minmax(0,1fr);gap:1rem}
 }
 @container camp-page (max-width:44rem){
  .journey-pages .has-hotel-choice{display:block}
