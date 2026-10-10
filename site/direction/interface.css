@@ -58,7 +58,7 @@ body[tabindex="-1"]:focus-visible{outline:none;box-shadow:none}
 @keyframes detail-arrival{from{opacity:.65;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
 
 /* One floating disclosure. Both the button and the panel use the same material. */
-.masthead{padding:1.25rem var(--gutter)}
+.masthead{padding:1.25rem calc(var(--gutter) + .75rem)}
 .masthead{transition:transform var(--duration-state) var(--ease-out),opacity var(--duration-quick)}
 .masthead[data-reading=true]:not(:has(:focus-visible)){transform:translateY(-110%);opacity:0;pointer-events:none}
 .masthead[data-reading=true]:not(:has(:focus-visible))>*{pointer-events:none}
@@ -74,7 +74,7 @@ body[tabindex="-1"]:focus-visible{outline:none;box-shadow:none}
 .menu-icon path{stroke:currentColor;stroke-width:1.7;stroke-linecap:round;transform-origin:12px 12px;transition:transform var(--duration-state) var(--ease-out)}
 .menu-toggle[aria-expanded=true] .menu-stroke-top{transform:rotate(45deg) translateY(4px)}
 .menu-toggle[aria-expanded=true] .menu-stroke-bottom{transform:rotate(-45deg) translateY(-4px)}
-.site-menu nav{width:21rem;max-width:calc(100vw - 2 * var(--gutter));padding:.65rem;top:calc(100% + .65rem);border-radius:1.7rem;transform-origin:100% 0;color-scheme:light}
+.site-menu nav{width:21rem;max-width:calc(100vw - 2 * (var(--gutter) + .75rem));padding:.65rem;top:calc(100% + .65rem);border-radius:1.7rem;transform-origin:100% 0;color-scheme:light}
 .site-menu[data-ready] nav{max-height:var(--menu-height);overflow:auto;overscroll-behavior:contain}
 .nav-link{position:relative;display:flex;flex:none;min-height:56px;padding:.85rem 1rem;gap:1rem;align-items:center;border-radius:.65rem;font:450 1rem/1.45 var(--font-text);text-decoration:none;transition:background-color var(--duration-quick)}
 .nav-link+.nav-link{border-top:1px solid #163b4914}
@@ -126,8 +126,8 @@ button:disabled{cursor:default;opacity:.5}
 @supports(corner-shape:superellipse(1.5)){.site-menu nav{border-radius:2.5rem;corner-shape:superellipse(1.5)}}
 @media(max-width:760px){
  :root{--nav-clearance:4.75rem;--space-section:4rem}
- .masthead{padding:.75rem var(--gutter)}
- .menu-toggle,.masthead[data-scrolled=true] .menu-toggle,.menu-toggle[aria-expanded=true]{min-width:8.1rem;min-height:48px;padding:.65rem 1rem;font-size:.875rem}
+ .masthead{--gutter:min(1.35rem,5.5vw);padding:.75rem calc(var(--gutter) + .75rem)}
+ .menu-toggle,.masthead[data-scrolled=true] .menu-toggle,.menu-toggle[aria-expanded=true]{min-width:min(8.1rem,calc(100vw - 2 * (var(--gutter) + .75rem)));min-height:48px;padding:.65rem 1rem;font-size:.875rem}
  .nav-link{min-height:52px;font-size:1rem;padding:.8rem .9rem}
  .trip-details{padding-right:8rem}
  .chapter h2,#travel[data-travel-style=ticket] h2,.running-guide h2{font-size:clamp(2.25rem,9.5vw,3.5rem)}

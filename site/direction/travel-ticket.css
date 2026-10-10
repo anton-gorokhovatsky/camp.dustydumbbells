@@ -130,6 +130,12 @@
 .guide-topic-note{grid-column:1;font-size:.9375rem;line-height:1.6;max-width:51ch}
 .guide-toggle{grid-column:2;grid-row:2;align-self:center;justify-self:center;width:.65rem;height:.65rem;border-bottom:2px solid currentColor;border-right:2px solid currentColor;transform:rotate(45deg);transition:transform .15s}
 .guide-section[open]>.guide-summary .guide-toggle{transform:rotate(225deg)}
+.guide-action{grid-column:2;grid-row:2;display:inline-flex;align-items:center;gap:.65rem;min-height:44px;font-size:.8125rem;line-height:1.4;white-space:nowrap}
+.guide-action .guide-toggle{display:block;flex:none;grid-column:auto;grid-row:auto}
+.guide-action-close{display:none}
+.guide-section[open]>.guide-summary .guide-action-close{display:inline}
+.guide-section[open]>.guide-summary .guide-action-open{display:none}
+.guide-summary:hover .guide-action>span:not(.guide-toggle){text-decoration:underline;text-underline-offset:.2em}
 .guide-summary:hover h3{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.18em}
 .guide-summary:active{opacity:.8}
 .guide-summary:focus-visible{outline:3px solid #153b49;outline-offset:6px;border-radius:4px}
