@@ -156,7 +156,7 @@ function updateForecastHour() {
 }
 $('.weather-inline').hidden = false;
 
-const photoNames = ['Пробежка у моря', 'На дорожке', 'Вдоль побережья', 'Навстречу горам', 'Прогулка по пирсу', 'До заката', 'Лодки в бухте', 'По набережной', 'Синяя вода', 'Выше, к горам', 'В гавани'];
+const photoNames = ['Пробежка у моря', 'На дорожке', 'Вдоль побережья', 'Бежим вместе', 'На пирсе', 'До заката', 'Лодки в бухте', 'По набережной', 'Синяя вода', 'Море с высоты', 'В гавани'];
 const photoBase = new URL('../assets/', import.meta.url);
 const deck = $('.team-print');
 const originalCard = $('.print-card');
