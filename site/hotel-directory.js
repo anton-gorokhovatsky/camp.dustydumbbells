@@ -1,5 +1,5 @@
 export const renderHotelDirectory = (hotels, mediaBase) => `<div class="hotel-directory" data-hotel-directory data-initial-hotel="bomo">
-  <header class="hotels-heading"><h3 id="hotels-title">Отели и апартаменты</h3><p>Номера и цены — на Trip.com.</p></header>
+  <header class="hotels-heading"><h3 id="hotels-title">Отели и апартаменты</h3><p>Номера и цены — на Trip.com</p></header>
   <nav class="hotel-contents" id="hotel-overview" aria-label="Отели на этой странице" tabindex="-1">${hotels.map(hotel => `<a href="#hotel-${hotel.id}">${hotel.name}</a>`).join('')}</nav>
   <fieldset class="hotel-picker" hidden><legend>Выбери отель</legend>${hotels.map(hotel => `<label><input type="radio" name="hotel-preview" value="${hotel.id}" aria-controls="hotel-${hotel.id}" ${hotel.id === 'bomo' ? 'checked' : ''}><span>${hotel.name}</span></label>`).join('')}</fieldset>
   <p class="sr-only" data-hotel-status role="status"></p>

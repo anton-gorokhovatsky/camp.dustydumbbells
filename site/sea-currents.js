@@ -31,9 +31,9 @@ export function renderSeaCurrent(join, half) {
       </defs>
       <g mask="url(#${id}-mask)">
         <rect width="1000" height="240" fill="url(#${id}-colour)"/>
-        <g filter="url(#${id}-soft)" opacity=".72"${mirror}>
-          <path class="sea-flow sea-flow--from" d="M-80-60 H1080 V60 C860 140 700 62 530 128 S210 200-80 116 Z" style="fill:var(--current-from)"/>
-          <path class="sea-flow sea-flow--to" d="M-80 300 H1080 V138 C830 74 685 190 490 130 S200 52-80 164 Z" style="fill:var(--current-to)"/>
+        <g filter="url(#${id}-soft)" opacity=".84"${mirror}>
+          <path class="sea-flow sea-flow--from" d="M-80 -60 H1080 V40 C870 270 720 20 510 165 S170 265 -80 65 Z" style="fill:var(--current-from)"/>
+          <path class="sea-flow sea-flow--to" d="M-80 300 H1080 V185 C850 -30 690 215 490 75 S180 -20 -80 195 Z" style="fill:var(--current-to)"/>
         </g>
       </g>
     </svg>

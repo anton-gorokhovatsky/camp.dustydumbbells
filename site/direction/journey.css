@@ -125,11 +125,11 @@ main{container-name:camp-page}
 .journey-pages .journey-photo-caption{font:400 var(--type-label)/1.45 var(--font-text);text-decoration:none;margin-top:.75rem}
 .journey-pages #travel[data-travel-style] article h3{font:550 clamp(1.25rem,1.8vw,1.65rem)/1.3 var(--font-text);letter-spacing:-.015em}
 .journey-pages .hotels-heading h3{font:550 clamp(1.4rem,2.2vw,2rem)/1.3 var(--font-text);letter-spacing:-.025em}
-.journey-pages .has-hotel-choice{display:grid;grid-template-columns:minmax(13rem,.4fr) minmax(0,1fr);gap:0 var(--space-group);align-items:start}
+.journey-pages .has-hotel-choice{display:grid;grid-template-columns:minmax(13rem,.4fr) minmax(0,1fr);grid-template-rows:auto 1fr;gap:0 var(--space-group);align-items:start}
 .journey-pages .hotel-directory{container-type:inline-size}
-.journey-pages .has-hotel-choice .hotels-heading{grid-column:1/-1}
-.journey-pages .has-hotel-choice .hotel-picker{grid-column:1;gap:.5rem;margin:0}
-.journey-pages .has-hotel-choice .hotel-list{grid-column:2;min-width:0}
+.journey-pages .has-hotel-choice .hotels-heading{grid-column:1;grid-row:1}
+.journey-pages .has-hotel-choice .hotel-picker{grid-column:1;grid-row:2;gap:.5rem;margin:0}
+.journey-pages .has-hotel-choice .hotel-list{grid-column:2;grid-row:1/3;min-width:0}
 .journey-pages .hotel-picker legend{margin-bottom:.75rem}
 .journey-pages .hotel-picker label{border:0;border-radius:0;padding:.85rem .25rem;gap:.75rem;min-height:56px}
 .journey-pages .hotel-picker label>span{font-size:1rem;overflow-wrap:normal}
@@ -152,10 +152,10 @@ main{container-name:camp-page}
 
 /* Keep the guide's reference layout. Museo marks the six subjects, Akt names
    the places and explains them; the stronger rules separate whole subjects. */
-.journey-pages .running-guide{--guide-pad-top:4rem;padding-bottom:4rem}
+.journey-pages .running-guide{--guide-pad-top:4rem;padding-bottom:4rem;container-name:guide-field;container-type:inline-size}
 .journey-pages .running-guide h2{font-size:clamp(2.25rem,3.1vw,3rem);line-height:1.08;letter-spacing:-.035em}
 .journey-pages .guide-heading{grid-template-columns:12rem minmax(0,1fr);gap:1rem 2rem;margin-bottom:2rem;align-items:start}
-.journey-pages .guide-heading>div{display:block;max-width:48ch}
+.journey-pages .guide-heading>div{display:block;grid-column:2;min-width:0}
 .journey-pages .guide-heading .guide-intro{font-size:1.125rem;line-height:1.5;max-width:41ch}
 .journey-pages .guide-byline{margin-top:.75rem;font-size:var(--type-label)}
 .journey-pages .guide-layout{grid-template-columns:12rem minmax(0,1fr);gap:2rem}
@@ -192,6 +192,16 @@ main{container-name:camp-page}
 .journey-pages .guide-inline-note{margin-top:2rem;padding-top:0}
 .journey-pages .guide-inline-note .guide-places :is(.guide-place-link,.guide-place-text){padding-top:0}
 .journey-pages .currency-rates dd{font:italic 900 1.75rem/1.1 var(--font-title);letter-spacing:-.025em;font-variant-numeric:tabular-nums}
+
+/* The introduction shares the far column of the reference grid below it. */
+@container guide-field (min-width:56rem){
+ .journey-pages .guide-heading{grid-template-columns:12rem repeat(2,minmax(0,1fr))}
+ .journey-pages .guide-heading>div{grid-column:3}
+}
+@container guide-field (min-width:70rem){
+ .journey-pages .guide-heading{grid-template-columns:12rem repeat(3,minmax(0,1fr))}
+ .journey-pages .guide-heading>div{grid-column:4}
+}
 
 /* Six routes form a comparison on wide screens; their content stays open. */
 @container guide-body (max-width:40rem){
@@ -238,9 +248,13 @@ main:has(.camp-closing)+.camp-footer{margin-top:0;background-color:var(--environ
 
 @media(max-width:999px){
  .journey-pages .guide-layout{display:block}
- .journey-pages .guide-heading{grid-template-columns:minmax(0,.7fr) minmax(0,1fr)}
- .journey-pages .guide-heading>div{display:block}
+ .journey-pages .guide-heading{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .journey-pages .guide-heading>div{display:block;grid-column:2}
  .journey-pages .guide-byline{margin-top:1rem}
+ @container guide-field (min-width:56rem){
+  .journey-pages .guide-heading{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .journey-pages .guide-heading>div{grid-column:3}
+ }
 }
 
 @media(max-width:760px){
@@ -365,14 +379,14 @@ main:has(.camp-closing)+.camp-footer{margin-top:0;background-color:var(--environ
  .sea-flow--to{animation-name:sea-pour-to;animation-duration:34s}
 }
 @keyframes sea-pour-from{
- 0%,100%{d:path('M-80-60 H1080 V60 C860 140 700 62 530 128 S210 200-80 116 Z')}
- 33%{d:path('M-80-60 H1080 V100 C905 25 740 175 520 90 S190 45-80 144 Z')}
- 67%{d:path('M-80-60 H1080 V125 C890 170 730 80 510 140 S170 100-80 80 Z')}
+ 0%,100%{d:path('M-80 -60 H1080 V40 C870 270 720 20 510 165 S170 265 -80 65 Z')}
+ 33%{d:path('M-80 -60 H1080 V150 C900 -35 735 260 520 65 S185 -20 -80 190 Z')}
+ 67%{d:path('M-80 -60 H1080 V185 C885 265 730 -35 505 175 S165 290 -80 35 Z')}
 }
 @keyframes sea-pour-to{
- 0%,100%{d:path('M-80 300 H1080 V138 C830 74 685 190 490 130 S200 52-80 164 Z')}
- 33%{d:path('M-80 300 H1080 V170 C840 115 700 80 490 150 S180 210-80 120 Z')}
- 67%{d:path('M-80 300 H1080 V85 C870 160 730 205 490 95 S210 100-80 178 Z')}
+ 0%,100%{d:path('M-80 300 H1080 V185 C850 -30 690 215 490 75 S180 -20 -80 195 Z')}
+ 33%{d:path('M-80 300 H1080 V80 C850 265 690 -25 500 175 S185 275 -80 60 Z')}
+ 67%{d:path('M-80 300 H1080 V35 C865 -35 740 280 495 60 S190 -45 -80 210 Z')}
 }
 /* Older SVG engines keep the same soft drawing with a gentle drift. */
 @supports not (d:path('M0 0 H1 V1 Z')){
