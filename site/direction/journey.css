@@ -37,10 +37,6 @@ main{container-name:camp-page}
 .journey-pages [data-memory-style=zine] .memory-caption{font-size:clamp(2.25rem,4.2vw,4.25rem);line-height:1.08}
 .journey-pages [data-memory-style=zine] .memory-name{overflow-wrap:normal;hyphens:auto}
 .journey-pages [data-memory-style=zine] .memory-note{font:400 var(--type-body)/1.65 var(--font-text);letter-spacing:0;max-width:32ch;margin-top:.5rem;text-wrap:pretty}
-.journey-pages [data-memory-style=zine] .memory-day{font:450 var(--type-body)/1.5 var(--font-text);letter-spacing:0;display:inline-flex;align-items:center;min-height:44px;margin-top:.5rem;color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:var(--link-offset)}
-.journey-pages [data-memory-style=zine] .memory-day:hover{text-decoration-thickness:2px}
-.journey-pages [data-memory-style=zine] .memory-day:focus-visible{outline:3px solid currentColor;outline-offset:5px}
-.journey-pages [data-memory-style=zine] .memory-day:active{opacity:.8}
 .journey-pages .memory-outro{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:1rem 2rem;margin-top:var(--journey-group);padding-top:1.5rem;border-top:1px solid #153c3e33}
 .journey-pages .memory-outro p{font-size:var(--type-lead);line-height:1.5;max-width:39ch}
 .journey-pages .memory-outro a{font-size:var(--type-body);min-height:44px;display:inline-flex;align-items:center}
@@ -126,6 +122,14 @@ main{container-name:camp-page}
  .journey-pages .route-measure{flex-direction:row;flex-wrap:wrap;align-items:baseline;gap:.4rem .75rem}
  .journey-pages .route-measure>strong{font-size:2.25rem}
  .journey-pages .route-measure>span{max-width:15ch}
+}
+
+/* Compare six routes as a compact reference on wide screens.
+   Use two columns or the original list when space or text size requires them. */
+@container guide-body (min-width:56rem){
+ .journey-pages .running-routes{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .journey-pages .running-route{padding:1.25rem 0 1.5rem;gap:.6rem}
+ .journey-pages .guide-detail-body{padding-bottom:2rem}
 }
 
 @media(max-width:760px){
