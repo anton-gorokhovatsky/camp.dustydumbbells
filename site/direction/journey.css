@@ -6,7 +6,7 @@ main{container-name:camp-page}
   --journey-display:clamp(2.5rem,5.7vw,6rem);
   --journey-reading-title:clamp(2.25rem,4.1vw,4.25rem);
   --journey-group:clamp(2rem,3.5vw,3.5rem);
-  --field-transition:clamp(1.5rem,3vw,3rem);
+  --sea-edge:clamp(3rem,6vw,6rem);
 }
 .journey-pages .chapter h2,.journey-pages [data-memory-style=zine] .memory-intro h2{
   font-size:var(--journey-title);line-height:1.06;letter-spacing:-.035em;
@@ -18,24 +18,6 @@ main{container-name:camp-page}
 .journey-pages :is(.chapter-lead,.journey-lead,.guide-intro){font-size:var(--type-lead);line-height:1.5}
 .journey-pages :is(.chapter-heading,.memory-intro,.journey-heading,.guide-heading){margin-bottom:var(--journey-group)}
 .journey-pages :is(#hotels-title,.hotel-list>li,.week-heading,.guide-section){scroll-margin-top:1rem}
-
-/* Colour changes stay in the empty bottom edge of each selected composition.
-   The destination uses the same live palette as the following section. */
-.journey-pages #weather{--next-field:var(--environment-reading,#365a66)}
-.journey-pages #about{--next-field:var(--environment-zine,#c7f2b7)}
-.journey-pages #memories{--next-field:var(--environment-poster,#fc754f)}
-.journey-pages #program{--next-field:var(--environment-ticket,#386b81)}
-.journey-pages #travel{--next-field:var(--environment-guide,#edf3f3)}
-.journey-pages .running-guide{--next-field:var(--environment-reading,#234858)}
-@media screen{
- .journey-pages :is(#weather,#about,#memories,#program,#travel,.running-guide){
-  background-image:linear-gradient(to bottom,transparent,var(--next-field));
-  background-position:left bottom;background-size:100% var(--field-transition);background-repeat:no-repeat;
- }
- /* About keeps its bounded composition; only its colour edge spans the page. */
- .journey-pages #about{position:relative;background-image:none}
- .journey-pages #about::after{content:'';position:absolute;bottom:0;left:50%;width:100cqw;height:var(--field-transition);transform:translateX(-50%);background:linear-gradient(to bottom,transparent,var(--next-field));pointer-events:none}
-}
 
 /* The open forecast is a moment of local weather, with one main reading. */
 .journey-pages .weather-section{--forecast-columns:10;--forecast-hour-gap:1.25rem;gap:1.75rem;container-type:inline-size;container-name:weather}
@@ -310,4 +292,30 @@ main:has(.camp-closing)+.camp-footer{margin-top:0;background-color:var(--environ
 }
 @container weather (max-width:12rem){
  .journey-pages .forecast-brief{grid-template-columns:minmax(0,1fr)}
+}
+
+/* The two clipped halves share one soft drawing across each section boundary.
+   Leave space for the colour currents, with clear content on either side. */
+.sea-current{display:none}
+@media screen{
+ .journey-pages :is(#weather,#about,#memories,#program,#travel,.running-guide,.camp-closing){position:relative}
+ .journey-pages .sea-current{display:block;position:absolute;left:0;width:100%;height:var(--sea-edge);overflow:hidden;pointer-events:none}
+ .sea-current--in{top:0}
+ .sea-current--out{bottom:0}
+ .sea-current svg{position:absolute;left:0;width:100%;height:calc(2 * var(--sea-edge));max-width:none}
+ .sea-current--out svg{top:0}
+ .sea-current--in svg{bottom:0}
+ .journey-pages #about>.sea-current{left:50%;width:100cqw;transform:translateX(-50%)}
+ .journey-pages #weather{padding-bottom:max(clamp(2rem,4vw,3.5rem),calc(var(--sea-edge) + 1.5rem))}
+ .journey-pages #about{padding-block:max(var(--space-section),calc(var(--sea-edge) + 1.5rem))}
+ .journey-pages #memories[data-memory-style=zine]{padding-top:calc(var(--sea-edge) + 1.5rem);padding-bottom:max(var(--journey-group),calc(var(--sea-edge) + 1.5rem))}
+ .journey-pages #program[data-calendar-style=poster]{padding-bottom:max(5rem,calc(var(--sea-edge) + 1.5rem))}
+ .journey-pages #travel[data-travel-style=ticket]{padding-bottom:max(var(--journey-group),calc(var(--sea-edge) + 1.5rem))}
+ .journey-pages .running-guide{--guide-pad-top:max(4rem,calc(var(--sea-edge) + 1.5rem));padding-bottom:max(4rem,calc(var(--sea-edge) + 1.5rem))}
+ .journey-pages .camp-closing{padding-top:max(var(--space-section),calc(var(--sea-edge) + 1.5rem))}
+}
+@media screen and (max-width:760px){
+ .journey-pages #program[data-calendar-style=poster]{padding-bottom:max(3rem,calc(var(--sea-edge) + 1.5rem))}
+ .journey-pages .running-guide{--guide-pad-top:max(3rem,calc(var(--sea-edge) + 1.5rem));padding-bottom:max(3rem,calc(var(--sea-edge) + 1.5rem))}
+ .journey-pages .camp-closing{padding-top:max(3rem,calc(var(--sea-edge) + 1.5rem))}
 }

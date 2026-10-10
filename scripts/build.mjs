@@ -7,6 +7,7 @@ import { schedule, photos, season } from "../site/content.js";
 import { typograph } from "../site/typography.js";
 import { renderHotelDirectory } from "../site/hotel-directory.js";
 import { renderRunningGuide } from "../site/running-guide.js";
+import { resolveSeaCurrents } from "../site/sea-currents.js";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const output = path.join(root, "dist");
@@ -155,10 +156,11 @@ for (const file of [
     .replaceAll("{{SITE}}", site.href)
     .replace("{{SCHEDULE}}", program)
     .replace("{{HOTELS}}", renderHotelDirectory(hotels, `${base}direction/media/hotels/`))
-    .replace("{{RUNNING_GUIDE}}", renderRunningGuide(currency))
+    .replace("{{RUNNING_GUIDE}}", renderRunningGuide(currency, { currents: true }))
     .replace("{{GALLERY}}", gallery);
   // Only text nodes in the authored page; preserved original and attributes stay intact.
   if (file === 'index.html' || file === 'direction/index.html') {
+    content = resolveSeaCurrents(content);
     content = content.split(/(<[^>]+>)/g).map(part => part.startsWith('<') ? part : typograph(part)).join('');
   }
   // A new publication must also refresh cached styles and module dependencies.

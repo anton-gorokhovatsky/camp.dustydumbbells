@@ -10,7 +10,7 @@ const routes = [
   { name: 'Выше, в горы', distance: 'Трейл', unit: 'маршрут выбираешь сам', text: 'Для рельефа автор советует смотреть треки в Garmin и Strava, затем загружать выбранный GPX в часы. Выбирай трек под свою дистанцию и набор высоты.' },
 ];
 
-export function renderRunningGuide(currency, { topics = false } = {}) {
+export function renderRunningGuide(currency, { topics = false, currents = false } = {}) {
   const number = new Intl.NumberFormat('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   const date = new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Moscow' });
   const rates = [['TRY', '1 турецкая лира'], ['USD', '1 доллар'], ['EUR', '1 евро']].map(([code, label]) => `<div><dt>${label}</dt><dd data-currency="${code}">${number.format(currency.rates[code].rubPerUnit)} ₽</dd></div>`).join('');
@@ -28,6 +28,7 @@ export function renderRunningGuide(currency, { topics = false } = {}) {
   };
   const chapterEnd = '</div></details>';
   return `<section id="running-guide" class="running-guide" data-guide-style="ticket"${topics ? ' data-guide-mode="topics"' : ''} aria-labelledby="running-guide-title">
+  ${currents ? '{{SEA_TRAVEL_GUIDE_IN}}' : ''}
     <header class="guide-heading"><p class="section-label">На месте · Путеводитель</p><h2 id="running-guide-title">Беговая<br> Анталья</h2><div><p class="guide-intro">Практические заметки для жизни и бега у моря. Маршруты, адреса и бытовые подробности из поездок в Анталью.</p><p class="guide-byline">По ${link('путеводителю Вячеслава Давыдова', 'https://t.me/Slk425/847')} и ${link('карточкам «Бегом»', 'https://t.me/begmonrun/304')}, <span class="guide-source-period">март–май 2026</span>.</p></div></header>
     <div class="guide-layout"><nav class="guide-contents" aria-label="Содержание путеводителя"><p>На этой странице</p>${chapters.map(([id, label]) => `<a href="#${id}">${label}</a>`).join('')}</nav><div class="guide-body">
       ${chapterStart('run-routes')}<p class="guide-section-lead">Расстояния и маршруты — из опыта автора.</p><div class="running-routes">${routes.map(route => `<article class="running-route"><div class="route-measure"><strong>${route.distance}</strong><span>${route.unit}</span></div><div><h4>${route.url ? link(route.name, route.url) : route.name}</h4><p>${route.text}</p></div></article>`).join('')}</div>${chapterEnd}
@@ -68,5 +69,6 @@ export function renderRunningGuide(currency, { topics = false } = {}) {
       ])}</article></div>${chapterEnd}
       ${chapterStart('run-community')}<div class="guide-columns"><article><h4>Бежать вместе</h4><p>В ${link('чате бегунов Антальи', 'https://t.me/sportsantaliya')} можно найти компанию, узнать о совместных пробежках и уточнить доступ на стадион. О городском быте — ${link('в чате жителей', 'https://t.me/antalya_chat')}.</p><p>В путеводителе также отмечено местное вино Şirince Zeus, если хочется провести вечер после прогулки за бокалом.</p></article><article><h4>Что положить в рюкзак</h4><p>На сборах в феврале–марте было 15–22° днём и 8–12° ночью. Из опыта поездки: днём хватало лёгкой формы, утром и вечером — дополнительный слой, от ветра и дождя — ветровка.</p><p>Полезная идея для сборов — несколько лёгких слоёв, защита от солнца и погоды. Комплект выбирай по прогнозу перед выездом.</p></article></div>${chapterEnd}
     </div></div>
+  ${currents ? '{{SEA_GUIDE_CLOSING_OUT}}' : ''}
   </section>`;
 }
