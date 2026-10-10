@@ -66,6 +66,18 @@ main{container-name:camp-page}
 .journey-pages .program-notes a:hover{text-decoration-thickness:2px}
 .journey-pages .program-notes a:focus-visible{outline:3px solid currentColor;outline-offset:5px}
 .journey-pages .program-day[id]{scroll-margin-top:1rem}
+/* The week heading supplies the month visually; each accessible date is full.
+   Days with two activities have room for that pair, single activities keep
+   the same large date within a quieter interval. */
+.journey-pages #program[data-calendar-style=poster] .week-days .program-date span{
+  position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;
+}
+.journey-pages #program[data-calendar-style=poster] .week-days .program-day{padding-block:1rem;align-items:start}
+.journey-pages #program[data-calendar-style=poster] .week-days .program-day:has(.program-events>li+li){padding-block:1.5rem}
+.journey-pages #program[data-calendar-style=poster] .program-events{container-type:inline-size;container-name:day-events}
+.journey-pages #program[data-calendar-style=poster] .program-events time{font-size:var(--type-label);line-height:1.5}
+.journey-pages #program[data-calendar-style=poster] .program-events li,
+.journey-pages #program[data-calendar-style=poster] .program-events li:has(time:empty){grid-template-columns:3.25rem minmax(0,1fr);gap:1rem;align-items:baseline}
 .journey-pages .ticket-information .quiet-link{display:flex;width:fit-content;align-items:center;min-height:44px;margin-top:.5rem}
 .journey-pages .ticket-information{gap:var(--space-group)}
 .journey-pages #run-airport{scroll-margin-top:1rem}
@@ -73,6 +85,11 @@ main{container-name:camp-page}
 /* The matte ticket keeps its shared frame, perforation and date group. */
 .journey-pages .ticket-destination{font-size:clamp(3rem,5.5vw,5.5rem)}
 .journey-pages .travel-ticket{overflow:clip}
+.journey-pages .ticket-body{grid-template-rows:auto 1fr;row-gap:var(--space-group)}
+.journey-pages .ticket-arrival{grid-column:2;grid-row:1;min-width:0}
+.journey-pages .ticket-body .journey-photo{grid-column:1;grid-row:1/3}
+.journey-pages .ticket-information{grid-column:2;grid-row:2;align-content:start}
+.journey-pages .ticket-arrival .quiet-link{display:flex;width:fit-content;align-items:center;min-height:44px;margin-top:.5rem}
 .journey-pages .ticket-dates strong{font-size:clamp(3rem,4.5vw,4.75rem)}
 .journey-pages #travel[data-travel-style] article h3{font:550 clamp(1.25rem,1.8vw,1.65rem)/1.3 var(--font-text);letter-spacing:-.015em}
 .journey-pages .hotels-heading h3{font:550 clamp(1.4rem,2.2vw,2rem)/1.3 var(--font-text);letter-spacing:-.025em}
@@ -183,8 +200,13 @@ main:has(.camp-closing)+.camp-footer{margin-top:0;background-color:var(--environ
  .journey-pages .october-temperatures{margin-top:1.5rem;gap:1.25rem}
  .journey-pages .october-temperatures dd{font-size:1.9rem}
  .journey-pages #program[data-calendar-style=poster] .program-date b{font-size:3.5rem}
+ .journey-pages #program[data-calendar-style=poster] .week-days .program-day,
+ .journey-pages #program[data-calendar-style=poster] .program-arrival .program-day{grid-template-columns:4.25rem minmax(0,1fr);gap:1rem}
  .journey-pages #program[data-calendar-style=poster] .program-events,
- .journey-pages #program[data-calendar-style=poster] .program-day[data-rest=true] .program-events{font-size:1.125rem}
+ .journey-pages #program[data-calendar-style=poster] .program-day[data-rest=true] .program-events{font-size:var(--type-body);line-height:1.5;gap:1rem}
+ .journey-pages #program[data-calendar-style=poster] .program-events li,
+ .journey-pages #program[data-calendar-style=poster] .program-events li:has(time:empty){grid-template-columns:2.7rem minmax(0,1fr);gap:.65rem}
+ .journey-pages #program[data-calendar-style=poster] .program-events>li>span{grid-column:2}
  .journey-pages .october h2{font-size:1.4rem}
  .journey-pages .guide-summary{grid-template-columns:minmax(0,1fr) 24px;gap:.35rem 1rem;min-height:92px;padding:1.25rem 0}
  .journey-pages .guide-topic-note{grid-column:1;font-size:.875rem}
@@ -195,7 +217,29 @@ main:has(.camp-closing)+.camp-footer{margin-top:0;background-color:var(--environ
  .journey-pages .camp-closing{grid-template-columns:minmax(0,1fr);gap:1.5rem;padding:3rem var(--gutter) 1rem}
  .journey-pages .camp-closing h2{font-size:clamp(2rem,12vw,4.5rem);overflow-wrap:normal}
 }
-@media print{.camp-closing{display:none!important}}
+@media(max-width:700px){
+ .journey-pages .ticket-body{grid-template-columns:minmax(0,1fr);grid-template-rows:auto;gap:2rem}
+ .journey-pages .ticket-arrival,.journey-pages .ticket-body .journey-photo,.journey-pages .ticket-information{grid-column:1;grid-row:auto}
+ .journey-pages .ticket-information{gap:2rem}
+}
+/* When the event column is narrow, keep time immediately above its activity.
+   The date remains separate, or joins the weekday at enlarged text sizes. */
+@container day-events (max-width:13rem){
+ .journey-pages #program[data-calendar-style=poster] .program-events li,
+ .journey-pages #program[data-calendar-style=poster] .program-events li:has(time:empty){grid-template-columns:minmax(0,1fr);gap:.3rem}
+ .journey-pages #program[data-calendar-style=poster] .program-events>li>span{grid-column:1}
+}
+@container camp-page (max-width:22rem){
+ .journey-pages #program[data-calendar-style=poster] .week-days .program-day,
+ .journey-pages #program[data-calendar-style=poster] .program-arrival .program-day{grid-template-columns:minmax(0,1fr);gap:1rem}
+ .journey-pages #program[data-calendar-style=poster] .program-date-group{display:flex;align-items:baseline;flex-wrap:wrap;gap:.5rem 1rem}
+ .journey-pages #program[data-calendar-style=poster] .program-date time{flex-direction:row;align-items:baseline}
+ .journey-pages #program[data-calendar-style=poster] .program-weekday{margin:0}
+}
+@media print{
+ .camp-closing{display:none!important}
+ .journey-pages #program[data-calendar-style=poster] .week-days .program-date span{position:static;width:auto;height:auto;padding:0;margin:0;overflow:visible;clip:auto;white-space:normal}
+}
 @container camp-page (max-width:44rem){
  .journey-pages .has-hotel-choice{display:block}
  .journey-pages .has-hotel-choice .hotel-picker{grid-template-columns:repeat(2,minmax(0,1fr));gap:.5rem;margin-bottom:1.25rem}
