@@ -1,5 +1,8 @@
 const link = (label, url) => `<a href="${url}" target="_blank" rel="noopener noreferrer">${label}</a>`;
-const places = items => `<ul class="guide-places">${items.map(([name, url, note]) => `<li><strong>${url ? link(name, url) : name}</strong>${note ? `<span>${note}</span>` : ''}</li>`).join('')}</ul>`;
+const places = items => `<ul class="guide-places">${items.map(([name, url, note]) => {
+  const content = `<strong>${name}</strong>${note ? `<span>${note}</span>` : ''}`;
+  return `<li>${url ? `<a class="guide-place-link" href="${url}" target="_blank" rel="noopener noreferrer">${content}</a>` : `<div class="guide-place-text">${content}</div>`}</li>`;
+}).join('')}</ul>`;
 
 const routes = [
   { name: 'Дорожка у моря', distance: '5 км', unit: 'в одну сторону', url: 'https://yandex.com.tr/maps/-/CPFVVNM~', text: 'Мягкое покрытие вдоль набережной. В путеводителе этот участок выбран для быстрых и темповых тренировок.' },

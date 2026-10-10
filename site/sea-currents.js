@@ -21,7 +21,7 @@ export function renderSeaCurrent(join, half) {
   const [from,to] = joins[index];
   const id = `sea-${from}-${to}-${half.toLowerCase()}`;
   const mirror = index % 2 ? ' transform="translate(1000 0) scale(-1 1)"' : '';
-  return `<div class="sea-current sea-current--${half.toLowerCase()}" aria-hidden="true" style="--current-from:${fields[from]};--current-to:${fields[to]}">
+  return `<div class="sea-current sea-current--${half.toLowerCase()}" data-current="${from}-${to}" aria-hidden="true" style="--current-from:${fields[from]};--current-to:${fields[to]};--current-phase:${-index * 3}s">
     <svg viewBox="0 0 1000 240" preserveAspectRatio="none" focusable="false">
       <defs>
         <linearGradient id="${id}-colour" x2="0" y2="100%"><stop offset="0.08" style="stop-color:var(--current-from)"/><stop offset="0.92" style="stop-color:var(--current-to)"/></linearGradient>
@@ -32,8 +32,8 @@ export function renderSeaCurrent(join, half) {
       <g mask="url(#${id}-mask)">
         <rect width="1000" height="240" fill="url(#${id}-colour)"/>
         <g filter="url(#${id}-soft)" opacity=".72"${mirror}>
-          <path d="M-80-60 H1080 V60 C860 140 700 62 530 128 S210 200-80 116 Z" style="fill:var(--current-from)"/>
-          <path d="M-80 300 H1080 V138 C830 74 685 190 490 130 S200 52-80 164 Z" style="fill:var(--current-to)"/>
+          <path class="sea-flow sea-flow--from" d="M-80-60 H1080 V60 C860 140 700 62 530 128 S210 200-80 116 Z" style="fill:var(--current-from)"/>
+          <path class="sea-flow sea-flow--to" d="M-80 300 H1080 V138 C830 74 685 190 490 130 S200 52-80 164 Z" style="fill:var(--current-to)"/>
         </g>
       </g>
     </svg>

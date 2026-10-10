@@ -4,10 +4,12 @@ import { environmentAt, placeClock, clockText, solarDay, normalizeWeather, weath
 import { forecastURL, normalizeForecast, forecastCondition, dayText, decimal, temperature } from "./forecast.js";
 import { paintAtmosphere } from "./atmosphere.js";
 import { setupNavigation } from "./navigation.js";
+import { setupSeaMotion } from "./sea-motion.js";
 
 const root = document.documentElement;
 const $ = (selector) => document.querySelector(selector);
 const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+setupSeaMotion(reduced);
 let weather = null;
 let forecast = null;
 let weatherDay = null;

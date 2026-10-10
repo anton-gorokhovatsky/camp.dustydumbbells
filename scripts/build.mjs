@@ -143,6 +143,7 @@ for (const file of [
   "direction/interface.css",
   "direction/journey.css",
   "direction/navigation.js",
+  "direction/sea-motion.js",
   "direction/atmosphere.js",
   "direction/screen.js",
   "direction/forecast.js",

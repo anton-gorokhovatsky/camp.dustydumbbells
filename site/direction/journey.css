@@ -159,6 +159,7 @@ main{container-name:camp-page}
 .journey-pages .guide-heading .guide-intro{font-size:1.125rem;line-height:1.5;max-width:41ch}
 .journey-pages .guide-byline{margin-top:.75rem;font-size:var(--type-label)}
 .journey-pages .guide-layout{grid-template-columns:12rem minmax(0,1fr);gap:2rem}
+.journey-pages .guide-contents{border-bottom:0;padding-bottom:0}
 .journey-pages .guide-section,.journey-pages .has-guide-disclosures .guide-section+.guide-section{
   --guide-section-inset:0rem;margin-top:0;padding-top:0;border-top:2px solid #153b4940;
 }
@@ -168,6 +169,7 @@ main{container-name:camp-page}
 .journey-pages .guide-topic-note{grid-column:1;grid-row:2;font-size:.875rem;font-weight:350}
 .journey-pages .guide-action{grid-column:2;grid-row:1/3;align-self:start}
 .journey-pages .guide-summary:hover h3{text-decoration:none}
+.journey-pages .running-guide :is(a,.guide-summary):focus-visible{outline:2px solid #153b49;outline-offset:4px;box-shadow:none}
 .journey-pages .guide-detail-body{padding:.5rem 0 2.5rem}
 .journey-pages .running-guide h4{font-size:1.2rem;font-weight:550}
 .journey-pages .running-route h4{min-height:44px}
@@ -176,14 +178,19 @@ main{container-name:camp-page}
 .journey-pages :is(.guide-columns,.guide-place-groups){gap:2rem}
 .journey-pages .guide-essentials>.currency-reference{grid-column:1/-1}
 .journey-pages .running-guide :is(.guide-columns,.running-route,.guide-place-groups) p{line-height:1.55}
-.journey-pages .guide-places li{padding:0 0 .85rem;gap:.25rem}
+.journey-pages .guide-places li{padding:0;display:block}
 .journey-pages .running-route,.journey-pages .guide-places li+li,.journey-pages .guide-inline-note,.journey-pages .currency-rates>div{border:0}
-.journey-pages .guide-places strong{font-size:1.0625rem;line-height:1.4}
-.journey-pages .guide-places a{min-height:44px;padding:0;vertical-align:top}
+.journey-pages .guide-place-groups>article>h4,.journey-pages .guide-inline-note>h4{font:600 var(--type-label)/1.5 var(--font-text);letter-spacing:.025em;margin-bottom:.8rem}
+.journey-pages .guide-places strong{font-size:1.125rem;line-height:1.4;font-weight:550}
+.journey-pages .guide-places :is(.guide-place-link,.guide-place-text){display:grid;align-content:start;gap:.35rem;min-height:44px;padding:.5rem 0 1rem;width:100%;text-decoration:none}
+.journey-pages .guide-place-link strong{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.2em}
+.journey-pages .guide-place-link:hover strong{text-decoration-thickness:2px}
+.journey-pages .guide-place-link:active strong{text-underline-offset:.3em}
 .journey-pages :is(.guide-columns,.guide-place-groups){align-items:start}
 .journey-pages :is(.guide-columns,.guide-place-groups)>*{margin-top:0}
-.journey-pages .guide-places span{line-height:1.5}
-.journey-pages .guide-inline-note{margin-top:1.5rem;padding-top:1.25rem}
+.journey-pages .guide-places span{font-size:.9375rem;font-weight:350;line-height:1.55}
+.journey-pages .guide-inline-note{margin-top:2rem;padding-top:0}
+.journey-pages .guide-inline-note .guide-places :is(.guide-place-link,.guide-place-text){padding-top:0}
 .journey-pages .currency-rates dd{font:italic 900 1.75rem/1.1 var(--font-title);letter-spacing:-.025em;font-variant-numeric:tabular-nums}
 
 /* Six routes form a comparison on wide screens; their content stays open. */
@@ -223,7 +230,8 @@ main{container-name:camp-page}
 .journey-pages .camp-closing h2{font:italic 900 clamp(3.5rem,6.2vw,6.5rem)/1.02 var(--font-title);letter-spacing:-.035em;margin:0;hyphens:none;overflow-wrap:normal;text-wrap:balance}
 .journey-pages .closing-invitation{min-width:0}
 .journey-pages .closing-invitation p{font-size:var(--type-lead);line-height:1.5;max-width:34ch}
-.journey-pages .closing-invitation nav{display:grid;grid-template-columns:minmax(0,1fr);justify-items:start;gap:.75rem;margin-top:1.5rem}
+.journey-pages .closing-community{display:grid;justify-items:start;gap:.75rem;margin:1.5rem 0 .5rem}
+.journey-pages .closing-community p{font-size:var(--type-body);font-weight:350;line-height:1.55;max-width:40ch}
 .journey-pages .closing-invitation .program-link{font-size:var(--type-body);line-height:1.4;text-align:center;max-width:100%;padding:1rem clamp(.75rem,1.7vw,1.5rem);margin:0;hyphens:auto;overflow-wrap:anywhere}
 .journey-pages .closing-invitation .quiet-link{display:inline-flex;align-items:center;min-height:44px;max-width:100%;font-size:var(--type-body);overflow-wrap:anywhere}
 main:has(.camp-closing)+.camp-footer{margin-top:0;background-color:var(--environment-reading,#365a66)}
@@ -348,3 +356,28 @@ main:has(.camp-closing)+.camp-footer{margin-top:0;background-color:var(--environ
  .journey-pages .running-guide{--guide-pad-top:max(3rem,calc(var(--sea-edge) + 1.5rem));padding-bottom:max(3rem,calc(var(--sea-edge) + 1.5rem))}
  .journey-pages .camp-closing{padding-top:max(3rem,calc(var(--sea-edge) + 1.5rem))}
 }
+
+/* The pigments change contour in place, like the animated flow in Vein.
+   Paired halves use identical phases; sea-motion.js stops invisible joins. */
+@media screen and (prefers-reduced-motion:no-preference){
+ .sea-flow{transform-box:view-box;transform-origin:center;animation-delay:var(--current-phase);animation-play-state:var(--current-play,paused);animation-timing-function:ease-in-out;animation-iteration-count:infinite}
+ .sea-flow--from{animation-name:sea-pour-from;animation-duration:28s}
+ .sea-flow--to{animation-name:sea-pour-to;animation-duration:34s}
+}
+@keyframes sea-pour-from{
+ 0%,100%{d:path('M-80-60 H1080 V60 C860 140 700 62 530 128 S210 200-80 116 Z')}
+ 33%{d:path('M-80-60 H1080 V100 C905 25 740 175 520 90 S190 45-80 144 Z')}
+ 67%{d:path('M-80-60 H1080 V125 C890 170 730 80 510 140 S170 100-80 80 Z')}
+}
+@keyframes sea-pour-to{
+ 0%,100%{d:path('M-80 300 H1080 V138 C830 74 685 190 490 130 S200 52-80 164 Z')}
+ 33%{d:path('M-80 300 H1080 V170 C840 115 700 80 490 150 S180 210-80 120 Z')}
+ 67%{d:path('M-80 300 H1080 V85 C870 160 730 205 490 95 S210 100-80 178 Z')}
+}
+/* Older SVG engines keep the same soft drawing with a gentle drift. */
+@supports not (d:path('M0 0 H1 V1 Z')){
+ .sea-flow--from{animation-name:sea-drift-from}
+ .sea-flow--to{animation-name:sea-drift-to}
+}
+@keyframes sea-drift-from{0%,100%{transform:translateY(0) scaleY(1)}50%{transform:translateY(15px) scaleY(1.12)}}
+@keyframes sea-drift-to{0%,100%{transform:translateY(0) scaleY(1)}50%{transform:translateY(-15px) scaleY(.88)}}
