@@ -7,7 +7,7 @@ export const renderHotelDirectory = (hotels, mediaBase) => `<div class="hotel-di
     <a class="hotel-name" href="${hotel.booking}" target="_blank" rel="noopener noreferrer"><span>${hotel.name}</span><small>${hotel.kind} · Номера и цены на Trip.com</small></a>
     <p class="hotel-description">${hotel.description}</p>
     <div class="hotel-preview" aria-labelledby="hotel-preview-${hotel.id}"><p class="hotel-preview-title" id="hotel-preview-${hotel.id}">${hotel.name}</p>
-      <div class="hotel-images">${hotel.photos.map(photograph => `<figure><img src="${mediaBase}${photograph.file}" width="${photograph.width}" height="${photograph.height}" loading="lazy" alt="${photograph.alt}"><figcaption>${photograph.caption}</figcaption></figure>`).join('')}</div>
+      <div class="hotel-images">${hotel.photos.map(photograph => `<figure><span class="hotel-photo-frame"><img src="${mediaBase}${photograph.file}" width="${photograph.width}" height="${photograph.height}" loading="lazy" alt="${photograph.alt}"></span><figcaption>${photograph.caption}</figcaption></figure>`).join('')}</div>
       <div class="hotel-preview-meta"><p class="hotel-photo-source">Фотографии: <a href="${hotel.source}" target="_blank" rel="noopener noreferrer">сайт ${hotel.name}</a></p><p class="hotel-return"><a href="#hotel-overview">К списку отелей</a></p></div>
     </div>
   </li>`).join('')}</ul>

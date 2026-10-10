@@ -6,6 +6,7 @@ main{container-name:camp-page}
   --journey-display:clamp(2.5rem,5.7vw,6rem);
   --journey-reading-title:clamp(2.25rem,4.1vw,4.25rem);
   --journey-group:clamp(2rem,3.5vw,3.5rem);
+  --field-transition:clamp(1.5rem,3vw,3rem);
 }
 .journey-pages .chapter h2,.journey-pages [data-memory-style=zine] .memory-intro h2{
   font-size:var(--journey-title);line-height:1.06;letter-spacing:-.035em;
@@ -18,27 +19,65 @@ main{container-name:camp-page}
 .journey-pages :is(.chapter-heading,.memory-intro,.journey-heading,.guide-heading){margin-bottom:var(--journey-group)}
 .journey-pages :is(#hotels-title,.hotel-list>li,.week-heading,.guide-section){scroll-margin-top:1rem}
 
+/* Colour changes stay in the empty bottom edge of each selected composition.
+   The destination uses the same live palette as the following section. */
+.journey-pages #weather{--next-field:var(--environment-reading,#365a66)}
+.journey-pages #about{--next-field:var(--environment-zine,#c7f2b7)}
+.journey-pages #memories{--next-field:var(--environment-poster,#fc754f)}
+.journey-pages #program{--next-field:var(--environment-ticket,#386b81)}
+.journey-pages #travel{--next-field:var(--environment-guide,#edf3f3)}
+.journey-pages .running-guide{--next-field:var(--environment-reading,#234858)}
+@media screen{
+ .journey-pages :is(#weather,#about,#memories,#program,#travel,.running-guide){
+  background-image:linear-gradient(to bottom,transparent,var(--next-field));
+  background-position:left bottom;background-size:100% var(--field-transition);background-repeat:no-repeat;
+ }
+ /* About keeps its bounded composition; only its colour edge spans the page. */
+ .journey-pages #about{position:relative;background-image:none}
+ .journey-pages #about::after{content:'';position:absolute;bottom:0;left:50%;width:100cqw;height:var(--field-transition);transform:translateX(-50%);background:linear-gradient(to bottom,transparent,var(--next-field));pointer-events:none}
+}
+
 /* The open forecast is a moment of local weather, with one main reading. */
-.journey-pages .weather-section{gap:1.75rem;container-type:inline-size;container-name:weather}
-.journey-pages .forecast-brief{grid-template-columns:1.3fr repeat(3,minmax(0,1fr));align-items:end}
-.journey-pages .forecast-brief>div:first-child dd{font:italic 900 clamp(2.5rem,4vw,4rem)/1.05 var(--font-title);letter-spacing:-.035em}
-.journey-pages .forecast-brief>div:not(:first-child) dd{font-size:clamp(1.25rem,1.8vw,1.75rem);line-height:1.3}
-.journey-pages .forecast-timeline{padding-top:1.25rem;border-top:1px solid #153b4933}
-.journey-pages .forecast-hours li{flex-basis:6.5rem}
+.journey-pages .weather-section{--forecast-columns:10;--forecast-hour-gap:1.25rem;gap:1.75rem;container-type:inline-size;container-name:weather}
+.journey-pages .weather-heading{justify-content:flex-start;flex-wrap:wrap;gap:.5rem 1.5rem}
+.journey-pages .weather-heading h2{font-size:clamp(1.8rem,2.4vw,2.5rem)}
+.journey-pages .forecast-brief{grid-template-columns:1.3fr repeat(3,minmax(0,1fr));align-items:start}
+.journey-pages .forecast-brief>div:first-child dd{font:italic 900 clamp(2rem,2.8vw,2.75rem)/1.2 var(--font-title);letter-spacing:-.025em}
+.journey-pages .forecast-brief>div:not(:first-child) dd{font-size:clamp(1.25rem,1.8vw,1.65rem);line-height:1.3}
+.journey-pages .forecast-timeline{display:block;padding-top:0;border:0}
+.journey-pages .forecast-caption{margin-bottom:.75rem;padding:0}
+.journey-pages .forecast-hours{scroll-snap-type:x mandatory;scrollbar-color:#153b4970 #153b4915}
+.journey-pages .forecast-hours::-webkit-scrollbar{height:6px}
+.journey-pages .forecast-hours::-webkit-scrollbar-track{background:#153b4915;border-radius:3px}
+.journey-pages .forecast-hours::-webkit-scrollbar-thumb{background:#153b4970;border-radius:3px}
+.journey-pages .forecast-hours ol{display:flex;gap:var(--forecast-hour-gap)}
+.journey-pages .forecast-hours li{flex:0 0 calc((100% - (var(--forecast-columns) - 1) * var(--forecast-hour-gap)) / var(--forecast-columns));min-width:0;scroll-snap-align:start}
 .journey-pages .forecast-hours li>span:not(.hour-condition){font-size:1.4rem}
+.journey-pages .forecast-hours [aria-current=time] time{text-decoration:none;font-weight:650}
+@container weather (max-width:32rem){
+ .journey-pages .forecast-brief>div:first-child,.journey-pages .forecast-brief>div:last-child{grid-column:1/-1}
+}
+@container weather (max-width:48rem){.journey-pages .forecast-hours{--forecast-columns:6}}
+@container weather (max-width:26rem){.journey-pages .forecast-hours{--forecast-columns:3}}
+@container weather (max-width:18rem){.journey-pages .forecast-hours{--forecast-columns:2}}
+.nav-link+.nav-link{border:0}
 
 /* Choice and responsibility belong together, below the invitation. */
-.journey-pages .camp-facts{display:grid;grid-template-columns:minmax(0,.65fr) minmax(0,1fr);gap:1.5rem;margin:1.75rem 0 1rem;padding-top:1.25rem;border-top:1px solid #ffffff55}
-.camp-facts dt{font-size:var(--type-label);line-height:1.5;margin-bottom:.4rem}
-.camp-facts dd{margin:0;font-size:var(--type-body);line-height:1.6}
+.journey-pages .about-layout{align-items:start}
+.journey-pages .about-copy>p:not(.section-label):not(.chapter-lead){max-width:44ch;font-weight:350}
+.journey-pages .camp-facts{display:grid;grid-template-columns:minmax(0,1fr);gap:1.25rem;margin:2rem 0 1rem;padding:0;border:0}
+.journey-pages .camp-facts>div{display:grid;grid-template-columns:minmax(0,.7fr) minmax(0,1.3fr);gap:1rem}
+.camp-facts dt{font-size:var(--type-label);font-weight:600;line-height:1.5;margin:0}
+.camp-facts dd{margin:0;font-size:var(--type-body);font-weight:350;line-height:1.6}
 
 /* The three alternating photo spreads keep their large photographs. */
 .journey-pages [data-memory-style=zine] .memory-collection{gap:clamp(3rem,5vw,5rem)}
 .journey-pages [data-memory-style=zine] .memory-caption{font-size:clamp(2.25rem,4.2vw,4.25rem);line-height:1.08}
 .journey-pages [data-memory-style=zine] .memory-name{overflow-wrap:normal;hyphens:auto}
 .journey-pages [data-memory-style=zine] .memory-note{font:400 var(--type-body)/1.65 var(--font-text);letter-spacing:0;max-width:32ch;margin-top:.5rem;text-wrap:pretty}
-.journey-pages .memory-outro{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:1rem 2rem;margin-top:var(--journey-group);padding-top:1.5rem;border-top:1px solid #153c3e33}
+.journey-pages .memory-outro{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:1rem 2rem;margin-top:var(--journey-group);padding-top:1.5rem;border:0}
 .journey-pages .memory-outro p{font-size:var(--type-lead);line-height:1.5;max-width:39ch}
+.journey-pages .memory-outro .season-note{font-size:var(--type-body);font-weight:350;line-height:1.6;max-width:55ch;margin-top:1rem}
 .journey-pages .memory-outro a{font-size:var(--type-body);min-height:44px;display:inline-flex;align-items:center}
 .journey-pages #memories[data-memory-style=zine]{padding-bottom:var(--journey-group)}
 
@@ -58,8 +97,8 @@ main{container-name:camp-page}
 }
 .journey-pages #program[data-calendar-style=poster] .program-day:not([data-rest=true]) .program-events li:has(time:empty){font:inherit}
 .journey-pages #program[data-calendar-style=poster] .program-events>li>span{text-wrap:pretty;hyphens:auto}
-.journey-pages #program[data-calendar-style=poster] .program-notes{margin-top:var(--journey-group);padding-top:1.5rem;border-top-width:1px}
-.journey-pages .program-contact{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:var(--space-group);margin-top:2rem;padding-top:1.5rem;border-top:1px solid #153b4933;align-items:end}
+.journey-pages #program[data-calendar-style=poster] .program-notes{margin-top:var(--journey-group);padding-top:0;border:0}
+.journey-pages .program-contact{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:var(--space-group);margin-top:2rem;padding-top:1.5rem;border:0;align-items:end}
 .journey-pages .program-contact .quiet-link{font-size:var(--type-body);margin-top:.5rem}
 .journey-pages .about-copy>.quiet-link{display:flex;width:fit-content;padding-block:.45rem}
 .journey-pages .program-notes a{color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:var(--link-offset)}
@@ -91,6 +130,8 @@ main{container-name:camp-page}
 .journey-pages .ticket-information{grid-column:2;grid-row:2;align-content:start}
 .journey-pages .ticket-arrival .quiet-link{display:flex;width:fit-content;align-items:center;min-height:44px;margin-top:.5rem}
 .journey-pages .ticket-dates strong{font-size:clamp(3rem,4.5vw,4.75rem)}
+.journey-pages .ticket-dates{justify-content:flex-start;gap:clamp(2rem,4vw,4rem)}
+.journey-pages .journey-photo-caption{font:400 var(--type-label)/1.45 var(--font-text);text-decoration:none;margin-top:.75rem}
 .journey-pages #travel[data-travel-style] article h3{font:550 clamp(1.25rem,1.8vw,1.65rem)/1.3 var(--font-text);letter-spacing:-.015em}
 .journey-pages .hotels-heading h3{font:550 clamp(1.4rem,2.2vw,2rem)/1.3 var(--font-text);letter-spacing:-.025em}
 .journey-pages .has-hotel-choice{display:grid;grid-template-columns:minmax(13rem,.4fr) minmax(0,1fr);gap:0 var(--space-group);align-items:start}
@@ -99,7 +140,7 @@ main{container-name:camp-page}
 .journey-pages .has-hotel-choice .hotel-picker{grid-column:1;gap:.5rem;margin:0}
 .journey-pages .has-hotel-choice .hotel-list{grid-column:2;min-width:0}
 .journey-pages .hotel-picker legend{margin-bottom:.75rem}
-.journey-pages .hotel-picker label{border:0;border-bottom:1px solid #153b4933;border-radius:0;padding:.85rem .25rem;gap:.75rem;min-height:56px}
+.journey-pages .hotel-picker label{border:0;border-radius:0;padding:.85rem .25rem;gap:.75rem;min-height:56px}
 .journey-pages .hotel-picker label>span{font-size:1rem;overflow-wrap:normal}
 .journey-pages .hotel-picker label:has(:checked){border-color:#153b49;background:transparent;font-weight:650}
 .journey-pages .hotel-picker label:has(:focus-visible){outline:2px solid #153b49;outline-offset:3px}
@@ -110,6 +151,8 @@ main{container-name:camp-page}
 .journey-pages .has-hotel-choice .hotel-preview-title{display:none}
 .journey-pages .has-hotel-choice .hotel-description{max-width:50ch;margin:0}
 .journey-pages .has-hotel-choice .hotel-images figure:nth-child(2){margin-top:0}
+.hotel-photo-frame{display:block;position:relative;aspect-ratio:3/2;min-width:0}
+.hotel-photo-frame img{position:absolute;inset:0;margin:auto;width:auto;height:auto;max-width:100%;max-height:100%;object-fit:contain}
 .journey-pages #travel[data-travel-style=ticket]{padding-bottom:var(--space-group)}
 
 /* Keep the guide's reference layout. Museo marks the six subjects, Akt names
@@ -136,7 +179,7 @@ main{container-name:camp-page}
 .journey-pages .guide-essentials>.currency-reference{grid-column:1/-1}
 .journey-pages .running-guide :is(.guide-columns,.running-route,.guide-place-groups) p{line-height:1.55}
 .journey-pages .guide-places li{padding:.4rem 0 .75rem;gap:.25rem}
-.journey-pages .guide-places li+li{border-top:1px solid #153b491a}
+.journey-pages .running-route,.journey-pages .guide-places li+li,.journey-pages .guide-inline-note,.journey-pages .currency-rates>div{border:0}
 .journey-pages .guide-places strong{font-size:1.0625rem;line-height:1.4}
 .journey-pages .guide-places a{min-height:44px}
 .journey-pages .guide-places span{line-height:1.5}
@@ -196,10 +239,14 @@ main:has(.camp-closing)+.camp-footer{margin-top:0;background-color:var(--environ
  .journey-pages .guide-heading{display:block}
  .journey-pages :is(.guide-transport,.guide-essentials){grid-template-columns:minmax(0,1fr)}
  .journey-pages .camp-facts{grid-template-columns:minmax(0,1fr);gap:1rem}
+ .journey-pages .camp-facts>div{display:block}
+ .journey-pages .camp-facts dt{margin-bottom:.4rem}
  .journey-pages .forecast-brief{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:1.5rem;align-items:start}
  .journey-pages .forecast-brief>div:first-child dd{font-size:clamp(2rem,7.8vw,2.8rem)}
  .journey-pages .forecast-brief>div:not(:first-child) dd{font-size:1.25rem}
  .journey-pages .forecast-timeline{padding-top:1rem}
+ .journey-pages .weather-section{--forecast-hour-gap:1rem}
+ .journey-pages .ticket-dates{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}
  .journey-pages .memory-outro{margin-top:2rem;padding-top:1.25rem;gap:.5rem}
  .journey-pages .october{--chapter-pad:2.5rem}
  .journey-pages .october-temperatures{margin-top:1.5rem;gap:1.25rem}
