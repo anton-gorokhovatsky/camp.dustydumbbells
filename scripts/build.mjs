@@ -144,6 +144,8 @@ for (const file of [
   "direction/journey.css",
   "direction/navigation.js",
   "direction/sea-motion.js",
+  "direction/coral-current.js",
+  "direction/coral-current.css",
   "direction/atmosphere.js",
   "direction/screen.js",
   "direction/forecast.js",

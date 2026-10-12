@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ru">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Coral — компьютер и телефон</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f2f3f1;color:#153b49;font:16px/1.5 system-ui,sans-serif}
+header{display:flex;align-items:center;flex-wrap:wrap;gap:12px 24px;padding:16px 24px;border-bottom:1px solid #153b4925}
+h1{font-size:20px;line-height:1.25;margin:0}header p{margin:0;font-size:13px;max-width:48ch}
+nav{display:flex;gap:8px;margin-left:auto}button{font:inherit;color:inherit;border:1px solid #153b4960;border-radius:24px;padding:8px 18px;background:transparent;cursor:pointer}
+button[aria-pressed=true]{background:#153b49;color:white}button:focus-visible,a:focus-visible{outline:3px solid #548ab0;outline-offset:4px}
+main{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:24px;padding:16px 24px}
+article{min-width:0}h2{font-size:14px;margin:0 0 8px;font-weight:550}h2 a{color:inherit;font-weight:400;margin-left:14px;text-underline-offset:3px}
+.stage{position:relative;overflow:hidden;background:#dde3e3;border-radius:16px;box-shadow:0 8px 28px #153b4915}
+.desktop{width:100%}.phone{margin:auto}iframe{position:absolute;top:0;left:0;border:0;transform-origin:top left;background:#bccbd0}
+ .desktop iframe{width:1440px;height:900px}.phone iframe{width:390px;height:844px}iframe[hidden]{display:none}
+footer{padding:0 24px 16px;font-size:12px;color:#365a66}
+@media(max-width:760px){main{grid-template-columns:minmax(0,1fr)}nav{margin-left:0}.phone{max-width:100%}}
+</style>
+<header><h1>Текст на Coral</h1><p>Погодные данные, текст и фото лежат поверх рисунка. Краска букв меняется по фону, без тёмной подложки.</p><nav aria-label="Вариант перехода"><button aria-pressed="false" data-version="wash.html">С подложкой</button><button aria-pressed="true" data-version="index.html">Без подложки</button></nav></header>
+<main>
+ <article><h2>Компьютер · 1440 × 900 <a data-full href="./index.html?view=transition#about" target="_blank">Открыть полностью</a></h2><div class="stage desktop"><iframe title="С подложкой на компьютере" data-version="wash.html" src="./wash.html?view=transition#about" hidden></iframe><iframe title="Coral на компьютере" data-version="index.html" src="./index.html?view=transition#about"></iframe></div></article>
+ <article><h2>Телефон · 390 × 844</h2><div class="stage phone"><iframe title="С подложкой на телефоне" data-version="wash.html" src="./wash.html?view=transition#about" hidden></iframe><iframe title="Coral на телефоне" data-version="index.html" src="./index.html?view=transition#about"></iframe></div></article>
+</main>
+<footer>Движение работает автоматически. Системное сокращение движения сохраняется. Вариант без подложки выбран для основной страницы; прежняя подложка сохранена для сравнения.</footer>
+<script>
+const stages=[...document.querySelectorAll('.stage')];
+function fit(){
+ const desktop=stages[0], phone=stages[1];
+ const room=Math.max(280,innerHeight-document.querySelector('header').offsetHeight-88);
+ const ds=Math.min(desktop.parentElement.clientWidth/1440,room/900);
+ desktop.style.height=900*ds+'px';for(const frame of desktop.querySelectorAll('iframe'))frame.style.transform='scale('+ds+')';
+ const ps=Math.min(phone.parentElement.clientWidth/390,room/844,1);
+ phone.style.width=390*ps+'px';phone.style.height=844*ps+'px';for(const frame of phone.querySelectorAll('iframe'))frame.style.transform='scale('+ps+')';
+}
+for(const button of document.querySelectorAll('button[data-version]'))button.addEventListener('click',()=>{
+ for(const choice of document.querySelectorAll('button[data-version]'))choice.setAttribute('aria-pressed',String(choice===button));
+ for(const frame of document.querySelectorAll('iframe'))frame.hidden=frame.dataset.version!==button.dataset.version;
+ document.querySelector('[data-full]').href='./'+button.dataset.version+'?view=transition#about';
+});
+new ResizeObserver(fit).observe(document.body);addEventListener('resize',fit);fit();
+</script>
+</html>

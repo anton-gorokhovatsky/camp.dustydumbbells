@@ -19,6 +19,7 @@ export function renderSeaCurrent(join, half) {
   const index = joins.findIndex(pair => pair.join('_').toUpperCase() === join);
   if (index < 0 || !['IN','OUT'].includes(half)) throw new Error(`Unknown sea current: ${join} ${half}`);
   const [from,to] = joins[index];
+  if (join === 'WEATHER_ABOUT') return renderCoralCurrent(half.toLowerCase());
   const id = `sea-${from}-${to}-${half.toLowerCase()}`;
   const mirror = index % 2 ? ' transform="translate(1000 0) scale(-1 1)"' : '';
   return `<div class="sea-current sea-current--${half.toLowerCase()}" data-current="${from}-${to}" aria-hidden="true" style="--current-from:${fields[from]};--current-to:${fields[to]};--current-phase:${-index * 3}s">
@@ -37,6 +38,15 @@ export function renderSeaCurrent(join, half) {
         </g>
       </g>
     </svg>
+  </div>`;
+}
+
+// Selected Coral export. The two canvases share one clock and one picture.
+function renderCoralCurrent(half) {
+  const id = `coral-weather-about-${half}`;
+  return `<div class="sea-current sea-current--${half} sea-current--coral" data-current="weather-about" aria-hidden="true" style="--current-from:${fields.weather};--current-to:${fields.about};--current-phase:0s">
+    <svg viewBox="0 0 1000 320" preserveAspectRatio="none" focusable="false"><defs><linearGradient id="${id}" x2="0" y2="100%"><stop offset="0" style="stop-color:var(--current-from)"/><stop offset="1" style="stop-color:var(--current-to)"/></linearGradient><linearGradient id="${id}-fade" x2="0" y2="100%"><stop stop-color="white" stop-opacity="0"/><stop offset=".18" stop-color="white"/><stop offset=".82" stop-color="white"/><stop offset="1" stop-color="white" stop-opacity="0"/></linearGradient><mask id="${id}-mask"><rect width="1000" height="320" fill="url(#${id}-fade)"/></mask></defs><rect width="1000" height="320" fill="url(#${id})" mask="url(#${id}-mask)"/></svg>
+    <canvas class="sea-coral-print"></canvas><i class="sea-coral-pigment" style="color:var(--current-from)"></i><i class="sea-coral-pigment" style="color:var(--current-to)"></i>
   </div>`;
 }
 

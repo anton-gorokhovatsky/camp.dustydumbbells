@@ -1,0 +1,19 @@
+/* Scope the trial to one join. The about/memories boundary keeps its own size. */
+@media screen{
+ .journey-pages #weather{padding-bottom:max(clamp(2rem,4vw,3.5rem),calc(clamp(4rem,8.5vw,8.5rem) + 1.5rem))}
+ .journey-pages #about{padding-top:max(var(--space-section),calc(clamp(4rem,8.5vw,8.5rem) + 1.5rem))}
+ .journey-pages .sea-current--coral{--sea-edge:clamp(4rem,8.5vw,8.5rem)}
+ .sea-coral-ribbon--from{fill:var(--current-from)}
+ .sea-coral-ribbon--to{fill:var(--current-to)}
+}
+@media screen and (prefers-reduced-motion:no-preference){
+ .sea-coral-ribbon{animation:coral-breathe var(--ribbon-duration) ease-in-out infinite;animation-delay:var(--ribbon-phase);animation-play-state:var(--current-play,paused)}
+}
+@keyframes coral-breathe{
+ 0%,100%{d:var(--ribbon-a)}
+ 50%{d:var(--ribbon-b)}
+}
+@supports not (d:path('M0 0 H1 V1 Z')){
+ .sea-coral-ribbon{animation-name:coral-drift;transform-box:view-box;transform-origin:center top}
+}
+@keyframes coral-drift{0%,100%{transform:translateX(-5px)}50%{transform:translateX(10px)}}

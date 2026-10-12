@@ -1,0 +1,23 @@
+/* One experimental join; the other accepted currents stay intact. */
+@media screen{
+ .journey-pages #weather{padding-bottom:max(clamp(2rem,4vw,3.5rem),calc(clamp(5rem,10vw,10rem) + 1.5rem))}
+ .journey-pages #about{padding-top:max(var(--space-section),calc(clamp(5rem,10vw,10rem) + 1.5rem))}
+ .journey-pages .sea-current--coral{--sea-edge:clamp(5rem,10vw,10rem)}
+ .sea-coral-print{position:absolute;left:0;width:100%;height:calc(2 * var(--sea-edge));max-width:none;opacity:.94;mask-image:linear-gradient(transparent,#000 28%,#000 72%,transparent);-webkit-mask-image:linear-gradient(transparent,#000 28%,#000 72%,transparent)}
+ .sea-current--out .sea-coral-print{top:0}
+ .sea-current--in .sea-coral-print{bottom:0}
+ .sea-coral-pigment{position:absolute;width:0;height:0;visibility:hidden;pointer-events:none}
+}
+@media screen{
+ .coral-as-background .journey-pages #weather{padding-bottom:clamp(4rem,6vw,6rem)}
+ .coral-as-background .journey-pages #about{padding-top:clamp(3rem,5vw,5rem)}
+ .coral-as-background #weather>.sea-current--coral{height:100%;z-index:0}
+ .coral-as-background #about>.sea-current--coral{height:calc(100% - var(--sea-edge) - 1.5rem);z-index:0}
+ .coral-as-background .sea-current--coral svg{display:none}
+ .coral-as-background .sea-coral-print{height:var(--coral-world-height);opacity:1;mask-image:linear-gradient(transparent,#000 8%,#000 72%,transparent);-webkit-mask-image:linear-gradient(transparent,#000 8%,#000 72%,transparent)}
+ .coral-as-background #weather>:not(.sea-current),.coral-as-background #about>.about-layout{position:relative;z-index:1}
+ .coral-adaptive-ink{background-image:var(--coral-ink-image);background-size:var(--coral-ink-size);background-position:var(--coral-ink-position);background-repeat:no-repeat;background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent;image-rendering:pixelated}
+ .coral-adaptive-ink::selection{-webkit-text-fill-color:#fff;color:#fff;background:#153b49}
+ .coral-adaptive-ink:focus-visible{outline:2px solid #fff;box-shadow:0 0 0 4px #153b49}
+}
+@media(forced-colors:active){.coral-adaptive-ink{background-image:none;-webkit-text-fill-color:CanvasText;color:CanvasText}}

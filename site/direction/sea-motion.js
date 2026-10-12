@@ -3,7 +3,7 @@
 export function setupSeaMotion(reduced) {
   const joins = new Map();
   const visible = new Set();
-  for (const half of document.querySelectorAll('[data-current]')) {
+  for (const half of document.querySelectorAll('[data-current]:not(.sea-current--coral)')) {
     const name = half.dataset.current;
     if (!joins.has(name)) joins.set(name, []);
     joins.get(name).push(half);

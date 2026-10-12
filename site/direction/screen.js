@@ -5,11 +5,13 @@ import { forecastURL, normalizeForecast, forecastCondition, dayText, decimal, te
 import { paintAtmosphere } from "./atmosphere.js";
 import { setupNavigation } from "./navigation.js";
 import { setupSeaMotion } from "./sea-motion.js";
+import { setupCoralCurrent } from "./coral-current.js";
 
 const root = document.documentElement;
 const $ = (selector) => document.querySelector(selector);
 const reduced = matchMedia('(prefers-reduced-motion: reduce)');
 setupSeaMotion(reduced);
+setupCoralCurrent(reduced);
 let weather = null;
 let forecast = null;
 let weatherDay = null;
