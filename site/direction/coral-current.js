@@ -8,6 +8,11 @@ const video = document.createElement('video');
 video.muted = true; video.loop = true; video.playsInline = true;
 video.preload = 'none';
 const still = new Image();
+// Retain a neutral source frame across responsive source changes. Resizing a
+// canvas must not expose the plain field while a new crop is downloading.
+const retainedSource=document.createElement('canvas');
+retainedSource.width=retainedSource.height=0;
+const retainedContext=retainedSource.getContext('2d');
 const buffer = document.createElement('canvas');
 const context = buffer.getContext('2d',{willReadFrequently:true});
 const targets = canvases.map(canvas => canvas.getContext('2d'));
@@ -26,6 +31,13 @@ const smooth = value => {const t=Math.max(0,Math.min(1,value));return t*t*(3-2*t
 function chooseSource() {
   const next=innerWidth<=760?'portrait-':'';
   if(orientation===next && video.getAttribute('src'))return;
+  const previous=video.readyState>=2?video:still;
+  const previousWidth=previous.videoWidth||previous.naturalWidth;
+  const previousHeight=previous.videoHeight||previous.naturalHeight;
+  if(previousWidth&&previousHeight){
+    retainedSource.width=previousWidth;retainedSource.height=previousHeight;
+    retainedContext.drawImage(previous,0,0);
+  }
   orientation=next;failed=false;
   video.pause();
   const mediaURL=file=>{const url=new URL(`./media/${file}`,import.meta.url);url.search=new URL(import.meta.url).search;return url.href;};
@@ -58,9 +70,9 @@ function size() {
 }
 function paint() {
   const started=performance.now();
-  const source = video.readyState>=2 ? video : still;
-  const sw = source.videoWidth || source.naturalWidth;
-  const sh = source.videoHeight || source.naturalHeight;
+  const source = video.readyState>=2 ? video : still.naturalWidth ? still : retainedSource;
+  const sw = source.videoWidth || source.naturalWidth || source.width;
+  const sh = source.videoHeight || source.naturalHeight || source.height;
   if (!sw || !sh || !buffer.width || !buffer.height) return;
   const w=buffer.width,h=buffer.height;
   const scale=Math.max(w/sw,h/sh), cw=w/scale, ch=h/scale;
