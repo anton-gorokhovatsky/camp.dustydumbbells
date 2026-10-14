@@ -44,6 +44,7 @@ for (const [name,time,code,clouds,precipitation,wind,direction] of states) {
   let page = html.replaceAll('href="./direction/','href="../../../direction/').replaceAll('src="./direction/','src="../../../direction/');
   page = page.replace(/src="\.\.\/\.\.\/\.\.\/direction\/screen.js\?[^"]+"/,'src="./screen.js"');
   page = page.replace('</head>',`<style>${name==='text200'?'html{font-size:200%}':''}</style></head>`);
+  if (name==='reduced') page = page.replace('<html ', '<html data-reduce-motion="true" ');
   if (name==='no-js') page = page.replace(/<script\b[^>]*>[\s\S]*?<\/script>/g,'');
   await writeFile(new URL('index.html',folder),page);
 }

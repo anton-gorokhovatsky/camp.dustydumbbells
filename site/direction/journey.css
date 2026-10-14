@@ -246,6 +246,14 @@ main{container-name:camp-page}
 .journey-pages .closing-invitation .quiet-link{display:inline-flex;align-items:center;min-height:44px;max-width:100%;font-size:var(--type-body);overflow-wrap:anywhere}
 main:has(.camp-closing)+.camp-footer{margin-top:0;background-color:var(--environment-reading,#365a66)}
 
+/* The author's credit is part of the footer colophon, below the club wordmark.
+   The shared component owns its drawing and movement; only public tokens adapt. */
+.footer-colophon{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:start;gap:1.5rem clamp(2rem,4vw,4rem);padding-top:1rem}
+.footer-colophon .photo-credit{padding-top:0;max-width:66ch}
+.footer-colophon ag-signature{display:block;max-width:100%;justify-self:end;font-family:var(--font-body,'Akt DD',Arial,sans-serif);--ag-signature-size:8rem;--ag-signature-name-size:1rem;--ag-signature-role-size:.8125rem;--ag-signature-ink:var(--cream,#f7f7f7);--ag-signature-muted:color-mix(in srgb,var(--cream,#f7f7f7) 80%,transparent);--ag-signature-accent:var(--cream,#f7f7f7);--ag-signature-node-ink:var(--cream,#f7f7f7)}
+.footer-colophon ag-signature:not(:defined)>a{display:inline-flex;align-items:center;min-height:44px;max-width:100%;font-size:.875rem;line-height:1.5;text-decoration:underline;text-underline-offset:.25em}
+@media(max-width:760px){.footer-colophon{grid-template-columns:minmax(0,1fr);gap:1.5rem}.footer-colophon ag-signature{justify-self:start}}
+
 @media(max-width:999px){
  .journey-pages .guide-layout{display:block}
  .journey-pages .guide-heading{grid-template-columns:repeat(2,minmax(0,1fr))}
