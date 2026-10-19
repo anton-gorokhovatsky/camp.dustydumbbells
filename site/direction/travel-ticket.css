@@ -228,7 +228,7 @@
  .ticket-body{grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:2rem}
 }
 @media(max-width:700px){
- #travel[data-travel-style]{padding-top:6rem;padding-bottom:4rem;hyphens:auto}
+ #travel[data-travel-style]{padding-top:6rem;padding-bottom:4rem;hyphens:manual}
  #travel[data-travel-style] .journey-heading{display:block;margin-bottom:2.5rem}
  .journey-meta{margin-bottom:1.5rem;gap:.3rem 1.5rem}
  #travel[data-travel-style] h2{font-size:clamp(2.5rem,8vw,3.5rem);max-width:16ch}

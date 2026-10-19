@@ -144,9 +144,9 @@ main{container-name:camp-page}
 .journey-pages .has-hotel-choice .hotel-images figure:nth-child(2){margin-top:0}
 .hotel-photo-frame{display:block;position:relative;aspect-ratio:3/2;min-width:0}
 .hotel-photo-frame img{position:absolute;inset:0;margin:auto;width:auto;height:auto;max-width:100%;max-height:100%;object-fit:contain}
-.journey-pages .hotel-images{--hotel-media-height:17rem;grid-template-columns:var(--hotel-photo-columns);max-width:calc(var(--hotel-photo-ratio) * var(--hotel-media-height) + 1.25rem)}
-.journey-pages .hotel-photo-frame{aspect-ratio:var(--photo-ratio,1.5)}
-.journey-pages .hotel-photo-frame img{width:100%;height:100%;margin:0}
+.journey-pages .hotel-images{grid-template-columns:repeat(2,minmax(0,1fr));max-width:none}
+.journey-pages .hotel-photo-frame{aspect-ratio:3/2}
+.journey-pages .hotel-photo-frame img{width:100%;height:100%;margin:0;object-fit:cover;object-position:center 40%}
 .journey-pages .hotel-images figcaption{padding-inline:0;align-items:start}
 .journey-pages #travel[data-travel-style=ticket]{padding-bottom:var(--space-group)}
 
@@ -312,8 +312,8 @@ main:has(.camp-closing)+.camp-footer{margin-top:0;background-color:var(--environ
  .journey-pages .ticket-body{grid-template-columns:minmax(0,1fr);grid-template-rows:auto;gap:2rem}
  .journey-pages .ticket-arrival,.journey-pages .ticket-body .journey-photo,.journey-pages .ticket-information{grid-column:1;grid-row:auto}
  .journey-pages .ticket-information{gap:2rem}
- .journey-pages .hotel-images{--hotel-media-height:14rem;grid-template-columns:minmax(0,1fr);max-width:none}
- .journey-pages .hotel-images figure{width:min(100%,calc(var(--photo-ratio) * var(--hotel-media-height)))}
+ .journey-pages .hotel-images{grid-template-columns:minmax(0,1fr);max-width:none}
+ .journey-pages .hotel-images figure{width:100%}
 }
 /* When the event column is narrow, keep time immediately above its activity.
    The date remains separate, or joins the weekday at enlarged text sizes. */
@@ -336,9 +336,9 @@ main:has(.camp-closing)+.camp-footer{margin-top:0;background-color:var(--environ
 @container camp-page (max-width:44rem){
  .journey-pages .has-hotel-choice{display:block}
  .journey-pages .has-hotel-choice .hotel-picker{grid-template-columns:repeat(2,minmax(0,1fr));gap:.5rem;margin-bottom:1.25rem}
- .journey-pages .hotel-picker label{padding:.6rem .5rem;gap:.45rem;align-items:center;min-height:64px}
+ .journey-pages .hotel-picker label{padding:.6rem .5rem;gap:.45rem;align-items:flex-start;min-height:64px}
  .journey-pages .hotel-picker label>span{font-size:.9375rem;line-height:1.35}
- .journey-pages .hotel-picker input{width:18px;height:18px}
+ .journey-pages .hotel-picker input{width:18px;height:18px;margin-top:max(0px,calc((.9375rem * 1.35 - 18px)/2))}
  .journey-pages .has-hotel-choice .hotel-images figure:nth-child(2){margin-top:0}
 }
 @container(max-width:18rem){

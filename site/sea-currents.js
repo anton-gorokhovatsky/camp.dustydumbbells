@@ -21,11 +21,12 @@ export function renderSeaCurrent(join, half) {
   const [from,to] = joins[index];
   if (join === 'WEATHER_ABOUT') return renderCoralCurrent(half.toLowerCase());
   const id = `sea-${from}-${to}-${half.toLowerCase()}`;
+  const bridge = join === 'MEMORIES_PROGRAM' ? '<stop offset=".5" style="stop-color:color-mix(in srgb,#f7f7f7 45%,color-mix(in srgb,var(--current-from) 50%,var(--current-to)))"/>' : '';
   const mirror = index % 2 ? ' transform="translate(1000 0) scale(-1 1)"' : '';
   return `<div class="sea-current sea-current--${half.toLowerCase()}" data-current="${from}-${to}" aria-hidden="true" style="--current-from:${fields[from]};--current-to:${fields[to]};--current-phase:${-index * 3}s">
     <svg viewBox="0 0 1000 240" preserveAspectRatio="none" focusable="false">
       <defs>
-        <linearGradient id="${id}-colour" x2="0" y2="100%"><stop offset="0.08" style="stop-color:var(--current-from)"/><stop offset="0.92" style="stop-color:var(--current-to)"/></linearGradient>
+        <linearGradient id="${id}-colour" x2="0" y2="100%"><stop offset="0.08" style="stop-color:var(--current-from)"/>${bridge}<stop offset="0.92" style="stop-color:var(--current-to)"/></linearGradient>
         <linearGradient id="${id}-fade" x2="0" y2="100%"><stop stop-color="white" stop-opacity="0"/><stop offset=".18" stop-color="white"/><stop offset=".82" stop-color="white"/><stop offset="1" stop-color="white" stop-opacity="0"/></linearGradient>
         <mask id="${id}-mask"><rect width="1000" height="240" fill="url(#${id}-fade)"/></mask>
         <filter id="${id}-soft" x="-20%" y="-60%" width="140%" height="220%"><feGaussianBlur stdDeviation="20"/></filter>

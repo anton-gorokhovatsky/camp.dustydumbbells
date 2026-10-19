@@ -16,8 +16,8 @@
  .coral-as-background .sea-current--coral svg{display:none}
  .coral-as-background .sea-coral-print{height:var(--coral-world-height);opacity:1;mask-image:linear-gradient(transparent,#000 8%,#000 72%,transparent);-webkit-mask-image:linear-gradient(transparent,#000 8%,#000 72%,transparent)}
  .coral-as-background #weather>:not(.sea-current),.coral-as-background #about>.about-layout{position:relative;z-index:1}
- .coral-adaptive-ink{background-color:currentColor;background-image:var(--coral-ink-image);background-size:var(--coral-ink-size);background-position:var(--coral-ink-position);background-repeat:no-repeat;background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent;image-rendering:pixelated}
- .coral-adaptive-ink::selection{-webkit-text-fill-color:#fff;color:#fff;background:#153b49}
- .coral-adaptive-ink:focus-visible{outline:2px solid #fff;box-shadow:0 0 0 4px #153b49}
+ /* Stable foreground inks; texture contrast is bounded in the field itself. */
+ .coral-as-background #weather{color:#000}
+ .coral-as-background #about .about-copy{color:#fff}
+ .coral-as-background #about .about-copy :is(h2,p,dt,dd,a){color:inherit}
 }
-@media(forced-colors:active){.coral-adaptive-ink{background-image:none;-webkit-text-fill-color:CanvasText;color:CanvasText}}

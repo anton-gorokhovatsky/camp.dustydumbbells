@@ -1,3 +1,34 @@
+// Coral keeps two weather-derived pigments. Limit the texture's tonal range,
+// so real DOM text can keep one solid ink throughout the exported motion.
+const linear = Float32Array.from({length:256}, (_,i) => {
+  const value=i/255;
+  return value<=.04045 ? value/12.92 : ((value+.055)/1.055)**2.4;
+});
+export const coralLuminance = rgb => rgb.reduce((sum,value,index) =>
+  sum+linear[Math.max(0,Math.min(255,Math.round(value)))]*[.2126,.7152,.0722][index],0);
+const mix = (a,b,amount) => a.map((value,index)=>value+(b[index]-value)*amount);
+function withinTone(colour, target, limit, minimum) {
+  if (minimum ? coralLuminance(colour)>=limit : coralLuminance(colour)<=limit) return colour;
+  let low=0,high=1;
+  for(let i=0;i<14;i++) {
+    const middle=(low+high)/2, value=coralLuminance(mix(colour,target,middle));
+    if(minimum ? value>=limit : value<=limit) high=middle; else low=middle;
+  }
+  return mix(colour,target,high);
+}
+export function createCoralPalette(pale,deep) {
+  const light=withinTone(pale,[255,255,255],.28,true);
+  const dark=withinTone(deep,[0,0,0],.12,false);
+  const weatherDetail=withinTone(mix(light,dark,.5),light,.20,true);
+  const aboutDetail=withinTone(mix(dark,light,.5),dark,.15,false);
+  const weather=new Uint8ClampedArray(256*3), about=new Uint8ClampedArray(256*3);
+  for(let tone=0;tone<256;tone++) for(let channel=0;channel<3;channel++) {
+    weather[tone*3+channel]=light[channel]+(weatherDetail[channel]-light[channel])*tone/255;
+    about[tone*3+channel]=dark[channel]+(aboutDetail[channel]-dark[channel])*tone/255;
+  }
+  return {weather,about};
+}
+
 // Coral's exported sway loop in neutral inks. Preserve the source's forks,
 // paper lobes, ribs, dots and grain; adapt crop, pigments and outer feathering.
 export function setupCoralCurrent(reduced) {
@@ -16,14 +47,7 @@ const retainedContext=retainedSource.getContext('2d');
 const buffer = document.createElement('canvas');
 const context = buffer.getContext('2d',{willReadFrequently:true});
 const targets = canvases.map(canvas => canvas.getContext('2d'));
-const inkSurface=document.createElement('canvas');
-const inkContext=inkSurface.getContext('2d');
-const probeSurface=document.createElement('canvas');
-const probeContext=probeSurface.getContext('2d');
-const linear=new Float32Array(256);
-for(let i=0;i<256;i++)linear[i]=i/255<=.04045?i/255/12.92:((i/255+.055)/1.055)**2.4;
-const inkThreshold=Math.sqrt(.05*1.05)-.05;
-let inkFrame;
+let paletteKey='',palette;
 const visible = new Set();
 let raf = 0, last = -Infinity, failed = false, above = 0, worldHeight = 0, orientation = '';
 
@@ -59,12 +83,8 @@ function size() {
   for(const half of halves)half.style.setProperty('--coral-world-height',`${worldHeight}px`);
   const scale = Math.min(1,1280/rect.width,Math.sqrt(480000/(rect.width*worldHeight)));
   const width = Math.round(rect.width*scale), height = Math.round(worldHeight*scale);
-  if (width === buffer.width && height === buffer.height && inkFrame) {paint();sync();return;}
+  if (width === buffer.width && height === buffer.height) {paint();sync();return;}
   buffer.width=width; buffer.height=height;
-  inkSurface.width=width;inkSurface.height=height;
-  probeSurface.width=width;probeSurface.height=height;
-  inkFrame=inkContext.createImageData(width,height);
-  inkFrame.data.fill(255);
   for (const canvas of canvases) {canvas.width=width;canvas.height=height;}
   paint();sync();
 }
@@ -81,84 +101,26 @@ function paint() {
   const probes=halves[0].querySelectorAll('.sea-coral-pigment');
   const pale=rgb(getComputedStyle(probes[0]).color), deep=rgb(getComputedStyle(probes[1]).color);
   if (pale.length!==3 || deep.length!==3) return;
-  const world=canvases[0].getBoundingClientRect();
-  const tones=new Float32Array(256);
-  for(let tone=0;tone<256;tone++)tones[tone]=tone/255;
-  let minInkContrast=100;
-  const rgba=new Uint8ClampedArray(3),inkPixels=inkFrame.data;
+  const key=pale.join(',')+';'+deep.join(',');
+  if(key!==paletteKey) {palette=createCoralPalette(pale,deep);paletteKey=key;}
+  const {weather,about}=palette;
+  // The colour crossing fits between the two reading fields. The exported
+  // drawing continues through both; no rectangle follows any text bounds.
   for(let y=0,p=0;y<h;y++) {
-    const wy=y/h*worldHeight,distance=wy-above;
-    const t=y/h;
-    const mask=t<.08?t/.08:t>.72?(1-t)/.28:1;
-    const backdrop=wy<above?pale:deep;
+    const distance=y/h*worldHeight-above;
+    const blend=smooth((distance+80)/120);
     for(let x=0;x<w;x++,p+=4) {
-      const grey=tones[pixels[p]];
-      // One continuous picture. Text bounds never darken the background.
-      const blend=smooth((distance+(grey-.5)*200+160)/320);
-      for(let c=0;c<3;c++) {
-        const ground=pale[c]+(deep[c]-pale[c])*blend;
-        const ink=deep[c]+(pale[c]-deep[c])*blend;
-        pixels[p+c]=ground+(ink-ground)*grey*.5;
-        rgba[c]=pixels[p+c]*mask+backdrop[c]*(1-mask);
-      }
-      // Change the ink inside the actual DOM glyphs, not the picture beneath.
-      inkPixels[p]=rgba[0];inkPixels[p+1]=rgba[1];inkPixels[p+2]=rgba[2];
-    }
-  }
-  // Read the broad colour field, not the print grain, when choosing text ink.
-  probeContext.putImageData(inkFrame,0,0);
-  inkContext.filter='blur(3px)';inkContext.drawImage(probeSurface,0,0);inkContext.filter='none';
-  const broad=inkContext.getImageData(0,0,w,h).data;
-  const at=(p,c,amount,target,mask,backdrop)=>Math.round((pixels[p+c]+(target[c]-pixels[p+c])*amount)*mask+backdrop[c]*(1-mask));
-  for(let y=0,p=0;y<h;y++) {
-    const t=y/h,mask=t<.08?t/.08:t>.72?(1-t)/.28:1;
-    const backdrop=y/h*worldHeight<above?pale:deep;
-    for(let x=0;x<w;x++,p+=4) {
-      const averaged=linear[broad[p]]*.2126+linear[broad[p+1]]*.7152+linear[broad[p+2]]*.0722;
-      let black=averaged>inkThreshold;
-      let actual=linear[inkPixels[p]]*.2126+linear[inkPixels[p+1]]*.7152+linear[inkPixels[p+2]]*.0722;
-      if((black&&actual<.185)||(!black&&actual>.174)) {
-        // A tiny global tone curve separates the two print inks. It applies
-        // to the whole picture and never uses text positions or text boxes.
-        const target=black?pale:deep;
-        let low=0,high=1;
-        for(let i=0;i<8;i++) {
-          const amount=(low+high)/2;
-          const l=linear[at(p,0,amount,target,mask,backdrop)]*.2126+linear[at(p,1,amount,target,mask,backdrop)]*.7152+linear[at(p,2,amount,target,mask,backdrop)]*.0722;
-          if(black?l>=.185:l<=.174)high=amount;else low=amount;
-        }
-        for(let c=0;c<3;c++){pixels[p+c]+=(target[c]-pixels[p+c])*high;inkPixels[p+c]=Math.round(pixels[p+c]*mask+backdrop[c]*(1-mask));}
-        actual=linear[inkPixels[p]]*.2126+linear[inkPixels[p+1]]*.7152+linear[inkPixels[p+2]]*.0722;
-        if((black&&actual<.179)||(!black&&actual>.179))black=actual>inkThreshold;
-      }
-      minInkContrast=Math.min(minInkContrast,black?(actual+.05)/.05:1.05/(actual+.05));
-      inkPixels[p]=inkPixels[p+1]=inkPixels[p+2]=black?0:255;
+      const tone=pixels[p]*3;
+      for(let channel=0;channel<3;channel++)
+        pixels[p+channel]=weather[tone+channel]+(about[tone+channel]-weather[tone+channel])*blend;
     }
   }
   context.putImageData(frame,0,0);
-  inkContext.putImageData(inkFrame,0,0);
-  const inkImage=`url("${inkSurface.toDataURL('image/png')}")`;
-  for(const section of [halves[0].parentElement,halves[1].parentElement]) {
-    section.style.setProperty('--coral-ink-image',inkImage);
-    section.style.setProperty('--coral-ink-size',`${world.width}px ${world.height}px`);
-  }
-  const text=document.querySelectorAll('#weather h2,#weather p,#weather dt,#weather dd,#weather time,#weather li>span,#about .about-copy h2,#about .about-copy p,#about .about-copy dt,#about .about-copy dd,#about .about-copy a');
-  for(const node of text) {
-    const rect=node.getBoundingClientRect();
-    if(!rect.width||!rect.height)continue;
-    node.classList.add('coral-adaptive-ink');
-    node.style.setProperty('--coral-ink-position',`${world.left-rect.left}px ${world.top-rect.top}px`);
-    if(node.tagName==='A') {
-      const ix=Math.max(0,Math.min(w-1,Math.floor(((rect.left+rect.right)/2-world.left)/world.width*w)));
-      const iy=Math.max(0,Math.min(h-1,Math.floor(((rect.top+rect.bottom)/2-world.top)/world.height*h)));
-      node.style.textDecorationColor=inkPixels[(iy*w+ix)*4]?'#fff':'#000';
-    }
-  }
   for(let i=0;i<canvases.length;i++) {
     targets[i].drawImage(buffer,0,0);
     canvases[i].dataset.frame=String(Math.floor(video.currentTime*12));
     canvases[i].dataset.paintMs=(performance.now()-started).toFixed(1);
-    canvases[i].dataset.inkMinContrast=minInkContrast.toFixed(3);
+    canvases[i].dataset.inkMode='solid-field';
   }
 }
 function tick(time) {
