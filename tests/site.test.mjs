@@ -10,7 +10,7 @@ import {
   weatherURL,
   SCENARIOS,
 } from "../dist/environment.js";
-import { season, schedule, photos, photoUse } from "../site/content.js";
+import { season, schedule } from "../site/content.js";
 
 import { typograph } from "../site/typography.js";
 
@@ -169,97 +169,100 @@ test("time and weather exploration never mutate the 2027 provisional programme",
   );
 });
 
-test("complete programme, correct 2027 weekdays, meaningful links and local images exist without JavaScript", async () => {
+test("the main page keeps the user's complete original layout with the agreed 2027 season", async () => {
   const html = await read("index.html");
   const release = JSON.parse(await read("release.json"));
-  assert.equal((html.match(/<h1\b/g) || []).length, 1);
-  assert.equal((html.match(/class="program-day"/g) || []).length, 15);
-  assert(html.includes("Программа · 2027"));
-  assert(!html.includes("#form"));
-  assert(!html.includes("{{"));
-  assert(html.includes('<p class="program-weekday">вторник</p>'));
-  assert(html.includes(`href="${release.base}privacy/"`));
-  for (const { date, events } of schedule) {
-    assert(html.includes(`data-date="${date}"`));
-    for (const [, title] of events) assert(html.replaceAll("\u00a0", " ").includes(title));
+  assert.equal(release.layout, "original-tilda");
+  assert.equal(release.season.year, 2027);
+  assert.equal(release.season.registration, "unannounced");
+  assert.equal(html, await read("direction/index.html"));
+  assert.equal((html.match(/class="t547__item t-item"/g) || []).length, 15);
+  for (const day of schedule) {
+    const date = new Date(day.date + 'T12:00:00Z');
+    const weekday = new Intl.DateTimeFormat('ru', {weekday:'long',timeZone:'UTC'}).format(date);
+    assert(html.includes(`${weekday[0].toUpperCase()}${weekday.slice(1)}, ${date.getUTCDate()} октября`), day.date);
   }
-  const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map((match) => match[1]);
-  assert.equal(new Set(ids).size, ids.length, "IDs must be unique");
-  for (const [, id] of html.matchAll(/href="#([^"]+)"/g))
-    assert(ids.includes(id), `Missing anchor ${id}`);
-  for (const [, file] of html.matchAll(/(?:src|href)="\.\/([^"]+)"/g))
-    assert((await stat(new URL(`../dist/${file}`, import.meta.url))).isFile());
-  for (const photo of photos)
-    assert(
-      (await stat(new URL(`../dist/assets/${photo.file}`, import.meta.url)))
-        .size > 100_000,
-    );
+  assert(html.includes('третий год подряд'));
+  assert(html.includes('role="heading" aria-level="1"'));
+  assert(html.includes('12–25&nbsp;октября 2027'));
+  assert(!html.includes('Прием заявок завершен'));
+  assert(!html.includes('DDLong в&nbsp;воскресенье'));
+  assert(html.includes(`<link rel="canonical" href="${release.site}"`));
+  assert(html.includes(`<meta property="og:url" content="${release.site}"`));
+  assert(html.includes(`<meta property="og:image" content="${new URL(release.base,release.site).origin}${release.base}assets/`));
+  assert(html.includes('arMapMarkers2083039171'));
+  assert(html.includes(`href="${release.base}privacy/"`));
+  for (const id of ['rec1016322141','rec2078762951','rec1017020466','rec2078794451']) {
+    assert(html.includes(`id="${id}"`) && html.includes(`href="#${id}"`), id);
+  }
+  assert(!html.includes('data-memory-style="zine"') && !html.includes('data-travel-style="ticket"'));
   for (const [file, expected] of Object.entries(release.siteFiles)) {
     const bytes = await readFile(new URL(`../dist/${file}`, import.meta.url));
     assert.equal(createHash("sha256").update(bytes).digest("hex"), expected);
   }
 });
 
-test("browser styles and the entire module graph use the publication revision", async () => {
+test("the original Tilda runtime uses local assets and retained modules keep their publication revision", async () => {
   const release = JSON.parse(await read("release.json"));
-  const references = [];
   for (const parent of ["index.html", "direction/index.html"]) {
     const html = await read(parent);
-    const entries = [...html.matchAll(/(?:src|href)="(\.\/[^\"]+\.(?:css|js)(?:\?[^\"]*)?)"/g)];
-    assert(entries.some(match => match[1].split('?')[0].endsWith('.css')), parent + ': page needs styles');
-    assert(entries.some(match => match[1].split('?')[0].endsWith('.js')), parent + ': page needs an entry module');
-    references.push(...entries.map((match) => ({ reference: match[1], parent })));
+    const entries = [...html.matchAll(/<(?:script|link)\b[^>]*(?:src|href)="([^"]+\.(?:css|js)(?:\?[^"]*)?)"/g)];
+    assert(entries.some(match => match[1].split('?')[0].endsWith('.css')));
+    assert(entries.some(match => match[1].split('?')[0].endsWith('.js')));
+    for (const [,reference] of entries) {
+      assert(reference.startsWith(release.base), reference);
+      const local = reference.slice(release.base.length).split('?')[0];
+      assert(local.startsWith('assets/') || ['application.css', 'application.js'].includes(local), reference);
+      assert((await stat(new URL(`../dist/${local}`,import.meta.url))).isFile());
+    }
   }
   for (const file of ["app.js", "environment.js", "direction/screen.js", "direction/navigation.js", "direction/atmosphere.js", "direction/forecast.js", "direction/travel-ticket.js"]) {
     const imports = [...(await read(file)).matchAll(/\bfrom "(\.{1,2}\/[^\"]+)"/g)];
-    if (!["direction/navigation.js", "direction/atmosphere.js"].includes(file)) assert(imports.length > 0);
-    references.push(...imports.map((match) => ({ reference: match[1], parent: file })));
-  }
-  for (const { reference, parent } of references) {
-    const url = new URL(reference, new URL(parent, release.site));
-    assert.equal(url.searchParams.get("v"), release.commit, reference);
-    assert((await stat(new URL(reference, new URL(`../dist/${parent}`, import.meta.url)))).isFile());
-  }
-  assert((await read("privacy/index.html")).includes(`privacy.css?v=${release.commit}`));
-});
-
-
-test("each archive photo has one placement on the authored page", async () => {
-  const assigned = Object.values(photoUse).flat();
-  assert.deepEqual([...assigned].sort((a, b) => a - b), photos.map((_, index) => index));
-  const html = await read("index.html");
-  const placed = [...html.matchAll(/<img\b[^>]*\bsrc="([^"]+)"/g)].map(match => match[1]);
-  // The first deck card is in HTML; the remaining cards are added by the module.
-  placed.push(...photoUse.cover.slice(1).map(index => photos[index].file));
-  for (const photo of photos) {
-    assert.equal(placed.filter(src => src.endsWith(photo.file)).length, 1, photo.file);
-  }
-});
-
-test("the published page combines the selected zine, ticket and guide with complete original destinations", async () => {
-  const html = await read("index.html");
-  const release = JSON.parse(await read("release.json"));
-  const hotels = JSON.parse(await readFile(new URL("../site/data/hotels.json", import.meta.url), "utf8"));
-  const currency = JSON.parse(await readFile(new URL("../site/data/currency.json", import.meta.url), "utf8"));
-  assert(html.includes('id="memories" class="memories" data-memory-style="zine"'));
-  assert.equal((html.match(/class="memory-frame"/g) || []).length, 3);
-  assert(html.includes('data-travel-style="ticket"'));
-  assert(!html.includes('Все варианты') && !html.includes('experiments/') && !html.includes('noindex'));
-  assert.equal(hotels.length, 5);
-  for (const hotel of hotels) {
-    assert.equal(html.split(`href="${hotel.booking}"`).length - 1, 1, hotel.name);
-    assert(html.includes(`id="hotel-${hotel.id}"`));
-    for (const photo of hotel.photos) {
-      const src = `${release.base}direction/media/hotels/${photo.file}`;
-      assert.equal(html.split(`src="${src}"`).length - 1, 1, photo.file);
-      assert((await stat(new URL(`../dist/direction/media/hotels/${photo.file}`, import.meta.url))).isFile());
+    for (const [,reference] of imports) {
+      const url = new URL(reference,new URL(file,release.site));
+      assert.equal(url.searchParams.get('v'),release.commit);
+      assert((await stat(new URL(reference,new URL(`../dist/${file}`,import.meta.url)))).isFile());
     }
   }
-  for (const id of ['run-routes','run-districts','run-food','run-essentials','run-shops','run-community']) {
-    assert(html.includes(`id="${id}"`) && html.includes(`href="#${id}"`), id);
+  assert((await read('privacy/index.html')).includes(`privacy.css?v=${release.commit}`));
+});
+
+test("both original photo carousels retain their images and full-size zoom sources", async () => {
+  const html = await read('index.html');
+  const release = JSON.parse(await read('release.json'));
+  const images = [...html.matchAll(/<img\b[^>]*class="t-img t1148__img"[^>]*>/g)].map(m=>m[0]);
+  assert.equal(images.length,11);
+  const zoomSources=[];
+  for(const image of images){
+    assert(image.includes('data-zoomable="yes"'));
+    assert(image.includes('role="button"') && image.includes('tabindex="0"'));
+    assert(image.includes('Кэмп в Фетхие, 2025.'));
+    const source=/data-img-zoom-url="([^"]+)"/.exec(image)?.[1];
+    assert(source?.startsWith(release.base+'assets/'));
+    assert((await stat(new URL(`../dist/${source.slice(release.base.length)}`,import.meta.url))).size>100_000);
+    zoomSources.push(source);
   }
-  assert(html.includes(`datetime="${currency.effectiveDate}"`));
-  assert(html.includes('https://t.me/begmonrun/304') && html.includes('https://t.me/Slk425/847'));
+  assert.equal(new Set(zoomSources).size,11);
+  for(const id of ['1016322141','1017020466']){
+    assert(html.includes(`id="carousel_${id}"`));
+    assert(html.includes(`aria-controls="carousel_${id}"`));
+  }
+});
+
+test("original accommodation, navigation, weather copy and privacy destination remain intact", async () => {
+  const html=await read('index.html');
+  const release=JSON.parse(await read('release.json'));
+  const hotels=JSON.parse(await readFile(new URL('../site/data/hotels.json',import.meta.url),'utf8'));
+  for(const hotel of hotels)assert.equal(html.split(`href="${hotel.booking}"`).length-1,1,hotel.name);
+  assert(html.includes('Погода в Анталье'));
+  assert(html.includes('Коньяалты'));
+  assert(html.includes('https://t.me/dusty_dumbbells'));
+  assert(html.includes(`href="${release.base}privacy/"`));
+  // The restored named anchor is a valid destination for every application link.
+  assert(html.includes('href="#form"'));
+  assert(html.includes('<a name="form"'));
+  assert(html.includes('id="form1016216116"'));
+  assert(!html.includes('js-form-proccess') && !html.includes('name="formservices[]"'));
 });
 
 test("prose typography binds meaningful groups and is idempotent", () => {

@@ -3,6 +3,8 @@ import { readFile, stat } from "node:fs/promises";
 import { createHash } from "node:crypto";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
+import { adaptApplication } from './application-markup.mjs';
+import { adaptPublication } from './season-markup.mjs';
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const manifest = JSON.parse(
@@ -12,6 +14,7 @@ const release = JSON.parse(
   await readFile(path.join(root, "dist/release.json"), "utf8"),
 );
 const hash = (bytes) => createHash("sha256").update(bytes).digest("hex");
+const currentCapture = JSON.parse(await readFile(path.join(root, 'source/captures/2026-10-23/manifest.json'), 'utf8'));
 let localReferences = 0;
 
 for (const asset of manifest.assets) {
@@ -37,6 +40,37 @@ for (const asset of manifest.assets) {
       localReferences++;
     }
   }
+}
+
+for (const asset of currentCapture.assets) {
+  const folder = asset.origin === 'base' ? 'source/assets' : 'source/captures/2026-10-23/assets';
+  const source = await readFile(path.join(root, folder, asset.file));
+  assert.equal(hash(source), asset.sha256, `Capture asset changed: ${asset.file}`);
+  assert.equal(source.length, asset.bytes);
+  const built = await readFile(path.join(root, 'dist/assets', asset.file));
+  assert(built.length > 0);
+  if (!/\.(css|js)$/.test(asset.file)) assert.equal(hash(built), asset.sha256);
+  if (asset.file.endsWith('.js')) new Function(built.toString());
+}
+
+const captureHtml = await readFile(path.join(root, 'source/captures/2026-10-23/index.html'), 'utf8');
+assert.equal(hash(captureHtml), currentCapture.pageSha256);
+for (const name of ['index.html', 'direction/index.html']) {
+  assert.equal(await readFile(path.join(root, 'site', name), 'utf8'), captureHtml, `Selected original changed: ${name}`);
+  let expected = captureHtml;
+  for (const asset of currentCapture.assets) {
+    expected = expected.replaceAll(asset.url, `${release.base}assets/${asset.file}`);
+    if (captureHtml.includes(asset.url)) localReferences++;
+  }
+  expected = adaptApplication(adaptPublication(expected, release.site), release.base, encodeURIComponent(release.commit))
+    .replace(/href=(['"])\/privacy\1/g, `href="${release.base}privacy/"`)
+    .replace(/href=(['"])\/(#.*?)?\1/g, (_, quote, anchor = '') => `href=${quote}${release.base}${anchor}${quote}`);
+  const built = await readFile(path.join(root, 'dist', name), 'utf8');
+  assert.equal(built, expected, `Current source fidelity failed: ${name}`);
+  assert(!built.includes('js-form-proccess'));
+  assert(!built.includes('name="formservices[]"'));
+  assert(built.includes('name="form"'));
+  assert(built.includes('data-dd-application'));
 }
 
 for (const [sourceName, builtName] of [
@@ -83,7 +117,7 @@ for (const [sourceName, builtName] of [
     'href="/privacy"',
   );
   const pageBase =
-    sourceName === "index.html" ? `${release.base}original/` : release.base;
+    builtName === "original/index.html" ? `${release.base}original/` : release.base;
   const escapedBase = pageBase.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   restored = restored.replace(
     new RegExp(`href=(["'])${escapedBase}(#.*?)?\\1`, "g"),
@@ -113,5 +147,5 @@ assert.equal(
 assert(main.includes("Прием заявок завершен"));
 assert(main.includes("arMapMarkers2083039171"));
 console.log(
-  `Verified 2 preserved source pages (privacy title wrap excepted), ${manifest.assets.length} asset checksums and ${localReferences} local references.`,
+  `Verified the restored form on both main routes, both frozen source pages, ${manifest.assets.length} base and ${currentCapture.assets.length} capture checksums, and ${localReferences} local references.`,
 );

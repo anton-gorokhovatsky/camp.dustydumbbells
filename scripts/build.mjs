@@ -3,11 +3,9 @@ import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
-import { schedule, photos, season } from "../site/content.js";
-import { typograph } from "../site/typography.js";
-import { renderHotelDirectory } from "../site/hotel-directory.js";
-import { renderRunningGuide } from "../site/running-guide.js";
-import { resolveSeaCurrents } from "../site/sea-currents.js";
+import { adaptApplication } from './application-markup.mjs';
+import { adaptPublication } from './season-markup.mjs';
+import { season } from '../site/content.js';
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const output = path.join(root, "dist");
@@ -31,17 +29,26 @@ const manifest = JSON.parse(
   await readFile(path.join(root, "source/manifest.json"), "utf8"),
 );
 const hotels = JSON.parse(await readFile(path.join(root, "site/data/hotels.json"), "utf8"));
-const currency = JSON.parse(await readFile(path.join(root, "site/data/currency.json"), "utf8"));
 const assets = new Map(manifest.assets.map((asset) => [asset.url, asset.file]));
+const currentCapture = JSON.parse(await readFile(path.join(root, 'source/captures/2026-10-23/manifest.json'), 'utf8'));
+const currentAssets = new Map(currentCapture.assets.map(asset => [asset.url, asset.file]));
 
-function localize(text, css = false) {
-  for (const [url, filename] of assets) {
+function localize(text, css = false, registry = assets) {
+  for (const [url, filename] of registry) {
     text = text.replaceAll(
       url,
       css ? `./${filename}` : `${base}assets/${filename}`,
     );
   }
   return text;
+}
+
+function localizeCaptureScript(text) {
+  const mask = currentAssets.get('https://static.tildacdn.com/js/tilda-forms-custommask-1.0.min.js');
+  const flags = currentAssets.get('https://static.tildacdn.com/lib/flags/flags7.png');
+  return localize(text, false, currentAssets)
+    .replace('"https://static.tildacdn."+t_forms__getRootZone()+"/js/tilda-forms-custommask-1.0.min.js"', JSON.stringify(`${base}assets/${mask}`))
+    .replace(/https:\/\/static\.tildacdn\."\+t_form_phonemask_getRootZone\(\)\+'\/lib\/flags\/flags7\.png/g, `${base}assets/${flags}"+'`);
 }
 
 await rm(output, { recursive: true, force: true });
@@ -54,6 +61,12 @@ for (const asset of manifest.assets) {
     data = localize(data.toString(), asset.file.endsWith(".css"));
   }
   await writeFile(path.join(output, "assets", asset.file), data);
+}
+for (const asset of currentCapture.assets.filter(asset => asset.origin === 'capture')) {
+  let data = await readFile(path.join(root, 'source/captures/2026-10-23/assets', asset.file));
+  if (asset.file.endsWith('.css')) data = localize(data.toString(), true, currentAssets);
+  if (asset.file.endsWith('.js')) data = localizeCaptureScript(data.toString());
+  await writeFile(path.join(output, 'assets', asset.file), data);
 }
 
 const pageHashes = {};
@@ -83,39 +96,6 @@ for (const [input, target] of [
   await writeFile(path.join(output, target), html);
 }
 
-const escapeHTML = (text) =>
-  String(text).replace(
-    /[&<>"']/g,
-    (character) =>
-      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[
-        character
-      ],
-  );
-const weekday = new Intl.DateTimeFormat("ru", {
-  weekday: "long",
-  timeZone: "Europe/Istanbul",
-});
-const programDays = schedule
-  .map(({ date, events }) => {
-    const day = Number(date.slice(-2));
-    const dateHeading = day === 11 ? "h3" : "h4";
-    const rest = events.some(([, title]) => title.startsWith("День отдыха"));
-    const rows = events
-      .map(
-        ([time, title]) =>
-          `<li>${time ? `<time datetime="${date}T${time}:00+03:00">${time}</time>` : "<time></time>"}<span>${escapeHTML(title)}</span></li>`,
-      )
-      .join("");
-    return `<article class="program-day" id="day-${date}" aria-labelledby="day-${date}-title" data-date="${date}" data-rest="${rest}"><div class="program-date-group"><${dateHeading} class="program-date" id="day-${date}-title"><time datetime="${date}"><b>${day}</b><span>октября</span></time></${dateHeading}><p class="program-weekday">${weekday.format(new Date(`${date}T12:00:00+03:00`))}</p></div><ul class="program-events">${rows}</ul></article>`;
-  });
-const program = `<div class="program-arrival">${programDays[0]}</div><div class="program-weeks"><section class="program-week" aria-labelledby="week-one"><h3 class="week-heading" id="week-one"><span class="week-label">Первая неделя</span><span class="week-period"><span class="date-range">12–18</span> октября</span></h3><div class="week-days">${programDays.slice(1, 8).join("\n")}</div></section><section class="program-week" aria-labelledby="week-two"><h3 class="week-heading" id="week-two"><span class="week-label">Вторая неделя</span><span class="week-period"><span class="date-range">19–25</span> октября</span></h3><div class="week-days">${programDays.slice(8).join("\n")}</div></section></div>`;
-const gallery = [9, 4, 10, 3, 5]
-  .map((index, order) => {
-    const photo = photos[index];
-    return `<figure class="photo"><a href="${base}assets/${photo.file}" data-photo="${index}" aria-label="Увеличить: ${escapeHTML(photo.alt)}"><img src="${base}assets/${photo.file}" alt="${escapeHTML(photo.alt)}" width="${index === 5 ? 893 : 1680}" height="${index === 5 ? 1339 : 2520}" loading="lazy"><span class="photo-zoom" aria-hidden="true">↗</span></a><figcaption>${String(order + 3).padStart(2, "0")} — ${["Горы над побережьем", "Свои люди у воды", "Мачты, лодки, море", "Обратно по набережной", "До темноты"][order]}</figcaption></figure>`;
-  })
-  .join("\n");
-
 const siteFiles = {};
 await mkdir(path.join(output, "fonts"), { recursive: true });
 for (const file of await readdir(path.join(root, "site/fonts"))) {
@@ -132,6 +112,10 @@ for (const file of [
   "environment.js",
   "content.js",
   "typography.js",
+  "application.js",
+  "application.css",
+  "application-config.js",
+  "application-validation.js",
   "data/currency.json",
   "currency.js",
   "direction/index.html",
@@ -150,21 +134,18 @@ for (const file of [
   "direction/screen.js",
   "direction/forecast.js",
 ]) {
-  // Both local review routes use the same page, so the accepted cover cannot drift.
+  // The user's original page is the canonical layout on both local entry routes.
   const input = file === "direction/index.html" ? "index.html" : file;
   let content = await readFile(path.join(root, "site", input), "utf8");
-  if (file === "direction/index.html") content = content.replaceAll('./direction/', './');
   content = content
     .replaceAll("{{BASE}}", base)
-    .replaceAll("{{SITE}}", site.href)
-    .replace("{{SCHEDULE}}", program)
-    .replace("{{HOTELS}}", renderHotelDirectory(hotels, `${base}direction/media/hotels/`))
-    .replace("{{RUNNING_GUIDE}}", renderRunningGuide(currency, { currents: true }))
-    .replace("{{GALLERY}}", gallery);
-  // Only text nodes in the authored page; preserved original and attributes stay intact.
+    .replaceAll("{{SITE}}", site.href);
+  // Preserve the selected layout and apply the agreed season and independent form.
   if (file === 'index.html' || file === 'direction/index.html') {
-    content = resolveSeaCurrents(content);
-    content = content.split(/(<[^>]+>)/g).map(part => part.startsWith('<') ? part : typograph(part)).join('');
+    content = adaptApplication(adaptPublication(localize(content, false, currentAssets), site), base, assetVersion)
+      .replace(/href=(['"])\/privacy\1/g, `href="${base}privacy/"`)
+      .replace(/href=(['"])\/(#.*?)?\1/g,
+        (_, quote, anchor = "") => `href=${quote}${base}${anchor}${quote}`);
   }
   // A new publication must also refresh cached styles and module dependencies.
   if (file.endsWith(".html")) {
@@ -174,8 +155,8 @@ for (const file of [
     );
   } else if (file.endsWith(".js")) {
     content = content.replace(
-      /\bfrom "(\.{1,2}\/[^"?]+\.js)"/g,
-      `from "$1?v=${assetVersion}"`,
+      /\bfrom (["'])(\.{1,2}\/[^"'?]+\.js)\1/g,
+      (_, quote, source) => `from ${quote}${source}?v=${assetVersion}${quote}`,
     );
   }
   await mkdir(path.dirname(path.join(output, file)), { recursive: true });
@@ -215,10 +196,12 @@ await writeFile(
       commit,
       site: site.href,
       base,
-      source: manifest.source,
-      captured: manifest.captured,
-      assets: manifest.assets.length,
+      source: currentCapture.source,
+      captured: currentCapture.captured,
+      assets: new Set([...manifest.assets, ...currentCapture.assets].map(asset => asset.file)).size,
       pageHashes,
+      currentPageHash: currentCapture.pageSha256,
+      layout: "original-tilda",
       season,
       original: `${base}original/`,
       siteFiles,
@@ -228,5 +211,5 @@ await writeFile(
   ) + "\n",
 );
 console.log(
-  `Built the 2027 site, original, privacy and ${manifest.assets.length} original assets at ${base}`,
+  `Built the original DD Camp layout with the restored application form at ${base}`,
 );
