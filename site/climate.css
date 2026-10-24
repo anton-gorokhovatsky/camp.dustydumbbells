@@ -1,0 +1,136 @@
+/* One live light model, applied to the selected original composition. */
+:root {
+  --dd-page: #e0ecea;
+  --dd-surface: #e1edeb;
+  --dd-band: #b21818;
+  --dd-on-band: #fff6ec;
+  --dd-action-hover: #1a4297;
+  --dd-footer-blue: #1a4297;
+  --dd-footer-angle: 180deg;
+  --dd-line: #607073;
+  --dd-matte-solid: #f7f7f7;
+  --dd-matte-ink: #232323;
+  --dd-matte-blue: #1a4297;
+  --dd-matte-red: #b21818;
+  --dd-cover-cast: rgba(16,41,78,.08);
+  --dd-scheme: light;
+}
+html:has([data-dd-environment]), body[data-dd-environment] {
+  background: var(--dd-page) !important;
+  color: var(--dd-ink);
+  color-scheme: var(--dd-scheme);
+}
+body[data-dd-environment] #allrecords { color: var(--dd-ink); }
+body[data-dd-environment] :is(#allrecords,#dd-main) > .r {
+  background-color: var(--dd-page) !important;
+}
+body[data-dd-environment] :is(#allrecords,#dd-main) > :is(#rec1016322141, #rec1017020466, #rec1016216116) {
+  background-color: var(--dd-surface) !important;
+}
+body[data-dd-environment] #allrecords :is(.t-section__descr, .t004 .t-text, .t547__descr, .t547__descr strong, .t678__form-bottom-text) {
+  color: var(--dd-ink) !important;
+}
+body[data-dd-environment] #allrecords :is(.t-section__title, .t225__title, .t050__title, .t120__title, .t547__title) { color: var(--dd-blue) !important; }
+body[data-dd-environment] #allrecords .t1148__textwrapper { color: var(--dd-muted) !important; }
+body[data-dd-environment] #allrecords a { color: var(--dd-red); text-decoration-color: currentColor; }
+body[data-dd-environment] #allrecords :is(.t-descr,.t-text,.t678__form-bottom-text) a {
+  color: var(--dd-red) !important;
+  box-shadow: inset 0 -1px 0 currentColor !important;
+}
+body[data-dd-environment] #allrecords :is(.t-descr,.t-text,.t678__form-bottom-text) a:is(:hover,:focus-visible) {
+  color: var(--dd-blue) !important;
+  box-shadow: inset 0 -1px 0 currentColor !important;
+}
+body[data-dd-environment] #allrecords :is(.t-descr,.t-text,.t678__form-bottom-text) a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+/* The band's painted field and its text remain one pair in every condition. */
+body[data-dd-environment] #allrecords .t1003__content-wrapper { background-color: var(--dd-band) !important; }
+body[data-dd-environment] #allrecords :is(.t1003__item-txt, .t1003__item-txt a) { color: var(--dd-on-band) !important; }
+body[data-dd-environment] #allrecords .t547__line { background-color: var(--dd-blue) !important; }
+body[data-dd-environment] #allrecords .t547__circle { background-color: var(--dd-blue) !important; }
+body[data-dd-environment] #allrecords .t1148 :is(.t1148__arrow, .t1148__arrow-wrapper) { color: var(--dd-on-band); }
+body[data-dd-environment] #allrecords .t1148 .t1148__arrow-wrapper { background-color: var(--dd-band) !important; }
+body[data-dd-environment] #allrecords .t1148__control { background-color: var(--dd-band) !important; border-color: transparent !important; }
+body[data-dd-environment] #allrecords .t1148__control path { stroke: var(--dd-on-band); }
+/* Native footage remains unchanged; only the existing protective scrim is tinted. */
+body[data-dd-environment] #allrecords #rec1016226926 .t-cover__filter {
+  background: linear-gradient(90deg,rgba(0,0,0,.64),rgba(0,0,0,.54) 60%,rgba(0,0,0,.18)),
+    linear-gradient(0deg,rgba(0,0,0,.32),transparent 65%),
+    linear-gradient(var(--dd-cover-cast),var(--dd-cover-cast)) !important;
+}
+body[data-dd-environment] #allrecords #rec1016226926 :is(.t997__title,.t997__descr,.t997__descr a),
+body[data-dd-environment] #allrecords #rec1016601036 .t967 a.t-menu__link-item { color: #fff6ec !important; }
+/* The same matte material on the actual backgrounds of all three components. */
+body[data-dd-environment] #rec1017771976 #nav1017771976 { color: var(--dd-matte-ink); }
+body[data-dd-environment] #rec1017771976 #nav1017771976 .t-menu-popover__burgermenu__sidebar { color: var(--dd-matte-ink); }
+body[data-dd-environment] #rec1017771976 #nav1017771976 :is(.t-menu-popover__descr, .t-menu-popover__descr span) { color: var(--dd-matte-ink) !important; }
+body[data-dd-environment] #rec1017771976 #nav1017771976 :is(.t-menu__link-item, .t-sociallinks__item a),
+body[data-dd-environment] #allrecords .dd-cover-tools { color: var(--dd-matte-blue) !important; }
+body[data-dd-environment] #rec1017771976 #nav1017771976 :is(.t-menu__link-item:hover,.t-menu__link-item.t-active) { color: var(--dd-matte-red) !important; }
+body[data-dd-environment] #rec1017771976 #nav1017771976 :is(a,button):focus-visible { outline-color: var(--dd-matte-blue); }
+body[data-dd-environment] #allrecords #form1016216116 :is(input,textarea,.t-input-phonemask__wrap) {
+  color: var(--dd-ink) !important;
+  border-color: var(--dd-line) !important;
+  background-color: transparent !important;
+  caret-color: var(--dd-red);
+}
+body[data-dd-environment] #allrecords #form1016216116 :is(.t-input-title,.t-radio__control,.t-checkbox__control) { color: var(--dd-ink) !important; }
+body[data-dd-environment] #allrecords #form1016216116 .t-input__vis-ph,
+body[data-dd-environment] #allrecords #form1016216116 input::placeholder { color: var(--dd-muted) !important; }
+body[data-dd-environment] #allrecords #form1016216116 .t-submit { background: var(--dd-band) !important; color: var(--dd-on-band) !important; }
+body[data-dd-environment] #allrecords #form1016216116 .t-submit:not(:disabled):is(:hover,:focus-visible) { background: var(--dd-action-hover) !important; border-color: var(--dd-action-hover) !important; }
+body[data-dd-environment] #allrecords #form1016216116 .t-submit:not(:disabled):active { background: var(--dd-footer-blue) !important; border-color: var(--dd-footer-blue) !important; }
+body[data-dd-environment] #allrecords #form1016216116 .dd-form-status { color: var(--dd-blue); }
+body[data-dd-environment] #allrecords #form1016216116 :is(.dd-form-status[data-state="error"],.t-input-error) { color: var(--dd-red); }
+body[data-dd-environment] #allrecords #form1016216116 [aria-invalid="true"] { border-color: var(--dd-red) !important; }
+body[data-dd-environment] #allrecords #form1016216116 :is(input,textarea,button):focus-visible { outline-color: var(--dd-blue); }
+body[data-dd-environment] #allrecords #form1016216116 .t-datepicker__icon { fill: var(--dd-red) !important; }
+body[data-dd-environment] #allrecords #form1016216116 .t-radio__indicator { border-color: var(--dd-line) !important; opacity: 1 !important; }
+body[data-dd-environment] #allrecords #form1016216116 .t-radio__indicator::after { background: var(--dd-red) !important; }
+body[data-dd-environment] #allrecords #form1016216116 .t-input-phonemask__select-triangle { border-top-color: var(--dd-ink) !important; }
+body[data-dd-environment] .t-input-phonemask__options-wrap { background: var(--dd-surface) !important; border: 1px solid var(--dd-line); }
+body[data-dd-environment] :is(.t-input-phonemask__options-item,.t-input-phonemask__options-name,.t-input-phonemask__options-right,.t-input-phonemask__options-code) { color: var(--dd-ink) !important; }
+body[data-dd-environment] .t-input-phonemask__options-item:hover { background: var(--dd-page) !important; outline: 1px solid var(--dd-blue); outline-offset: -1px; }
+body[data-dd-environment] .t-input-phonemask__options-item_chosen { background: var(--dd-page) !important; box-shadow: inset 3px 0 var(--dd-blue); }
+body[data-dd-environment] .t_datepicker__inner { background: var(--dd-surface) !important; color: var(--dd-ink) !important; border-color: var(--dd-line); }
+body[data-dd-environment] .t_datepicker__header { background: var(--dd-page) !important; color: var(--dd-ink) !important; }
+body[data-dd-environment] :is(.t_datepicker__label,.t_datepicker__body,.t_datepicker__day-cell) { color: var(--dd-ink) !important; }
+body[data-dd-environment] .t_datepicker__week-day { color: var(--dd-muted) !important; border-bottom-color: var(--dd-line); }
+body[data-dd-environment] .t_datepicker__arrow { opacity: 1; }
+body[data-dd-environment] .t_datepicker__arrow_prev::after { border-color: transparent var(--dd-ink) transparent transparent; }
+body[data-dd-environment] .t_datepicker__arrow_next::after { border-color: transparent transparent transparent var(--dd-ink); }
+body[data-dd-environment] .t_datepicker__day-cell:is(:hover,:active)::before { background: var(--dd-page) !important; outline: 1px solid var(--dd-blue); }
+body[data-dd-environment] .t_datepicker__day-cell.t_datepicker__selected-day::before { background: var(--dd-band) !important; outline: 0; }
+body[data-dd-environment] .t_datepicker__selected-day { color: var(--dd-on-band) !important; }
+body[data-dd-environment] .t_datepicker__select { background: var(--dd-surface); color: var(--dd-ink); }
+body[data-dd-environment] .t_datepicker__inner :is(button,select):focus-visible { outline: 2px solid var(--dd-blue); outline-offset: 3px; }
+body[data-dd-environment] #allrecords .dd-map { background: var(--dd-surface); }
+body[data-dd-environment] #allrecords .dd-map-intro,
+body[data-dd-environment] #allrecords .dd-map-intro a { color: var(--dd-blue); }
+body[data-dd-environment] #allrecords .dd-map-intro button { background: var(--dd-band); color: var(--dd-on-band); }
+body[data-dd-environment] #allrecords .dd-map :is(a,button):focus-visible { outline-color: var(--dd-blue); }
+body[data-dd-environment] #allrecords .dd-climate-reading {
+  max-width: 64ch;
+  color: var(--dd-muted);
+  font-size: var(--dd-type-small);
+  line-height: 1.5;
+}
+/* One continuous painted field behind the whole footer, including its credits. */
+body[data-dd-environment] #allrecords #t-footer {
+  background-color: var(--dd-footer-blue);
+  background-image: linear-gradient(var(--dd-footer-angle),var(--dd-band),var(--dd-footer-blue)) !important;
+}
+body[data-dd-environment] #allrecords #t-footer > .r { background: transparent !important; }
+body[data-dd-environment] #allrecords #t-footer .t1003__content-wrapper { background: transparent !important; }
+body[data-dd-environment] :is(#rec1053527756,#rec1018079361) :is(a,.t134__title,.t134__descr) { color: var(--dd-on-band) !important; }
+body[data-dd-environment] #rec1018079361 .t134__descr,
+body[data-dd-environment] #rec1018079361 .t134__descr a { color: var(--dd-footer-muted, var(--dd-on-band)) !important; opacity: 1 !important; }
+body[data-dd-environment] .t134__descr a { text-decoration-color: currentColor !important; }
+@media(max-width:640px) {
+  body[data-dd-environment] #allrecords #rec1016226926 .t-cover__filter {
+    background: linear-gradient(0deg,rgba(0,0,0,.72),rgba(0,0,0,.52) 34%,rgba(0,0,0,.08) 70%,rgba(0,0,0,.46)),
+      linear-gradient(var(--dd-cover-cast),var(--dd-cover-cast)) !important;
+  }
+}
+@supports not (backdrop-filter:blur(16px)) {
+  body[data-dd-environment] { --dd-matte-fill: var(--dd-matte-solid) !important; }
+}

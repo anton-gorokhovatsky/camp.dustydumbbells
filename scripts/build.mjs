@@ -119,9 +119,7 @@ for (const file of await readdir(path.join(root, "site/fonts"))) {
 }
 for (const file of [
   "index.html",
-  "styles.css",
   "privacy.css",
-  "app.js",
   "environment.js",
   "content.js",
   "typography.js",
@@ -130,10 +128,19 @@ for (const file of [
   "application.css",
   "application-config.js",
   "application-validation.js",
+  "form-widgets.js",
+  "form-values.js",
+  "phone-countries.js",
+  "phone-flags.css",
+  "accessibility.js",
+  "accessibility.css",
   "navigation.css",
   "navigation.js",
   "refinement.css",
   "cover-film.js",
+  "camp-palette.js",
+  "camp-environment.js",
+  "climate.css",
   "camp-map.css",
   "camp-map.js",
   "map-policy.js",
@@ -141,21 +148,9 @@ for (const file of [
   "mapbox-frame.js",
   "map.html",
   "data/currency.json",
-  "currency.js",
   "direction/index.html",
-  "direction/screen.css",
-  "direction/program-poster.css",
-  "direction/memories-zine.css",
-  "direction/travel-ticket.css",
-  "direction/travel-ticket.js",
-  "direction/interface.css",
-  "direction/journey.css",
-  "direction/navigation.js",
-  "direction/sea-motion.js",
-  "direction/coral-current.js",
-  "direction/coral-current.css",
+  // Retained pure weather utilities have independent model tests; old UI is excluded.
   "direction/atmosphere.js",
-  "direction/screen.js",
   "direction/forecast.js",
 ]) {
   // The user's original page is the canonical layout on both local entry routes.
@@ -190,28 +185,14 @@ for (const file of [
   await writeFile(path.join(output, file), content);
   siteFiles[file] = createHash("sha256").update(content).digest("hex");
 }
-await mkdir(path.join(output, "direction/media"), { recursive: true });
 await mkdir(path.join(output, 'media'), {recursive: true});
 for (const file of ['camp-2026.mp4', 'camp-2026-poster.jpg']) {
   const bytes = await readFile(path.join(root, 'site/media', file));
   await writeFile(path.join(output, 'media', file), bytes);
   siteFiles[`media/${file}`] = createHash('sha256').update(bytes).digest('hex');
 }
-for (const entry of await readdir(path.join(root, "site/direction/media"), { withFileTypes: true })) {
-  if (!entry.isFile()) continue;
-  const file = entry.name;
-  const bytes = await readFile(path.join(root, "site/direction/media", file));
-  await writeFile(path.join(output, "direction/media", file), bytes);
-  siteFiles[`direction/media/${file}`] = createHash("sha256").update(bytes).digest("hex");
-}
-await mkdir(path.join(output, "direction/media/hotels"), { recursive: true });
 const hotelImages = hotels.flatMap(hotel => hotel.photos.map(photo => photo.file));
 if (new Set(hotelImages).size !== hotelImages.length) throw new Error("Hotel photographs must have unique placements");
-for (const file of hotelImages) {
-  const bytes = await readFile(path.join(root, "site/direction/media/hotels", file));
-  await writeFile(path.join(output, "direction/media/hotels", file), bytes);
-  siteFiles[`direction/media/hotels/${file}`] = createHash("sha256").update(bytes).digest("hex");
-}
 for (const [source, file] of [
   ["index.js", "suncalc.js"],
   ["LICENSE", "suncalc-LICENSE.txt"],

@@ -1,0 +1,79 @@
+import { campPalette } from './camp-palette.js';
+import { normalizeWeather, weatherURL, placeClock, clockText, weatherLabel } from './environment.js';
+
+const CACHE_KEY = 'dd-camp-antalya-weather-v1';
+const REFRESH = 30 * 60 * 1000;
+
+// One request at a time; the session cache is revalidated before use. A failed
+// request never prolongs a reading's age or turns missing weather into "clear".
+export function createWeatherReader({ fetcher = fetch, storage = null, now = () => new Date() } = {}) {
+  let cached = null;
+  let lastAttempt = -Infinity;
+  let pending = null;
+  try { cached = JSON.parse(storage?.getItem(CACHE_KEY) || 'null'); } catch {}
+  if (cached && normalizeWeather(cached.payload, now()) && Number.isFinite(cached.received)
+    && cached.received <= now().getTime()) lastAttempt = cached.received;
+  const peek = () => normalizeWeather(cached?.payload, now());
+  const refresh = () => {
+    if (pending) return pending;
+    const time = now().getTime();
+    if (time - lastAttempt < REFRESH) return Promise.resolve(peek());
+    lastAttempt = time;
+    pending = (async () => {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 6500);
+      try {
+        const response = await fetcher(weatherURL(), { signal: controller.signal, credentials: 'omit', referrerPolicy: 'no-referrer' });
+        if (!response.ok) throw new Error('Weather unavailable');
+        const payload = await response.json();
+        if (!normalizeWeather(payload, now())) throw new Error('Weather reading is invalid or stale');
+        cached = { payload, received: now().getTime() };
+        try { storage?.setItem(CACHE_KEY, JSON.stringify(cached)); } catch {}
+      } catch { /* The astronomical palette remains available without a network. */ }
+      finally { clearTimeout(timeout); pending = null; }
+      return peek();
+    })();
+    return pending;
+  };
+  return { peek, refresh };
+}
+
+export function applyCampPalette(root, state) {
+  for (const [name, value] of Object.entries(state.css)) root.style.setProperty(name, value);
+  root.dataset.ddLight = state.phase;
+  root.dataset.ddPalette = 'ready';
+}
+
+function initCampEnvironment() {
+  const root = document.documentElement;
+  if (!document.querySelector('[data-dd-environment]')) return;
+  let storage = null;
+  try { storage = sessionStorage; } catch {}
+  const reader = createWeatherReader({ storage });
+  const reading = document.querySelector('[data-dd-weather-values]');
+  const render = () => {
+    if (document.hidden) return;
+    const date = new Date();
+    const weather = reader.peek();
+    const palette = campPalette({ date, weather });
+    applyCampPalette(root, palette);
+    if (reading) {
+      const clock = clockText(placeClock(date).minutes);
+      const phase = { morning: 'рассвет', day: 'день', evening: 'вечер', night: 'ночь' }[palette.phase];
+      reading.textContent = weather
+        ? `Сейчас в Анталье ${clock} · ${Math.round(weather.temperature) > 0 ? '+' : ''}${Math.round(weather.temperature)}° · ${weatherLabel(weather).toLowerCase()}. Погода на ${weather.time}.`
+        : `Сейчас в Анталье ${clock} · ${phase}. Погода недоступна — цвета следуют положению солнца.`;
+    }
+  };
+  const update = () => {
+    if (document.hidden) return;
+    render();
+    reader.refresh().then(render);
+  };
+  update();
+  setInterval(update, 60000);
+  document.addEventListener('visibilitychange', update);
+  window.addEventListener('pageshow', update);
+  window.addEventListener('online', update);
+}
+if (typeof document !== 'undefined') initCampEnvironment();

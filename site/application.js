@@ -1,6 +1,7 @@
 import { applicationEndpoint } from './application-config.js';
 import { fieldNames, travelField, validateFields, acceptedReply } from './application-validation.js';
 import { createApplicationStatus } from './application-status.js';
+import { initFormWidgets } from './form-widgets.js';
 
 // The original gallery opens on a photo click; give its images the same keyboard action.
 document.addEventListener('keydown', event => {
@@ -13,6 +14,7 @@ const form = document.getElementById('form1016216116');
 if (form) initApplication(form);
 
 function initApplication(form) {
+  initFormWidgets(form);
   const button = form.querySelector('[type="submit"]');
   const status = createApplicationStatus(form);
   const trap = document.createElement('label');
@@ -52,14 +54,16 @@ function initApplication(form) {
     const data = new FormData(form);
     return Object.fromEntries(fieldNames.map(name => [name, String(data.get(name) || '').trim()]));
   }
-  form.addEventListener('input', event => {
+  function clearCorrectedError(event) {
     const group = event.target.closest('[data-field-name]');
     if (!group?.querySelector('[aria-invalid="true"]')) return;
     if (!validateFields(readFields())[group.dataset.fieldName]) {
       group.querySelector('.t-input-error')?.replaceChildren();
       group.querySelectorAll('[aria-invalid="true"]').forEach(input => input.removeAttribute('aria-invalid'));
     }
-  });
+  }
+  form.addEventListener('input', clearCorrectedError);
+  form.addEventListener('change', clearCorrectedError);
 
   function message(text, state) {
     status.show(state, text);
@@ -79,7 +83,7 @@ function initApplication(form) {
       if (error) {
         if (!error.id) error.id = `dd-error-${group.dataset.inputLid}`;
         error.textContent = text;
-        if (input) input.setAttribute('aria-describedby', error.id);
+        if (input) input.setAttribute('aria-describedby', [...new Set([...(input.getAttribute('aria-describedby') || '').split(/\s+/),error.id])].filter(Boolean).join(' '));
       }
       if (input) { input.setAttribute('aria-invalid', 'true'); first ||= input; }
     }
@@ -146,7 +150,8 @@ function initApplication(form) {
     pending.timer = setTimeout(() => finish(false,
       'Подтверждение не пришло. Проверьте соединение и отправьте ещё раз — повторная отправка не создаст дубликат.'), 45000);
     form.setAttribute('aria-busy', 'true');
-    lockedControls = [...form.querySelectorAll('input:not(:disabled), textarea:not(:disabled)')];
+    form.dispatchEvent(new CustomEvent('dd-close-calendars'));
+    lockedControls = [...form.querySelectorAll('input:not(:disabled), textarea:not(:disabled), select:not(:disabled), button:not(:disabled):not([type="submit"])')];
     lockedControls.forEach(input => { input.disabled = true; });
     message('Отправляем заявку…', 'pending');
     post.submit();

@@ -14,6 +14,14 @@ export function adaptInterface(html, base, version) {
     menu = menu.replace(pattern, (_, anchor, icon, close) =>
       anchor.replace(`aria-label="${name}"`, `aria-label="${label}"`) + icon + `<span class="dd-social-label">${label}</span>` + close);
   }
+  menu = menu.replace(/<script\b[^>]*>[\s\S]*?<\/script>/g, '')
+    .replace('<div class="t1362__additional">', '<button type="button" class="dd-marquee-toggle" data-dd-marquee-toggle>Остановить бегущие строки</button><div class="t1362__additional">')
+    .replaceAll('Расписание</a>', 'Распи&shy;сание</a>')
+    .replaceAll('Анталье</a>', 'Ан&shy;талье</a>')
+    .replaceAll('Перелет, трансфер и&nbsp;проживание</a>', 'Пере&shy;лет, транс&shy;фер и&nbsp;прожи&shy;вание</a>');
+  if (!menu.includes('data-dd-marquee-toggle')) throw new Error('The menu secondary group changed.');
+  menu = menu.replace(/(<a\b[^>]*class="[^"]*\bt-menu__link-item\b[^"]*"[^>]*>)([\s\S]*?)(<\/a>)/g,
+    (_,open,text,close) => open + text.replaceAll('Расписание','Распи&shy;сание').replaceAll('Анталье','Ан&shy;талье').replaceAll('Перелет','Пере&shy;лет').replaceAll('трансфер','транс&shy;фер').replaceAll('проживание','прожи&shy;вание') + close);
   html = html.slice(0, start) + menu + html.slice(end);
   return html.replace('</head>', `<link rel="stylesheet" href="${base}navigation.css?v=${version}" data-dd-navigation></head>`)
     .replace('</body>', `<script type="module" src="${base}navigation.js?v=${version}" data-dd-navigation></script></body>`);

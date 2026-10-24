@@ -1,17 +1,12 @@
+import { adaptClimate } from './climate-markup.mjs';
+import { adaptAccessibility, adaptPrivacyAccessibility } from './accessibility-markup.mjs';
+
 /** Develop the accepted source; the captured HTML and media stay immutable. */
 export function adaptRefinement(html, base, version) {
   if (!html.includes('id="recorddiv1016226926"')) throw new Error('The accepted cover is missing.');
   html = html.replace('id="allrecords"', 'id="allrecords" data-dd-refinement="camp"');
   html = html.replace(/<div id="rec1017771976"[^>]*>/, tag =>
     tag.replace(' t-screenmax-640px', '').replace(' data-screen-max="640px"', ''));
-  // The fixed 70px header needs clearance after the 48px mobile section inset.
-  // Apply it to Tilda's own click, initial-hash and history handlers together.
-  const anchorStart = html.indexOf('<div id="rec1016289711"');
-  const anchorEnd = html.indexOf('<!--footer-->', anchorStart);
-  if (anchorStart < 0 || anchorEnd < anchorStart) throw new Error('The anchor controller changed.');
-  const anchors = html.slice(anchorStart, anchorEnd)
-    .replace(/t270_scroll\(hash,(?:-3|0)(?=[,)])/g, 't270_scroll(hash,24');
-  html = html.slice(0, anchorStart) + anchors + html.slice(anchorEnd);
   const slidesStart = html.indexOf('<div id="rec2082111761"');
   const slidesEnd = html.indexOf('<div id="rec', slidesStart + 10);
   if (slidesStart < 0 || slidesEnd < slidesStart || !html.slice(slidesStart, slidesEnd).includes('data-coverslider-rec-ids="1016226926"')) {
@@ -45,11 +40,11 @@ export function adaptRefinement(html, base, version) {
       }).join('');
       return open + paragraphs + close;
     });
-  return html.replace('</head>', `<link rel="stylesheet" href="${base}refinement.css?v=${version}" data-dd-refinement></head>`)
-    .replace('</body>', `<script type="module" src="${base}cover-film.js?v=${version}" data-dd-cover-film></script></body>`);
+  return adaptAccessibility(adaptClimate(html.replace('</head>', `<link rel="stylesheet" href="${base}refinement.css?v=${version}" data-dd-refinement></head>`)
+    .replace('</body>', `<script type="module" src="${base}cover-film.js?v=${version}" data-dd-cover-film></script></body>`), base, version), base, version);
 }
 
 export function adaptPrivacyRefinement(html, base, version) {
-  return html.replace('id="allrecords"', 'id="allrecords" data-dd-refinement="policy"')
-    .replace('</head>', `<link rel="stylesheet" href="${base}refinement.css?v=${version}" data-dd-refinement></head>`);
+  return adaptPrivacyAccessibility(adaptClimate(html.replace('id="allrecords"', 'id="allrecords" data-dd-refinement="policy"')
+    .replace('</head>', `<link rel="stylesheet" href="${base}refinement.css?v=${version}" data-dd-refinement></head>`), base, version),base,version);
 }

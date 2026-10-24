@@ -183,7 +183,7 @@ test("the main page keeps the user's complete original layout with the agreed 20
     assert(html.includes(`${weekday[0].toUpperCase()}${weekday.slice(1)}, ${date.getUTCDate()} октября`), day.date);
   }
   assert(html.includes('третий год подряд'));
-  assert(html.includes('role="heading" aria-level="1"'));
+  assert(/<h1\b[^>]*id="dd-title"/.test(html));
   assert(html.includes('12–25&nbsp;октября 2027'));
   assert(!html.includes('Прием заявок завершен'));
   assert(!html.includes('DDLong в&nbsp;воскресенье'));
@@ -216,13 +216,13 @@ test("the original Tilda runtime uses local assets and retained modules keep the
     for (const [,reference] of entries) {
       assert(reference.startsWith(release.base), reference);
       const local = reference.slice(release.base.length).split('?')[0];
-      assert(local.startsWith('assets/') || ['application.css', 'application.js', 'navigation.css', 'navigation.js', 'camp-map.css', 'camp-map.js', 'refinement.css', 'cover-film.js'].includes(local), reference);
+      assert(local.startsWith('assets/') || ['application.css', 'application.js', 'navigation.css', 'navigation.js', 'camp-map.css', 'camp-map.js', 'refinement.css', 'cover-film.js', 'climate.css', 'camp-environment.js', 'accessibility.css', 'accessibility.js', 'phone-flags.css'].includes(local), reference);
       assert((await stat(new URL(`../dist/${local}`,import.meta.url))).isFile());
     }
   }
-  for (const file of ["app.js", "environment.js", "direction/screen.js", "direction/navigation.js", "direction/atmosphere.js", "direction/forecast.js", "direction/travel-ticket.js"]) {
-    const imports = [...(await read(file)).matchAll(/\bfrom "(\.{1,2}\/[^\"]+)"/g)];
-    for (const [,reference] of imports) {
+  for (const file of Object.keys(release.siteFiles).filter(file => file.endsWith('.js'))) {
+    const imports = [...(await read(file)).matchAll(/\bfrom (["'])(\.{1,2}\/[^"']+)\1/g)];
+    for (const [,,reference] of imports) {
       const url = new URL(reference,new URL(file,release.site));
       assert.equal(url.searchParams.get('v'),release.commit);
       assert((await stat(new URL(reference,new URL(`../dist/${file}`,import.meta.url)))).isFile());

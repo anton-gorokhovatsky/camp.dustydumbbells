@@ -8,6 +8,8 @@ import { adaptPublication } from './season-markup.mjs';
 import { adaptMap } from './map-markup.mjs';
 import { adaptInterface } from './interface-markup.mjs';
 import { adaptRefinement } from './refinement-markup.mjs';
+import { adaptClimate } from './climate-markup.mjs';
+import { adaptPrivacyAccessibility } from './accessibility-markup.mjs';
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const manifest = JSON.parse(
@@ -138,7 +140,7 @@ for (const [sourceName, builtName] of [
   );
   assert.equal(
     hash(restored),
-    hash(source),
+    hash(sourceName === 'privacy.html' ? adaptPrivacyAccessibility(adaptClimate(source, release.base, encodeURIComponent(release.commit)), release.base, encodeURIComponent(release.commit)) : source),
     `Source fidelity failed for ${sourceName}`,
   );
 }

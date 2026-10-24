@@ -1,0 +1,61 @@
+/* Semantic changes retain the selected typography and measured geometry. */
+:where(h1, h2, h3) { margin-block: 0; }
+#dd-main { display: block; }
+.dd-form-anchor { display: block; height: 0; }
+#dd-main:focus, :is(h1,h2,h3)[tabindex="-1"]:focus { outline: none; }
+:is(h1,h2,h3)[tabindex="-1"] { scroll-margin-top: 96px; }
+#allrecords[data-dd-refinement] :is(.t-section__title,.t225__title,.t997__title) { overflow-wrap: normal; word-break: normal; hyphens: manual; }
+#allrecords[data-dd-refinement] .dd-cover-date { overflow-wrap: anywhere; }
+#allrecords[data-dd-refinement] .t1148__container_flex > .t1148__col { min-width: 0; flex: 1; }
+#allrecords[data-dd-refinement] .t1148__scroll-icon-wrapper { flex-shrink: 0; }
+.dd-skip-link { position: fixed; z-index: 100000001; top: 12px; left: 20px; padding: 12px 20px; border-radius: 24px; background: var(--dd-matte-fill); color: var(--dd-matte-blue); -webkit-backdrop-filter: var(--dd-matte-filter); backdrop-filter: var(--dd-matte-filter); font: 400 1rem/1.4 'Museo',Arial,sans-serif; transform: translateY(-200%); }
+.dd-skip-link:focus { transform: none; outline: 2px solid currentColor; outline-offset: 3px; }
+.dd-visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+[data-dd-marquees="paused"] .t1003__content, .t1003:focus-within .t1003__content { animation-play-state: paused !important; }
+.t1003:focus-within .t1003__content { transform: none !important; }
+.t1003__item-link:focus-visible { outline: 2px solid currentColor; outline-offset: -4px; }
+@media(prefers-reduced-motion:reduce) { html:not([data-dd-marquees="running"]) .t1003__content { animation-play-state: paused !important; } }
+#rec1017771976 .dd-marquee-toggle { display: flex; align-items: center; gap: var(--dd-space-1); max-width: 100%; min-height: 44px; margin-top: var(--dd-space-2); padding: 8px 0; border: 0; background: transparent; color: var(--dd-matte-blue); font: 400 1rem/1.45 'Museo',Arial,sans-serif; text-align: left; text-decoration: none; cursor: pointer; }
+#rec1017771976 .dd-marquee-toggle::before { content: ''; box-sizing: border-box; display: block; flex: none; width: 10px; height: 12px; border-inline: 3px solid currentColor; }
+[data-dd-marquees="paused"] #rec1017771976 .dd-marquee-toggle::before { border: 6px solid transparent; border-left: 10px solid currentColor; border-right: 0; }
+#rec1017771976 .dd-marquee-toggle:hover { color: var(--dd-matte-red); }
+#rec1017771976 .dd-marquee-toggle:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+#rec1017771976 #nav1017771976 .t-menu__link-item { overflow-wrap: normal; word-break: normal; hyphens: manual; }
+.dd-cover-intro:empty { display: none; }
+.dd-cover-intro { color: var(--dd-ink); background: var(--dd-page); }
+.dd-cover-intro .t997__descr { margin: 0; color: var(--dd-ink) !important; font: 400 var(--dd-type-body)/1.5 'Museo',Arial,sans-serif; }
+@media(max-width:640px) {
+  :is(h1,h2,h3)[tabindex="-1"] { scroll-margin-top: 72px; }
+  .dd-cover-intro:not(:empty) { display: block; padding: var(--dd-space-6) 20px; }
+  #rec1017771976 #nav1017771976 .t-menu-popover__container { padding-inline: 16px; }
+}
+/* Owned form geometry follows the same rows, fonts, lines and authentic icons. */
+#form1016216116[data-dd-widgets] .t-form__inputsbox { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); column-gap: 24px; }
+#form1016216116[data-dd-widgets] .t-form__inputsbox > * { grid-column: 1/-1; min-width: 0; }
+#form1016216116[data-dd-widgets] .t-input-group { float: none; width: 100% !important; height: auto !important; margin-inline: 0 !important; padding: 0 !important; }
+#form1016216116[data-dd-widgets] .t-input-title { height: auto !important; min-height: 0 !important; }
+#form1016216116[data-dd-widgets] .t-input-block { width: 100% !important; box-sizing: border-box; position: relative; }
+#form1016216116[data-dd-widgets] .t-datepicker__wrapper { position: relative; }
+#form1016216116[data-dd-widgets] .t-input-group[hidden] { display: none !important; }
+#form1016216116[data-dd-widgets] [data-field-name]:is([data-field-name="Date"],[data-field-name="Date_2"],[data-field-name="Email"],[data-field-name="Email_2"],[data-field-name="telegram"],[data-field-name="telegram-p"]) { grid-column: 1; }
+#form1016216116[data-dd-widgets] [data-field-name]:is([data-field-name="Phone"],[data-field-name="Phone_2"],[data-field-name="Instagram"],[data-field-name="Instagram-p"]) { grid-column: 2; }
+#form1016216116[data-dd-widgets] :is(input,textarea):not([type="radio"]) { scroll-margin-block: 96px; }
+#form1016216116 .t-radio__control:has(input:focus-visible) { outline: 2px solid var(--dd-blue); outline-offset: 4px; border-radius: 2px; }
+#form1016216116 .t-input-phonemask__select { position: relative; }
+#form1016216116 .dd-country-select { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+#form1016216116 .t-input-phonemask__select:focus-within { outline: 2px solid var(--dd-blue); outline-offset: 4px; }
+#form1016216116 .dd-country-select option { background: var(--dd-page); color: var(--dd-ink); }
+#form1016216116 .dd-date-toggle { box-sizing: content-box; display: block; width: 25px; border: 0; padding-block: 0; background: transparent; pointer-events: auto; cursor: pointer; }
+#form1016216116 .dd-date-toggle svg { display: block; width: 25px; height: 100%; fill: var(--dd-red); }
+#form1016216116 .dd-date-toggle:focus-visible { outline: 2px solid var(--dd-blue); outline-offset: -3px; }
+.dd-calendar { width: 246px; max-width: calc(100vw - 40px); color: var(--dd-ink); background: var(--dd-page); }
+.dd-calendar[hidden] { display: none !important; }
+.dd-calendar .t_datepicker__body { width: 100%; table-layout: fixed; }
+.dd-calendar .t_datepicker__label:focus-within { outline: 2px solid var(--dd-blue); outline-offset: 2px; }
+.dd-calendar button:focus-visible { outline: 2px solid var(--dd-blue); outline-offset: -2px; }
+.dd-calendar .dd-calendar-day { display: block; width: 100%; min-height: 30px; padding: 0; border: 0; background: transparent; color: inherit; font: inherit; cursor: pointer; border-radius: 50%; }
+.dd-calendar .t_datepicker__selected-day .dd-calendar-day { color: var(--dd-on-band); }
+@media(max-width:640px) {
+  #form1016216116[data-dd-widgets] .t-form__inputsbox { grid-template-columns: minmax(0,1fr); }
+  #form1016216116[data-dd-widgets] .t-form__inputsbox > [data-field-name] { grid-column: 1; }
+}
