@@ -7,6 +7,7 @@ import { adaptApplication } from './application-markup.mjs';
 import { adaptPublication } from './season-markup.mjs';
 import { adaptMap } from './map-markup.mjs';
 import { adaptInterface } from './interface-markup.mjs';
+import { adaptRefinement } from './refinement-markup.mjs';
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const manifest = JSON.parse(
@@ -68,6 +69,7 @@ for (const name of ['index.html', 'direction/index.html']) {
     .replace(/href=(['"])\/privacy\1/g, `href="${release.base}privacy/"`)
     .replace(/href=(['"])\/(#.*?)?\1/g, (_, quote, anchor = '') => `href=${quote}${release.base}${anchor}${quote}`);
   expected = adaptInterface(expected, release.base, encodeURIComponent(release.commit));
+  expected = adaptRefinement(expected, release.base, encodeURIComponent(release.commit));
   const built = await readFile(path.join(root, 'dist', name), 'utf8');
   assert.equal(built, expected, `Current source fidelity failed: ${name}`);
   assert(!built.includes('js-form-proccess'));
@@ -111,6 +113,9 @@ for (const [sourceName, builtName] of [
     const titleStyle = `<link rel="stylesheet" href="${release.base}privacy.css?v=${encodeURIComponent(release.commit)}" data-policy-title-wrap>`;
     assert(built.includes(titleStyle));
     restored = restored.replace(titleStyle, "");
+    const refinementStyle = `<link rel="stylesheet" href="${release.base}refinement.css?v=${encodeURIComponent(release.commit)}" data-dd-refinement>`;
+    assert(restored.includes(refinementStyle));
+    restored = restored.replace(refinementStyle, '').replace(' data-dd-refinement="policy"', '');
     assert(built.includes(`href="${release.base}#form"`));
     assert(!/href=(['"])#form\1/.test(built), 'Privacy must link to the main-page form');
     restored = restored.replaceAll(`href="${release.base}#form"`, 'href="#form"');

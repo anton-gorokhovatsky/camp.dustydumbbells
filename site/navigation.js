@@ -17,4 +17,26 @@ if (navigation) {
   panel.addEventListener('click', event => {
     if (event.target.closest('a[href^="#"]')) toggle.focus({preventScroll: true});
   });
+  // Reuse the same menu after the original desktop navigation leaves view.
+  const record = navigation.closest('.t-rec');
+  const desktopMenu = document.querySelector('#nav1016601036');
+  const desktop = matchMedia('(min-width: 641px)');
+  if (record && desktopMenu && document.querySelector('[data-dd-refinement="camp"]')) {
+    let scheduled = false;
+    const update = () => {
+      scheduled = false;
+      const show = desktop.matches && desktopMenu.getBoundingClientRect().bottom <= 0;
+      record.classList.toggle('dd-nav-scrolled', show);
+      if (desktop.matches && !show && toggle.getAttribute('aria-expanded') === 'true') toggle.click();
+    };
+    const schedule = () => {
+      if (scheduled) return;
+      scheduled = true;
+      requestAnimationFrame(update);
+    };
+    window.addEventListener('scroll', schedule, {passive: true});
+    window.addEventListener('resize', schedule);
+    desktop.addEventListener('change', schedule);
+    update();
+  }
 }

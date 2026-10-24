@@ -7,6 +7,7 @@ import { adaptApplication } from './application-markup.mjs';
 import { adaptPublication } from './season-markup.mjs';
 import { adaptMap } from './map-markup.mjs';
 import { adaptInterface } from './interface-markup.mjs';
+import { adaptRefinement, adaptPrivacyRefinement } from './refinement-markup.mjs';
 import { season } from '../site/content.js';
 
 const root = fileURLToPath(new URL("../", import.meta.url));
@@ -103,6 +104,7 @@ for (const [input, target] of [
       "</head>",
       `<link rel="stylesheet" href="${base}privacy.css?v=${assetVersion}" data-policy-title-wrap></head>`,
     );
+    html = adaptPrivacyRefinement(html, base, assetVersion);
   }
   await writeFile(path.join(output, target), html);
 }
@@ -130,6 +132,8 @@ for (const file of [
   "application-validation.js",
   "navigation.css",
   "navigation.js",
+  "refinement.css",
+  "cover-film.js",
   "camp-map.css",
   "camp-map.js",
   "map-policy.js",
@@ -168,6 +172,7 @@ for (const file of [
       .replace(/href=(['"])\/(#.*?)?\1/g,
         (_, quote, anchor = "") => `href=${quote}${base}${anchor}${quote}`);
     content = adaptInterface(content, base, assetVersion);
+    content = adaptRefinement(content, base, assetVersion);
   }
   // A new publication must also refresh cached styles and module dependencies.
   if (file.endsWith(".html")) {
@@ -186,6 +191,12 @@ for (const file of [
   siteFiles[file] = createHash("sha256").update(content).digest("hex");
 }
 await mkdir(path.join(output, "direction/media"), { recursive: true });
+await mkdir(path.join(output, 'media'), {recursive: true});
+for (const file of ['camp-2026.mp4', 'camp-2026-poster.jpg']) {
+  const bytes = await readFile(path.join(root, 'site/media', file));
+  await writeFile(path.join(output, 'media', file), bytes);
+  siteFiles[`media/${file}`] = createHash('sha256').update(bytes).digest('hex');
+}
 for (const entry of await readdir(path.join(root, "site/direction/media"), { withFileTypes: true })) {
   if (!entry.isFile()) continue;
   const file = entry.name;
