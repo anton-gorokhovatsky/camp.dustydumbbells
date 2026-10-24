@@ -1,0 +1,82 @@
+/* The same 10px matte blur as the original mobile header. */
+#rec1017771976 #nav1017771976 .t-menu-popover__burgermenu__sidebar {
+  top: 82px;
+  right: 12px;
+  bottom: auto;
+  width: calc(100% - 24px);
+  max-width: 420px;
+  height: auto;
+  max-height: calc(100dvh - 94px);
+  box-sizing: border-box;
+  overflow-y: auto;
+  border: 0;
+  border-radius: 24px;
+  background-color: rgba(247, 247, 247, .88);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  color: #232323;
+}
+#rec1017771976 #nav1017771976 .t-menu-popover__overlay {
+  background-color: rgba(26, 66, 151, .12);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+#rec1017771976 #nav1017771976 .t-menu-popover__container {
+  height: auto;
+  min-height: 0;
+  box-sizing: border-box;
+  padding: 28px 24px 24px;
+}
+#rec1017771976 #nav1017771976 .t-menu-base__list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+#rec1017771976 #nav1017771976 .t-menu-base__list-item { margin: 0; padding: 0; }
+#rec1017771976 #nav1017771976 .t-menu__link-item {
+  color: #1a4297;
+  line-height: 1.18;
+  overflow-wrap: anywhere;
+  text-decoration: none;
+}
+#rec1017771976 #nav1017771976 .t-menu__link-item:hover { color: #b21818; }
+#rec1017771976 #nav1017771976 .t1362__additional { margin-top: 32px; padding: 0; }
+#rec1017771976 #nav1017771976 .t-menu-popover__descr,
+#rec1017771976 #nav1017771976 .t-menu-popover__descr span {
+  color: #232323 !important;
+  font-size: 14px;
+  line-height: 1.45;
+}
+#rec1017771976 #nav1017771976 .t-menu-popover__burgermenu__close-button {
+  display: none;
+}
+#rec1017771976 #nav1017771976 .t-menu-popover__burgermenu__close-icon span { background-color: #b21818; }
+#rec1017771976 #nav1017771976 .t-sociallinks { margin-top: 20px; }
+#rec1017771976 #nav1017771976 .t-sociallinks__wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 24px;
+  font-size: 0;
+}
+#rec1017771976 #nav1017771976 .t-sociallinks__item { margin: 0; }
+#rec1017771976 #nav1017771976 .t-sociallinks__item a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: auto !important;
+  min-height: 44px;
+  height: auto !important;
+  color: #1a4297;
+}
+#rec1017771976 #nav1017771976 .t-sociallinks__svg { flex: none; width: 36px; height: 36px; }
+#rec1017771976 #nav1017771976 .t-sociallinks__item_telegram .t-sociallinks__svg { width: 34px; height: 34px; }
+#rec1017771976 #nav1017771976 .t-sociallinks__svg path { fill: currentColor; }
+#rec1017771976 #nav1017771976 .dd-social-label { font-family: 'Museo', Arial, sans-serif; font-size: 16px; }
+#rec1017771976 #nav1017771976 :is(a, button):focus-visible { outline: 2px solid #1a4297; outline-offset: 4px; }
+@supports not (backdrop-filter: blur(10px)) {
+  #rec1017771976 #nav1017771976 .t-menu-popover__burgermenu__sidebar { background-color: #f7f7f7; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #rec1017771976 #nav1017771976 * { transition: none !important; }
+}

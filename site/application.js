@@ -1,5 +1,6 @@
 import { applicationEndpoint } from './application-config.js';
 import { fieldNames, travelField, validateFields, acceptedReply } from './application-validation.js';
+import { createApplicationStatus } from './application-status.js';
 
 // The original gallery opens on a photo click; give its images the same keyboard action.
 document.addEventListener('keydown', event => {
@@ -13,14 +14,7 @@ if (form) initApplication(form);
 
 function initApplication(form) {
   const button = form.querySelector('[type="submit"]');
-  const buttonText = button.querySelector('.t-btnflex__text') || button;
-  const originalText = buttonText.textContent;
-  const status = document.createElement('p');
-  status.className = 'dd-form-status t-text t-text_xs';
-  status.setAttribute('role', 'status');
-  status.setAttribute('aria-live', 'polite');
-  status.hidden = true;
-  form.append(status);
+  const status = createApplicationStatus(form);
   const trap = document.createElement('label');
   trap.className = 'dd-form-honeypot';
   trap.setAttribute('aria-hidden', 'true');
@@ -68,9 +62,7 @@ function initApplication(form) {
   });
 
   function message(text, state) {
-    status.textContent = text;
-    status.dataset.state = state;
-    status.hidden = false;
+    status.show(state, text);
   }
 
   function clearErrors() {
@@ -104,8 +96,6 @@ function initApplication(form) {
     form.removeAttribute('aria-busy');
     for (const input of lockedControls) input.disabled = ok;
     lockedControls = [];
-    buttonText.textContent = ok ? 'Заявка отправлена' : originalText;
-    button.disabled = ok;
     completed = ok;
     message(text, ok ? 'success' : 'error');
     if (ok) retry = null;
@@ -113,7 +103,7 @@ function initApplication(form) {
 
   window.addEventListener('message', event => {
     if (!acceptedReply(event, pending)) return;
-    finish(event.data.ok === true, event.data.ok === true ? 'Спасибо, ваша заявка принята.' :
+    finish(event.data.ok === true, event.data.ok === true ? 'Заявка принята' :
       event.data.code === 'INVALID' ? 'Проверьте заполненные поля и отправьте заявку ещё раз.' :
       'Не удалось сохранить заявку. Ваши данные остались в форме — попробуйте отправить ещё раз.');
   });
@@ -123,7 +113,7 @@ function initApplication(form) {
     event.stopPropagation();
     if (pending || completed) return;
     clearErrors();
-    status.hidden = true;
+    status.show();
     const fields = readFields();
     const errors = validateFields(fields);
     if (Object.keys(errors).length) { showErrors(errors); return; }
@@ -158,8 +148,6 @@ function initApplication(form) {
     form.setAttribute('aria-busy', 'true');
     lockedControls = [...form.querySelectorAll('input:not(:disabled), textarea:not(:disabled)')];
     lockedControls.forEach(input => { input.disabled = true; });
-    button.disabled = true;
-    buttonText.textContent = 'Отправляем…';
     message('Отправляем заявку…', 'pending');
     post.submit();
   });

@@ -5,6 +5,8 @@ import { fileURLToPath } from "node:url";
 import path from "node:path";
 import { adaptApplication } from './application-markup.mjs';
 import { adaptPublication } from './season-markup.mjs';
+import { adaptMap } from './map-markup.mjs';
+import { adaptInterface } from './interface-markup.mjs';
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const manifest = JSON.parse(
@@ -62,15 +64,18 @@ for (const name of ['index.html', 'direction/index.html']) {
     expected = expected.replaceAll(asset.url, `${release.base}assets/${asset.file}`);
     if (captureHtml.includes(asset.url)) localReferences++;
   }
-  expected = adaptApplication(adaptPublication(expected, release.site), release.base, encodeURIComponent(release.commit))
+  expected = adaptApplication(adaptMap(adaptPublication(expected, release.site), release.base, encodeURIComponent(release.commit)), release.base, encodeURIComponent(release.commit))
     .replace(/href=(['"])\/privacy\1/g, `href="${release.base}privacy/"`)
     .replace(/href=(['"])\/(#.*?)?\1/g, (_, quote, anchor = '') => `href=${quote}${release.base}${anchor}${quote}`);
+  expected = adaptInterface(expected, release.base, encodeURIComponent(release.commit));
   const built = await readFile(path.join(root, 'dist', name), 'utf8');
   assert.equal(built, expected, `Current source fidelity failed: ${name}`);
   assert(!built.includes('js-form-proccess'));
   assert(!built.includes('name="formservices[]"'));
   assert(built.includes('name="form"'));
   assert(built.includes('data-dd-application'));
+  assert(built.includes('data-dd-map'));
+  assert(!built.includes('t_appendYandexMap('), 'The public map must not call the keyless JS API');
 }
 
 for (const [sourceName, builtName] of [
@@ -106,6 +111,9 @@ for (const [sourceName, builtName] of [
     const titleStyle = `<link rel="stylesheet" href="${release.base}privacy.css?v=${encodeURIComponent(release.commit)}" data-policy-title-wrap>`;
     assert(built.includes(titleStyle));
     restored = restored.replace(titleStyle, "");
+    assert(built.includes(`href="${release.base}#form"`));
+    assert(!/href=(['"])#form\1/.test(built), 'Privacy must link to the main-page form');
+    restored = restored.replaceAll(`href="${release.base}#form"`, 'href="#form"');
   }
   for (const asset of manifest.assets)
     restored = restored.replaceAll(

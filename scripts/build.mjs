@@ -5,6 +5,8 @@ import { fileURLToPath } from "node:url";
 import path from "node:path";
 import { adaptApplication } from './application-markup.mjs';
 import { adaptPublication } from './season-markup.mjs';
+import { adaptMap } from './map-markup.mjs';
+import { adaptInterface } from './interface-markup.mjs';
 import { season } from '../site/content.js';
 
 const root = fileURLToPath(new URL("../", import.meta.url));
@@ -25,6 +27,13 @@ if (commit === "uncommitted") {
   } catch {}
 }
 const assetVersion = encodeURIComponent(commit);
+const mapboxPublicToken = process.env.DD_CAMP_MAPBOX_PUBLIC_TOKEN || '';
+if (mapboxPublicToken && !/^pk\.[A-Za-z0-9._-]+$/.test(mapboxPublicToken)) {
+  throw new Error('The production Mapbox public token has an invalid format.');
+}
+if (process.env.GITHUB_ACTIONS === 'true' && !mapboxPublicToken) {
+  throw new Error('The production build needs DD_CAMP_MAPBOX_PUBLIC_TOKEN.');
+}
 const manifest = JSON.parse(
   await readFile(path.join(root, "source/manifest.json"), "utf8"),
 );
@@ -88,6 +97,8 @@ for (const [input, target] of [
     (_, quote, anchor = "") => `href=${quote}${pageBase}${anchor}${quote}`,
   );
   if (input === "privacy.html") {
+    html = html.replace(/href=(['"])#form\1/g,
+      (_, quote) => `href=${quote}${base}#form${quote}`);
     html = html.replace(
       "</head>",
       `<link rel="stylesheet" href="${base}privacy.css?v=${assetVersion}" data-policy-title-wrap></head>`,
@@ -113,9 +124,18 @@ for (const file of [
   "content.js",
   "typography.js",
   "application.js",
+  "application-status.js",
   "application.css",
   "application-config.js",
   "application-validation.js",
+  "navigation.css",
+  "navigation.js",
+  "camp-map.css",
+  "camp-map.js",
+  "map-policy.js",
+  "mapbox-config.js",
+  "mapbox-frame.js",
+  "map.html",
   "data/currency.json",
   "currency.js",
   "direction/index.html",
@@ -139,13 +159,15 @@ for (const file of [
   let content = await readFile(path.join(root, "site", input), "utf8");
   content = content
     .replaceAll("{{BASE}}", base)
-    .replaceAll("{{SITE}}", site.href);
+    .replaceAll("{{SITE}}", site.href)
+    .replaceAll("{{MAPBOX_PUBLIC_TOKEN}}", mapboxPublicToken);
   // Preserve the selected layout and apply the agreed season and independent form.
   if (file === 'index.html' || file === 'direction/index.html') {
-    content = adaptApplication(adaptPublication(localize(content, false, currentAssets), site), base, assetVersion)
+    content = adaptApplication(adaptMap(adaptPublication(localize(content, false, currentAssets), site), base, assetVersion), base, assetVersion)
       .replace(/href=(['"])\/privacy\1/g, `href="${base}privacy/"`)
       .replace(/href=(['"])\/(#.*?)?\1/g,
         (_, quote, anchor = "") => `href=${quote}${base}${anchor}${quote}`);
+    content = adaptInterface(content, base, assetVersion);
   }
   // A new publication must also refresh cached styles and module dependencies.
   if (file.endsWith(".html")) {

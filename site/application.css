@@ -1,9 +1,21 @@
-#form1016216116 .dd-form-status { margin: 20px 0 0; font-family: 'Museo', Arial, sans-serif; text-align: center; }
+#form1016216116 .dd-form-status { margin: 16px 0 0; font-family: 'Museo', Arial, sans-serif; text-align: center; }
 #form1016216116 .dd-form-status[hidden] { display: none; }
+#form1016216116 .dd-form-status:focus { outline: none; }
+#form1016216116 [type="submit"][hidden] { display: none; }
+#form1016216116 .dd-form-status:is([data-state="pending"], [data-state="success"]) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60px;
+  margin: 0;
+  color: #1a4297;
+  font-size: 26px;
+  line-height: 1.2;
+  font-weight: 900;
+  font-style: italic;
+}
 #form1016216116 .dd-form-status[data-state="error"] { color: #b21818; }
-#form1016216116 .dd-form-status[data-state="success"] { color: #232323; }
 #form1016216116 .t-input-error:not(:empty) { display: block; color: #b21818; }
 #form1016216116 [aria-invalid="true"] { border-color: #b21818 !important; }
 #form1016216116 :is(input, textarea, button):focus-visible { outline: 2px solid #1a4297; outline-offset: 4px; }
 #form1016216116 .dd-form-honeypot { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
-#form1016216116 [type="submit"]:disabled { cursor: wait; }

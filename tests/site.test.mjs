@@ -190,7 +190,11 @@ test("the main page keeps the user's complete original layout with the agreed 20
   assert(html.includes(`<link rel="canonical" href="${release.site}"`));
   assert(html.includes(`<meta property="og:url" content="${release.site}"`));
   assert(html.includes(`<meta property="og:image" content="${new URL(release.base,release.site).origin}${release.base}assets/`));
-  assert(html.includes('arMapMarkers2083039171'));
+  assert(html.includes('data-dd-map'));
+  assert(html.includes('data-lat="36.863249" data-lng="30.63773"'));
+  assert(!html.includes('api.mapbox.com'));
+  assert(!html.includes('/map-widget/'));
+  assert(!html.includes('t_appendYandexMap('));
   assert(html.includes(`href="${release.base}privacy/"`));
   for (const id of ['rec1016322141','rec2078762951','rec1017020466','rec2078794451']) {
     assert(html.includes(`id="${id}"`) && html.includes(`href="#${id}"`), id);
@@ -212,7 +216,7 @@ test("the original Tilda runtime uses local assets and retained modules keep the
     for (const [,reference] of entries) {
       assert(reference.startsWith(release.base), reference);
       const local = reference.slice(release.base.length).split('?')[0];
-      assert(local.startsWith('assets/') || ['application.css', 'application.js'].includes(local), reference);
+      assert(local.startsWith('assets/') || ['application.css', 'application.js', 'navigation.css', 'navigation.js', 'camp-map.css', 'camp-map.js'].includes(local), reference);
       assert((await stat(new URL(`../dist/${local}`,import.meta.url))).isFile());
     }
   }
@@ -262,6 +266,9 @@ test("original accommodation, navigation, weather copy and privacy destination r
   assert(html.includes('href="#form"'));
   assert(html.includes('<a name="form"'));
   assert(html.includes('id="form1016216116"'));
+  const privacy = await read('privacy/index.html');
+  assert(privacy.includes(`href="${release.base}#form"`));
+  assert(!privacy.includes('href="#form"'));
   assert(!html.includes('js-form-proccess') && !html.includes('name="formservices[]"'));
 });
 
