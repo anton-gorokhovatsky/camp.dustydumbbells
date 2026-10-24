@@ -4,6 +4,14 @@ export function adaptRefinement(html, base, version) {
   html = html.replace('id="allrecords"', 'id="allrecords" data-dd-refinement="camp"');
   html = html.replace(/<div id="rec1017771976"[^>]*>/, tag =>
     tag.replace(' t-screenmax-640px', '').replace(' data-screen-max="640px"', ''));
+  // The fixed 70px header needs clearance after the 48px mobile section inset.
+  // Apply it to Tilda's own click, initial-hash and history handlers together.
+  const anchorStart = html.indexOf('<div id="rec1016289711"');
+  const anchorEnd = html.indexOf('<!--footer-->', anchorStart);
+  if (anchorStart < 0 || anchorEnd < anchorStart) throw new Error('The anchor controller changed.');
+  const anchors = html.slice(anchorStart, anchorEnd)
+    .replace(/t270_scroll\(hash,(?:-3|0)(?=[,)])/g, 't270_scroll(hash,24');
+  html = html.slice(0, anchorStart) + anchors + html.slice(anchorEnd);
   const slidesStart = html.indexOf('<div id="rec2082111761"');
   const slidesEnd = html.indexOf('<div id="rec', slidesStart + 10);
   if (slidesStart < 0 || slidesEnd < slidesStart || !html.slice(slidesStart, slidesEnd).includes('data-coverslider-rec-ids="1016226926"')) {
