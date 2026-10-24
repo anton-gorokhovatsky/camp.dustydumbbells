@@ -29,3 +29,12 @@ test('The isolated Mapbox frame requires the exact live parent and cannot run di
   assert.equal(liveMapFrame(frame + '?preview', site, true, false, site), false);
   assert.equal(liveMapFrame('http://localhost:4187/map.html', site, true, false, site), false);
 });
+
+test('A preview build address cannot become the billable production address', () => {
+  for (const preview of ['http://localhost:4187/camp.dustydumbbells/',
+    'http://127.0.0.1:4187/camp.dustydumbbells/', 'https://preview.example.com/camp.dustydumbbells/']) {
+    // Exercise the former configurable-site argument: it must never grant access.
+    assert.equal(liveMapPage(preview, false, preview), false);
+    assert.equal(liveMapFrame(preview + 'map.html', preview, true, false, preview), false);
+  }
+});
