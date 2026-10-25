@@ -16,6 +16,13 @@ test('Mapbox is denied for local development, experiments, previews and automati
   ]) assert.equal(liveMapPage(href, false, site), false, href);
   assert.equal(liveMapPage(site, true, site), false);
   assert.equal(liveMapPage(site + '#rec2083039171', false, site), true);
+  for (const query of ['?v=1df4cd7', '?release=1df4cd7ee91f840fc2ee972140f9ea51e3b496ef', '?utm_source=telegram']) {
+    assert.equal(liveMapPage(site + query, false), true, query);
+    assert.equal(liveMapFrame(site + 'map.html', site + query, true, false), true, query);
+  }
+  for (const query of ['?v=preview', '?release=test', '?v=1df4cd7&map=preview', '?review=1', '?test=1', '?v=1df4cd7&v=1df4cd7', '?utm_source=x&map=preview']) {
+    assert.equal(liveMapPage(site + query, false), false, query);
+  }
 });
 
 test('The isolated Mapbox frame requires the exact live parent and cannot run directly', () => {

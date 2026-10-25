@@ -1,4 +1,4 @@
-/** Keep the captured point and footprint; Mapbox loads only after a live-site click. */
+/** Keep the captured point; production Mapbox starts when its section becomes visible. */
 export function adaptMap(html, base, version) {
   let maps = 0;
   const result = html.replace(
@@ -12,7 +12,7 @@ export function adaptMap(html, base, version) {
       }
       const coordinates = `${point[2]},${point[1]}`;
       const external = `https://yandex.ru/maps/?ll=${encodeURIComponent(coordinates)}&amp;pt=${encodeURIComponent(coordinates + ',pm2blm')}&amp;z=${zoom}`;
-      return `<section class="dd-map" data-dd-map data-lat="${point[1]}" data-lng="${point[2]}" aria-label="Карта Антальи"><div class="dd-map-intro"><h3>Анталья<br>Конья&shy;алты</h3><button type="button" data-map-open>Открыть карту</button><a href="${external}" target="_blank" rel="noopener noreferrer">В Яндекс Картах</a><p role="status" data-map-status hidden></p></div></section>`;
+      return `<section class="dd-map" data-dd-map data-lat="${point[1]}" data-lng="${point[2]}" aria-label="Карта Антальи"><div class="dd-map-intro"><h3>Анталья<br>Конья&shy;алты</h3><p role="status" data-map-status>Карта Антальи — Коньяалты</p><button type="button" data-map-open hidden>Повторить загрузку</button><a href="${external}" target="_blank" rel="noopener noreferrer">В Яндекс Картах</a></div></section>`;
     },
   );
   if (maps !== 1) throw new Error(`Expected one original camp map; found ${maps}.`);

@@ -119,11 +119,13 @@ body[data-dd-environment] #allrecords .dd-map-intro a { color: var(--dd-blue); }
 body[data-dd-environment] #allrecords .dd-map-intro button { background: var(--dd-band); color: var(--dd-on-band); }
 body[data-dd-environment] #allrecords .dd-map :is(a,button):focus-visible { outline-color: var(--dd-blue); }
 body[data-dd-environment] #allrecords .dd-climate-reading {
-  max-width: 64ch;
+  max-width: 100%;
+  margin-block: var(--dd-space-2) 0 !important;
   color: var(--dd-muted);
-  font-size: var(--dd-type-small);
+  font-size: 1rem;
   line-height: 1.5;
 }
+body[data-dd-environment] #allrecords .dd-climate-reading a { white-space: nowrap; }
 /* One continuous painted field behind the whole footer, including its credits. */
 body[data-dd-environment] #allrecords #t-footer {
   background-color: var(--dd-footer-blue);

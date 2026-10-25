@@ -31,6 +31,9 @@ export function adaptRefinement(html, base, version) {
     .replace(/(<meta itemprop="image" content=")[^"]+/, '$1' + poster)
     .replace(/(<meta itemprop="image"[^>]+>)/, `$1<video class="dd-cover-video" id="dd-cover-video" controls muted loop playsinline preload="metadata" poster="${poster}" aria-label="Фильм с кэмпа DD в октябре 2026 года"><source src="${base}media/camp-2026.mp4" type="video/mp4"></video>`);
   cover = cover.replace(/<br\s*\/?>12–25&nbsp;октября 2027/, '<span class="dd-cover-date">12–25&nbsp;октября 2027</span>');
+  cover = cover.replace(/(<div\b[^>]*class="[^"]*\bt997__title\b[^"]*"[^>]*>\s*)«/,
+    '$1<span class="dd-cover-opening">«</span>');
+  if (!cover.includes('class="dd-cover-opening"')) throw new Error('The cover opening punctuation changed.');
   const tools = `<div class="dd-cover-tools" hidden><button type="button" class="dd-cover-pause" aria-controls="dd-cover-video" aria-label="Пауза"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5H10V19H7ZM14 5H17V19H14Z"/></svg></button><button type="button" class="dd-cover-sound" aria-controls="dd-cover-video" aria-label="Включить звук" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9H7L12 5V19L7 15H3Z"/><path class="dd-sound-off" d="M16 9 22 15M22 9 16 15"/><path class="dd-sound-on" d="M16 8Q21 12 16 16M18 5Q26 12 18 19"/></svg></button></div>`;
   cover = cover.replace('<div class="t-cover__filter"', tools + '<div class="t-cover__filter"');
   if (!cover.includes('class="dd-cover-tools"')) throw new Error('The cover closing structure changed.');
@@ -43,6 +46,15 @@ export function adaptRefinement(html, base, version) {
   const programme = html.slice(programmeStart, programmeEnd).replace(/<div\b[^>]*class="[^"]*\bt-animate\b[^"]*"[^>]*>/g,
     tag => tag.replace(/\bt-animate\s*/g, '').replace(/\sdata-animate-[\w-]+="[^"]*"/g, ''));
   html = html.slice(0, programmeStart) + programme + html.slice(programmeEnd);
+  // Preserve both sentences, giving the invitation and its limit separate paragraphs.
+  const formIntroStart = html.indexOf('<div id="rec1016216116"');
+  const formIntroEnd = html.indexOf('<form', formIntroStart);
+  if (formIntroStart < 0 || formIntroEnd < formIntroStart) throw new Error('The accepted form introduction is missing.');
+  const formIntro = html.slice(formIntroStart, formIntroEnd).replace(
+    /(путешествие\.)(<br\s*\/?>)(Количество заявок ограничено\.)/,
+    '$1$2$2$3');
+  if (!formIntro.includes('путешествие.<br /><br />Количество заявок ограничено.')) throw new Error('The form introduction copy changed.');
+  html = html.slice(0, formIntroStart) + formIntro + html.slice(formIntroEnd);
   // Real paragraphs make spacing follow meaning instead of blank line-height.
   html = html.replace(/(<div\b[^>]*class="[^"]*\b(?:t-section__descr|t997__descr|t-text_md)\b[^"]*"[^>]*>)([\s\S]*?)(<\/div>)/g,
     (whole, open, content, close) => {
