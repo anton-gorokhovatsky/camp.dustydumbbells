@@ -49,8 +49,32 @@ if (navigation) {
   const desktopMenu = document.querySelector('#nav1016601036');
   const desktop = matchMedia('(min-width: 981px)');
   if(record && desktopMenu) {
+    // A breakpoint may hide the focused control before the resize frame runs.
+    // Keep its navigation context until focus deliberately moves elsewhere.
+    let navigationFocus = null;
+    document.addEventListener('focusin',event=>{
+      if(event.target===document.body)return;
+      navigationFocus = record.contains(event.target) || desktopMenu.contains(event.target) ? event.target : null;
+    });
     let scheduled=false;
-    const update=()=>{scheduled=false;const show=desktop.matches&&desktopMenu.getBoundingClientRect().bottom<=0;record.classList.toggle('dd-nav-scrolled',show);if(desktop.matches&&!show)closeMenu();};
+    const update=()=>{
+      scheduled=false;
+      const show=desktop.matches&&desktopMenu.getBoundingClientRect().bottom<=0;
+      const active=document.activeElement;
+      const focused=record.contains(active)||desktopMenu.contains(active) ? active : active===document.body ? navigationFocus : null;
+      record.classList.toggle('dd-nav-scrolled',show);
+      if(desktop.matches&&!show) {
+        const transfer=focused&&record.contains(focused);
+        const hash=focused?.closest('a[href]')?.hash;
+        closeMenu();
+        if(transfer) {
+          const destination=controls(desktopMenu).find(el=>hash&&el.hash===hash)||controls(desktopMenu)[0];
+          destination?.focus({preventScroll:true});
+        }
+      } else if(!desktop.matches&&focused&&desktopMenu.contains(focused)) {
+        toggle.focus({preventScroll:true});
+      }
+    };
     const schedule=()=>{if(!scheduled){scheduled=true;requestAnimationFrame(update);}};
     window.addEventListener('scroll',schedule,{passive:true});window.addEventListener('resize',schedule);desktop.addEventListener('change',schedule);update();
   }
