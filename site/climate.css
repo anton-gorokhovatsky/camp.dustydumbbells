@@ -127,6 +127,8 @@ body[data-dd-environment] #allrecords .dd-climate-reading {
   line-height: 1.5;
 }
 body[data-dd-environment] #allrecords .dd-climate-reading a { white-space: nowrap; }
+body[data-dd-environment] #allrecords .dd-climate-source { display: inline-flex; flex-wrap: wrap; column-gap: .25em; max-width: 100%; vertical-align: baseline; }
+body[data-dd-environment] #allrecords .dd-climate-source > span { white-space: nowrap; }
 /* One continuous painted field behind the whole footer, including its credits. */
 body[data-dd-environment] #allrecords #t-footer {
   background-color: var(--dd-footer-blue);

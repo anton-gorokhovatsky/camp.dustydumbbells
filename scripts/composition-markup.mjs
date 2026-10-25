@@ -62,7 +62,14 @@ export function composeCamp(html) {
   const headerStart = /<div\b[^>]*class="[^"]*\bt-section__container\b[^\"]*"[^>]*>/.exec(form)?.index;
   if (headerStart === undefined) throw new Error('The form invitation changed.');
   const header = divAt(form, headerStart);
-  const scene = `<div class="dd-invitation-scene t-container"><figure class="dd-form-memory">${sunset}</figure>${header.html}</div>`;
-  html = html.slice(0, formStart) + form.slice(0, header.start) + scene + form.slice(header.end);
+  const fieldsStart = form.indexOf('<div class="t-container">', header.end);
+  if (fieldsStart < 0) throw new Error('The original form container changed.');
+  const fields = divAt(form, fieldsStart);
+  if (!fields.html.includes('id="form1016216116"')) throw new Error('The invitation must keep the original form.');
+  const invitation = header.html.replace('незабываемое', 'незабы&shy;ваемое')
+    .replace('тренировочном', 'трениро&shy;вочном');
+  const scene = `<div class="dd-invitation-scene t-container"><figure class="dd-form-memory">${sunset}</figure>${invitation}<div class="dd-application-body">${fields.html}</div></div>`;
+  html = html.slice(0, formStart) + form.slice(0, header.start) + scene
+    + form.slice(header.end, fields.start) + form.slice(fields.end);
   return html;
 }
