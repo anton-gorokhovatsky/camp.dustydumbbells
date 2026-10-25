@@ -12,7 +12,7 @@ import {
 } from "../dist/environment.js";
 import { season, schedule } from "../site/content.js";
 
-import { typograph } from "../site/typography.js";
+import { typograph, bindMeasurements } from "../site/typography.js";
 
 const read = (file) =>
   readFile(new URL(`../dist/${file}`, import.meta.url), "utf8");
@@ -282,5 +282,15 @@ test("prose typography binds meaningful groups and is idempotent", () => {
   for (const [input, output] of samples) {
     assert.equal(typograph(input), output);
     assert.equal(typograph(output), output);
+  }
+  const ranges = [
+    ["Днём 22-25 °C; 15-20 км", "Днём 22\u2060-\u206025\u00a0°C; 15\u2060-\u206020\u00a0км"],
+    ["14–19°C, 3,5–5 м/с", "14\u2060–\u206019\u00a0°C, 3,5\u2060–\u20605\u00a0м/с"],
+    ["22-25&nbsp;&deg;C", "22\u2060-\u206025\u00a0&deg;C"],
+    ["12–25 октября 2027; 9:00; +7 (900) 000-00-00", "12–25 октября 2027; 9:00; +7 (900) 000-00-00"],
+  ];
+  for (const [input, output] of ranges) {
+    assert.equal(bindMeasurements(input), output);
+    assert.equal(bindMeasurements(output), output);
   }
 });

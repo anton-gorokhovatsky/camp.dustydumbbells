@@ -1,5 +1,14 @@
 import { adaptClimate } from './climate-markup.mjs';
 import { adaptAccessibility, adaptPrivacyAccessibility } from './accessibility-markup.mjs';
+import { bindMeasurements } from '../site/typography.js';
+
+/** Readable records must never wait for Tilda's viewport opacity reveal. */
+export function keepRecordsReadable(html) {
+  return html.replace(/<div\b[^>]*\bid="rec\d+"[^>]*>/g, tag =>
+    /\bdata-animationappear="[^"]*"/.test(tag)
+      ? tag.replace(/\bdata-animationappear="[^"]*"/, 'data-animationappear="off"')
+      : tag.replace(/>$/, ' data-animationappear="off">'));
+}
 
 /** Develop the accepted source; the captured HTML and media stay immutable. */
 export function adaptRefinement(html, base, version) {
@@ -26,6 +35,14 @@ export function adaptRefinement(html, base, version) {
   cover = cover.replace('<div class="t-cover__filter"', tools + '<div class="t-cover__filter"');
   if (!cover.includes('class="dd-cover-tools"')) throw new Error('The cover closing structure changed.');
   html = html.slice(0, start) + cover + html.slice(end);
+  html = keepRecordsReadable(html);
+  // Retain the alternating programme, without revealing its text seconds later.
+  const programmeStart = html.indexOf('<div id="rec2078706201"');
+  const programmeEnd = html.indexOf('<div id="rec', programmeStart + 10);
+  if (programmeStart < 0 || programmeEnd < programmeStart) throw new Error('The accepted programme is missing.');
+  const programme = html.slice(programmeStart, programmeEnd).replace(/<div\b[^>]*class="[^"]*\bt-animate\b[^"]*"[^>]*>/g,
+    tag => tag.replace(/\bt-animate\s*/g, '').replace(/\sdata-animate-[\w-]+="[^"]*"/g, ''));
+  html = html.slice(0, programmeStart) + programme + html.slice(programmeEnd);
   // Real paragraphs make spacing follow meaning instead of blank line-height.
   html = html.replace(/(<div\b[^>]*class="[^"]*\b(?:t-section__descr|t997__descr|t-text_md)\b[^"]*"[^>]*>)([\s\S]*?)(<\/div>)/g,
     (whole, open, content, close) => {
@@ -40,11 +57,17 @@ export function adaptRefinement(html, base, version) {
       }).join('');
       return open + paragraphs + close;
     });
+  // Only the visible prose containers are touched; source links and scripts stay literal.
+  html = html.replace(/(<div\b[^>]*class="[^"]*\b(?:t-section__descr|t997__descr|t547__descr|t-text_md)\b[^"]*"[^>]*>)([\s\S]*?)(<\/div>)/g,
+    (whole, open, content, close) => {
+      if (/<div\b/.test(content)) return whole;
+      return open + content.split(/(<[^>]*>)/g).map((part, index) => index % 2 ? part : bindMeasurements(part)).join('') + close;
+    });
   return adaptAccessibility(adaptClimate(html.replace('</head>', `<link rel="stylesheet" href="${base}refinement.css?v=${version}" data-dd-refinement></head>`)
     .replace('</body>', `<script type="module" src="${base}cover-film.js?v=${version}" data-dd-cover-film></script></body>`), base, version), base, version);
 }
 
 export function adaptPrivacyRefinement(html, base, version) {
-  return adaptPrivacyAccessibility(adaptClimate(html.replace('id="allrecords"', 'id="allrecords" data-dd-refinement="policy"')
+  return adaptPrivacyAccessibility(adaptClimate(keepRecordsReadable(html).replace('id="allrecords"', 'id="allrecords" data-dd-refinement="policy"')
     .replace('</head>', `<link rel="stylesheet" href="${base}refinement.css?v=${version}" data-dd-refinement></head>`), base, version),base,version);
 }

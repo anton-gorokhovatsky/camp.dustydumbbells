@@ -7,7 +7,7 @@ import { adaptApplication } from './application-markup.mjs';
 import { adaptPublication } from './season-markup.mjs';
 import { adaptMap } from './map-markup.mjs';
 import { adaptInterface } from './interface-markup.mjs';
-import { adaptRefinement } from './refinement-markup.mjs';
+import { adaptRefinement, keepRecordsReadable } from './refinement-markup.mjs';
 import { adaptClimate } from './climate-markup.mjs';
 import { adaptPrivacyAccessibility } from './accessibility-markup.mjs';
 
@@ -140,7 +140,7 @@ for (const [sourceName, builtName] of [
   );
   assert.equal(
     hash(restored),
-    hash(sourceName === 'privacy.html' ? adaptPrivacyAccessibility(adaptClimate(source, release.base, encodeURIComponent(release.commit)), release.base, encodeURIComponent(release.commit)) : source),
+    hash(sourceName === 'privacy.html' ? adaptPrivacyAccessibility(adaptClimate(keepRecordsReadable(source), release.base, encodeURIComponent(release.commit)), release.base, encodeURIComponent(release.commit)) : source),
     `Source fidelity failed for ${sourceName}`,
   );
 }

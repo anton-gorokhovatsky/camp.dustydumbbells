@@ -12,7 +12,7 @@ export function adaptMap(html, base, version) {
       }
       const coordinates = `${point[2]},${point[1]}`;
       const external = `https://yandex.ru/maps/?ll=${encodeURIComponent(coordinates)}&amp;pt=${encodeURIComponent(coordinates + ',pm2blm')}&amp;z=${zoom}`;
-      return `<section class="dd-map" data-dd-map data-lat="${point[1]}" data-lng="${point[2]}" aria-label="Карта Антальи"><div class="dd-map-intro"><h3>Анталья<br>Коньяалты</h3><button type="button" data-map-open>Открыть карту</button><a href="${external}" target="_blank" rel="noopener noreferrer">В Яндекс Картах</a><p role="status" data-map-status hidden></p></div></section>`;
+      return `<section class="dd-map" data-dd-map data-lat="${point[1]}" data-lng="${point[2]}" aria-label="Карта Антальи"><div class="dd-map-intro"><h3>Анталья<br>Конья&shy;алты</h3><button type="button" data-map-open>Открыть карту</button><a href="${external}" target="_blank" rel="noopener noreferrer">В Яндекс Картах</a><p role="status" data-map-status hidden></p></div></section>`;
     },
   );
   if (maps !== 1) throw new Error(`Expected one original camp map; found ${maps}.`);

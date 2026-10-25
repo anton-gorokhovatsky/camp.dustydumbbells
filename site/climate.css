@@ -20,7 +20,7 @@ html:has([data-dd-environment]), body[data-dd-environment] {
   color: var(--dd-ink);
   color-scheme: var(--dd-scheme);
 }
-body[data-dd-environment] #allrecords { color: var(--dd-ink); }
+body[data-dd-environment] :is(#allrecords,#dd-main) { color: var(--dd-ink); background: var(--dd-page); }
 body[data-dd-environment] :is(#allrecords,#dd-main) > .r {
   background-color: var(--dd-page) !important;
 }
@@ -51,6 +51,16 @@ body[data-dd-environment] #allrecords .t1148 :is(.t1148__arrow, .t1148__arrow-wr
 body[data-dd-environment] #allrecords .t1148 .t1148__arrow-wrapper { background-color: var(--dd-band) !important; }
 body[data-dd-environment] #allrecords .t1148__control { background-color: var(--dd-band) !important; border-color: transparent !important; }
 body[data-dd-environment] #allrecords .t1148__control path { stroke: var(--dd-on-band); }
+body[data-dd-environment] #allrecords .t1148__control:is(:hover,:focus-visible,:active) path { stroke: var(--dd-on-band) !important; }
+body[data-dd-environment] #allrecords .t1148__scroll-icon-wrapper { color: var(--dd-muted); }
+body[data-dd-environment] #allrecords .tooltip-horizontal-scroll-icon_hand { fill: currentColor; }
+body[data-dd-environment] #allrecords .tooltip-horizontal-scroll-icon_card { fill: currentColor; fill-opacity: .24; }
+body[data-dd-environment] #allrecords .t1148__control:focus-visible,
+body[data-dd-environment] #allrecords .dd-map-intro button:not(:disabled):focus-visible { background: var(--dd-action-hover) !important; }
+@media(hover:hover) and (pointer:fine) {
+  body[data-dd-environment] #allrecords .t1148__control:hover,
+  body[data-dd-environment] #allrecords .dd-map-intro button:not(:disabled):hover { background: var(--dd-action-hover) !important; }
+}
 /* Native footage remains unchanged; only the existing protective scrim is tinted. */
 body[data-dd-environment] #allrecords #rec1016226926 .t-cover__filter {
   background: linear-gradient(90deg,rgba(0,0,0,.64),rgba(0,0,0,.54) 60%,rgba(0,0,0,.18)),
