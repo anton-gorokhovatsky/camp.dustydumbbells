@@ -42,6 +42,7 @@ export function applyCampPalette(root, state) {
   for (const [name, value] of Object.entries(state.css)) root.style.setProperty(name, value);
   root.dataset.ddLight = state.phase;
   root.dataset.ddPalette = 'ready';
+  root.dispatchEvent(new CustomEvent('dd-palette-change'));
 }
 
 function initCampEnvironment() {

@@ -16,3 +16,16 @@
 .dd-map-document #map { position: fixed; inset: 0; }
 .dd-map-document #map-message { position: fixed; inset: 0; display: grid; place-items: center; margin: 0; padding: 24px; background: #e5e9ee; color: #1a4297; font: 18px/1.5 Arial, sans-serif; text-align: center; }
 .dd-map-document #map-message[hidden] { display: none; }
+.dd-map-document { background: var(--dd-map-land,#e5e9ee); color: var(--dd-map-ink,#202b35); }
+.dd-map-document #map .mapboxgl-ctrl-group,
+.dd-map-document #map .mapboxgl-ctrl-attrib { background: var(--dd-map-land,#fff); color: var(--dd-map-ink,#202b35); }
+.dd-map-document #map .mapboxgl-ctrl-attrib a { color: inherit; }
+.dd-map-document #map .mapboxgl-ctrl-group button { color: inherit; }
+.dd-map-document #map .mapboxgl-ctrl-group button + button { border-color: var(--dd-map-ink,#202b35); }
+.dd-map-document #map .mapboxgl-ctrl-group button:not(:disabled):hover { background-color: color-mix(in srgb,var(--dd-map-ink,#202b35) 12%,transparent); }
+.dd-map-document #map .mapboxgl-ctrl-attrib-button { background-color: transparent; }
+.dd-map-document #map .mapboxgl-ctrl button:focus-visible { outline: 3px solid var(--dd-map-accent,#b21818); outline-offset: 3px; }
+[data-dd-map-scheme="dark"] .dd-map-document #map .mapboxgl-ctrl-icon { filter: invert(1); }
+/* The original GL JS3.33 attribution path, white paint only. Filtering the
+   button itself would also invert its keyboard focus ring. */
+[data-dd-map-scheme="dark"] .dd-map-document #map .mapboxgl-ctrl-attrib-button { background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg' fill-rule='evenodd'%3E%3Cpath fill='white' d='M4 10a6 6 0 1 0 12 0 6 6 0 1 0-12 0m5-3a1 1 0 1 0 2 0 1 1 0 1 0-2 0m0 3a1 1 0 1 1 2 0v3a1 1 0 1 1-2 0'/%3E%3C/svg%3E"); }

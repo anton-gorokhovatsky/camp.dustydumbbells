@@ -28,14 +28,4 @@ for (const strip of document.querySelectorAll('.t1003')) {
   new MutationObserver(deduplicate).observe(strip, {childList: true, subtree: true});
 }
 
-// Keep the author's introductory paragraph once; give the film its own mobile scene.
-const intro = document.querySelector('#rec1016226926 .t997__descr');
-const destination = document.querySelector('[data-dd-intro]');
-if (intro && destination) {
-  const position = document.createComment('cover introduction');
-  intro.before(position);
-  const mobile = matchMedia('(max-width: 640px)');
-  const placeIntro = () => mobile.matches ? destination.append(intro) : position.after(intro);
-  mobile.addEventListener('change', placeIntro);
-  placeIntro();
-}
+// The introduction now has one stable place after the film, including without JS.

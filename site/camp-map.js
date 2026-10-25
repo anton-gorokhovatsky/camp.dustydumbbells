@@ -1,4 +1,5 @@
 import { liveMapPage, productionSite } from './map-policy.js';
+import { mapPalette, normaliseMapPalette, mapPaletteKey, mapPaletteType } from './map-palette.js';
 
 /** One map per production visit. Preview/automation never creates a frame. */
 export function mountCampMap(container, runtime) {
@@ -7,6 +8,16 @@ export function mountCampMap(container, runtime) {
   const intro = container.querySelector('.dd-map-intro');
   const allowed = liveMapPage(runtime.href, runtime.automated);
   let state = 'idle', frame = null, timer = null;
+  let lastPalette = null;
+  const sendPalette = () => {
+    if (state !== 'ready' || !frame || !runtime.readPalette) return;
+    const palette = normaliseMapPalette(runtime.readPalette());
+    if (!palette) return;
+    const key = mapPaletteKey(palette);
+    if (key === lastPalette) return;
+    frame.contentWindow.postMessage({ type: mapPaletteType, palette }, new URL(productionSite).origin);
+    lastPalette = key;
+  };
   const failureReasons = new Set(['policy', 'credentials', 'sdk', 'unsupported', 'initialization', 'resource', 'timeout']);
   let stopObserving = () => {};
   const setState = next => { state = next; container.dataset.mapState = next; };
@@ -19,6 +30,7 @@ export function mountCampMap(container, runtime) {
     clearTimer();
     frame?.remove();
     frame = null;
+    lastPalette = null;
     setState('error');
     intro.hidden = false;
     status.hidden = false;
@@ -39,6 +51,7 @@ export function mountCampMap(container, runtime) {
     status.hidden = false;
     status.textContent = 'Загружаем карту…';
     frame = runtime.createFrame();
+    lastPalette = null;
     frame.src = new URL('map.html', productionSite).href;
     frame.title = 'Карта Антальи — Коньяалты';
     frame.className = 'dd-map-frame';
@@ -60,8 +73,10 @@ export function mountCampMap(container, runtime) {
       clearTimer();
       setState('ready');
       intro.hidden = true;
+      sendPalette();
     } else if (event.data?.type === 'dd-map-error' && state !== 'ready') fail(event.data.reason, event.data.status);
   });
+  runtime.observePalette?.(sendPalette);
   setState('idle');
   stopObserving = runtime.observe(() => { if (state === 'idle') start(); });
 }
@@ -75,6 +90,12 @@ if (typeof document !== 'undefined') {
     listenMessage: listener => window.addEventListener('message', listener),
     setTimeout: (callback, delay) => window.setTimeout(callback, delay),
     clearTimeout: id => window.clearTimeout(id),
+    readPalette: () => {
+      const style = getComputedStyle(document.documentElement);
+      return mapPalette(Object.fromEntries(['--dd-page','--dd-blue','--dd-red','--dd-ink','--dd-scheme']
+        .map(name => [name, style.getPropertyValue(name).trim()])));
+    },
+    observePalette: changed => document.documentElement.addEventListener('dd-palette-change', changed),
     observe: start => {
       let inView = false;
       const check = () => { if (inView && document.visibilityState === 'visible') start(); };

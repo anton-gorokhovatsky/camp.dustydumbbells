@@ -21,10 +21,9 @@
 #rec1017771976 #nav1017771976 .t-menu__link-item { overflow-wrap: normal; word-break: normal; hyphens: manual; }
 .dd-cover-intro:empty { display: none; }
 .dd-cover-intro { color: var(--dd-ink); background: var(--dd-page); }
-.dd-cover-intro .t997__descr { margin: 0; color: var(--dd-ink) !important; font: 400 var(--dd-type-body)/1.5 'Museo',Arial,sans-serif; }
+.dd-cover-intro .t997__descr { margin: 0; padding: 0; max-width: 64ch; opacity: 1 !important; color: var(--dd-ink) !important; font: 400 var(--dd-type-body)/1.5 'Museo',Arial,sans-serif; }
 @media(max-width:640px) {
   :is(h1,h2,h3)[tabindex="-1"] { scroll-margin-top: 72px; }
-  .dd-cover-intro:not(:empty) { display: block; padding: var(--dd-space-6) 20px; }
   #rec1017771976 #nav1017771976 .t-menu-popover__container { padding-inline: 16px; }
 }
 /* Owned form geometry follows the same rows, fonts, lines and authentic icons. */
