@@ -22,7 +22,7 @@ function fixture(href = productionSite, automated = false) {
   });
   return { container, button, status, intro, frames, appended,
     visible: () => visible?.(), click: (trusted = true) => click?.({ isTrusted: trusted }),
-    send(type, origin = new URL(productionSite).origin, source = frames.at(-1)?.contentWindow) { message?.({ origin, source, data: {type} }); },
+    send(type, origin = new URL(productionSite).origin, source = frames.at(-1)?.contentWindow, detail = {}) { message?.({ origin, source, data: {...detail, type} }); },
     expire: () => timeout?.(), get observerCount() { return observerCount; }, get disconnects() { return disconnects; },
   };
 }
@@ -79,6 +79,18 @@ test('failure never loops automatically and a trusted retry creates exactly one 
   assert.equal(env.container.dataset.mapState, 'loading');
   env.expire();
   assert.equal(env.container.dataset.mapState, 'error');
+  assert.equal(env.container.dataset.mapError, 'timeout');
   env.visible();
   assert.equal(env.frames.length, 2);
+});
+
+test('failure retains only a safe reason and HTTP status, clearing them on a real retry', () => {
+  const env = fixture();
+  env.visible();
+  env.send('dd-map-error', undefined, undefined, { reason: 'resource', status: 403, url: 'https://example.com/?access_token=example' });
+  assert.deepEqual(env.container.dataset, { mapState: 'error', mapError: 'resource', mapHttpStatus: '403' });
+  env.click();
+  assert.deepEqual(env.container.dataset, { mapState: 'loading' });
+  env.send('dd-map-error', undefined, undefined, { reason: 'https://example.com/private', status: '403' });
+  assert.deepEqual(env.container.dataset, { mapState: 'error', mapError: 'resource' });
 });

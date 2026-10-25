@@ -7,11 +7,15 @@ export function mountCampMap(container, runtime) {
   const intro = container.querySelector('.dd-map-intro');
   const allowed = liveMapPage(runtime.href, runtime.automated);
   let state = 'idle', frame = null, timer = null;
+  const failureReasons = new Set(['policy', 'credentials', 'sdk', 'unsupported', 'initialization', 'resource', 'timeout']);
   let stopObserving = () => {};
   const setState = next => { state = next; container.dataset.mapState = next; };
   const clearTimer = () => { if (timer !== null) runtime.clearTimeout(timer); timer = null; };
-  const fail = () => {
+  const fail = (reason, httpStatus) => {
     if (state === 'ready') return;
+    container.dataset.mapError = failureReasons.has(reason) ? reason : 'resource';
+    if (Number.isInteger(httpStatus) && httpStatus >= 400 && httpStatus <= 599) container.dataset.mapHttpStatus = String(httpStatus);
+    else delete container.dataset.mapHttpStatus;
     clearTimer();
     frame?.remove();
     frame = null;
@@ -26,6 +30,8 @@ export function mountCampMap(container, runtime) {
   const start = () => {
     if (!allowed || state === 'loading' || state === 'ready') return;
     setState('loading');
+    delete container.dataset.mapError;
+    delete container.dataset.mapHttpStatus;
     stopObserving();
     intro.hidden = false;
     button.hidden = true;
@@ -37,7 +43,7 @@ export function mountCampMap(container, runtime) {
     frame.title = 'Карта Антальи — Коньяалты';
     frame.className = 'dd-map-frame';
     frame.referrerPolicy = 'same-origin';
-    timer = runtime.setTimeout(fail, 25000);
+    timer = runtime.setTimeout(() => fail('timeout'), 25000);
     container.append(frame);
   };
   button.addEventListener('click', event => { if (event.isTrusted) start(); });
@@ -54,7 +60,7 @@ export function mountCampMap(container, runtime) {
       clearTimer();
       setState('ready');
       intro.hidden = true;
-    } else if (event.data?.type === 'dd-map-error' && state !== 'ready') fail();
+    } else if (event.data?.type === 'dd-map-error' && state !== 'ready') fail(event.data.reason, event.data.status);
   });
   setState('idle');
   stopObserving = runtime.observe(() => { if (state === 'idle') start(); });
