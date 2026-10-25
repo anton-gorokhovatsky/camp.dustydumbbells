@@ -1,4 +1,4 @@
-// Only the five selected composition changes are applied to the frozen capture.
+// Editorial composition develops the selected source without changing its copy or media.
 function divAt(html, start) {
   const tags = /<\/?div\b[^>]*>/g;
   tags.lastIndex = start;
@@ -71,5 +71,122 @@ export function composeCamp(html) {
   const scene = `<div class="dd-invitation-scene t-container"><figure class="dd-form-memory">${sunset}</figure>${invitation}<div class="dd-application-body">${fields.html}</div></div>`;
   html = html.slice(0, formStart) + form.slice(0, header.start) + scene
     + form.slice(header.end, fields.start) + form.slice(fields.end);
+  return composeRhythm(html);
+}
+
+function recordAt(html, id) {
+  const start = html.indexOf(`<div id="rec${id}"`);
+  if (start < 0) throw new Error(`The composition record ${id} is missing.`);
+  return divAt(html, start);
+}
+
+function galleryAt(record) {
+  const start = record.indexOf('<div class="t1148">');
+  if (start < 0) throw new Error('The accepted photographic scene changed.');
+  return divAt(record, start);
+}
+
+function galleryItems(widget) {
+  return [...widget.matchAll(/<div\s+class="t1148__item"/g)].map(match => divAt(widget, match.index));
+}
+
+function withGalleryItems(widget, items) {
+  const old = galleryItems(widget);
+  if (!old.length || !items.length) throw new Error('A photographic scene must keep its sources.');
+  const indexed = items.map((item, index) => item
+    .replace(/aria-label="\d из \d+"/, `aria-label="${index + 1} из ${items.length}"`)
+    .replace(/aria-current="(?:true|false)"/, `aria-current="${index === 0}"`)
+    .replace(/data-index="\d+"/, `data-index="${index}"`)
+    .replace(/data-zoom-target="\d+"/, `data-zoom-target="${index}"`)
+    .replace(/imgfield="gi_img__\d+"/, `imgfield="gi_img__${index}"`));
+  return widget.slice(0, old[0].start) + indexed.join('') + widget.slice(old.at(-1).end);
+}
+
+/** Three encounters with the same archive, around the unchanged chronological axis. */
+function composeRhythm(html) {
+  const about = recordAt(html, '1016322141');
+  const opening = galleryAt(about.html);
+  const people = galleryItems(opening.html);
+  if (people.length !== 5 || !people[3].html.includes('IMG_6954') || !people[4].html.includes('IMG_6968')) {
+    throw new Error('The selected people archive changed.');
+  }
+  const weather = recordAt(html, '1017020466');
+  const coast = galleryAt(weather.html);
+  const shoreline = galleryItems(coast.html);
+  const harbour = shoreline.find(item => item.html.includes('edb1b4c73141-IMG_6953.JPG'));
+  if (shoreline.length !== 5 || !harbour) throw new Error('The selected coastal archive changed.');
+
+  // Keep the first close encounters large; the same gallery interaction continues in the middle.
+  let memory = withGalleryItems(opening.html, [people[3].html, people[4].html, harbour.html]);
+  const header = /<div\b[^>]*class="[^"]*\bt1148__col\b[^\"]*"[^>]*>/.exec(memory);
+  const oldHeader = divAt(memory, header.index);
+  memory = memory.slice(0, oldHeader.start)
+    + '<div class="t-col t-col_10 t1148__col"><p class="dd-archive-caption">Кэмп в Фетхие, 2025</p></div>'
+    + memory.slice(oldHeader.end);
+  memory = memory.replaceAll('1016322141', '2080000001');
+  memory = '<div id="rec2080000001" class="r t-rec dd-programme-memory" data-record-type="1148" data-animationappear="off" data-dd-programme-memory>'
+    + memory + "<script>t_onReady(function(){t_onFuncLoad('t_slider__init',function(){t_slider__init('2080000001','t1148');});});</script></div>";
+
+  const changedWeather = weather.html.slice(0, coast.start)
+    + withGalleryItems(coast.html, shoreline.filter(item => item !== harbour).map(item => item.html))
+    + weather.html.slice(coast.end);
+  html = html.slice(0, weather.start) + changedWeather + html.slice(weather.end);
+  const changedAbout = about.html.slice(0, opening.start)
+    + withGalleryItems(opening.html, people.slice(0, 3).map(item => item.html))
+    + about.html.slice(opening.end);
+  html = html.slice(0, about.start) + changedAbout + html.slice(about.end);
+
+  // Sunday and Monday retain their original dates and relative sides of the axis.
+  const programme = recordAt(html, '2078706201');
+  const containerStart = programme.html.indexOf('<div class="t-container t547__container">');
+  if (containerStart < 0) throw new Error('The chronological axis changed.');
+  const container = divAt(programme.html, containerStart);
+  const days = [...container.html.matchAll(/<div\s+class="t547__item t-item"/g)];
+  if (days.length !== 15 || !divAt(container.html, days[7].index).html.includes('id="dd-day-18"')) {
+    throw new Error('The fifteen original days changed.');
+  }
+  const open = container.html.slice(0, container.html.indexOf('>') + 1);
+  const first = container.html.slice(0, days[7].index) + '</div>';
+  const second = open.replace('t547__container', 't547__container dd-programme-continuation') + container.html.slice(days[7].index);
+  const changedProgramme = programme.html.slice(0, container.start) + first + memory + second + programme.html.slice(container.end);
+  html = html.slice(0, programme.start) + changedProgramme + html.slice(programme.end);
+
+  // Preparation has two related prose groups; all words and links keep their source order.
+  const travel = recordAt(html, '2078794741');
+  const textMatch = /<div\b[^>]*class="t-text t-text_md\s*"[^>]*>/.exec(travel.html);
+  if (!textMatch) throw new Error('The original travel copy changed.');
+  const text = divAt(travel.html, textMatch.index);
+  const paragraphs = [...text.html.matchAll(/<p>/g)];
+  if (paragraphs.length !== 5) throw new Error('The five original preparation paragraphs changed.');
+  const openingTag = text.html.slice(0, text.html.indexOf('>') + 1).replace('class="', 'class="dd-travel-columns ');
+  const columns = openingTag + '<div class="dd-travel-column">'
+    + text.html.slice(text.html.indexOf('>') + 1, paragraphs[3].index) + '</div><div class="dd-travel-column">'
+    + text.html.slice(paragraphs[3].index, -6) + '</div></div>';
+  const changedTravel = travel.html.slice(0, text.start) + columns + travel.html.slice(text.end);
+  return composeGalleryFooters(html.slice(0, travel.start) + changedTravel + html.slice(travel.end));
+}
+
+/** Photo navigation and the archive source stay next to the pictures they describe. */
+function composeGalleryFooters(html) {
+  for (const id of ['1016322141', '2080000001', '1017020466']) {
+    const record = recordAt(html, id);
+    const widget = galleryAt(record.html);
+    const headerMatch = /<div\b[^>]*class="[^"]*\bt1148__container_flex\b[^\"]*"[^>]*>/.exec(widget.html);
+    const header = divAt(widget.html, headerMatch.index);
+    const controlMatch = /<div\b[^>]*class="[^"]*\bt1148__controls\b[^\"]*"[^>]*>/.exec(header.html);
+    const controls = divAt(header.html, controlMatch.index);
+    const caption = header.html.match(/<p class="dd-archive-caption">[\s\S]*?<\/p>/)?.[0] || '';
+    let heading = header.html;
+    for (const token of ['t-col_2', 't1148__scroll-icon-wrapper']) {
+      const match = new RegExp(`<div\\b[^>]*class="[^"]*\\b${token}\\b[^"]*"[^>]*>`).exec(heading);
+      if (match) { const part = divAt(heading, match.index); heading = heading.slice(0, part.start) + heading.slice(part.end); }
+    }
+    if (caption) heading = '';
+    let changed = widget.html.slice(0, header.start) + heading + widget.html.slice(header.end);
+    const close = changed.lastIndexOf('</div>');
+    changed = changed.slice(0, close) + `<div class="dd-gallery-footer t-container">${caption}${controls.html}</div>` + changed.slice(close);
+    const contents = record.html.slice(0, widget.start) + changed + record.html.slice(widget.end);
+    html = html.slice(0, record.start) + contents + html.slice(record.end);
+  }
   return html;
 }

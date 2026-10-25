@@ -6,10 +6,13 @@ try { const value = localStorage.getItem('dd-marquee-pause'); if (value === 'yes
 function syncMotion() {
   const paused = preference ?? reduce.matches;
   root.dataset.ddMarquees = paused ? 'paused' : 'running';
-  if (control) control.textContent = paused ? 'Продолжить бегущие строки' : 'Остановить бегущие строки';
+  if (control) {
+    control.checked = !paused;
+    control.closest('label').hidden = false;
+  }
 }
-control?.addEventListener('click', () => {
-  preference = root.dataset.ddMarquees !== 'paused';
+control?.addEventListener('change', () => {
+  preference = !control.checked;
   try { localStorage.setItem('dd-marquee-pause', preference ? 'yes' : 'no'); } catch {}
   syncMotion();
 });
@@ -29,3 +32,44 @@ for (const strip of document.querySelectorAll('.t1003')) {
 }
 
 // The introduction now has one stable place after the film, including without JS.
+
+// A photographic encounter needs scrolling controls only while it has an unseen part.
+for (const gallery of document.querySelectorAll('.t1148')) {
+  const slider = gallery.querySelector('.t1148__slider');
+  const controls = gallery.querySelector('.t1148__controls');
+  if (!slider || !controls) continue;
+  const buttons = [...controls.querySelectorAll('button')];
+  const items = [...slider.querySelectorAll('.t1148__item')];
+  const footer = gallery.querySelector('.dd-gallery-footer');
+  let controlFocus = null;
+  document.addEventListener('focusin', event => {
+    if (event.target === document.body) return;
+    controlFocus = controls.contains(event.target) ? event.target : null;
+  });
+  let scheduled = false;
+  const sync = () => {
+    scheduled = false;
+    const viewport = slider.getBoundingClientRect();
+    const fits = items.length > 0 && items.every(item => {
+      const bounds = item.getBoundingClientRect();
+      return bounds.left >= viewport.left - 1 && bounds.right <= viewport.right + 1;
+    });
+    const active = document.activeElement;
+    const losesControl = fits || !controls.getClientRects().length || getComputedStyle(controls).visibility === 'hidden';
+    if (losesControl && (controls.contains(active) || active === document.body && controlFocus)) {
+      const photo = slider.querySelector('[aria-current="true"] img[role="button"]') || slider.querySelector('img[role="button"]');
+      photo?.focus({preventScroll: true});
+    }
+    buttons.forEach(button => { button.disabled = fits; });
+    controls.hidden = fits;
+    if (footer) footer.hidden = fits && !footer.querySelector('.dd-archive-caption');
+  };
+  const schedule = () => { if (!scheduled) { scheduled = true; requestAnimationFrame(sync); } };
+  const observer = new ResizeObserver(schedule);
+  observer.observe(slider);
+  items.forEach(item => observer.observe(item));
+  slider.addEventListener('scroll', schedule, {passive: true});
+  window.addEventListener('resize', schedule, {passive: true});
+  document.fonts.ready.then(schedule);
+  schedule();
+}

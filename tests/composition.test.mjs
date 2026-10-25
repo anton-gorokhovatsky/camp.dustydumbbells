@@ -28,16 +28,23 @@ test('the original introduction remains once, after the film inside main even wi
   assert(html.includes('id="dd-cover-video" controls muted loop playsinline'));
 });
 
-test('the sunset belongs to the invitation once and the coastal gallery still starts with a real first slide', () => {
+test('the archive has one source per photograph, valid gallery positions and a distinct invitation sunset', () => {
   const coast = record('1017020466');
   const form = record('1016216116');
   assert(!coast.includes('IMG_6948.JPG'));
-  assert.equal((coast.match(/class="t1148__item"/g) || []).length, 5);
-  for (let index = 0; index < 5; index++) {
-    assert(coast.includes(`aria-label="${index + 1} из 5"`));
-    assert(coast.includes(`data-index="${index}"`));
+  for (const [id, count] of [['1016322141', 3], ['2080000001', 3], ['1017020466', 4]]) {
+    const gallery = record(id);
+    assert.equal((gallery.match(/class="t1148__item"/g) || []).length, count);
+    for (let index = 0; index < count; index++) {
+      assert(gallery.includes(`aria-label="${index + 1} из ${count}"`));
+      assert(gallery.includes(`data-index="${index}"`));
+    }
+    assert(gallery.includes(`aria-label="1 из ${count}"\naria-current="true"`));
   }
-  assert(coast.includes('aria-label="1 из 5"\naria-current="true"'));
+  const archive = html.indexOf('data-dd-programme-memory');
+  assert(archive > html.indexOf('id="dd-day-17"'));
+  assert(archive < html.indexOf('id="dd-day-18"'));
+  assert(record('2080000001').includes('Кэмп в Фетхие, 2025'));
   const image = form.match(/<img\b[^>]*data-dd-memory-photo[^>]*>/)?.[0];
   assert(image?.includes('d152e032841c-IMG_6948.JPG'));
   assert(image.includes('width="893" height="1339"'));

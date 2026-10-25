@@ -231,7 +231,7 @@ test("the original Tilda runtime uses local assets and retained modules keep the
   assert((await read('privacy/index.html')).includes(`privacy.css?v=${release.commit}`));
 });
 
-test("both original photo carousels retain their images and full-size zoom sources", async () => {
+test("the original archive keeps every unique photograph and full-size zoom source", async () => {
   const html = await read('index.html');
   const release = JSON.parse(await read('release.json'));
   const images = [...html.matchAll(/<img\b[^>]*class="t-img t1148__img"[^>]*>/g)].map(m=>m[0]);

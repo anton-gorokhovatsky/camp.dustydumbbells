@@ -3,6 +3,7 @@ import { phoneParts, internationalPhone, normaliseBirthday, calendarMove } from 
 import { validBirthday, travelField } from './application-validation.js';
 
 const days = ['понедельник','вторник','среда','четверг','пятница','суббота','воскресенье'];
+const shortDays = ['пн','вт','ср','чт','пт','сб','вс'];
 const dateLabel = new Intl.DateTimeFormat('ru', {day:'numeric',month:'long',year:'numeric'});
 const months = Array.from({length:12},(_,i)=>new Intl.DateTimeFormat('ru',{month:'long'}).format(new Date(2000,i,1)));
 const regions = new Intl.DisplayNames(['ru'], {type:'region'});
@@ -98,12 +99,20 @@ function initCalendar(input,form) {
     popup.style.top=(r.bottom+p.height+12<innerHeight ? r.bottom+6 : Math.max(8,r.top-p.height-6))+scrollY+'px';
   }
   function close(returnFocus=false) { popup.hidden=true; toggle.setAttribute('aria-expanded','false'); if(returnFocus) toggle.focus({preventScroll:true}); }
+  function focusDay() {
+    const cell=popup.querySelector('[data-day][tabindex="0"]');
+    if(!cell)return;
+    cell.focus({preventScroll:true});
+    const grid=popup.querySelector('.dd-calendar-grid'), bounds=cell.getBoundingClientRect(), viewport=grid.getBoundingClientRect();
+    if(bounds.left<viewport.left+4)grid.scrollLeft-=viewport.left+4-bounds.left;
+    else if(bounds.right>viewport.right-4)grid.scrollLeft+=bounds.right-viewport.right+4;
+  }
   function open(moveFocus=true) {
     form.dispatchEvent(new CustomEvent('dd-close-calendars'));
     const value=normaliseBirthday(input.value);
     if (validBirthday(value)) { const [d,m,y]=value.split('.').map(Number); cursor=new Date(y,m-1,d); selected=stamp(cursor); } else { cursor=new Date(); selected=''; }
     popup.hidden=false; toggle.setAttribute('aria-expanded','true'); render(); position();
-    if(moveFocus) popup.querySelector('[data-day][tabindex="0"]')?.focus({preventScroll:true});
+    if(moveFocus) focusDay();
   }
   function render(moveFocus=false) {
     const year=cursor.getFullYear(),month=cursor.getMonth(),day=cursor.getDate();
@@ -133,7 +142,7 @@ function initCalendar(input,form) {
     popup.append(header);
     const table=document.createElement('table'); table.className='t_datepicker__body'; table.setAttribute('role','grid'); table.setAttribute('aria-label',`${months[month]} ${year}`);
     const thead=document.createElement('thead'), tr=document.createElement('tr');
-    days.forEach(name=>{const th=document.createElement('th'); th.className='t_datepicker__week-day'; th.scope='col'; th.setAttribute('abbr',name); th.textContent=name.slice(0,2); tr.append(th);}); thead.append(tr); table.append(thead);
+    days.forEach((name,index)=>{const th=document.createElement('th'); th.className='t_datepicker__week-day'; th.scope='col'; th.setAttribute('abbr',name); th.textContent=shortDays[index]; tr.append(th);}); thead.append(tr); table.append(thead);
     const body=document.createElement('tbody'),first=new Date(year,month,1), offset=(first.getDay()+6)%7;
     const count=Math.ceil((offset+new Date(year,month+1,0).getDate())/7)*7;
     for(let i=0;i<count;i++) {
@@ -146,8 +155,9 @@ function initCalendar(input,form) {
       button.addEventListener('click',()=>{ input.value=new Intl.DateTimeFormat('ru',{day:'2-digit',month:'2-digit',year:'numeric'}).format(date); input.dispatchEvent(new Event('input',{bubbles:true})); input.dispatchEvent(new Event('change',{bubbles:true})); close(true); });
       cell.append(button); body.lastChild.append(cell);
     }
-    table.append(body); popup.append(table);
-    if(moveFocus) popup.querySelector('[data-day][tabindex="0"]')?.focus({preventScroll:true});
+    table.append(body);
+    const grid=document.createElement('div'); grid.className='dd-calendar-grid'; grid.append(table); popup.append(grid);
+    if(moveFocus) focusDay();
   }
   toggle.addEventListener('click',()=>popup.hidden?open():close());
   input.addEventListener('click',()=>{if(popup.hidden)open(false);});

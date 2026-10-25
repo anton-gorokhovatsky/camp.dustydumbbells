@@ -13,11 +13,10 @@
 .t1003:focus-within .t1003__content { transform: none !important; }
 .t1003__item-link:focus-visible { outline: 2px solid currentColor; outline-offset: -4px; }
 @media(prefers-reduced-motion:reduce) { html:not([data-dd-marquees="running"]) .t1003__content { animation-play-state: paused !important; } }
-#rec1017771976 .dd-marquee-toggle { display: flex; align-items: center; gap: var(--dd-space-1); max-width: 100%; min-height: 44px; margin-top: var(--dd-space-2); padding: 8px 0; border: 0; background: transparent; color: var(--dd-matte-blue); font: 400 1rem/1.45 'Museo',Arial,sans-serif; text-align: left; text-decoration: none; cursor: pointer; }
-#rec1017771976 .dd-marquee-toggle::before { content: ''; box-sizing: border-box; display: block; flex: none; width: 10px; height: 12px; border-inline: 3px solid currentColor; }
-[data-dd-marquees="paused"] #rec1017771976 .dd-marquee-toggle::before { border: 6px solid transparent; border-left: 10px solid currentColor; border-right: 0; }
-#rec1017771976 .dd-marquee-toggle:hover { color: var(--dd-matte-red); }
-#rec1017771976 .dd-marquee-toggle:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+#t-footer .dd-motion-preference { display: flex; align-items: center; justify-content: center; gap: .6em; width: max-content; max-width: 100%; min-height: 44px; margin: var(--dd-space-2) auto 0; color: var(--dd-on-band); font: 400 var(--dd-type-meta)/1.5 'Museo',Arial,sans-serif; cursor: pointer; }
+#t-footer .dd-motion-preference[hidden] { display: none !important; }
+#t-footer .dd-motion-preference input { flex: none; width: 16px; height: 16px; margin: 0; accent-color: var(--dd-on-band); color-scheme: dark; cursor: pointer; }
+#t-footer .dd-motion-preference input:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
 #rec1017771976 #nav1017771976 .t-menu__link-item { overflow-wrap: normal; word-break: normal; hyphens: manual; }
 .dd-cover-intro:empty { display: none; }
 .dd-cover-intro { color: var(--dd-ink); background: var(--dd-page); }
@@ -45,9 +44,12 @@
 #form1016216116 .dd-date-toggle { box-sizing: content-box; display: block; width: 25px; border: 0; padding-block: 0; background: transparent; pointer-events: auto; cursor: pointer; }
 #form1016216116 .dd-date-toggle svg { display: block; width: 25px; height: 100%; fill: var(--dd-red); }
 #form1016216116 .dd-date-toggle:focus-visible { outline: 2px solid var(--dd-blue); outline-offset: -3px; }
-.dd-calendar { width: 246px; max-width: calc(100vw - 40px); color: var(--dd-ink); background: var(--dd-page); }
+.dd-calendar { width: max(246px, 16rem); max-width: calc(100vw - 40px); color: var(--dd-ink); background: var(--dd-page); }
 .dd-calendar[hidden] { display: none !important; }
-.dd-calendar .t_datepicker__body { width: 100%; table-layout: fixed; }
+.dd-calendar-grid { overflow: auto; }
+.dd-calendar .t_datepicker__body { width: 100%; min-width: 14em; table-layout: fixed; }
+.dd-calendar .t_datepicker__body :is(th,td) { padding-inline: 0; text-align: center; }
+.dd-calendar .t_datepicker__label { margin-inline: .2em; }
 .dd-calendar .t_datepicker__label:focus-within { outline: 2px solid var(--dd-blue); outline-offset: 2px; }
 .dd-calendar button:focus-visible { outline: 2px solid var(--dd-blue); outline-offset: -2px; }
 .dd-calendar .dd-calendar-day { display: block; width: 100%; min-height: 30px; padding: 0; border: 0; background: transparent; color: inherit; font: inherit; cursor: pointer; border-radius: 50%; }
