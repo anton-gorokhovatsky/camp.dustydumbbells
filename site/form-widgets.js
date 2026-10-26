@@ -17,6 +17,7 @@ const focusable = container => [...container.querySelectorAll('button,input,text
 export function initFormWidgets(form) {
   if (form.dataset.widgetsReady) return;
   form.dataset.widgetsReady = 'yes';
+  const partnerFields = groupForm(form);
   const inputs = [...form.querySelectorAll('input:not([type="radio"]):not([type="hidden"]),textarea')];
   for (const input of inputs) {
     const label = input.getAttribute('placeholder') || input.getAttribute('aria-label');
@@ -40,12 +41,35 @@ export function initFormWidgets(form) {
   const groups = [...form.querySelectorAll('[data-field-name]')].filter(group=>partner(group.dataset.fieldName));
   const updatePartner = () => {
     const visible = form.querySelector(`input[name="${travelField}"]:checked`)?.value === 'С партнёром';
+    partnerFields.hidden=!visible; partnerFields.inert=!visible; partnerFields.disabled=!visible;
     groups.forEach(group=>{group.hidden=!visible; group.inert=!visible; group.setAttribute('aria-hidden',String(!visible));});
-    const radio = form.querySelector(`input[name="${travelField}"]:checked`);
-    if (radio) { radio.setAttribute('aria-controls',groups.map(group=>{ group.id ||= `dd-partner-${group.dataset.inputLid}`; return group.id; }).join(' ')); }
   };
   form.addEventListener('change',event=>{ if (event.target.name === travelField) updatePartner(); });
   updatePartner();
+}
+
+function groupForm(form) {
+  const box=form.querySelector('.t-form__inputsbox');
+  const groups=[...box.querySelectorAll(':scope > [data-field-name]')];
+  const travel=groups.find(group=>group.dataset.fieldName===travelField);
+  const wishes=groups.find(group=>group.dataset.fieldName==='Textarea');
+  const section=(title,id,fields)=>{
+    const fieldset=document.createElement('fieldset');
+    fieldset.className='dd-person-fields'; fieldset.id=id;
+    const legend=document.createElement('legend'); legend.textContent=title;
+    fieldset.append(legend,...fields); return fieldset;
+  };
+  const main=section('Ваши данные','dd-main-fields',groups.filter(group=>group!==travel&&group!==wishes&&!partner(group.dataset.fieldName)));
+  const companion=section('Данные партнёра','dd-partner-fields',groups.filter(group=>partner(group.dataset.fieldName)));
+  travel.classList.add('dd-travel-choice');
+  for(const label of travel.querySelectorAll('.t-radio__control')) {
+    const indicator=label.querySelector('.t-radio__indicator');
+    indicator.setAttribute('aria-hidden','true');
+    label.dataset.ddSmooth='paint'; smoothCorners(label);
+    label.querySelector('input').setAttribute('aria-controls',companion.id);
+  }
+  box.prepend(travel,main,companion,wishes);
+  return companion;
 }
 
 function initPhone(input) {

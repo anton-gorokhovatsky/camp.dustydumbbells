@@ -6,6 +6,7 @@ try { const value = localStorage.getItem('dd-marquee-pause'); if (value === 'yes
 function syncMotion() {
   const paused = preference ?? reduce.matches;
   root.dataset.ddMarquees = paused ? 'paused' : 'running';
+  for(const signature of document.querySelectorAll('ag-signature'))signature.toggleAttribute('paused',paused);
   if (control) {
     control.checked = !paused;
     control.closest('label').hidden = false;

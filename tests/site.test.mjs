@@ -213,7 +213,15 @@ test("the original Tilda runtime uses local assets and retained modules keep the
     const entries = [...html.matchAll(/<(?:script|link)\b[^>]*(?:src|href)="([^"]+\.(?:css|js)(?:\?[^"]*)?)"/g)];
     assert(entries.some(match => match[1].split('?')[0].endsWith('.css')));
     assert(entries.some(match => match[1].split('?')[0].endsWith('.js')));
-    for (const [,reference] of entries) {
+    const signature='https://gorokhovatsky.tech/signature/v1/signature.js';
+    assert.equal(entries.filter(match=>match[1]===signature).length,1);
+    for (const entry of entries) {
+      const reference=entry[1];
+      if(reference===signature) {
+        const tag=html.slice(entry.index,html.indexOf('>',entry.index)+1);
+        assert(tag.startsWith('<script')&&tag.includes('type="module"')&&tag.includes('data-dd-signature'));
+        continue;
+      }
       assert(reference.startsWith(release.base), reference);
       const local = reference.slice(release.base.length).split('?')[0];
       assert(local.startsWith('assets/') || ['application.css', 'application.js', 'navigation.css', 'navigation.js', 'camp-map.css', 'camp-map.js', 'refinement.css', 'cover-film.js', 'climate.css', 'camp-environment.js', 'accessibility.css', 'accessibility.js', 'phone-flags.css'].includes(local), reference);

@@ -2,6 +2,7 @@ import { adaptClimate } from './climate-markup.mjs';
 import { adaptAccessibility, adaptPrivacyAccessibility } from './accessibility-markup.mjs';
 import { bindMeasurements } from '../site/typography.js';
 import { composeCamp } from './composition-markup.mjs';
+import { composeFooter } from './footer-markup.mjs';
 
 /** Readable records must never wait for Tilda's viewport opacity reveal. */
 export function keepRecordsReadable(html) {
@@ -32,6 +33,9 @@ export function adaptRefinement(html, base, version) {
     .replace(/(<meta itemprop="image" content=")[^"]+/, '$1' + poster)
     .replace(/(<meta itemprop="image"[^>]+>)/, `$1<video class="dd-cover-video" id="dd-cover-video" controls muted loop playsinline preload="metadata" poster="${poster}" aria-label="Фильм с кэмпа DD в октябре 2026 года"><source src="${base}media/camp-2026.mp4" type="video/mp4"></video>`);
   cover = cover.replace(/<br\s*\/?>12–25&nbsp;октября 2027/, '<span class="dd-cover-date">12–25&nbsp;октября 2027</span>');
+  cover = cover.replace(/(<span class="dd-cover-date">[^<]+<\/span>\s*<\/div>)/,
+    '$1<a class="dd-join-link dd-cover-join" href="#form">Присоединиться</a>');
+  if(!cover.includes('class="dd-join-link dd-cover-join"'))throw new Error('The cover invitation destination changed.');
   cover = cover.replace(/(<div\b[^>]*class="[^"]*\bt997__title\b[^"]*"[^>]*>\s*)«/,
     '$1<span class="dd-cover-opening">«</span>');
   if (!cover.includes('class="dd-cover-opening"')) throw new Error('The cover opening punctuation changed.');
@@ -81,6 +85,7 @@ export function adaptRefinement(html, base, version) {
 }
 
 export function adaptPrivacyRefinement(html, base, version) {
+  html=composeFooter(html,base).replace('</body>',`<script type="module" src="${base}accessibility.js?v=${version}" data-dd-accessibility></script></body>`);
   return adaptPrivacyAccessibility(adaptClimate(keepRecordsReadable(html).replace('id="allrecords"', 'id="allrecords" data-dd-refinement="policy"')
     .replace('</head>', `<link rel="stylesheet" href="${base}refinement.css?v=${version}" data-dd-refinement></head>`), base, version),base,version);
 }

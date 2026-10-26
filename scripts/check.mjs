@@ -10,6 +10,7 @@ import { adaptInterface } from './interface-markup.mjs';
 import { adaptRefinement, keepRecordsReadable } from './refinement-markup.mjs';
 import { adaptClimate } from './climate-markup.mjs';
 import { adaptPrivacyAccessibility } from './accessibility-markup.mjs';
+import { composeFooter } from './footer-markup.mjs';
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const manifest = JSON.parse(
@@ -140,7 +141,11 @@ for (const [sourceName, builtName] of [
   );
   assert.equal(
     hash(restored),
-    hash(sourceName === 'privacy.html' ? adaptPrivacyAccessibility(adaptClimate(keepRecordsReadable(source), release.base, encodeURIComponent(release.commit)), release.base, encodeURIComponent(release.commit)) : source),
+    hash(sourceName === 'privacy.html' ? adaptPrivacyAccessibility(adaptClimate(keepRecordsReadable(
+      composeFooter(source,release.base)
+        .replaceAll(`href="${release.base}privacy/"`,'href="/privacy"')
+        .replace('</body>',`<script type="module" src="${release.base}accessibility.js?v=${encodeURIComponent(release.commit)}" data-dd-accessibility></script></body>`)
+    ), release.base, encodeURIComponent(release.commit)), release.base, encodeURIComponent(release.commit)) : source),
     `Source fidelity failed for ${sourceName}`,
   );
 }

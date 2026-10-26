@@ -139,18 +139,18 @@
 }
 #rec1017771976 #nav1017771976 .t-sociallinks__item { margin: 0; }
 #rec1017771976 #nav1017771976 .t-sociallinks__item a {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
+  position: relative;
+  display: inline-block;
+  box-sizing: border-box;
+  padding: 10px 0 10px 44px;
   width: auto !important;
   min-height: 44px;
   height: auto !important;
   color: #1a4297;
 }
-#rec1017771976 #nav1017771976 .t-sociallinks__svg { flex: none; width: 36px; height: 36px; }
-#rec1017771976 #nav1017771976 .t-sociallinks__item_telegram .t-sociallinks__svg { width: 34px; height: 34px; }
-#rec1017771976 #nav1017771976 .t-sociallinks__svg path { fill: currentColor; }
-#rec1017771976 #nav1017771976 .dd-social-label { font-family: 'Museo', Arial, sans-serif; font-size: 16px; }
+#rec1017771976 #nav1017771976 .dd-brand-mark { position: absolute; left: 0; top: 50%; width: 36px; height: auto; transform: translateY(-50%); }
+#rec1017771976 #nav1017771976 .dd-social-label { font: 400 1rem/1.5 'Museo',Arial,sans-serif; text-decoration: underline; text-underline-offset: 3px; }
+#rec1017771976 #nav1017771976 .t-sociallinks__item a:hover .dd-social-label { text-decoration-thickness: 2px; }
 #rec1017771976 #nav1017771976 :is(a, button):focus-visible { outline: 2px solid #1a4297; outline-offset: 4px; }
 @supports not (backdrop-filter: blur(10px)) {
   #rec1017771976 #nav1017771976 .t-menu-popover__burgermenu__sidebar { background-color: #f7f7f7; }

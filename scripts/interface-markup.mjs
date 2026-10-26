@@ -1,3 +1,6 @@
+import { composeFooter } from './footer-markup.mjs';
+import { ddBrandMark } from './brand-markup.mjs';
+
 /** The author's menu, with the requested social links and the existing matte material. */
 export function adaptInterface(html, base, version) {
   const start = html.indexOf('<div id="rec1017771976"');
@@ -12,12 +15,15 @@ export function adaptInterface(html, base, version) {
   for (const [name, label] of [['telegram', 'Telegram'], ['website', 'Сайт DD']]) {
     const pattern = new RegExp(`(<li class="t-sociallinks__item t-sociallinks__item_${name}">[\\s\\S]*?<a[^>]*)(>[\\s\\S]*?<\\/svg>)(<\\/a>)`);
     menu = menu.replace(pattern, (_, anchor, icon, close) =>
-      anchor.replace(`aria-label="${name}"`, `aria-label="${label}"`) + icon + `<span class="dd-social-label">${label}</span>` + close);
+      anchor.replace(`aria-label="${name}"`, `aria-label="${label}"`) + '>' + ddBrandMark + `<span class="dd-social-label">${label}</span>` + close);
   }
   // The disclosure now serves navigation; the author's introduction stays in the page.
   const description = /<div class="t-menu-popover__descr"[^>]*>[\s\S]*?<\/div>/;
   if (!description.test(menu)) throw new Error('The captured menu introduction changed.');
   menu = menu.replace(description, '');
+  menu = menu.replace(/(<div\b[^>]*class="[^"]*\bt1362__additional\b[^"]*"[^>]*>)/,
+    '<a class="dd-join-link dd-menu-join" href="#form">Присоединиться</a>$1');
+  if(!menu.includes('class="dd-join-link dd-menu-join"'))throw new Error('The menu invitation destination changed.');
   menu = menu.replace(/<script\b[^>]*>[\s\S]*?<\/script>/g, '')
     .replaceAll('Расписание</a>', 'Распи&shy;сание</a>')
     .replaceAll('Анталье</a>', 'Ан&shy;талье</a>')
@@ -28,12 +34,7 @@ export function adaptInterface(html, base, version) {
   html = html.replace(/(<a\b(?=[^>]*href="[^"]*#rec2078794451")(?=[^>]*class="[^"]*\bt-menu__link-item\b[^"]*")[^>]*>)[\s\S]*?(<\/a>)/g,
     '$1Дорога и жильё$2');
   if ((html.match(/>Дорога и жильё<\/a>/g) || []).length !== 3) throw new Error('All captured navigation variants must keep the same meaning.');
-  const footerStart = html.indexOf('<div id="rec1018079361"');
-  if (footerStart < 0) throw new Error('The selected footer changed.');
-  const footer = html.slice(footerStart).replace(/(<a\b[^>]*href="[^"]*\/privacy\/?"[^>]*>[\s\S]*?<\/a>)/,
-    '$1<label class="dd-motion-preference" hidden><input type="checkbox" data-dd-marquee-toggle checked>Анимация строк</label>');
-  if (!footer.includes('data-dd-marquee-toggle')) throw new Error('The footer preference destination changed.');
-  html = html.slice(0, footerStart) + footer;
+  html=composeFooter(html,base);
   return html.replace('</head>', `<link rel="stylesheet" href="${base}navigation.css?v=${version}" data-dd-navigation></head>`)
     .replace('</body>', `<script type="module" src="${base}navigation.js?v=${version}" data-dd-navigation></script></body>`);
 }

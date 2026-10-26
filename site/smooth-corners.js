@@ -1,12 +1,14 @@
-// Shared continuous corners. Rectangles use a full curved transition;
-// capsules retain their circular ends. This is a web contour, not Apple's private path.
+// Rectangular coordinates sampled from Apple's public SwiftUI RoundedRectangle
+// with style .continuous. See scripts/research/native-rounded-rectangle.swift
+// and the independently generated fixtures. Capsule ends retain their accepted path.
 export function continuousCorner() {
-  const diagonal = 2 ** (-.25);
   return {
-    a: .39,
-    b: 2 * diagonal - 1,
-    diagonal,
-    spanScale: (1 - 1 / Math.SQRT2) / (1 - diagonal),
+    extent: 1.5286649465560913,
+    curves: [
+      [[-1.0884900093078613,0],[-.8684070110321045,0],[-.6314939856529236,.07491140067577362]],
+      [[-.3728240132331848,.16906000673770905],[-.16906000673770905,.3728240132331848],[-.07491140067577362,.6314939856529236]],
+      [[0,.8684070110321045],[0,1.0884900093078613],[0,1.5286649465560913]],
+    ],
   };
 }
 
@@ -38,18 +40,18 @@ export function smoothRectPath(width, height, radius, inset = 0, cornerRadii = n
       if(sign===1)path+=command('L',[left+s*r,h]);
     }
   } else {
-    const {a,b,diagonal:d,spanScale}=continuousCorner();
-    const [tr,br,bl,tl]=(cornerRadii||[radius,radius,radius,radius]).map(value=>Math.max(0,Math.min((value-inset)*spanScale,w/2,h/2)));
+    const {extent,curves}=continuousCorner();
+    const [tr,br,bl,tl]=(cornerRadii||[radius,radius,radius,radius]).map(value=>Math.max(0,Math.min(value-inset,w/(2*extent),h/(2*extent))));
     const corners=[
-      (x,y)=>[w-tr+x*tr,tr+y*tr],
-      (x,y)=>[w-br-y*br,h-br+x*br],
-      (x,y)=>[bl-x*bl,h-bl-y*bl],
-      (x,y)=>[tl+y*tl,tl-x*tl],
+      (x,y)=>[w+x*tr,y*tr],
+      (x,y)=>[w-y*br,h+x*br],
+      (x,y)=>[-x*bl,h-y*bl],
+      (x,y)=>[y*tl,-x*tl],
     ];
-    path=command('M',[tl,0]);
+    path=command('M',[tl*extent,0]);
     for(const p of corners){
-      path+=command('L',p(0,-1))+command('C',p(a,-1),p(b,-1),p(d,-d));
-      path+=command('C',p(1,-b),p(1,-a),p(1,0));
+      path+=command('L',p(-extent,0));
+      for(const curve of curves)path+=command('C',...curve.map(([x,y])=>p(x,y)));
     }
   }
   return path+'Z';

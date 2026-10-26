@@ -26,15 +26,16 @@
   #rec1017771976 #nav1017771976 .t-menu-popover__container { padding-inline: 16px; }
 }
 /* Owned form geometry follows the same rows, fonts, lines and authentic icons. */
-#form1016216116[data-dd-widgets] .t-form__inputsbox { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); column-gap: 24px; }
+#form1016216116[data-dd-widgets] .t-form__inputsbox { display: grid; grid-template-columns: minmax(0,1fr); }
 #form1016216116[data-dd-widgets] .t-form__inputsbox > * { grid-column: 1/-1; min-width: 0; }
 #form1016216116[data-dd-widgets] .t-input-group { float: none; width: 100% !important; height: auto !important; margin-inline: 0 !important; padding: 0 !important; }
 #form1016216116[data-dd-widgets] .t-input-title { height: auto !important; min-height: 0 !important; }
 #form1016216116[data-dd-widgets] .t-input-block { width: 100% !important; box-sizing: border-box; position: relative; }
 #form1016216116[data-dd-widgets] .t-datepicker__wrapper { position: relative; }
 #form1016216116[data-dd-widgets] .t-input-group[hidden] { display: none !important; }
-#form1016216116[data-dd-widgets] [data-field-name]:is([data-field-name="Date"],[data-field-name="Date_2"],[data-field-name="Email"],[data-field-name="Email_2"],[data-field-name="telegram"],[data-field-name="telegram-p"]) { grid-column: 1; }
-#form1016216116[data-dd-widgets] [data-field-name]:is([data-field-name="Phone"],[data-field-name="Phone_2"],[data-field-name="Instagram"],[data-field-name="Instagram-p"]) { grid-column: 2; }
+#form1016216116[data-dd-widgets] .dd-person-fields { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); column-gap: 24px; min-width: 0; border: 0; padding: 0; margin: 0; }
+#form1016216116[data-dd-widgets] .dd-person-fields[hidden] { display: none; }
+#form1016216116[data-dd-widgets] .dd-person-fields > .t-input-group { min-width: 0; grid-column: auto; }
 #form1016216116[data-dd-widgets] :is(input,textarea):not([type="radio"]) { scroll-margin-block: 96px; }
 #form1016216116 .t-radio__control:has(input:focus-visible) { outline: 2px solid var(--dd-blue); outline-offset: 4px; border-radius: 2px; }
 #form1016216116 .t-input-phonemask__select { position: relative; }
@@ -55,6 +56,6 @@
 .dd-calendar .dd-calendar-day { display: block; width: 100%; min-height: 30px; padding: 0; border: 0; background: transparent; color: inherit; font: inherit; cursor: pointer; border-radius: 50%; }
 .dd-calendar .t_datepicker__selected-day .dd-calendar-day { color: var(--dd-on-band); }
 @media(max-width:640px) {
-  #form1016216116[data-dd-widgets] .t-form__inputsbox { grid-template-columns: minmax(0,1fr); }
+  #form1016216116[data-dd-widgets] .dd-person-fields { grid-template-columns: minmax(0,1fr); }
   #form1016216116[data-dd-widgets] .t-form__inputsbox > [data-field-name] { grid-column: 1; }
 }
