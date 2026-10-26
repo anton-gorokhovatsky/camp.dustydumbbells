@@ -194,6 +194,7 @@
 /* Reserve the menu's 48px circle plus 12px of space throughout the film's exit. */
 .dd-cover-tools { position: absolute; z-index: 4; right: calc(max(1.25rem, calc((100% - 1160px)/2)) + 60px); bottom: 1.5rem; display: flex; align-items: center; box-sizing: border-box; max-width: calc(100% - 100px); padding: .25rem; border-radius: 2rem; color: var(--dd-blue); }
 .dd-cover-tools[hidden] { display: none; }
+.dd-cover-tools[data-menu-occluded] { visibility: hidden; }
 .dd-cover-tools button { flex: none; box-sizing: border-box; width: 44px; height: 44px; border: 0; padding: 10px; background: transparent; color: inherit; cursor: pointer; }
 .dd-cover-tools svg { display: block; width: 24px; height: 24px; fill: currentColor; }
 .dd-cover-sound .dd-sound-off, .dd-cover-sound .dd-sound-on { fill: none; stroke: currentColor; stroke-width: 2; }
@@ -319,3 +320,46 @@
   #allrecords[data-dd-refinement] .t1148__scroll-icon-wrapper :is(.tooltip-horizontal-scroll-icon_hand,.tooltip-horizontal-scroll-icon_card) { animation: none; }
 }
 @supports not (backdrop-filter:blur(16px)) { :root { --dd-matte-fill: #f7f7f7; } }
+
+/* One measured, continuous contour for the two non-circular glass surfaces. */
+#rec1017771976 #nav1017771976 .t-menu-popover__burgermenu__sidebar.dd-smooth-ready,
+#allrecords[data-dd-refinement] .dd-cover-tools.dd-smooth-ready {
+  isolation: isolate;
+  background: transparent !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+}
+[data-dd-smooth="glass"].dd-smooth-ready::before,
+[data-dd-smooth="glass"].dd-smooth-ready::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: 0;
+  pointer-events: none;
+}
+[data-dd-smooth="glass"].dd-smooth-ready::before {
+  background: var(--dd-matte-fill);
+  -webkit-backdrop-filter: var(--dd-matte-filter);
+  backdrop-filter: var(--dd-matte-filter);
+  clip-path: var(--dd-smooth-path);
+}
+[data-dd-smooth="glass"].dd-smooth-ready::after {
+  background: var(--dd-matte-edge);
+  -webkit-mask-image: var(--dd-smooth-edge);
+  mask-image: var(--dd-smooth-edge);
+  mask-mode: alpha;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+[data-dd-smooth="photo"].dd-smooth-ready { clip-path: var(--dd-smooth-path); }
+@media(prefers-reduced-transparency:reduce), (forced-colors:active) {
+  [data-dd-smooth="glass"].dd-smooth-ready::before {
+    background: var(--dd-matte-solid);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}

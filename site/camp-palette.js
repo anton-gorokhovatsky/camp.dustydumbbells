@@ -8,7 +8,7 @@ const ease = value => { const t = clamp(value); return t * t * (3 - 2 * t); };
 // colours themselves are an artistic interpretation of the coast, not readings.
 const pigments = {
   morning: { page: '#f4dfc9', blue: '#23458d', red: '#ac2835', band: '#a32937', deep: '#253e75' },
-  day: { page: '#e0ecea', blue: '#1a4297', red: '#b21818', band: '#b21818', deep: '#1a4297' },
+  day: { page: '#f3f0e8', blue: '#1a4297', red: '#b21818', band: '#b21818', deep: '#1a4297' },
   evening: { page: '#f0c6a5', blue: '#2c427d', red: '#9b2935', band: '#9b2935', deep: '#283658' },
   night: { page: '#14243e', blue: '#a5caff', red: '#f59b8d', band: '#642b41', deep: '#0d1d3b' },
 };
@@ -52,7 +52,7 @@ export function campPalette({ date = new Date(), weather = null } = {}) {
     mix(pigments.night[role], mix(horizon[role], pigments.day[role], highSun), daylight),
   ]));
   const isDark = luminance(values.page) < .19;
-  const weatherCast = isDark ? '#263b50' : '#c3d2da';
+  const weatherCast = isDark ? '#263b50' : '#d9dedc';
   values.page = mix(values.page, weatherCast, overcast);
   if (Number.isFinite(weather?.temperature)) {
     values.page = mix(values.page, weather.temperature > 22 ? '#f2c89f' : '#a8d3e4',

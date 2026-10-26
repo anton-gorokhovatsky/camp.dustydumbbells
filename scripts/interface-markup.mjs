@@ -14,6 +14,10 @@ export function adaptInterface(html, base, version) {
     menu = menu.replace(pattern, (_, anchor, icon, close) =>
       anchor.replace(`aria-label="${name}"`, `aria-label="${label}"`) + icon + `<span class="dd-social-label">${label}</span>` + close);
   }
+  // The disclosure now serves navigation; the author's introduction stays in the page.
+  const description = /<div class="t-menu-popover__descr"[^>]*>[\s\S]*?<\/div>/;
+  if (!description.test(menu)) throw new Error('The captured menu introduction changed.');
+  menu = menu.replace(description, '');
   menu = menu.replace(/<script\b[^>]*>[\s\S]*?<\/script>/g, '')
     .replaceAll('Расписание</a>', 'Распи&shy;сание</a>')
     .replaceAll('Анталье</a>', 'Ан&shy;талье</a>')

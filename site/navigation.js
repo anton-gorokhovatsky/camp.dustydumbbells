@@ -1,4 +1,6 @@
-/** Owned disclosure and anchor navigation; the selected menu markup/material stay. */
+import { smoothCorners } from './smooth-corners.js';
+
+/** Nonmodal navigation: the page and its reading position remain available. */
 const navigation = document.querySelector('#nav1017771976');
 const reduce = matchMedia('(prefers-reduced-motion: reduce)');
 let closeMenu = () => {};
@@ -8,41 +10,128 @@ const controls = root => [...root.querySelectorAll('button,a[href],input,select,
 if (navigation) {
   const toggle = navigation.querySelector('.t-menu-burger');
   const panel = navigation.querySelector('.t-menu-popover__burgermenu__sidebar');
-  const overlay = navigation.querySelector('.t-menu-popover__overlay');
-  const isolated = new Map();
+  const movieTools = document.querySelector('.dd-cover-tools');
+  navigation.querySelector('.t-menu-popover__overlay')?.remove();
+  document.body.classList.remove('t1362__body_menushowed');
   panel.id = 'dd-menu-panel';
   panel.setAttribute('role','navigation'); panel.setAttribute('aria-label','Разделы сайта');
   toggle.setAttribute('aria-controls',panel.id);
-  function setOpen(open, returnFocus = false) {
+  const updateMediaAvailability = () => {
+    if (!movieTools) return;
+    const menu=panel.getBoundingClientRect(), tools=movieTools.getBoundingClientRect();
+    const overlaps=toggle.getAttribute('aria-expanded')==='true' && menu.left<tools.right && menu.right>tools.left && menu.top<tools.bottom && menu.bottom>tools.top;
+    if(overlaps) {
+      if(movieTools.contains(document.activeElement))toggle.focus({preventScroll:true});
+      movieTools.dataset.menuOccluded='true';
+    } else delete movieTools.dataset.menuOccluded;
+  };
+  let layersScheduled=false;
+  const scheduleLayers=()=>{if(!layersScheduled){layersScheduled=true;requestAnimationFrame(()=>{layersScheduled=false;updateMediaAvailability();});}};
+  window.addEventListener('scroll',scheduleLayers,{passive:true});
+
+  const preview = document.createElement('figure'); preview.className = 'dd-menu-preview';
+  preview.setAttribute('aria-hidden','true'); preview.dataset.ddSmooth = 'photo';
+  const picture = document.createElement('img'); picture.alt = ''; picture.decoding = 'async'; preview.append(picture); panel.append(preview);
+  const archive = id => document.querySelector(`#rec${id} .t1148__img`)?.getAttribute('data-img-zoom-url');
+  const scenes = {
+    '#rec1016322141': archive('1016322141'),
+    '#rec2078762951': archive('2080000001'),
+    '#rec1017020466': new URL('{{BASE}}media/menu-sea.webp',location.origin).href,
+    '#rec2078794451': new URL('{{BASE}}media/menu-stay.webp',location.origin).href,
+  };
+  let previewLink = null;
+  const roomForPreview = () => {
+    panel.dataset.previewRoom = String(panel.getBoundingClientRect().left >= 204 && matchMedia('(hover: hover)').matches);
+  };
+  const positionPreview = () => {
+    if (!previewLink) return;
+    const bounds = panel.getBoundingClientRect(), target = previewLink.getBoundingClientRect();
+    preview.style.top = Math.max(12-bounds.top,Math.min(target.top-bounds.top-12,innerHeight-bounds.top-preview.offsetHeight-12))+'px';
+  };
+  picture.addEventListener('load', () => {
+    const ratio = picture.naturalWidth / picture.naturalHeight;
+    const width = Math.min(180,260*ratio);
+    preview.style.width = width+'px'; preview.style.height = width/ratio+'px';
+    positionPreview(); preview.classList.add('dd-menu-preview_ready');
+  });
+  const showPreview = (link, keyboard) => {
+    if (!link || !scenes[link.hash]) return;
+    panel.dataset.input = keyboard ? 'keyboard' : 'pointer';
+    toggle.dataset.input = keyboard ? 'keyboard' : 'pointer';
+    previewLink = link; roomForPreview();
+    if(panel.dataset.previewRoom!=='true'){delete panel.dataset.preview;previewLink=null;return;}
+    const url = new URL(scenes[link.hash],location.href).href;
+    if (picture.src !== url) { preview.classList.remove('dd-menu-preview_ready'); picture.src = url; }
+    panel.dataset.preview = 'show'; positionPreview();
+  };
+  panel.addEventListener('pointerover',event => {
+    const link=event.target.closest('.t-menu__link-item');
+    if(link)showPreview(link,false); else if(event.target.closest('a,button'))delete panel.dataset.preview;
+  });
+  panel.addEventListener('focusin',event => {
+    const link=event.target.closest('.t-menu__link-item');
+    if(link)showPreview(link,true); else delete panel.dataset.preview;
+  });
+  panel.addEventListener('pointerleave',() => {
+    const link=document.activeElement.closest('.t-menu__link-item');
+    if(link&&panel.contains(link))showPreview(link,true); else delete panel.dataset.preview;
+  });
+  panel.querySelector('.t-menu-popover__container').addEventListener('scroll',positionPreview,{passive:true});
+  window.addEventListener('resize',()=>{roomForPreview();positionPreview();updateMediaAvailability();},{passive:true});
+  document.fonts.ready.then(()=>{roomForPreview();updateMediaAvailability();});
+  for (const surface of [panel,document.querySelector('.dd-cover-tools')]) {
+    if(surface) { surface.dataset.ddSmooth = 'glass'; smoothCorners(surface); }
+  }
+  smoothCorners(preview);
+
+  function setOpen(open, returnFocus = false, keyboard = false) {
     toggle.setAttribute('aria-expanded',String(open));
     toggle.setAttribute('aria-label',open ? 'Закрыть меню' : 'Открыть меню');
+    toggle.dataset.input = keyboard ? 'keyboard' : 'pointer';
     toggle.classList.toggle('t-menu-burger_open',open);
+    panel.dataset.input = keyboard ? 'keyboard' : 'pointer';
     panel.classList.toggle('t-menu-popover__burgermenu_opened',open);
-    overlay.classList.toggle('t-menu-popover__burgermenu_opened',open);
     panel.setAttribute('aria-hidden',String(!open)); panel.inert = !open;
-    document.body.classList.toggle('t1362__body_menushowed',open);
-    if (open) {
-      navigation.setAttribute('role','dialog'); navigation.setAttribute('aria-modal','true'); navigation.setAttribute('aria-label','Меню кэмпа');
-      for (const el of document.querySelectorAll('#dd-main,#t-footer,#rec1016601036')) { isolated.set(el,el.inert); el.inert = true; }
-      controls(panel)[0]?.focus({preventScroll:true});
+    updateMediaAvailability();
+    if(open) {
+      roomForPreview();
+      if(keyboard)controls(panel)[0]?.focus({preventScroll:true});
     } else {
-      navigation.removeAttribute('role'); navigation.removeAttribute('aria-modal'); navigation.removeAttribute('aria-label');
-      for (const [el,inert] of isolated) el.inert = inert;
-      isolated.clear();
-      if (returnFocus) toggle.focus({preventScroll:true});
+      delete panel.dataset.preview; previewLink = null;
+      if(returnFocus)toggle.focus({preventScroll:true});
     }
   }
-  closeMenu = (restore = false) => { if (toggle.getAttribute('aria-expanded') === 'true') setOpen(false,restore); };
+  closeMenu = (restore = false) => {if(toggle.getAttribute('aria-expanded')==='true')setOpen(false,restore,panel.dataset.input==='keyboard');};
   setOpen(false);
-  toggle.addEventListener('click',()=>setOpen(toggle.getAttribute('aria-expanded') !== 'true',true));
-  overlay.addEventListener('click',()=>closeMenu(true));
+  toggle.addEventListener('click',event => setOpen(toggle.getAttribute('aria-expanded')!=='true',true,event.detail===0));
+  document.addEventListener('pointerdown',event => {if(!navigation.contains(event.target))closeMenu();});
+  document.addEventListener('focusin',event => {if(event.target!==document.body&&!navigation.contains(event.target))closeMenu();});
+  // Leave the floating disclosure at the visible reading context, rather than
+  // following its early source position back to the off-screen movie controls.
+  const resumeReading = () => {
+    closeMenu();
+    const visible = element => {
+      const r=element.getBoundingClientRect();
+      return r.width>0&&r.height>0&&r.bottom>0&&r.top<innerHeight&&r.right>0&&r.left<innerWidth
+        && !element.disabled&&!element.closest('[hidden],[inert]')&&getComputedStyle(element).visibility!=='hidden';
+    };
+    const roots=[document.querySelector('#dd-main'),document.querySelector('#t-footer')].filter(Boolean);
+    const candidates=roots.flatMap(root=>[...root.querySelectorAll('h1,h2,h3,button,a[href],input,select,textarea,img[role="button"]')]).filter(visible);
+    const fallback=roots.flatMap(root=>[...root.querySelectorAll('p,.t-title,.t-text')]).find(visible);
+    const fullyVisible=element=>{const r=element.getBoundingClientRect();return r.top>=0&&r.bottom<=innerHeight;};
+    const target=candidates.find(element=>/^H[123]$/.test(element.tagName)&&fullyVisible(element))||candidates.find(fullyVisible)||candidates[0]||fallback;
+    if(target){if(!target.matches('a[href],button,input,select,textarea,[tabindex]'))target.tabIndex=-1;target.classList.add('dd-navigation-return');target.focus({preventScroll:true});}
+  };
   navigation.addEventListener('keydown',event=>{
-    if(toggle.getAttribute('aria-expanded') !== 'true') return;
-    if(event.key === 'Escape') { event.preventDefault();event.stopPropagation();closeMenu(true); }
-    if(event.key === 'Tab') {
-      const list=[toggle,...controls(panel)],index=list.indexOf(document.activeElement);
-      if(event.shiftKey && index<=0) {event.preventDefault();list.at(-1)?.focus();}
-      else if(!event.shiftKey && index===list.length-1) {event.preventDefault();toggle.focus();}
+    if(event.key!=='Tab'||toggle.getAttribute('aria-expanded')!=='true')return;
+    const list=controls(panel),active=document.activeElement;
+    if(!event.shiftKey&&active===list.at(-1)||event.shiftKey&&active===toggle){event.preventDefault();resumeReading();}
+    else if(event.shiftKey&&active===list[0]){event.preventDefault();toggle.focus({preventScroll:true});}
+    else if(!event.shiftKey&&active===toggle){event.preventDefault();list[0]?.focus({preventScroll:true});}
+  });
+  document.addEventListener('keydown',event => {
+    if(event.key==='Escape'&&!event.defaultPrevented&&toggle.getAttribute('aria-expanded')==='true') {
+      event.preventDefault(); setOpen(false,navigation.contains(document.activeElement),true);
     }
   });
   const record = navigation.closest('.t-rec');
