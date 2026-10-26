@@ -1,6 +1,6 @@
-import { readFileSync } from 'node:fs';
-
-// Four unchanged DD paths, cropped from the supplied DD CAMP master.
-// Provenance: docs/interface-finish-2026-10-26.md.
-export const ddBrandMark = readFileSync(new URL('../site/media/dd-mark.svg', import.meta.url), 'utf8')
-  .trim().replace('<svg ', '<svg class="dd-brand-mark" aria-hidden="true" focusable="false" ');
+// A typographic split echoes the supplied brand's midline displacement.
+// Links keep their own accessible names; the two visual halves are decorative.
+export function socialWordmark(word) {
+  if(!['WEB','TELEGRAM'].includes(word))throw new Error('An original DD destination is required.');
+  return `<span class="dd-social-wordmark" aria-hidden="true"><span>${word}</span><span>${word}</span></span>`;
+}

@@ -3,6 +3,7 @@ import { adaptAccessibility, adaptPrivacyAccessibility } from './accessibility-m
 import { bindMeasurements } from '../site/typography.js';
 import { composeCamp } from './composition-markup.mjs';
 import { composeFooter } from './footer-markup.mjs';
+import { adaptBodyTypography, adaptVisualSystem } from './visual-markup.mjs';
 
 /** Readable records must never wait for Tilda's viewport opacity reveal. */
 export function keepRecordsReadable(html) {
@@ -80,12 +81,12 @@ export function adaptRefinement(html, base, version) {
       if (/<div\b/.test(content)) return whole;
       return open + content.split(/(<[^>]*>)/g).map((part, index) => index % 2 ? part : bindMeasurements(part)).join('') + close;
     });
-  return composeCamp(adaptAccessibility(adaptClimate(html.replace('</head>', `<link rel="stylesheet" href="${base}refinement.css?v=${version}" data-dd-refinement></head>`)
-    .replace('</body>', `<script type="module" src="${base}cover-film.js?v=${version}" data-dd-cover-film></script></body>`), base, version), base, version));
+  return adaptVisualSystem(composeCamp(adaptAccessibility(adaptClimate(html.replace('</head>', `<link rel="stylesheet" href="${base}refinement.css?v=${version}" data-dd-refinement></head>`)
+    .replace('</body>', `<script type="module" src="${base}cover-film.js?v=${version}" data-dd-cover-film></script></body>`), base, version), base, version)),base,version);
 }
 
 export function adaptPrivacyRefinement(html, base, version) {
-  html=composeFooter(html,base).replace('</body>',`<script type="module" src="${base}accessibility.js?v=${version}" data-dd-accessibility></script></body>`);
-  return adaptPrivacyAccessibility(adaptClimate(keepRecordsReadable(html).replace('id="allrecords"', 'id="allrecords" data-dd-refinement="policy"')
-    .replace('</head>', `<link rel="stylesheet" href="${base}refinement.css?v=${version}" data-dd-refinement></head>`), base, version),base,version);
+  html=composeFooter(html,base,{plainLinks:true}).replace('</body>',`<script type="module" src="${base}accessibility.js?v=${version}" data-dd-accessibility></script></body>`);
+  return adaptBodyTypography(adaptPrivacyAccessibility(adaptClimate(keepRecordsReadable(html).replace('id="allrecords"', 'id="allrecords" data-dd-refinement="policy"')
+    .replace('</head>', `<link rel="stylesheet" href="${base}refinement.css?v=${version}" data-dd-refinement></head>`), base, version),base,version),base,version);
 }

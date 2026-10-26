@@ -49,7 +49,7 @@ test('the published document has one main and a complete heading outline while r
   for(let day=11;day<=25;day++)assert(html.includes(`id="dd-day-${day}"`));
   assert(html.includes('class="dd-skip-link" href="#dd-main"'));
   assert(html.includes('data-dd-marquee-toggle'));
-  assert.equal((html.match(/class="t1003"/g)||[]).length,3);
+  assert.equal((html.match(/class="[^\"]*\bt1003\b[^\"]*"/g)||[]).length,3);
   assert.equal((html.match(/class="t-img t1148__img"/g)||[]).length,11);
   assert.equal((html.match(/третий год подряд/g)||[]).length,1);
 });

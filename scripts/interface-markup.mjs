@@ -1,5 +1,5 @@
 import { composeFooter } from './footer-markup.mjs';
-import { ddBrandMark } from './brand-markup.mjs';
+import { socialWordmark } from './brand-markup.mjs';
 
 /** The author's menu, with the requested social links and the existing matte material. */
 export function adaptInterface(html, base, version) {
@@ -12,10 +12,10 @@ export function adaptInterface(html, base, version) {
     .replace('class="t-menu-popover__burgermenu__close-button" aria-label=""',
       'class="t-menu-popover__burgermenu__close-button" aria-label="Закрыть меню"')
     .replace('aria-label="Social media links"', 'aria-label="Ссылки DD"');
-  for (const [name, label] of [['telegram', 'Telegram'], ['website', 'Сайт DD']]) {
+  for (const [name, word, label] of [['telegram','TELEGRAM','TELEGRAM — Пыльные Гантели'], ['website','WEB','WEB — сайт Пыльных Гантелей']]) {
     const pattern = new RegExp(`(<li class="t-sociallinks__item t-sociallinks__item_${name}">[\\s\\S]*?<a[^>]*)(>[\\s\\S]*?<\\/svg>)(<\\/a>)`);
     menu = menu.replace(pattern, (_, anchor, icon, close) =>
-      anchor.replace(`aria-label="${name}"`, `aria-label="${label}"`) + '>' + ddBrandMark + `<span class="dd-social-label">${label}</span>` + close);
+      anchor.replace(`aria-label="${name}"`, `aria-label="${label}"`) + '>' + socialWordmark(word) + close);
   }
   // The disclosure now serves navigation; the author's introduction stays in the page.
   const description = /<div class="t-menu-popover__descr"[^>]*>[\s\S]*?<\/div>/;

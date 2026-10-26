@@ -62,6 +62,8 @@ function groupForm(form) {
   const main=section('Ваши данные','dd-main-fields',groups.filter(group=>group!==travel&&group!==wishes&&!partner(group.dataset.fieldName)));
   const companion=section('Данные партнёра','dd-partner-fields',groups.filter(group=>partner(group.dataset.fieldName)));
   travel.classList.add('dd-travel-choice');
+  const segments=travel.querySelector('.t-radio__wrapper');
+  segments.dataset.ddSmooth='glass';smoothCorners(segments);
   for(const label of travel.querySelectorAll('.t-radio__control')) {
     const indicator=label.querySelector('.t-radio__indicator');
     indicator.setAttribute('aria-hidden','true');

@@ -18,7 +18,7 @@ export function adaptClimate(html, base, version) {
       throw new Error('Review the original weather copy before adding the climate reading.');
     }
     html = html.slice(0, descriptionEnd)
-      + '<p class="dd-climate-reading"><span data-dd-weather-values>Цвета страницы следуют свету Антальи.</span> <span class="dd-climate-source"><span>Данные погоды:</span> <span><a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo</a>.</span></span></p>'
+      + '<p class="dd-climate-reading"><span data-dd-weather-values>Цвета страницы следуют свету Антальи.</span></p>'
       + html.slice(descriptionEnd);
   }
   return html.replace('</head>', `<link rel="stylesheet" href="${base}climate.css?v=${version}" data-dd-climate><script type="module" src="${base}camp-environment.js?v=${version}" data-dd-climate></script></head>`);

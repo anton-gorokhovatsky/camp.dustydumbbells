@@ -9,6 +9,7 @@ import { adaptMap } from './map-markup.mjs';
 import { adaptInterface } from './interface-markup.mjs';
 import { adaptRefinement, adaptPrivacyRefinement } from './refinement-markup.mjs';
 import { season } from '../site/content.js';
+import {composeHotelPreviews,hotelPreviewFiles} from './hotel-markup.mjs';
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const output = path.join(root, "dist");
@@ -137,6 +138,14 @@ for (const file of [
   "navigation.css",
   "navigation.js",
   "smooth-corners.js",
+  "body-type.css",
+  "photo-model.js",
+  "photo-weather.js",
+  "photo-weather.css",
+  "track.css",
+  "track.js",
+  "hotel-previews.css",
+  "hotel-previews.js",
   "refinement.css",
   "cover-film.js",
   "camp-palette.js",
@@ -171,6 +180,7 @@ for (const file of [
         (_, quote, anchor = "") => `href=${quote}${base}${anchor}${quote}`);
     content = adaptInterface(content, base, assetVersion);
     content = adaptRefinement(content, base, assetVersion);
+    content = composeHotelPreviews(content,base,hotels,assetVersion);
   }
   // A new publication must also refresh cached styles and module dependencies.
   if (file.endsWith(".html")) {
@@ -196,6 +206,12 @@ for (const file of ['camp-2026.mp4', 'camp-2026-poster.jpg', 'menu-sea.webp', 'm
 }
 const hotelImages = hotels.flatMap(hotel => hotel.photos.map(photo => photo.file));
 if (new Set(hotelImages).size !== hotelImages.length) throw new Error("Hotel photographs must have unique placements");
+await mkdir(path.join(output,'media/hotels'),{recursive:true});
+for(const file of hotelPreviewFiles){
+  const bytes=await readFile(path.join(root,'site/direction/media/hotels',file));
+  await writeFile(path.join(output,'media/hotels',file),bytes);
+  siteFiles[`media/hotels/${file}`]=createHash('sha256').update(bytes).digest('hex');
+}
 for (const [source, file] of [
   ["index.js", "suncalc.js"],
   ["LICENSE", "suncalc-LICENSE.txt"],

@@ -1,0 +1,30 @@
+/* Body and display retain the accepted size, weight, leading and composition roles. */
+@font-face {
+  font-family: 'DD Body Akt'; src: url('./fonts/akt-variable-e3b50a6331.woff2') format('woff2');
+  font-weight: 100 900; font-style: normal; font-display: swap;
+}
+:root { --dd-body-font: 'DD Body Akt', 'Museo', Arial, sans-serif; }
+
+html:root #allrecords[data-dd-refinement] :is(
+  .t-section__descr, .t004 .t-text, .t547__descr, .t547__descr strong,
+  .dd-cover-intro .t997__descr, .dd-climate-reading,
+  .t1148__textwrapper, .dd-archive-caption, .dd-photo-origin, .dd-track__caption,
+  .t678__form-bottom-text, .dd-footer-legal, .dd-motion-preference
+) { font-family: var(--dd-body-font) !important; }
+
+html:root #allrecords[data-dd-refinement] #form1016216116 :is(
+  input, textarea, select, .t-input-phonemask__wrap, .t-input-phonemask__select,
+  .t-input__vis-ph, .t-input-title, .t-radio__control, .t-checkbox__control,
+  .t-input-error, .dd-form-status
+) { font-family: var(--dd-body-font) !important; }
+/* The real date popup is appended to body, outside #form and #allrecords. */
+html:root .dd-calendar,
+html:root .dd-calendar :is(button, select, table, th, td, label, span) {
+  font-family: var(--dd-body-font) !important;
+}
+
+/* Display and brand roles are literally the accepted Museo family. */
+html:root #allrecords[data-dd-refinement] :is(
+  h1, h2, h3, .dd-cover-date, .t-section__title, .t225__title, .t547__title, .t1003__item-txt,
+  .dd-person-fields legend, .t-submit, .dd-footer-copy
+) { font-family: 'Museo', Arial, sans-serif !important; }

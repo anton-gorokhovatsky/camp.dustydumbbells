@@ -1,5 +1,7 @@
 import { campPalette } from './camp-palette.js';
 import { normalizeWeather, weatherURL, placeClock, clockText, weatherLabel } from './environment.js';
+import { mountPhotoWeather } from './photo-weather.js';
+import { smoothCorners } from './smooth-corners.js';
 
 const CACHE_KEY = 'dd-camp-antalya-weather-v1';
 const REFRESH = 30 * 60 * 1000;
@@ -51,6 +53,8 @@ function initCampEnvironment() {
   let storage = null;
   try { storage = sessionStorage; } catch {}
   const reader = createWeatherReader({ storage });
+  const updatePhotographs = document.body.hasAttribute('data-dd-photo-weather') ? mountPhotoWeather(null) : null;
+  document.querySelectorAll('.dd-track__photo').forEach(smoothCorners);
   const reading = document.querySelector('[data-dd-weather-values]');
   const render = () => {
     if (document.hidden) return;
@@ -58,6 +62,7 @@ function initCampEnvironment() {
     const weather = reader.peek();
     const palette = campPalette({ date, weather });
     applyCampPalette(root, palette);
+    updatePhotographs?.(weather);
     if (reading) {
       const clock = clockText(placeClock(date).minutes);
       const phase = { morning: 'рассвет', day: 'день', evening: 'вечер', night: 'ночь' }[palette.phase];

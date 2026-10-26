@@ -11,6 +11,7 @@ import { adaptRefinement, keepRecordsReadable } from './refinement-markup.mjs';
 import { adaptClimate } from './climate-markup.mjs';
 import { adaptPrivacyAccessibility } from './accessibility-markup.mjs';
 import { composeFooter } from './footer-markup.mjs';
+import { composeHotelPreviews } from './hotel-markup.mjs';
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const manifest = JSON.parse(
@@ -73,6 +74,7 @@ for (const name of ['index.html', 'direction/index.html']) {
     .replace(/href=(['"])\/(#.*?)?\1/g, (_, quote, anchor = '') => `href=${quote}${release.base}${anchor}${quote}`);
   expected = adaptInterface(expected, release.base, encodeURIComponent(release.commit));
   expected = adaptRefinement(expected, release.base, encodeURIComponent(release.commit));
+  expected = composeHotelPreviews(expected, release.base, JSON.parse(await readFile(path.join(root,'site/data/hotels.json'),'utf8')),encodeURIComponent(release.commit));
   const built = await readFile(path.join(root, 'dist', name), 'utf8');
   assert.equal(built, expected, `Current source fidelity failed: ${name}`);
   assert(!built.includes('js-form-proccess'));
@@ -119,6 +121,9 @@ for (const [sourceName, builtName] of [
     const refinementStyle = `<link rel="stylesheet" href="${release.base}refinement.css?v=${encodeURIComponent(release.commit)}" data-dd-refinement>`;
     assert(restored.includes(refinementStyle));
     restored = restored.replace(refinementStyle, '').replace(' data-dd-refinement="policy"', '');
+    const bodyTypeStyle = `<link rel="stylesheet" href="${release.base}body-type.css?v=${encodeURIComponent(release.commit)}" data-dd-body-type>`;
+    assert(restored.includes(bodyTypeStyle));
+    restored = restored.replace(bodyTypeStyle, '');
     assert(built.includes(`href="${release.base}#form"`));
     assert(!/href=(['"])#form\1/.test(built), 'Privacy must link to the main-page form');
     restored = restored.replaceAll(`href="${release.base}#form"`, 'href="#form"');
@@ -142,7 +147,7 @@ for (const [sourceName, builtName] of [
   assert.equal(
     hash(restored),
     hash(sourceName === 'privacy.html' ? adaptPrivacyAccessibility(adaptClimate(keepRecordsReadable(
-      composeFooter(source,release.base)
+      composeFooter(source,release.base,{plainLinks:true})
         .replaceAll(`href="${release.base}privacy/"`,'href="/privacy"')
         .replace('</body>',`<script type="module" src="${release.base}accessibility.js?v=${encodeURIComponent(release.commit)}" data-dd-accessibility></script></body>`)
     ), release.base, encodeURIComponent(release.commit)), release.base, encodeURIComponent(release.commit)) : source),
