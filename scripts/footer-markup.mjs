@@ -30,7 +30,7 @@ export function composeFooter(html,base,{plainLinks=false}={}) {
   const content=`${opening}<div class="dd-footer-meta">
     <div class="dd-footer-details">
       <div class="dd-footer-mainline"><span class="dd-footer-copy">© DUSTY DUMBBELLS, 2026</span><nav class="dd-footer-socials" aria-label="Ссылки DD">${links}</nav></div>
-      <div class="dd-footer-legal"><a href="${base}privacy/">Политика конфи&shy;денци&shy;альности</a><button class="dd-motion-preference" type="button" data-dd-marquee-toggle hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5H10V19H7ZM14 5H17V19H14Z"></path></svg><span>Отключить движение</span></button><a class="dd-footer-weather" href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Данные погоды: Open-Meteo</a></div>
+      <div class="dd-footer-legal"><a href="${base}privacy/">Политика конфи&shy;денци&shy;альности</a><button class="dd-motion-preference" type="button" data-dd-marquee-toggle hidden><svg viewBox="0 0 12 16" aria-hidden="true"><path d="M0 0H4V16H0ZM8 0H12V16H8Z"></path></svg><span>Отключить движение</span></button><a class="dd-footer-weather" href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Данные погоды: Open-Meteo</a></div>
     </div>
     <ag-signature class="dd-footer-signature" theme="dark" role-label="Дизайн и разработка" controls="external"><a href="https://gorokhovatsky.tech/" rel="author">Антон Гороховатский — Дизайн и разработка</a></ag-signature>
   </div></div>`;

@@ -142,6 +142,8 @@ for (const file of [
   "photo-model.js",
   "photo-weather.js",
   "photo-weather.css",
+  "photo-stacks.css",
+  "photo-stacks.js",
   "track.css",
   "track.js",
   "hotel-previews.css",

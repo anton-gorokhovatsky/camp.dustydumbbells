@@ -3,7 +3,7 @@
   --track-type: clamp(2rem, 3.2vw, 3rem);
   padding: 0 !important;
   position: relative;
-  background: var(--dd-page) !important;
+  background: transparent !important;
 }
 .dd-track-scene[tabindex="-1"]:focus { outline:none; }
 #allrecords[data-dd-refinement] .dd-track-scene .dd-track {

@@ -45,7 +45,8 @@
 #form1016216116 .dd-date-toggle { box-sizing: content-box; display: block; width: 25px; border: 0; padding-block: 0; background: transparent; pointer-events: auto; cursor: pointer; }
 #form1016216116 .dd-date-toggle svg { display: block; width: 25px; height: 100%; fill: var(--dd-red); }
 #form1016216116 .dd-date-toggle:focus-visible { outline: 2px solid var(--dd-blue); outline-offset: -3px; }
-.dd-calendar { width: max(246px, 16rem); max-width: calc(100vw - 40px); color: var(--dd-ink); background: var(--dd-page); }
+.t_datepicker__inner.dd-calendar { width: max(246px, 16rem); max-width: calc(100vw - 40px); border-radius: 1rem; color: var(--dd-ink); background: var(--dd-page); }
+.dd-calendar .t_datepicker__header { border-radius: .5rem; }
 .dd-calendar[hidden] { display: none !important; }
 .dd-calendar-grid { overflow: auto; }
 .dd-calendar .t_datepicker__body { width: 100%; min-width: 14em; table-layout: fixed; }

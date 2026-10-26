@@ -224,7 +224,7 @@ test("the original Tilda runtime uses local assets and retained modules keep the
       }
       assert(reference.startsWith(release.base), reference);
       const local = reference.slice(release.base.length).split('?')[0];
-      assert(local.startsWith('assets/') || local.startsWith('media/hotels/') || ['application.css', 'application.js', 'navigation.css', 'navigation.js', 'camp-map.css', 'camp-map.js', 'refinement.css', 'cover-film.js', 'climate.css', 'camp-environment.js', 'accessibility.css', 'accessibility.js', 'phone-flags.css', 'body-type.css', 'photo-weather.css', 'track.css', 'track.js', 'hotel-previews.css', 'hotel-previews.js'].includes(local), reference);
+      assert(local.startsWith('assets/') || local.startsWith('media/hotels/') || ['application.css', 'application.js', 'navigation.css', 'navigation.js', 'camp-map.css', 'camp-map.js', 'refinement.css', 'cover-film.js', 'climate.css', 'camp-environment.js', 'accessibility.css', 'accessibility.js', 'phone-flags.css', 'body-type.css', 'photo-weather.css', 'track.css', 'track.js', 'photo-stacks.css', 'photo-stacks.js', 'hotel-previews.css', 'hotel-previews.js'].includes(local), reference);
       assert((await stat(new URL(`../dist/${local}`,import.meta.url))).isFile());
     }
   }
@@ -239,22 +239,23 @@ test("the original Tilda runtime uses local assets and retained modules keep the
   assert((await read('privacy/index.html')).includes(`privacy.css?v=${release.commit}`));
 });
 
-test("the original archive keeps every unique photograph and full-size zoom source", async () => {
+test("the original archive keeps every full-size source while stacks turn without zoom", async () => {
   const html = await read('index.html');
   const release = JSON.parse(await read('release.json'));
   const images = [...html.matchAll(/<img\b[^>]*class="t-img t1148__img"[^>]*>/g)].map(m=>m[0]);
-  assert.equal(images.length,11);
-  const zoomSources=[];
+  assert.equal(images.length,10);
+  const sources=[...html.matchAll(/<img\b[^>]*data-(?:dd-photo-source|img-zoom-url)="([^"]+)"/g)].map(m=>m[1]);
   for(const image of images){
-    assert(image.includes('data-zoomable="yes"'));
     assert(image.includes('role="button"') && image.includes('tabindex="0"'));
     assert(image.includes('Кэмп в Фетхие, 2025.'));
-    const source=/data-img-zoom-url="([^"]+)"/.exec(image)?.[1];
-    assert(source?.startsWith(release.base+'assets/'));
-    assert((await stat(new URL(`../dist/${source.slice(release.base.length)}`,import.meta.url))).size>100_000);
-    zoomSources.push(source);
+    assert(image.includes('data-dd-photo-source') || image.includes('data-dd-memory-photo'));
   }
-  assert.equal(new Set(zoomSources).size,11);
+  assert.equal((html.match(/data-zoomable="yes"/g)||[]).length,1,'Only the independent sunset retains full viewing.');
+  assert.equal(new Set(sources).size,11);
+  for(const source of new Set(sources)){
+    assert(source.startsWith(release.base+'assets/'));
+    assert((await stat(new URL(`../dist/${source.slice(release.base.length)}`,import.meta.url))).size>100_000);
+  }
   for(const id of ['1016322141','1017020466']){
     assert(html.includes(`id="carousel_${id}"`));
     assert(html.includes(`aria-controls="carousel_${id}"`));

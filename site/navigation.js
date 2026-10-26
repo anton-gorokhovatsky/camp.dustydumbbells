@@ -38,7 +38,7 @@ if (navigation) {
   const preview = document.createElement('figure'); preview.className = 'dd-menu-preview';
   preview.setAttribute('aria-hidden','true'); preview.dataset.ddSmooth = 'photo';
   const picture = document.createElement('img'); picture.alt = ''; picture.decoding = 'async'; preview.append(picture); panel.append(preview);
-  const archive = id => document.querySelector(`#rec${id} .t1148__img`)?.getAttribute('data-img-zoom-url');
+  const archive = id => {const image=document.querySelector(`#rec${id} .t1148__img`);return image?.getAttribute('data-dd-photo-source')||image?.getAttribute('data-img-zoom-url');};
   const scenes = {
     '#rec1016322141': archive('1016322141'),
     '#rec2078762951': archive('2080000001'),

@@ -10,7 +10,7 @@ function syncMotion() {
   if (control) {
     control.hidden = false;
     control.querySelector('span').textContent=paused?'Включить движение':'Отключить движение';
-    control.querySelector('path').setAttribute('d',paused?'M7 4 20 12 7 20Z':'M7 5H10V19H7ZM14 5H17V19H14Z');
+    control.querySelector('path').setAttribute('d',paused?'M0 0 12 8 0 16Z':'M0 0H4V16H0ZM8 0H12V16H8Z');
   }
 }
 control?.addEventListener('click', () => {
@@ -36,7 +36,7 @@ for (const strip of document.querySelectorAll('.t1003')) {
 // The introduction now has one stable place after the film, including without JS.
 
 // A photographic encounter needs scrolling controls only while it has an unseen part.
-for (const gallery of document.querySelectorAll('.t1148')) {
+for (const gallery of document.querySelectorAll('.t1148:not([data-dd-stack])')) {
   const slider = gallery.querySelector('.t1148__slider');
   const controls = gallery.querySelector('.t1148__controls');
   if (!slider || !controls) continue;

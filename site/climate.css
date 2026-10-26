@@ -22,10 +22,7 @@ html:has([data-dd-environment]), body[data-dd-environment] {
 }
 body[data-dd-environment] :is(#allrecords,#dd-main) { color: var(--dd-ink); background: var(--dd-page); }
 body[data-dd-environment] :is(#allrecords,#dd-main) > .r {
-  background-color: var(--dd-page) !important;
-}
-body[data-dd-environment] :is(#allrecords,#dd-main) > :is(#rec1016322141, #rec1017020466, #rec1016216116) {
-  background-color: var(--dd-surface) !important;
+  background: transparent !important;
 }
 body[data-dd-environment] #allrecords :is(.t-section__descr, .t004 .t-text, .t547__descr, .t547__descr strong, .t678__form-bottom-text) {
   color: var(--dd-ink) !important;

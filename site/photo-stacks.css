@@ -1,0 +1,25 @@
+/* The three selected photographic stacks share one layout and interaction. */
+#allrecords[data-dd-refinement] .dd-photo-stack { --stack-width:min(36rem,calc(80svh * 2 / 3),calc(100% - 4rem)); }
+#allrecords[data-dd-refinement] .dd-photo-stack .t1148__slider {
+  display:block;position:relative;box-sizing:border-box;
+  width:var(--stack-width);
+  max-width:calc(100% - 4rem);height:auto;aspect-ratio:2/3;
+  margin:1rem auto 1.75rem;padding:0!important;overflow:visible;
+  scroll-snap-type:none;transform:none!important;
+}
+#allrecords[data-dd-refinement] .dd-photo-stack .t1148__item {
+  position:absolute!important;inset:0;display:block!important;
+  width:100%!important;height:100%;margin:0!important;padding:0!important;
+  transform:translate3d(calc(var(--stack-depth)*7px),calc(var(--stack-depth)*5px),0) rotate(var(--stack-angle));
+  transition:transform 280ms cubic-bezier(.23,1,.32,1);
+}
+#allrecords[data-dd-refinement] .dd-photo-stack .t1148__img-wrapper { display:block;width:100%;height:100%; }
+#allrecords[data-dd-refinement] .dd-photo-stack .t1148__img { display:block;width:100%;height:100%!important;object-fit:cover; }
+#allrecords[data-dd-refinement] .dd-photo-stack .t1148__controls { position:relative;inset:auto;display:flex!important;align-items:center;justify-content:center;gap:1rem;margin:0;padding:0; }
+#allrecords[data-dd-refinement] .dd-photo-stack .t1148__controls button { position:relative;inset:auto;flex:none;margin:0; }
+#allrecords[data-dd-refinement] .dd-photo-stack .dd-gallery-footer { display:grid;grid-template-columns:minmax(0,1fr);gap:.75rem;width:var(--stack-width);max-width:calc(100% - 4rem);padding:0;margin:.5rem auto 0; }
+#allrecords[data-dd-refinement] .dd-photo-stack .dd-gallery-footer .t1148__controls { justify-self:center;margin:0; }
+#allrecords[data-dd-refinement] .dd-photo-stack .dd-stack-count { color:var(--dd-muted);font:400 var(--dd-type-meta)/1.5 var(--dd-body-font);min-width:3em;text-align:center; }
+#allrecords[data-dd-refinement] .dd-photo-stack[data-stack-input="keyboard"] .t1148__item,
+html[data-dd-marquees="paused"] #allrecords[data-dd-refinement] .dd-photo-stack .t1148__item { transition:none; }
+@media(prefers-reduced-motion:reduce){#allrecords[data-dd-refinement] .dd-photo-stack .t1148__item{transition:none;}}

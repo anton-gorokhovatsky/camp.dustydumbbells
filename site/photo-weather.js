@@ -61,6 +61,7 @@ export function mountPhotoWeather(weather) {
   new MutationObserver(records=>{for(const record of records)record.addedNodes.forEach(collect);}).observe(document.body,{childList:true,subtree:true});
   new MutationObserver(()=>frames.forEach(sync)).observe(root,{attributes:true,attributeFilter:['data-dd-marquees']});
   new MutationObserver(()=>frames.forEach(sync)).observe(document.body,{attributes:true,attributeFilter:['class']});
+  new MutationObserver(()=>frames.forEach(sync)).observe(document.body,{subtree:true,attributes:true,attributeFilter:['inert']});
   document.addEventListener('visibilitychange',()=>frames.forEach(sync));
   reduce.addEventListener('change',()=>{[...frames.values()].forEach(motion);});
   const update=weather=>{

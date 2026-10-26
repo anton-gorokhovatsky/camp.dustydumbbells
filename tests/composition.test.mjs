@@ -32,7 +32,7 @@ test('the archive has one source per photograph, valid gallery positions and a d
   const coast = record('1017020466');
   const form = record('1016216116');
   assert(!coast.includes('IMG_6948.JPG'));
-  for (const [id, count] of [['1016322141', 3], ['2080000001', 3], ['1017020466', 4]]) {
+  for (const [id, count] of [['1016322141', 3], ['2080000001', 2], ['1017020466', 4]]) {
     const gallery = record(id);
     assert.equal((gallery.match(/class="t1148__item"/g) || []).length, count);
     for (let index = 0; index < count; index++) {
@@ -40,6 +40,9 @@ test('the archive has one source per photograph, valid gallery positions and a d
       assert(gallery.includes(`data-index="${index}"`));
     }
     assert(gallery.includes(`aria-label="1 из ${count}"\naria-current="true"`));
+    assert(gallery.includes('data-dd-stack'));
+    assert(!gallery.includes('data-zoomable'));
+    assert(!gallery.includes('t_slider__init('));
   }
   const archive = html.indexOf('data-dd-programme-memory');
   assert(archive > html.indexOf('id="dd-day-17"'));
@@ -53,7 +56,10 @@ test('the archive has one source per photograph, valid gallery positions and a d
   assert(image.includes('Кэмп в Фетхие, 2025.'));
   assert(form.indexOf('data-dd-memory-photo') < form.indexOf('id="dd-heading-form"'));
   assert.equal((html.match(/data-dd-memory-photo/g) || []).length, 1);
-  const sources = [...html.matchAll(/<img\b[^>]*data-img-zoom-url="([^"]+)"/g)].map(m => m[1]);
-  assert.equal(sources.length, 11);
+  const sources = [...html.matchAll(/<img\b[^>]*data-(?:dd-photo-source|img-zoom-url)="([^"]+)"/g)].map(m => m[1]);
   assert.equal(new Set(sources).size, 11);
+  assert(form.includes('За&shy;явка на кэмп'));
+  assert(!form.includes('Количество заявок ограничено'));
+  assert(record('2078794741').includes('dd-travel-copy'));
+  assert(!record('2078794741').includes('dd-travel-column'));
 });

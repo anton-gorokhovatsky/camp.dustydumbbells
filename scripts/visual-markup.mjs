@@ -7,22 +7,27 @@ export function adaptBodyTypography(html, base, version) {
 const photographs = [
   {file:'ca7c99443ce6-IMG_6951_1.jpg',width:1680,height:2239},
   {file:'9b0df23f9df7-IMG_6952.JPG',width:1680,height:2520},
+  {file:'edb1b4c73141-IMG_6953.JPG',width:1680,height:2520,source:true},
 ];
 
 export function composePhotographicTrack(html, base) {
   if(photographs.some(photo=>html.includes(photo.file)))throw new Error('A selected track photograph is already placed.');
-  const picture=(photo,second=false)=>`<span class="dd-track__photo${second?' dd-track__photo--second':''}" data-dd-smooth="photo" style="--photo-ratio:${photo.width}/${photo.height}"><img src="${base}assets/${photo.file}" width="${photo.width}" height="${photo.height}" alt="" loading="lazy" decoding="async"></span>`;
+  const picture=(photo,second=false)=>`<span class="dd-track__photo${second?' dd-track__photo--second':''}" data-dd-smooth="photo" style="--photo-ratio:${photo.width}/${photo.height}"><img src="${base}assets/${photo.file}"${photo.source?` data-dd-photo-source="${base}assets/${photo.file}"`:''} width="${photo.width}" height="${photo.height}" alt="" loading="lazy" decoding="async"></span>`;
   const tracks=[
-    {id:'1016358466',text:'Ты бронируешь билеты, жильё и трансфер — мы берём на себя спорт и развлечения',href:'#rec2078794451'},
-    {id:'1017632716',text:'It costs 0.00 to be a nice camp (21+)',href:'#form',photo:true},
-    {id:'2238016901',text:'До встречи у моря'},
+    {id:'1016358466',text:'Море, солнце и тёплый ветер',href:'#rec1016322141',photo:'sea'},
+    {id:'1017632716',text:'Ты бронируешь билеты, жильё и трансфер — мы берём на себя спорт и развлечения',href:'#rec2078794451',photo:'travel'},
+    {id:'2238016901',text:'It costs 0.00 to be a nice camp (21+)'},
   ];
   for(const track of tracks){
     const start=html.indexOf(`<div id="rec${track.id}"`);
     const next=/<(?:div|section) id="rec\d+"/.exec(html.slice(start+10));
     const end=next?start+10+next.index:-1;
     if(start<0||end<0||!html.slice(start,end).includes('t1003'))throw new Error('A selected running band changed: '+track.id);
-    const words=track.photo?`<span class="dd-track__words">It costs</span>${picture(photographs[0])}<span class="dd-track__words">0.00 to be</span>${picture(photographs[1],true)}<span class="dd-track__words">a nice camp (21+)</span>`:`<span class="dd-track__words">${track.text}</span>`;
+    const words=track.photo==='sea'
+      ?`<span class="dd-track__words">Море,</span>${picture(photographs[2])}<span class="dd-track__words">солнце и тёплый ветер</span>`
+      :track.photo==='travel'
+        ?`<span class="dd-track__words">Ты бронируешь билеты, жильё и трансфер</span>${picture(photographs[0])}<span class="dd-track__words">— мы берём на себя спорт и развлечения</span>${picture(photographs[1],true)}`
+        :`<span class="dd-track__words">${track.text}</span>`;
     const lap=(clone=false)=>`<div class="t1003__item"${clone?' aria-hidden="true"':''}>${track.href?`<a class="t1003__item-link dd-track__lap" href="${track.href}" aria-label="${track.text}"${clone?' tabindex="-1"':''}>${words}</a>`:`<span class="dd-track__lap">${words}</span>`}</div>`;
     const strip=`<section id="rec${track.id}" class="r t-rec dd-track-scene" data-animationappear="off" aria-label="${track.text}"><div class="t1003 dd-track"><div class="dd-track__surface" aria-hidden="true"></div><div class="dd-track__viewport"><div class="t1003__content dd-track__motion">${lap()}${lap(true)}</div></div></div>${track.photo?'<p class="t-container dd-track__caption">Кэмп в Фетхие, 2025</p>':''}</section>`;
     html=html.slice(0,start)+strip+html.slice(end);

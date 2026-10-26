@@ -66,8 +66,12 @@ export function composeCamp(html) {
   if (fieldsStart < 0) throw new Error('The original form container changed.');
   const fields = divAt(form, fieldsStart);
   if (!fields.html.includes('id="form1016216116"')) throw new Error('The invitation must keep the original form.');
-  const invitation = header.html.replace('незабываемое', 'незабы&shy;ваемое')
-    .replace('тренировочном', 'трениро&shy;вочном');
+  let invitation = header.html.replace(/(<h2\b[^>]*id="dd-heading-form"[^>]*>)[\s\S]*?<\/h2>/, '$1За&shy;явка на кэмп</h2>');
+  const preambleStart = /<div\b[^>]*class="[^"]*\bt-section__descr\b[^"]*"[^>]*>/.exec(invitation)?.index;
+  if (preambleStart !== undefined) {
+    const preamble = divAt(invitation, preambleStart);
+    invitation = invitation.slice(0, preamble.start) + invitation.slice(preamble.end);
+  }
   const scene = `<div class="dd-invitation-scene t-container"><figure class="dd-form-memory">${sunset}</figure>${invitation}<div class="dd-application-body">${fields.html}</div></div>`;
   html = html.slice(0, formStart) + form.slice(0, header.start) + scene
     + form.slice(header.end, fields.start) + form.slice(fields.end);
@@ -117,7 +121,7 @@ function composeRhythm(html) {
   if (shoreline.length !== 5 || !harbour) throw new Error('The selected coastal archive changed.');
 
   // Keep the first close encounters large; the same gallery interaction continues in the middle.
-  let memory = withGalleryItems(opening.html, [people[3].html, people[4].html, harbour.html]);
+  let memory = withGalleryItems(opening.html, [people[3].html, people[4].html]);
   const header = /<div\b[^>]*class="[^"]*\bt1148__col\b[^\"]*"[^>]*>/.exec(memory);
   const oldHeader = divAt(memory, header.index);
   memory = memory.slice(0, oldHeader.start)
@@ -151,18 +155,15 @@ function composeRhythm(html) {
   const changedProgramme = programme.html.slice(0, container.start) + first + memory + second + programme.html.slice(container.end);
   html = html.slice(0, programme.start) + changedProgramme + html.slice(programme.end);
 
-  // Preparation has two related prose groups; all words and links keep their source order.
+  // Preparation keeps one reading flow, with all words and links in source order.
   const travel = recordAt(html, '2078794741');
   const textMatch = /<div\b[^>]*class="t-text t-text_md\s*"[^>]*>/.exec(travel.html);
   if (!textMatch) throw new Error('The original travel copy changed.');
   const text = divAt(travel.html, textMatch.index);
   const paragraphs = [...text.html.matchAll(/<p>/g)];
   if (paragraphs.length !== 5) throw new Error('The five original preparation paragraphs changed.');
-  const openingTag = text.html.slice(0, text.html.indexOf('>') + 1).replace('class="', 'class="dd-travel-columns ');
-  const columns = openingTag + '<div class="dd-travel-column">'
-    + text.html.slice(text.html.indexOf('>') + 1, paragraphs[3].index) + '</div><div class="dd-travel-column">'
-    + text.html.slice(paragraphs[3].index, -6) + '</div></div>';
-  const changedTravel = travel.html.slice(0, text.start) + columns + travel.html.slice(text.end);
+  const copy = text.html.replace('class="', 'class="dd-travel-copy ');
+  const changedTravel = travel.html.slice(0, text.start) + copy + travel.html.slice(text.end);
   return composeGalleryFooters(html.slice(0, travel.start) + changedTravel + html.slice(travel.end));
 }
 
@@ -175,13 +176,14 @@ function composeGalleryFooters(html) {
     const header = divAt(widget.html, headerMatch.index);
     const controlMatch = /<div\b[^>]*class="[^"]*\bt1148__controls\b[^\"]*"[^>]*>/.exec(header.html);
     const controls = divAt(header.html, controlMatch.index);
-    const caption = header.html.match(/<p class="dd-archive-caption">[\s\S]*?<\/p>/)?.[0] || '';
+    const existingCaption = header.html.match(/<p class="dd-archive-caption">[\s\S]*?<\/p>/)?.[0];
+    const caption = existingCaption || '<p class="dd-archive-caption">Кэмп в Фетхие, 2025</p>';
     let heading = header.html;
     for (const token of ['t-col_2', 't1148__scroll-icon-wrapper']) {
       const match = new RegExp(`<div\\b[^>]*class="[^"]*\\b${token}\\b[^"]*"[^>]*>`).exec(heading);
       if (match) { const part = divAt(heading, match.index); heading = heading.slice(0, part.start) + heading.slice(part.end); }
     }
-    if (caption) heading = '';
+    if (existingCaption) heading = '';
     let changed = widget.html.slice(0, header.start) + heading + widget.html.slice(header.end);
     const close = changed.lastIndexOf('</div>');
     changed = changed.slice(0, close) + `<div class="dd-gallery-footer t-container">${caption}${controls.html}</div>` + changed.slice(close);
