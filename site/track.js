@@ -15,7 +15,7 @@ for(const track of document.querySelectorAll('.dd-track')){
       motion.append(clone);
       clone.querySelectorAll('[data-dd-smooth="photo"]').forEach(smoothCorners);
     }
-    motion.style.setProperty('--track-duration',`${width/64}s`);
+    motion.style.setProperty('--track-duration',`${width/36}s`);
     motion.style.setProperty('--track-distance',`${-width}px`);
   };
   const observer=new ResizeObserver(measure);observer.observe(lap);observer.observe(track);

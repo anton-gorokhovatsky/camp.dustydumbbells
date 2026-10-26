@@ -8,12 +8,13 @@ function syncMotion() {
   root.dataset.ddMarquees = paused ? 'paused' : 'running';
   for(const signature of document.querySelectorAll('ag-signature'))signature.toggleAttribute('paused',paused);
   if (control) {
-    control.checked = !paused;
-    control.closest('label').hidden = false;
+    control.hidden = false;
+    control.querySelector('span').textContent=paused?'Включить движение':'Отключить движение';
+    control.querySelector('path').setAttribute('d',paused?'M7 4 20 12 7 20Z':'M7 5H10V19H7ZM14 5H17V19H14Z');
   }
 }
-control?.addEventListener('change', () => {
-  preference = !control.checked;
+control?.addEventListener('click', () => {
+  preference = !(preference ?? reduce.matches);
   try { localStorage.setItem('dd-marquee-pause', preference ? 'yes' : 'no'); } catch {}
   syncMotion();
 });

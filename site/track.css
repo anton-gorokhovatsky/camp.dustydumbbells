@@ -99,7 +99,7 @@ html[data-dd-marquees='paused'] #allrecords[data-dd-refinement] .dd-track-scene 
 }
 @keyframes dd-track-lap { to { transform: translateX(var(--track-distance,-50%)); } }
 @media(max-width:640px) {
-  #allrecords[data-dd-refinement] .dd-track-scene { --track-type: clamp(1.5rem, 6vw, 1.75rem); }
+  #allrecords[data-dd-refinement] .dd-track-scene { --track-type: clamp(3.75rem, 15vw, 5rem); }
 }
 @media(prefers-reduced-motion:reduce) {
   html:not([data-dd-marquees='running']) #allrecords[data-dd-refinement] .dd-track-scene .dd-track__viewport { overflow-x: auto; }
@@ -110,5 +110,5 @@ html[data-dd-marquees='paused'] #allrecords[data-dd-refinement] .dd-track-scene 
 #allrecords[data-dd-refinement] #t-footer .dd-track__surface { background:transparent!important; }
 @media(hover:hover) and (pointer:fine) {
   #allrecords[data-dd-refinement] .dd-track:hover .dd-track__motion { animation-play-state: paused !important; }
-  .dd-track__lap:hover { text-decoration: underline !important; text-decoration-thickness: .02em !important; text-underline-offset: .08em; }
+  .dd-track__lap[href]:hover { text-decoration: underline !important; text-decoration-thickness: .02em !important; text-underline-offset: .08em; }
 }

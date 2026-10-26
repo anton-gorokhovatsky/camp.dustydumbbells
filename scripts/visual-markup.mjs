@@ -15,7 +15,7 @@ export function composePhotographicTrack(html, base) {
   const tracks=[
     {id:'1016358466',text:'Ты бронируешь билеты, жильё и трансфер — мы берём на себя спорт и развлечения',href:'#rec2078794451'},
     {id:'1017632716',text:'It costs 0.00 to be a nice camp (21+)',href:'#form',photo:true},
-    {id:'2238016901',text:'Присоединяйтесь к беговому приключению',href:'#form'},
+    {id:'2238016901',text:'До встречи у моря'},
   ];
   for(const track of tracks){
     const start=html.indexOf(`<div id="rec${track.id}"`);
@@ -23,7 +23,7 @@ export function composePhotographicTrack(html, base) {
     const end=next?start+10+next.index:-1;
     if(start<0||end<0||!html.slice(start,end).includes('t1003'))throw new Error('A selected running band changed: '+track.id);
     const words=track.photo?`<span class="dd-track__words">It costs</span>${picture(photographs[0])}<span class="dd-track__words">0.00 to be</span>${picture(photographs[1],true)}<span class="dd-track__words">a nice camp (21+)</span>`:`<span class="dd-track__words">${track.text}</span>`;
-    const lap=(clone=false)=>`<div class="t1003__item"${clone?' aria-hidden="true"':''}><a class="t1003__item-link dd-track__lap" href="${track.href}" aria-label="${track.text}"${clone?' tabindex="-1"':''}>${words}</a></div>`;
+    const lap=(clone=false)=>`<div class="t1003__item"${clone?' aria-hidden="true"':''}>${track.href?`<a class="t1003__item-link dd-track__lap" href="${track.href}" aria-label="${track.text}"${clone?' tabindex="-1"':''}>${words}</a>`:`<span class="dd-track__lap">${words}</span>`}</div>`;
     const strip=`<section id="rec${track.id}" class="r t-rec dd-track-scene" data-animationappear="off" aria-label="${track.text}"><div class="t1003 dd-track"><div class="dd-track__surface" aria-hidden="true"></div><div class="dd-track__viewport"><div class="t1003__content dd-track__motion">${lap()}${lap(true)}</div></div></div>${track.photo?'<p class="t-container dd-track__caption">Кэмп в Фетхие, 2025</p>':''}</section>`;
     html=html.slice(0,start)+strip+html.slice(end);
   }

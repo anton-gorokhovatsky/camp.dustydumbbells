@@ -29,10 +29,10 @@ export function composeFooter(html,base,{plainLinks=false}={}) {
   const opening=credits.html.slice(0,credits.html.indexOf('>')+1);
   const content=`${opening}<div class="dd-footer-meta">
     <div class="dd-footer-details">
-      <div class="dd-footer-mainline"><span class="dd-footer-copy">© DUSTY DUMBBELLS, 2026</span></div>
-      <div class="dd-footer-legal">${links}<a href="${base}privacy/">Политика конфи&shy;денци&shy;альности</a><label class="dd-motion-preference" hidden><input type="checkbox" data-dd-marquee-toggle aria-label="Анимация строк и подписи" checked><span>Анимация</span></label><a class="dd-footer-weather" href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Данные погоды: Open-Meteo</a></div>
+      <div class="dd-footer-mainline"><span class="dd-footer-copy">© DUSTY DUMBBELLS, 2026</span><nav class="dd-footer-socials" aria-label="Ссылки DD">${links}</nav></div>
+      <div class="dd-footer-legal"><a href="${base}privacy/">Политика конфи&shy;денци&shy;альности</a><button class="dd-motion-preference" type="button" data-dd-marquee-toggle hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5H10V19H7ZM14 5H17V19H14Z"></path></svg><span>Отключить движение</span></button><a class="dd-footer-weather" href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Данные погоды: Open-Meteo</a></div>
     </div>
-    <ag-signature class="dd-footer-signature" theme="dark" layout="compact" role-label="Дизайн и разработка" controls="external"><a href="https://gorokhovatsky.tech/" rel="author">Антон Гороховатский — Дизайн и разработка</a></ag-signature>
+    <ag-signature class="dd-footer-signature" theme="dark" role-label="Дизайн и разработка" controls="external"><a href="https://gorokhovatsky.tech/" rel="author">Антон Гороховатский — Дизайн и разработка</a></ag-signature>
   </div></div>`;
   html=html.slice(0,credits.start)+content+html.slice(credits.end);
   return html.replace('</body>','<script type="module" src="https://gorokhovatsky.tech/signature/v1/signature.js" data-dd-signature></script></body>');

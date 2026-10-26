@@ -45,7 +45,9 @@ test('the chosen track preserves the original archive, a complete phrase and one
     assert(!scene.includes('t1003_init('),'The old initializer must not clone the new two-lap strip.');
     assert.equal((html.match(/class="t1003 dd-track"/g)||[]).length,3);
     for(const id of ['1016358466','1017632716','2238016901'])assert(!html.includes(`t1003_init('${id}'`));
-    assert(html.includes('Присоединяйтесь к беговому приключению'));
+    const ending=html.slice(html.indexOf('<section id="rec2238016901"'),html.indexOf('<div id="rec2072271691"'));
+    assert(ending.includes('До встречи у моря'));
+    assert(!ending.includes('href="#form"'),'The ending must not invite a visitor backwards through a completed form.');
     assert(html.includes('data-dd-photo-weather')&&html.includes('data-dd-body-type'));
     assert(!html.includes('review-entry.js')&&!html.includes('local-review'));
   }
