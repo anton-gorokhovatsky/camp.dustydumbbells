@@ -1,6 +1,27 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { cornerTransition, smoothRectPath } from '../dist/smooth-corners.js';
+import { continuousCorner, cornerTransition, smoothRectPath } from '../dist/smooth-corners.js';
+
+test('rectangular corners start with zero curvature, grow continuously and retain the diagonal rounding', () => {
+  const {a,b,diagonal:d,spanScale}=continuousCorner();
+  const p=[[0,-1],[a,-1],[b,-1],[d,-d]];
+  let previous=0;
+  for(let step=0;step<=200;step++) {
+    const t=step/200;
+    const first=[0,1].map(i=>3*((1-t)**2*(p[1][i]-p[0][i])+2*t*(1-t)*(p[2][i]-p[1][i])+t*t*(p[3][i]-p[2][i])));
+    const second=[0,1].map(i=>6*((1-t)*(p[2][i]-2*p[1][i]+p[0][i])+t*(p[3][i]-2*p[2][i]+p[1][i])));
+    const curvature=(first[0]*second[1]-first[1]*second[0])/Math.hypot(...first)**3;
+    assert(curvature>=previous-1e-10);
+    if(step===0)assert.equal(curvature,0);
+    previous=curvature;
+  }
+  assert(Math.abs(spanScale*(1-d)-(1-1/Math.SQRT2))<1e-12);
+  assert(Math.abs(d-b-(1-d))<1e-12);
+  assert(!smoothRectPath(173,260,16).includes('A'));
+  const header=smoothRectPath(256,30,2,0,[2,0,0,2]);
+  assert(header.includes('L256 30C256 30 256 30 256 30'));
+  assert(header.includes('L0 30C0 30 0 30 0 30'));
+});
 
 test('the straight-to-arc transition has zero initial curvature and matches the circular end', () => {
   const {a,b,sin,cos,extension}=cornerTransition();

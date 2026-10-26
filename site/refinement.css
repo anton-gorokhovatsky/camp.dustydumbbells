@@ -323,7 +323,8 @@
 
 /* One measured, continuous contour for the two non-circular glass surfaces. */
 #rec1017771976 #nav1017771976 .t-menu-popover__burgermenu__sidebar.dd-smooth-ready,
-#allrecords[data-dd-refinement] .dd-cover-tools.dd-smooth-ready {
+#allrecords[data-dd-refinement] .dd-cover-tools.dd-smooth-ready,
+.dd-skip-link.dd-smooth-ready {
   isolation: isolate;
   background: transparent !important;
   -webkit-backdrop-filter: none !important;
@@ -331,22 +332,26 @@
   box-shadow: none !important;
 }
 [data-dd-smooth="glass"].dd-smooth-ready::before,
-[data-dd-smooth="glass"].dd-smooth-ready::after {
+[data-dd-smooth="glass"].dd-smooth-ready::after,
+[data-dd-smooth="paint"].dd-smooth-ready::before,
+[data-dd-smooth="paint"].dd-smooth-ready::after {
   content: '';
   position: absolute;
-  inset: 0;
+  inset: calc(-1 * var(--dd-smooth-border,0px));
   z-index: -1;
   border-radius: 0;
   pointer-events: none;
 }
-[data-dd-smooth="glass"].dd-smooth-ready::before {
-  background: var(--dd-matte-fill);
+[data-dd-smooth="glass"].dd-smooth-ready::before,
+[data-dd-smooth="paint"].dd-smooth-ready::before {
+  background: var(--dd-shape-fill,var(--dd-matte-fill));
   -webkit-backdrop-filter: var(--dd-matte-filter);
   backdrop-filter: var(--dd-matte-filter);
   clip-path: var(--dd-smooth-path);
 }
-[data-dd-smooth="glass"].dd-smooth-ready::after {
-  background: var(--dd-matte-edge);
+[data-dd-smooth="glass"].dd-smooth-ready::after,
+[data-dd-smooth="paint"].dd-smooth-ready::after {
+  background: var(--dd-shape-edge,var(--dd-matte-edge));
   -webkit-mask-image: var(--dd-smooth-edge);
   mask-image: var(--dd-smooth-edge);
   mask-mode: alpha;
@@ -356,6 +361,25 @@
   mask-repeat: no-repeat;
 }
 [data-dd-smooth="photo"].dd-smooth-ready { clip-path: var(--dd-smooth-path); }
+[data-dd-smooth="paint"].dd-smooth-ready::before { -webkit-backdrop-filter: none; backdrop-filter: none; }
+:is(.t-submit,.dd-map-intro button,.t_datepicker__header)[data-dd-smooth="paint"].dd-smooth-ready { position: relative; }
+[data-dd-smooth="paint"].dd-smooth-ready { isolation: isolate; }
+body[data-dd-environment] #allrecords #form1016216116 button.t-submit[data-dd-smooth="paint"].dd-smooth-ready,
+body[data-dd-environment] #allrecords #rec2083039171 .dd-map-intro button[data-dd-smooth="paint"].dd-smooth-ready,
+body[data-dd-environment] :is(.dd-calendar,.t_datepicker__header)[data-dd-smooth="paint"].dd-smooth-ready {
+  background: transparent !important;
+  border-color: transparent !important;
+}
+.t-submit[data-dd-smooth="paint"] { --dd-shape-fill: var(--dd-band); --dd-shape-edge: var(--dd-red); }
+.t-submit[data-dd-smooth="paint"]:not(:disabled):is(:hover,:focus-visible) { --dd-shape-fill: var(--dd-action-hover); --dd-shape-edge: var(--dd-action-hover); }
+.t-submit[data-dd-smooth="paint"]:not(:disabled):active { --dd-shape-fill: var(--dd-footer-blue); --dd-shape-edge: var(--dd-footer-blue); }
+.dd-map-intro button[data-dd-smooth="paint"] { --dd-shape-fill: var(--dd-band); }
+.dd-map-intro button[data-dd-smooth="paint"]:not(:disabled):focus-visible { --dd-shape-fill: var(--dd-action-hover); }
+@media(hover:hover) and (pointer:fine) {
+  .dd-map-intro button[data-dd-smooth="paint"]:not(:disabled):hover { --dd-shape-fill: var(--dd-action-hover); }
+}
+.dd-calendar[data-dd-smooth="paint"] { --dd-shape-fill: var(--dd-surface); --dd-shape-edge: var(--dd-line); }
+.t_datepicker__header[data-dd-smooth="paint"] { --dd-shape-fill: var(--dd-page); }
 @media(prefers-reduced-transparency:reduce), (forced-colors:active) {
   [data-dd-smooth="glass"].dd-smooth-ready::before {
     background: var(--dd-matte-solid);

@@ -1,6 +1,7 @@
 import { phoneCountries } from './phone-countries.js';
 import { phoneParts, internationalPhone, normaliseBirthday, calendarMove } from './form-values.js';
 import { validBirthday, travelField } from './application-validation.js';
+import { smoothCorners } from './smooth-corners.js';
 
 const days = ['понедельник','вторник','среда','четверг','пятница','суббота','воскресенье'];
 const shortDays = ['пн','вт','ср','чт','пт','сб','вс'];
@@ -92,6 +93,9 @@ function initCalendar(input,form) {
   const popup=document.createElement('div'); popup.className='t_datepicker__inner dd-calendar'; popup.id=`dd-calendar-${name}`; popup.hidden=true;
   popup.setAttribute('role','dialog'); popup.setAttribute('aria-label',partner(name) ? 'Дата рождения партнёра' : 'Дата рождения');
   toggle.setAttribute('aria-controls',popup.id); document.body.append(popup);
+  popup.dataset.ddSmooth='paint'; smoothCorners(popup);
+  const header=document.createElement('div'); header.className='t_datepicker__header';
+  header.dataset.ddSmooth='paint'; smoothCorners(header);
   let cursor=new Date(), selected='';
   function position() {
     const r=input.getBoundingClientRect(), p=popup.getBoundingClientRect();
@@ -117,7 +121,7 @@ function initCalendar(input,form) {
   function render(moveFocus=false) {
     const year=cursor.getFullYear(),month=cursor.getMonth(),day=cursor.getDate();
     popup.replaceChildren();
-    const header=document.createElement('div'); header.className='t_datepicker__header';
+    header.replaceChildren();
     for(const [direction,label] of [[-1,'Предыдущий месяц'],[1,'Следующий месяц']]) {
       const button=document.createElement('button'); button.type='button'; button.className='t_datepicker__arrow t_datepicker__arrow_'+(direction<0?'prev':'next'); button.setAttribute('aria-label',label);
       button.disabled=direction<0 ? year===1900&&month===0 : year===new Date().getFullYear()&&month>=new Date().getMonth();

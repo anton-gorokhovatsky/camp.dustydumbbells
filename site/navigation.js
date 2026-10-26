@@ -1,5 +1,11 @@
 import { smoothCorners } from './smooth-corners.js';
 
+// Every owned rounded surface uses the same contour; actual circles stay circles.
+for (const surface of document.querySelectorAll('.t-submit,.dd-map-intro button,.dd-skip-link')) {
+  surface.dataset.ddSmooth=surface.matches('.dd-skip-link')?'glass':'paint';
+  smoothCorners(surface);
+}
+
 /** Nonmodal navigation: the page and its reading position remain available. */
 const navigation = document.querySelector('#nav1017771976');
 const reduce = matchMedia('(prefers-reduced-motion: reduce)');
