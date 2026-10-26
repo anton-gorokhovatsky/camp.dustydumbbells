@@ -23,7 +23,7 @@ export function composePhotographicTrack(html, base) {
     const end=next?start+10+next.index:-1;
     if(start<0||end<0||!html.slice(start,end).includes('t1003'))throw new Error('A selected running band changed: '+track.id);
     const words=track.photo?`<span class="dd-track__words">It costs</span>${picture(photographs[0])}<span class="dd-track__words">0.00 to be</span>${picture(photographs[1],true)}<span class="dd-track__words">a nice camp (21+)</span>`:`<span class="dd-track__words">${track.text}</span>`;
-    const lap=(clone=false)=>`<div class="t1003__item"${clone?' aria-hidden="true"':''}><a class="t1003__item-link dd-track__lap" href="${track.href}" aria-label="${track.text}"${clone?' tabindex="-1"':''}>${words}<span class="dd-track__mark" aria-hidden="true">↗</span></a></div>`;
+    const lap=(clone=false)=>`<div class="t1003__item"${clone?' aria-hidden="true"':''}><a class="t1003__item-link dd-track__lap" href="${track.href}" aria-label="${track.text}"${clone?' tabindex="-1"':''}>${words}</a></div>`;
     const strip=`<section id="rec${track.id}" class="r t-rec dd-track-scene" data-animationappear="off" aria-label="${track.text}"><div class="t1003 dd-track"><div class="dd-track__surface" aria-hidden="true"></div><div class="dd-track__viewport"><div class="t1003__content dd-track__motion">${lap()}${lap(true)}</div></div></div>${track.photo?'<p class="t-container dd-track__caption">Кэмп в Фетхие, 2025</p>':''}</section>`;
     html=html.slice(0,start)+strip+html.slice(end);
   }

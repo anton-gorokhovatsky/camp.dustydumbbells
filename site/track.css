@@ -1,10 +1,11 @@
 /* One geometry, typographic scale and lane system for all three bands. */
 #allrecords[data-dd-refinement] .dd-track-scene {
-  --track-type: clamp(4.5rem, 9.2vw, 10.5rem);
+  --track-type: clamp(2rem, 3.2vw, 3rem);
   padding: 0 !important;
   position: relative;
   background: var(--dd-page) !important;
 }
+.dd-track-scene[tabindex="-1"]:focus { outline:none; }
 #allrecords[data-dd-refinement] .dd-track-scene .dd-track {
   position: relative;
   /* This owns the full photo envelope, above the shared .t1003 3.5rem rule. */
@@ -14,7 +15,7 @@
 #allrecords[data-dd-refinement] .dd-track-scene .dd-track__surface {
   position: absolute;
   inset: calc(var(--track-type)*.46) 0;
-  background: var(--dd-band) !important;
+  background: linear-gradient(var(--dd-footer-angle),var(--dd-band),var(--dd-footer-blue)) !important;
   pointer-events: none;
 }
 .dd-track-scene .dd-track__surface::after {
@@ -96,16 +97,17 @@ html[data-dd-marquees='paused'] #allrecords[data-dd-refinement] .dd-track-scene 
   scrollbar-width: thin;
   scrollbar-color: var(--dd-band) transparent;
 }
-@keyframes dd-track-lap { to { transform: translateX(-50%); } }
+@keyframes dd-track-lap { to { transform: translateX(var(--track-distance,-50%)); } }
 @media(max-width:640px) {
-  #allrecords[data-dd-refinement] .dd-track-scene { --track-type: clamp(3.75rem, 15vw, 5rem); }
+  #allrecords[data-dd-refinement] .dd-track-scene { --track-type: clamp(1.5rem, 6vw, 1.75rem); }
 }
 @media(prefers-reduced-motion:reduce) {
   html:not([data-dd-marquees='running']) #allrecords[data-dd-refinement] .dd-track-scene .dd-track__viewport { overflow-x: auto; }
   html:not([data-dd-marquees='running']) .dd-track-scene .dd-track__motion { will-change: auto; }
 }
 
-.dd-track__mark { display:block;flex:none;font-size:.6em;line-height:1;margin-inline:.5em .15em; }
+/* The final band is cut into the footer's one painted field, never a second slab. */
+#allrecords[data-dd-refinement] #t-footer .dd-track__surface { background:transparent!important; }
 @media(hover:hover) and (pointer:fine) {
   #allrecords[data-dd-refinement] .dd-track:hover .dd-track__motion { animation-play-state: paused !important; }
   .dd-track__lap:hover { text-decoration: underline !important; text-decoration-thickness: .02em !important; text-underline-offset: .08em; }
