@@ -72,7 +72,9 @@ export function composeCamp(html) {
     const preamble = divAt(invitation, preambleStart);
     invitation = invitation.slice(0, preamble.start) + invitation.slice(preamble.end);
   }
-  const scene = `<div class="dd-invitation-scene t-container"><figure class="dd-form-memory">${sunset}</figure>${invitation}<div class="dd-application-body">${fields.html}</div></div>`;
+  invitation=invitation.replace('</h2>','</h2><p class="dd-application-explanation" id="dd-application-explanation">Участие в кэмпе подтверждает организатор после рассмотрения заявки.</p>');
+  const application=fields.html.replace('aria-labelledby="dd-heading-form"','aria-labelledby="dd-heading-form" aria-describedby="dd-application-explanation"');
+  const scene = `<div class="dd-invitation-scene t-container"><figure class="dd-form-memory">${sunset}</figure>${invitation}<div class="dd-application-body">${application}</div></div>`;
   html = html.slice(0, formStart) + form.slice(0, header.start) + scene
     + form.slice(header.end, fields.start) + form.slice(fields.end);
   return composeRhythm(html);

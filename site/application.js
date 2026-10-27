@@ -107,7 +107,7 @@ function initApplication(form) {
 
   window.addEventListener('message', event => {
     if (!acceptedReply(event, pending)) return;
-    finish(event.data.ok === true, event.data.ok === true ? 'Заявка принята' :
+    finish(event.data.ok === true, event.data.ok === true ? 'Заявка отправлена' :
       event.data.code === 'INVALID' ? 'Проверьте заполненные поля и отправьте заявку ещё раз.' :
       'Не удалось сохранить заявку. Ваши данные остались в форме — попробуйте отправить ещё раз.');
   });

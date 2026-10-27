@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { campPalette, contrast } from '../dist/camp-palette.js';
 import { createWeatherReader } from '../dist/camp-environment.js';
+import { normalizeForecast, weatherURL } from '../dist/environment.js';
 
 const weather = { clouds: 2, code: 0, temperature: 25, humidity: 45, precipitation: 0, wind: 3, direction: 180 };
 const states = [null, weather, { ...weather, clouds: 100, code: 3 },
@@ -63,7 +64,7 @@ test('clouds and weather codes visibly affect the palette, even with zero record
 const payloadAt = date => ({ current: {
   time: date.toISOString().slice(0,16), temperature_2m: 22, relative_humidity_2m: 50,
   cloud_cover: 5, precipitation: 0, weather_code: 0, wind_speed_10m: 3, wind_direction_10m: 180,
-} });
+},daily:{time:[date.toISOString().slice(0,10)],temperature_2m_min:[18],temperature_2m_max:[25],weather_code:[2],precipitation_probability_max:[10],wind_speed_10m_max:[4]} });
 // normalizeWeather expects the provider's civil time in Europe/Istanbul.
 const payload = payloadAt(new Date('2026-10-24T13:00:00Z'));
 test('weather requests share one flight and a validated session cache; expired data never stays live', async () => {
@@ -79,6 +80,7 @@ test('weather requests share one flight and a validated session cache; expired d
   await first;
   assert.equal(calls, 1);
   assert.equal(reader.peek().temperature, 22);
+  assert.equal(reader.forecast().max,25);
   const restored = createWeatherReader({ storage, fetcher, now: () => date });
   await restored.refresh();
   assert.equal(calls, 1, 'no request on reload within 30 minutes');
@@ -87,6 +89,31 @@ test('weather requests share one flight and a validated session cache; expired d
   assert.equal(calls, 2);
   date = new Date(date.getTime() + 2 * 3600000);
   assert.equal(reader.peek(), null);
+});
+
+test('the forecast is the camp civil day, and incomplete values never become clear or zero',()=>{
+  const now=new Date('2026-10-24T21:30:00Z'); // Already the 25th in Antalya.
+  const daily={time:['2026-10-24','2026-10-25'],temperature_2m_min:[18,17],temperature_2m_max:[25,24],weather_code:[2,63]};
+  const result=normalizeForecast({daily},now);
+  assert.equal(result.day,'2026-10-25');assert.equal(result.min,17);assert.equal(result.code,63);
+  assert.equal(result.precipitationChance,null);assert.equal(result.wind,null);
+  assert.equal(normalizeForecast(payload,now),null,'yesterday does not remain today');
+  assert.equal(normalizeForecast({daily:{...daily,temperature_2m_min:[18,null]}},now),null);
+  const url=new URL(weatherURL());
+  assert.equal(url.searchParams.get('timezone'),'Europe/Istanbul');
+  assert(url.searchParams.get('daily').includes('temperature_2m_min'));
+});
+
+test('one shared request refreshes the forecast at camp midnight, even inside the normal cache window',async()=>{
+  let now=new Date('2026-10-24T20:55:00Z'),calls=0;
+  const reader=createWeatherReader({now:()=>now,fetcher:async()=>{calls++;const local=new Date(now.getTime()+3*3600000);return{ok:true,json:async()=>payloadAt(local)};}});
+  await reader.refresh();assert.equal(reader.forecast().day,'2026-10-24');
+  now=new Date('2026-10-24T21:01:00Z');
+  assert.equal(reader.forecast(),null);
+  await Promise.all([reader.refresh(),reader.refresh()]);
+  assert.equal(calls,2);assert.equal(reader.forecast().day,'2026-10-25');
+  now=new Date('2026-10-25T00:00:00Z');
+  assert.equal(reader.forecast(),null,'expired cached forecast is not kept live');
 });
 
 test('storage denial, network failure and future or malformed readings keep the astronomical fallback', async () => {

@@ -36,11 +36,13 @@ export function adaptRefinement(html, base, version) {
     .replace(/(<meta itemprop="image"[^>]+>)/, `$1<video class="dd-cover-video" id="dd-cover-video" controls muted loop playsinline preload="metadata" poster="${poster}" aria-label="Фильм с кэмпа DD в октябре 2026 года"><source src="${base}media/camp-2026.mp4" type="video/mp4"></video>`);
   cover = cover.replace(/<br\s*\/?>12–25&nbsp;октября 2027/, '<span class="dd-cover-date">12–25&nbsp;октября 2027</span>');
   cover = cover.replace(/(<span class="dd-cover-date">[^<]+<\/span>\s*<\/div>)/,
-    '$1<a class="dd-join-link dd-cover-join" href="#form">Присоединиться</a>');
+    '$1<a class="dd-join-link dd-cover-join" href="#form">Оставить заявку</a>');
   if(!cover.includes('class="dd-join-link dd-cover-join"'))throw new Error('The cover invitation destination changed.');
   cover = cover.replace(/(<div\b[^>]*class="[^"]*\bt997__title\b[^"]*"[^>]*>\s*)«/,
     '$1<span class="dd-cover-opening">«</span>');
   if (!cover.includes('class="dd-cover-opening"')) throw new Error('The cover opening punctuation changed.');
+  cover=cover.replace(/Гантели»/, 'Гантели<span class="dd-cover-closing">»</span>');
+  if(!cover.includes('class="dd-cover-closing"'))throw new Error('The cover closing punctuation changed.');
   const tools = `<div class="dd-cover-tools" hidden><button type="button" class="dd-cover-pause" aria-controls="dd-cover-video" aria-label="Пауза"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5H10V19H7ZM14 5H17V19H14Z"/></svg></button><button type="button" class="dd-cover-sound" aria-controls="dd-cover-video" aria-label="Включить звук" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9H7L12 5V19L7 15H3Z"/><path class="dd-sound-off" d="M16 9 22 15M22 9 16 15"/><path class="dd-sound-on" d="M16 8Q21 12 16 16M18 5Q26 12 18 19"/></svg></button></div>`;
   cover = cover.replace('<div class="t-cover__filter"', tools + '<div class="t-cover__filter"');
   if (!cover.includes('class="dd-cover-tools"')) throw new Error('The cover closing structure changed.');

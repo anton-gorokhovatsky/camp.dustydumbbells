@@ -1,7 +1,28 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { cornerTransition, smoothRectPath } from '../dist/smooth-corners.js';
+import { cornerTransition, smoothRectPath, smoothCorners } from '../dist/smooth-corners.js';
+
+test('a transformed photo uses its fractional local border box for all contour layers',()=>{
+  const saved=Object.fromEntries(['CSS','getComputedStyle','ResizeObserver','document'].map(key=>[key,globalThis[key]]));
+  try{
+    globalThis.CSS={supports:()=>true};
+    globalThis.ResizeObserver=class{observe(){}};
+    globalThis.document={fonts:{ready:{then:update=>update()}}};
+    for(const sample of [
+      {boxSizing:'border-box',width:'181.5px',height:'260px',w:181.5,h:260},
+      {boxSizing:'content-box',width:'150.5px',height:'200px',w:176.5,h:226},
+    ]){
+      const properties={};
+      globalThis.getComputedStyle=()=>({...sample,paddingLeft:'12px',paddingRight:'12px',paddingTop:'12px',paddingBottom:'12px',borderTopWidth:'1px',borderRightWidth:'1px',borderBottomWidth:'1px',borderLeftWidth:'1px',borderTopLeftRadius:'18px',borderTopRightRadius:'18px',borderBottomLeftRadius:'18px',borderBottomRightRadius:'18px'});
+      const photo={dataset:{ddSmooth:'photo'},style:{setProperty:(key,value)=>{properties[key]=value;}},classList:{add(){}},getBoundingClientRect:()=>({width:999,height:888})};
+      smoothCorners(photo);
+      assert.equal(properties['--dd-smooth-path'],`path("${smoothRectPath(sample.w,sample.h,18)}")`);
+      const edge=decodeURIComponent(properties['--dd-smooth-edge']);
+      assert(edge.includes(`viewBox="0 0 ${sample.w} ${sample.h}"`));
+    }
+  }finally{for(const [key,value]of Object.entries(saved))globalThis[key]=value;}
+});
 
 test('rectangular contours match independent paths exported by native SwiftUI at menu and photo sizes', async () => {
   const reference=JSON.parse(await readFile(new URL('./fixtures/apple-continuous-rectangles.json',import.meta.url),'utf8'));

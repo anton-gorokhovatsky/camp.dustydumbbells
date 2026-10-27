@@ -1,5 +1,15 @@
 import { socialWordmark } from './brand-markup.mjs';
 
+export const instagramNoteText='* Instagram принадлежит компании Meta, признанной экстремистской организацией на территории Российской Федерации';
+
+export function describeInstagramField(html) {
+  return html.replace(/<input\b[^>]*\bname="Instagram(?:-p)?"[^>]*>/g,input=>{
+    const description=input.match(/\baria-describedby="([^"]*)"/);
+    const ids=[...new Set([...(description?.[1]||'').split(/\s+/),'dd-instagram-note'])].filter(Boolean).join(' ');
+    return description?input.replace(description[0],`aria-describedby="${ids}"`):input.replace(/\s*\/?>$/,` aria-describedby="${ids}">`);
+  });
+}
+
 function division(html,start) {
   if(start<0)throw new Error('The expected footer division is missing.');
   const tags=/<\/?div\b[^>]*>/g; tags.lastIndex=start;
@@ -30,10 +40,11 @@ export function composeFooter(html,base,{plainLinks=false}={}) {
   const content=`${opening}<div class="dd-footer-meta">
     <div class="dd-footer-details">
       <div class="dd-footer-mainline"><span class="dd-footer-copy">© DUSTY DUMBBELLS, 2026</span><nav class="dd-footer-socials" aria-label="Ссылки DD">${links}</nav></div>
-      <div class="dd-footer-legal"><a href="${base}privacy/">Политика конфи&shy;денци&shy;альности</a><button class="dd-motion-preference" type="button" data-dd-marquee-toggle hidden><svg viewBox="0 0 12 16" aria-hidden="true"><path d="M0 0H4V16H0ZM8 0H12V16H8Z"></path></svg><span>Отключить движение</span></button><a class="dd-footer-weather" href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Данные погоды: Open-Meteo</a></div>
+      <div class="dd-footer-legal"><a href="${base}privacy/">Политика конфи&shy;денци&shy;альности</a><button class="dd-motion-preference" type="button" data-dd-marquee-toggle hidden><svg viewBox="0 0 12 16" aria-hidden="true"><path d="M0 0H4V16H0ZM8 0H12V16H8Z"></path></svg><span>Отключить движение</span></button><a class="dd-footer-weather" href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Данные погоды: Open-Meteo</a><a href="${base}photographs/">Фотографии</a></div>
     </div>
     <ag-signature class="dd-footer-signature" theme="dark" role-label="Дизайн и разработка" controls="external"><a href="https://gorokhovatsky.tech/" rel="author">Антон Гороховатский — Дизайн и разработка</a></ag-signature>
+    <p class="dd-footer-instagram-note" id="dd-instagram-note">${instagramNoteText}</p>
   </div></div>`;
   html=html.slice(0,credits.start)+content+html.slice(credits.end);
-  return html.replace('</body>','<script type="module" src="https://gorokhovatsky.tech/signature/v1/signature.js" data-dd-signature></script></body>');
+  return describeInstagramField(html).replace('</body>','<script type="module" src="https://gorokhovatsky.tech/signature/v1/signature.js" data-dd-signature></script></body>');
 }

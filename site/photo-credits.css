@@ -1,0 +1,19 @@
+@font-face { font-family:'Museo';src:url('./assets/0f3cda7be3e2-MuseoSansCyrl900Ital.woff') format('woff');font-weight:700;font-style:italic;font-display:swap; }
+body { margin:0;background:var(--dd-page);color:var(--dd-ink,#23323c);font:400 1.125rem/1.5 var(--dd-body-font); }
+main { box-sizing:border-box;max-width:1200px;margin:auto;padding:clamp(24px,5vw,64px) 20px; }
+h1 { margin:2rem 0 1.5rem;color:var(--dd-blue,#1a4297);font:italic 700 clamp(2rem,4vw,3rem)/1.15 'Museo',Arial,sans-serif; }
+p { margin:0 0 1em; }
+.dd-credit-intro { max-width:64ch;margin-bottom:3rem; }
+a { color:var(--dd-red,#b21818);text-underline-offset:.18em; }
+a:hover { color:var(--dd-blue,#1a4297);text-decoration-thickness:2px; }
+a:focus-visible { outline:2px solid var(--dd-blue,#1a4297);outline-offset:5px; }
+.dd-credit-back { display:inline-block;padding-block:10px; }
+.dd-credit-grid { display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,15rem),1fr));gap:2.5rem 1.5rem; }
+figure { min-width:0;margin:0; }
+.dd-credit-photo { position:relative;aspect-ratio:3/2;border-radius:16px;overflow:hidden;background:var(--dd-surface); }
+.dd-credit-photo.dd-smooth-ready { clip-path:var(--dd-smooth-path); }
+.dd-credit-photo img { width:100%;height:100%;object-fit:cover;display:block; }
+figcaption { padding-top:.75rem;font-size:.875rem;line-height:1.5; }
+figcaption span { display:block;color:var(--dd-muted,#58626b); }
+figcaption a { display:inline-block;max-width:100%;padding-block:.35rem;overflow-wrap:anywhere; }
+.dd-credit-licenses { margin:3rem 0 1rem;max-width:64ch; }

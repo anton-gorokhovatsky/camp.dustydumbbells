@@ -1,4 +1,16 @@
 /* Supplemental hotel views preserve the original, directly usable links. */
+#allrecords[data-dd-refinement] .t004 .t-text ul.dd-stays { list-style:none;margin:var(--dd-space-3) 0 0;padding:0;width:100%;max-width:36rem; }
+#allrecords[data-dd-refinement] .t004 .t-text .dd-stays li { margin:0; }
+#allrecords[data-dd-refinement] .t004 .t-text .dd-stays li + li { border-top:1px solid color-mix(in srgb,var(--dd-line) 38%,transparent); }
+body[data-dd-environment] #allrecords .t-text a.dd-stay-link { display:flex;align-items:center;gap:min(var(--dd-space-2),4vw);padding-block:var(--dd-space-2);box-shadow:none!important;text-decoration:none; }
+.dd-stay-photo { display:block;flex:0 0 6rem;aspect-ratio:3/2;border-radius:.5rem;overflow:hidden;background:var(--dd-surface); }
+.dd-stay-photo.dd-smooth-ready { clip-path:var(--dd-smooth-path); }
+.dd-stay-photo img { display:block;width:100%;height:100%;object-fit:cover; }
+.dd-stay-text { display:block;min-width:0; }
+.dd-stay-kind { display:block;font:400 var(--dd-type-meta)/1.4 var(--dd-body-font);color:var(--dd-muted);margin-bottom:.15em; }
+.dd-stay-name { text-decoration:underline;text-underline-offset:.18em;text-decoration-thickness:1px; }
+.dd-stay-link:is(:hover,:focus-visible) .dd-stay-name { text-decoration-thickness:2px; }
+@media(max-width:480px) { .dd-stay-photo { flex-basis:min(4.5rem,20vw); } }
 .dd-hotel-preview { position:fixed;z-index:1000;width:clamp(15rem,26vw,24rem);margin:0;pointer-events:auto; }
 .dd-hotel-preview[hidden] { display:none!important; }
 .dd-hotel-preview__frame { overflow:hidden;aspect-ratio:3/2;border-radius:24px;background:var(--dd-page); }

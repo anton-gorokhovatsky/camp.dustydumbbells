@@ -399,6 +399,22 @@ export function weatherLabel(weather) {
       ? "Переменная облачность"
       : "Ясно";
 }
+// Daily values describe the complete civil day at the camp, not the visitor's
+// local day. Missing precipitation/wind remain missing, never a zero reading.
+export function normalizeForecast(payload, now = new Date()) {
+  const day=placeClock(now).day;
+  const daily=payload?.daily;
+  const index=Array.isArray(daily?.time)?daily.time.indexOf(day):-1;
+  if(index<0)return null;
+  const min=number(daily.temperature_2m_min?.[index],-40,55);
+  const max=number(daily.temperature_2m_max?.[index],-40,55);
+  const code=number(daily.weather_code?.[index],0,99);
+  if(min===null||max===null||code===null||min>max)return null;
+  return { day,min,max,code,
+    precipitationChance:number(daily.precipitation_probability_max?.[index],0,100),
+    wind:number(daily.wind_speed_10m_max?.[index],0,80),
+  };
+}
 export function windDirection(degrees) {
   return ["С", "СВ", "В", "ЮВ", "Ю", "ЮЗ", "З", "СЗ"][
     Math.round(degrees / 45) % 8
@@ -411,6 +427,7 @@ export function weatherURL() {
     current:
       "temperature_2m,relative_humidity_2m,precipitation,weather_code,cloud_cover,wind_speed_10m,wind_direction_10m",
     hourly: "uv_index",
+    daily: "temperature_2m_min,temperature_2m_max,weather_code,precipitation_probability_max,wind_speed_10m_max",
     timezone: PLACE.zone,
     wind_speed_unit: "ms",
     forecast_days: "1",

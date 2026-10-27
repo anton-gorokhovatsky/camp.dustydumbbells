@@ -2,6 +2,7 @@ import {smoothCorners} from './smooth-corners.js';
 
 const fine=matchMedia('(hover:hover) and (pointer:fine)');
 const room=matchMedia('(min-width:960px)');
+document.querySelectorAll('.dd-stay-photo').forEach(smoothCorners);
 let current=null,timer=null,suppressed=null;
 const hide=()=>{clearTimeout(timer);if(current)current.photo.hidden=true;current=null;};
 const scheduleHide=()=>{clearTimeout(timer);timer=setTimeout(()=>{if(current&&!current.photo.matches(':hover')&&!current.link.matches(':hover,:focus-visible'))hide();},120);};
@@ -17,7 +18,12 @@ for(const link of document.querySelectorAll('[data-dd-hotel]')){
     const anchor=link.getBoundingClientRect(),bounds=photo.getBoundingClientRect();
     const right=anchor.right+24;
     const left=right+bounds.width<innerWidth-20?right:Math.max(20,anchor.left-bounds.width-24);
-    const top=Math.max(20,Math.min(innerHeight-bounds.height-20,anchor.top-bounds.height*.35));
+    const floor=Math.max(20,link.closest('.dd-stays')?.getBoundingClientRect().top??20);
+    const ceiling=innerHeight-bounds.height-20;
+    // A preview belongs beside the stays, below their introduction. If that
+    // area cannot fit the full frame, the linked thumbnail remains available.
+    if(floor>ceiling){hide();return;}
+    const top=Math.max(floor,Math.min(ceiling,anchor.top-bounds.height*.35));
     photo.style.left=`${left}px`;photo.style.top=`${top}px`;
   };
   link.addEventListener('pointerenter',()=>{suppressed=null;if(fine.matches)show();});

@@ -60,9 +60,17 @@ export function smoothRectPath(width, height, radius, inset = 0, cornerRadii = n
 export function smoothCorners(element) {
   if (!element || !CSS.supports('clip-path','path("M0 0H1V1Z")')) return;
   const update = () => {
-    const {width,height} = element.getBoundingClientRect();
-    if (!width || !height) return;
     const style=getComputedStyle(element);
+    // A windy photograph's screen rectangle includes rotation and translation.
+    // The local clipping coordinates belong to its untransformed border box.
+    const size=(axis,sides)=>{
+      const value=parseFloat(style[axis]);
+      if(!Number.isFinite(value))return axis==='width'?element.offsetWidth:element.offsetHeight;
+      if(style.boxSizing==='border-box')return value;
+      return value+sides.reduce((sum,side)=>sum+(parseFloat(style['padding'+side])||0)+(parseFloat(style['border'+side+'Width'])||0),0);
+    };
+    const width=size('width',['Left','Right']),height=size('height',['Top','Bottom']);
+    if (!width || !height) return;
     const value = parseFloat(style.borderTopLeftRadius);
     const radius = Number.isFinite(value) ? value : 24;
     const radii=['borderTopRightRadius','borderBottomRightRadius','borderBottomLeftRadius','borderTopLeftRadius'].map(name=>parseFloat(style[name])||0);

@@ -25,11 +25,11 @@ export function mountPhotoWeather(weather) {
   function motion(state,index) {
     state.animation?.cancel(); state.animation=null;
     if(!model.sway||reduce.matches)return;
-    const {x,y,sway,period}=model;
+    const {x,y,tilt,sway,period}=model;
     const keyframes=[
-      {transform:`translate3d(${x-sway}px,${y-sway*.3}px,0)`},
-      {transform:`translate3d(${x+sway}px,${y+sway*.3}px,0)`},
-      {transform:`translate3d(${x-sway}px,${y-sway*.3}px,0)`},
+      {transform:`translate3d(${x-sway}px,${y-sway*.3}px,0) rotate(${tilt-sway*.15}deg)`},
+      {transform:`translate3d(${x+sway}px,${y+sway*.3}px,0) rotate(${tilt+sway*.15}deg)`},
+      {transform:`translate3d(${x-sway}px,${y-sway*.3}px,0) rotate(${tilt-sway*.15}deg)`},
     ];
     state.animation=state.element.animate(keyframes,{duration:period,iterations:Infinity,easing:'cubic-bezier(.77,0,.175,1)'});
     state.animation.currentTime=(index%5)*period/5; sync(state);
@@ -38,16 +38,18 @@ export function mountPhotoWeather(weather) {
   function add(element) {
     if(frames.has(element))return;
     element.classList.add('dd-photo-surface'); contour(element);
-    const layer=document.createElement('span');layer.className='dd-photo-atmosphere';layer.setAttribute('aria-hidden','true');element.append(layer);
+    let layer=element.querySelector(':scope > .dd-photo-atmosphere');
+    if(!layer){layer=document.createElement('span');layer.className='dd-photo-atmosphere';layer.setAttribute('aria-hidden','true');element.append(layer);}
     const state={element,visible:false,focus:false,hover:false,animation:null};frames.set(element,state);observer.observe(element);
     if(element.matches('.dd-menu-preview'))new MutationObserver(()=>sync(state)).observe(element.parentElement,{attributes:true,attributeFilter:['inert','data-preview','data-preview-room']});
     element.addEventListener('focusin',()=>{state.focus=true;sync(state);});
     element.addEventListener('focusout',()=>{state.focus=false;sync(state);});
-    element.addEventListener('pointerenter',()=>{if(fine.matches){state.hover=true;sync(state);}});
-    element.addEventListener('pointerleave',()=>{state.hover=false;sync(state);});
+    const hoverSurface=element.closest('.dd-track')||element;
+    hoverSurface.addEventListener('pointerenter',()=>{if(fine.matches){state.hover=true;sync(state);}});
+    hoverSurface.addEventListener('pointerleave',()=>{state.hover=false;sync(state);});
     motion(state,frames.size-1);
   }
-  const selector='.t1148__img-wrapper,.dd-form-memory,.dd-menu-preview';
+  const selector='.t1148__img-wrapper,.dd-form-memory,.dd-menu-preview,.dd-track__photo';
   function collect(node) {
     if(node.nodeType!==1)return;
     if(node.matches(selector))add(node);

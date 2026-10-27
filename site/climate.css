@@ -20,6 +20,12 @@ html:has([data-dd-environment]), body[data-dd-environment] {
   color: var(--dd-ink);
   color-scheme: var(--dd-scheme);
 }
+/* The browser gutter belongs to the same weather field as the page. */
+html:has([data-dd-environment]) { scrollbar-color:var(--dd-red) var(--dd-page); }
+html:has([data-dd-environment])::-webkit-scrollbar,
+html:has([data-dd-environment])::-webkit-scrollbar-track { background-color:var(--dd-page); }
+html:has([data-dd-environment])::-webkit-scrollbar-thumb { background-color:var(--dd-red);border-color:var(--dd-page); }
+html:has([data-dd-environment])::-webkit-scrollbar-thumb:hover { background-color:var(--dd-blue); }
 body[data-dd-environment] :is(#allrecords,#dd-main) { color: var(--dd-ink); background: var(--dd-page); }
 body[data-dd-environment] :is(#allrecords,#dd-main) > .r {
   background: transparent !important;
@@ -29,6 +35,10 @@ body[data-dd-environment] #allrecords :is(.t-section__descr, .t004 .t-text, .t54
 }
 body[data-dd-environment] #allrecords :is(.t-section__title, .t225__title, .t050__title, .t120__title, .t547__title) { color: var(--dd-blue) !important; }
 body[data-dd-environment] #allrecords .t1148__textwrapper { color: var(--dd-muted) !important; }
+/* Period, label and value form three short climate facts rather than bullets. */
+#allrecords[data-dd-refinement] .dd-climate-facts { display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,13rem),1fr));gap:var(--dd-space-3);margin:var(--dd-space-3) 0;font-family:var(--dd-body-font); }
+.dd-climate-facts dt { margin:0 0 .35em;font-size:var(--dd-type-meta);line-height:1.4;color:var(--dd-muted); }
+.dd-climate-facts dd { margin:0;font-size:var(--dd-type-date);line-height:1.3;color:var(--dd-blue); }
 body[data-dd-environment] #allrecords a { color: var(--dd-red); text-decoration-color: currentColor; }
 body[data-dd-environment] #allrecords :is(.t-descr,.t-text,.t678__form-bottom-text) a {
   color: var(--dd-red) !important;

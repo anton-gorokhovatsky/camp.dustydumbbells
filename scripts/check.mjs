@@ -12,6 +12,7 @@ import { adaptClimate } from './climate-markup.mjs';
 import { adaptPrivacyAccessibility } from './accessibility-markup.mjs';
 import { composeFooter } from './footer-markup.mjs';
 import { composeHotelPreviews } from './hotel-markup.mjs';
+import { composePoster } from './poster-markup.mjs';
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const manifest = JSON.parse(
@@ -75,6 +76,7 @@ for (const name of ['index.html', 'direction/index.html']) {
   expected = adaptInterface(expected, release.base, encodeURIComponent(release.commit));
   expected = adaptRefinement(expected, release.base, encodeURIComponent(release.commit));
   expected = composeHotelPreviews(expected, release.base, JSON.parse(await readFile(path.join(root,'site/data/hotels.json'),'utf8')),encodeURIComponent(release.commit));
+  expected = composePoster(expected,release.base,encodeURIComponent(release.commit));
   const built = await readFile(path.join(root, 'dist', name), 'utf8');
   assert.equal(built, expected, `Current source fidelity failed: ${name}`);
   assert(!built.includes('js-form-proccess'));

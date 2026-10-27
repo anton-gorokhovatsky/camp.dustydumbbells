@@ -7,6 +7,8 @@
   background: transparent !important;
 }
 .dd-track-scene[tabindex="-1"]:focus { outline:none; }
+/* The first lane touches the film; only the photograph crosses that seam. */
+#allrecords[data-dd-refinement] #rec1016358466.dd-track-scene { margin-top:calc(var(--track-type)*-.46);z-index:3; }
 #allrecords[data-dd-refinement] .dd-track-scene .dd-track {
   position: relative;
   /* This owns the full photo envelope, above the shared .t1003 3.5rem rule. */
@@ -63,12 +65,13 @@
   box-shadow: none !important;
 }
 .dd-track-scene .dd-track__words { flex: none; }
+.dd-track-scene .dd-track__age { display:inline-block;margin-inline-start:.6em;font-size:.6em;line-height:1;letter-spacing:0;vertical-align:baseline; }
 .dd-track-scene .dd-track__photo {
   display: block;
   flex: none;
-  width: 2.82em;
+  width: calc(1.88em * var(--dd-track-photo-ratio,1.5));
   height: 1.88em;
-  aspect-ratio: 3/2;
+  aspect-ratio: var(--dd-track-photo-ratio,1.5);
   margin: 0;
   overflow: hidden;
   border-radius: .15em;
@@ -79,19 +82,6 @@
 .dd-track-scene .dd-track__photo.dd-smooth-ready { clip-path: var(--dd-smooth-path); }
 .dd-track-scene .dd-track__photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .dd-track-scene .dd-track__lap:focus-visible { outline: 2px solid var(--dd-on-band); outline-offset: -6px; }
-#allrecords[data-dd-refinement] .dd-track-scene .dd-track__caption {
-  box-sizing: border-box;
-  display: block;
-  position: relative;
-  clear: both;
-  min-height: 0 !important;
-  height: auto !important;
-  margin: .25rem auto 0;
-  padding-inline: 20px;
-  padding-bottom: .75rem;
-  font: 400 var(--dd-type-meta, 1rem)/1.5 'Museo', Arial, sans-serif;
-  color: var(--dd-muted);
-}
 @keyframes dd-track-lap { to { transform: translateX(var(--track-distance,-50%)); } }
 @media(max-width:640px) {
   #allrecords[data-dd-refinement] .dd-track-scene { --track-type: clamp(3.75rem, 15vw, 5rem); }
@@ -108,17 +98,8 @@
   .dd-track__lap[href]:hover { text-decoration: underline !important; text-decoration-thickness: .02em !important; text-underline-offset: .08em; }
 }
 
-/* A still preference is a complete, readable scene, not a frozen crop. */
-html[data-dd-marquees='paused'] #allrecords[data-dd-refinement] .dd-track-scene .dd-track,
-html[data-dd-marquees='paused'] #allrecords[data-dd-refinement] .dd-track-scene .dd-track__viewport { height:auto!important;min-height:0!important;overflow:visible;width:100%;max-width:100%;min-width:0;box-sizing:border-box; }
-html[data-dd-marquees='paused'] .dd-track-scene .dd-track__motion { width:100%;min-width:0;align-items:stretch;animation:none!important;transform:none!important; }
-html[data-dd-marquees='paused'] .dd-track-scene .t1003__item[aria-hidden='true'] { display:none; }
-html[data-dd-marquees='paused'] .dd-track-scene .t1003__item:first-child { width:100%;min-width:0;height:auto; }
-html[data-dd-marquees='paused'] .dd-track-scene .dd-track__lap { box-sizing:border-box;justify-content:center;flex-wrap:wrap;width:100%;padding:.5em min(20px,1.5vw);white-space:normal; }
-html[data-dd-marquees='paused'] .dd-track-scene .dd-track__words { flex:1 1 11em;min-width:0;text-wrap:balance;overflow-wrap:anywhere; }
-html[data-dd-marquees='paused'] .dd-track-scene .dd-track__photo { flex:none;width:min(2.82em,100%);height:auto;aspect-ratio:3/2;max-width:100%; }
-html[data-dd-marquees='paused'] #allrecords[data-dd-refinement] .dd-track-scene .dd-track__surface { inset:0; }
+/* Pausing preserves the same single lane, position, photo scale and neighbours. */
+html[data-dd-marquees='paused'] .dd-track-scene .dd-track__motion { animation-play-state:paused!important;will-change:auto; }
 
 /* The same horizontal weather paint continues through the whole ending. */
 body[data-dd-environment] #allrecords #t-footer { background:var(--dd-track-paint)!important; }
-#allrecords[data-dd-refinement] #t-footer .dd-track__caption { color:var(--dd-footer-muted); }

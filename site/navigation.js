@@ -1,4 +1,7 @@
 import { smoothCorners } from './smooth-corners.js';
+import { enhanceAction } from './action-wordmark.js';
+
+document.querySelectorAll('.dd-join-link,button.t-submit').forEach(enhanceAction);
 
 // Every owned rounded surface uses the same contour; actual circles stay circles.
 for (const surface of document.querySelectorAll('.t-submit,.dd-map-intro button,.dd-skip-link,.dd-join-link')) {
@@ -171,7 +174,11 @@ if (navigation) {
       }
     };
     const schedule=()=>{if(!scheduled){scheduled=true;requestAnimationFrame(update);}};
-    window.addEventListener('scroll',schedule,{passive:true});window.addEventListener('resize',schedule);desktop.addEventListener('change',schedule);update();
+    window.addEventListener('scroll',schedule,{passive:true});window.addEventListener('resize',schedule);desktop.addEventListener('change',schedule);
+    // The desktop header can acquire its final size after the breakpoint frame
+    // (font/layout completion). Transfer focus using its rendered geometry.
+    new ResizeObserver(schedule).observe(desktopMenu);
+    document.fonts.ready.then(schedule);update();
   }
 }
 

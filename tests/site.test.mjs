@@ -224,7 +224,7 @@ test("the original Tilda runtime uses local assets and retained modules keep the
       }
       assert(reference.startsWith(release.base), reference);
       const local = reference.slice(release.base.length).split('?')[0];
-      assert(local.startsWith('assets/') || local.startsWith('media/hotels/') || ['application.css', 'application.js', 'navigation.css', 'navigation.js', 'camp-map.css', 'camp-map.js', 'refinement.css', 'cover-film.js', 'climate.css', 'camp-environment.js', 'accessibility.css', 'accessibility.js', 'phone-flags.css', 'body-type.css', 'photo-weather.css', 'track.css', 'track.js', 'photo-stacks.css', 'photo-stacks.js', 'hotel-previews.css', 'hotel-previews.js'].includes(local), reference);
+      assert(local.startsWith('assets/') || local.startsWith('media/hotels/') || ['application.css', 'application.js', 'navigation.css', 'navigation.js', 'camp-map.css', 'camp-map.js', 'refinement.css', 'cover-film.js', 'climate.css', 'camp-environment.js', 'accessibility.css', 'accessibility.js', 'phone-flags.css', 'body-type.css', 'photo-weather.css', 'track.css', 'track.js', 'photo-stacks.css', 'photo-stacks.js', 'hotel-previews.css', 'hotel-previews.js', 'poster.css', 'menu-poster.js', 'poster-navigation.js', 'poster-paint.js'].includes(local), reference);
       assert((await stat(new URL(`../dist/${local}`,import.meta.url))).isFile());
     }
   }

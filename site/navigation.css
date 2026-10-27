@@ -210,4 +210,11 @@
   .dd-menu-preview { transition: none; transform: none; }
 }
 #rec1017771976 #nav1017771976 .t-menu-burger[data-input="keyboard"] .t-menu-burger__icon span { transition: none; }
+/* A useful summary of today's real forecast, in the same matte navigation. */
+#rec1017771976 #nav1017771976 .dd-menu-weather { border-top:1px solid var(--dd-matte-edge);padding-top:var(--dd-space-2);color:var(--dd-matte-ink);font:400 var(--dd-type-small)/1.45 var(--dd-body-font,'Museo',Arial,sans-serif); }
+#rec1017771976 #nav1017771976 .dd-menu-weather p { margin:0; }
+#rec1017771976 #nav1017771976 .dd-menu-weather .dd-menu-weather__heading { margin-bottom:.5em;font-size:var(--dd-type-meta); }
+#rec1017771976 #nav1017771976 .dd-menu-weather .dd-menu-weather__range { font-size:var(--dd-type-body);line-height:1.25;font-weight:600;margin-bottom:.2em; }
+#rec1017771976 #nav1017771976 .dd-menu-weather .dd-menu-weather__detail { margin-top:.5em;font-size:var(--dd-type-meta); }
+#rec1017771976 #nav1017771976 .t-menu-popover__container { scrollbar-color:var(--dd-matte-red) transparent; }
 :is(#dd-main,#t-footer) .dd-navigation-return:focus-visible { outline: 2px solid var(--dd-blue); outline-offset: 4px; }

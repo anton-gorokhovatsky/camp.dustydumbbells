@@ -21,8 +21,10 @@ export function adaptInterface(html, base, version) {
   const description = /<div class="t-menu-popover__descr"[^>]*>[\s\S]*?<\/div>/;
   if (!description.test(menu)) throw new Error('The captured menu introduction changed.');
   menu = menu.replace(description, '');
+  const today=`<section class="dd-menu-weather" data-dd-menu-weather aria-label="Прогноз на сегодня в Анталье"><p class="dd-menu-weather__heading" data-dd-forecast-heading>Сегодня в Анталье</p><p class="dd-menu-weather__range" data-dd-forecast-range hidden></p><p data-dd-forecast-conditions>Загружаем прогноз…</p><p class="dd-menu-weather__detail" data-dd-forecast-detail hidden></p></section>`;
+  menu=menu.replace(/(<div\b[^>]*class="[^"]*\bt1362__additional\b[^"]*"[^>]*>)/,'$1'+today);
   menu = menu.replace(/(<div\b[^>]*class="[^"]*\bt1362__additional\b[^"]*"[^>]*>)/,
-    '<a class="dd-join-link dd-menu-join" href="#form">Присоединиться</a>$1');
+    '<a class="dd-join-link dd-menu-join" href="#form">Оставить заявку</a>$1');
   if(!menu.includes('class="dd-join-link dd-menu-join"'))throw new Error('The menu invitation destination changed.');
   menu = menu.replace(/<script\b[^>]*>[\s\S]*?<\/script>/g, '')
     .replaceAll('Расписание</a>', 'Распи&shy;сание</a>')

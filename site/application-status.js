@@ -1,8 +1,10 @@
 /** One visible status replaces the submit action while waiting and after receipt. */
+import { setActionLabel } from './action-wordmark.js';
+
 export function createApplicationStatus(form) {
   const button = form.querySelector('[type="submit"]');
   const label = button.querySelector('.t-btnflex__text') || button;
-  const original = label.textContent;
+  const original = label.dataset.ddLabel || label.textContent;
   const status = document.createElement('p');
   status.className = 'dd-form-status t-text t-text_xs';
   status.setAttribute('role', 'status');
@@ -19,7 +21,9 @@ export function createApplicationStatus(form) {
       status.hidden = !text;
       button.hidden = state === 'pending' || state === 'success';
       button.disabled = button.hidden;
-      label.textContent = state === 'error' ? 'Отправить ещё раз' : original;
+      const next = state === 'error' ? 'Отправить ещё раз' : original;
+      if (label.dataset.ddWordmark === 'true') setActionLabel(button, label, next);
+      else label.textContent = next;
       if (text) status.focus({preventScroll: true});
     },
   };

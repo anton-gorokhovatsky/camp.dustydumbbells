@@ -1,0 +1,277 @@
+/* Local comparison: one transparent lane starts with the authentic wordmark. */
+@media(min-width:981px) {
+ #rec1016601036 .t967__maincontainer { display:flex;align-items:center;gap:clamp(2rem,4vw,4rem);box-sizing:border-box;width:calc(100% - 40px);max-width:1160px;margin:16px auto 0;padding:14px 0;border-block:1px solid rgba(255,246,236,.6); }
+ #rec1016601036 .t967__top { display:block;flex:0 0 220px;height:auto;min-height:0;padding:0;border:0; }
+ #rec1016601036 .t967__logo { display:block; }
+ #rec1016601036 .t967__imglogo { display:block;width:220px!important;padding:0;margin:0; }
+ #rec1016601036 .t967__additionalwrapper:empty { display:none; }
+ #rec1016601036 .t967__bottom { display:block;flex:1;min-width:0;height:auto;min-height:0;border:0; }
+ #rec1016601036 .t967__middlelinewrapper { display:none; }
+ #rec1016601036 .t967__bottomwrapper { display:block;height:auto;min-height:0;padding:0; }
+ #rec1016601036 .t967__desktoplist { display:block;width:100%; }
+ #rec1016601036 .t967__desktoplist .t967__list { display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:0 20px;margin:0;padding:0; }
+ #rec1016601036 .t967__desktoplist .t967__list-item { display:block;margin:0;padding:0!important; }
+ #rec1016601036 .t967__desktoplist .t-menu__link-item { display:block;box-sizing:border-box;min-height:44px;padding:12px 0;transition:color 120ms ease; }
+ #rec1016601036 .t967__desktoplist .t-menu__link-item:is(:hover,:focus-visible) { opacity:.75; }
+}
+
+/* Local DD poster: four destinations, two photographic interruptions. */
+#rec1017771976 #nav1017771976 .t-menu-popover__burgermenu__sidebar {
+  --dd-menu-poster-type:clamp(2rem,3.5vw,3rem);
+  width:min(34rem,calc(100% - 24px));
+  border-radius:32px;
+}
+#rec1017771976 #nav1017771976 .t-menu-popover__container {
+  padding:1.5rem 1.75rem;
+  scroll-padding-block:.5rem;
+  overscroll-behavior:contain;
+}
+#rec1017771976 #nav1017771976 .t-menu-popover__container :is(a,button) { scroll-margin-block:.375rem; }
+#rec1017771976 #nav1017771976 .t-menu-base__list { gap:.35rem; }
+#rec1017771976 #nav1017771976 :is(.t-menu-base__list-item,.t-menu__link-wrapper) { width:100%; }
+#rec1017771976 #nav1017771976 a.t-menu__link-item {
+  position:relative;display:flex;align-items:center;flex-wrap:wrap;gap:.02em .16em;
+  box-sizing:border-box;width:100%;max-width:100%;min-height:44px;padding:.1em 0;
+  color:var(--dd-matte-blue);
+  font:700 var(--dd-menu-poster-type)/1.08 'Museo',Arial,sans-serif;
+  font-synthesis:none;letter-spacing:-.035em;text-transform:none;
+  overflow-wrap:normal;hyphens:manual;transform:none;
+  transition:color 150ms ease;
+}
+#rec1017771976 #nav1017771976 .dd-menu-word { min-width:0;max-width:100%; }
+#rec1017771976 #nav1017771976 a.t-menu__link-item[aria-current="location"] { color:var(--dd-matte-blue)!important; }
+#nav1017771976 .dd-menu-tail { white-space:nowrap; }
+#nav1017771976 .dd-menu-current { display:none; }
+#rec1017771976 #nav1017771976 a.t-menu__link-item[aria-current="location"] .dd-menu-current { display:inline-block;width:.1em;height:.1em;margin-inline-start:.12em;vertical-align:middle;border-radius:50%;background:var(--dd-matte-red); }
+#rec1017771976 #nav1017771976 a.t-menu__link-item:is(:hover,:focus-visible) { color:var(--dd-matte-red)!important;transform:none; }
+#rec1017771976 #nav1017771976 .t-menu-popover__burgermenu__sidebar > .dd-menu-preview { display:none!important; }
+body[data-dd-photo-weather] #allrecords #nav1017771976 .dd-menu-inline.dd-menu-preview {
+  position:relative;inset:auto;display:block;flex:0 0 auto;
+  width:2.1em;height:1.4em;margin:0 .015em;border-radius:.14em;
+  opacity:1;pointer-events:none;transform:none;transition:none;
+}
+body[data-dd-photo-weather] #allrecords #nav1017771976 .dd-menu-inline--portrait.dd-menu-preview { width:1.12em;height:1.5em; }
+#nav1017771976 .dd-menu-inline > img {
+  position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover;
+  opacity:0;transition:opacity 160ms ease;
+}
+#nav1017771976 .dd-menu-inline[data-front="a"] > img[data-layer="a"],
+#nav1017771976 .dd-menu-inline[data-front="b"] > img[data-layer="b"] { opacity:1; }
+#rec1017771976 #nav1017771976 .dd-menu-inline[data-static] > img { transition:none; }
+/* The menu offers the application action; the trip dates belong to the page. */
+#nav1017771976 .dd-menu-application { display:flex;align-items:baseline;flex-wrap:wrap;gap:.5rem 1rem;margin-top:1.25rem; }
+#rec1017771976 #nav1017771976 .dd-menu-join.dd-menu-apply {
+  --dd-shape-fill:var(--dd-band);--dd-shape-edge:transparent;
+  display:inline-flex;width:auto;max-width:100%;min-height:56px;margin:0;
+  padding:12px 24px;border-radius:999px;background:var(--dd-band);
+  color:var(--dd-on-band);font:700 1.375rem/1.25 'Museo',Arial,sans-serif;
+  text-decoration:none;overflow-wrap:normal;hyphens:manual;
+}
+#rec1017771976 #nav1017771976 .dd-menu-join.dd-menu-apply:is(:hover,:focus-visible) { --dd-shape-fill:var(--dd-action-hover);--dd-shape-edge:var(--dd-on-band); }
+#rec1017771976 #nav1017771976 .t1362__additional { margin-top:1.25rem; }
+#rec1017771976 #nav1017771976 .dd-menu-weather {
+  display:flex;flex-wrap:wrap;align-items:baseline;gap:.15rem .75rem;
+  border-top:0;padding-top:0;
+}
+#rec1017771976 #nav1017771976 .dd-menu-weather .dd-menu-weather__heading { flex:0 0 100%;margin:0 0 .35rem; }
+#rec1017771976 #nav1017771976 .dd-menu-weather .dd-menu-weather__range { margin:0;font-size:1.5rem;line-height:1.25;white-space:nowrap; }
+#rec1017771976 #nav1017771976 [data-dd-forecast-conditions] { font-size:1rem;line-height:1.35; }
+#rec1017771976 #nav1017771976 .dd-menu-weather__detail { flex:0 0 100%;margin-top:.2rem; }
+#rec1017771976 #nav1017771976 .t-sociallinks { margin-top:.75rem; }
+#rec1017771976 #nav1017771976 .t-sociallinks__wrapper { justify-content:space-between;gap:0 1rem; }
+@media(max-width:640px) {
+  #rec1017771976 #nav1017771976 .t-menu-popover__container { padding:1.25rem; }
+  #rec1017771976 #nav1017771976 .dd-menu-join.dd-menu-apply { padding-inline:20px;font-size:1.125rem; }
+  #rec1017771976 #nav1017771976 .dd-menu-weather { column-gap:.75rem; }
+}
+/* The disclosed menu already carries the application link. Keep one
+   invitation visible while it covers the film; the page remains scrollable. */
+@media(max-width:980px) {
+  html:has(#nav1017771976 .t-menu-burger_open) #rec1016226926 .t997__header-wrapper { opacity:0;pointer-events:none; }
+  html:has(#nav1017771976 .t-menu-burger_open) #rec1016226926 .dd-cover-join { visibility:hidden; }
+}
+#rec1017771976 #nav1017771976 [data-input="keyboard"] :is(.dd-menu-inline>img,.dd-action-wordmark>span) { transition:none;transform:none; }
+@media(prefers-reduced-motion:reduce) {
+  #rec1017771976 #nav1017771976 :is(.dd-menu-inline>img,.dd-action-wordmark>span) { transition:none;transform:none; }
+}
+html[data-dd-marquees="paused"] #rec1017771976 #nav1017771976 :is(.dd-menu-inline>img,.dd-action-wordmark>span) { transition:none;transform:none; }
+@media(forced-colors:active) {
+  #rec1017771976 #nav1017771976 .dd-menu-join.dd-menu-apply { border:1px solid ButtonText;background:ButtonFace;color:ButtonText; }
+}
+/* Headline punctuation shares the real line and metrics of the whole name. */
+#allrecords[data-dd-refinement] #rec1016226926 .t997__title { padding-inline-start:0; }
+.dd-cover-name { display:inline; }
+#allrecords[data-dd-refinement] #rec2072271691 { padding-block:clamp(2rem,5vw,4rem)!important; }
+#rec2072271691 .t107 { box-sizing:border-box;width:calc(100% - 40px);max-width:1160px;margin-inline:auto; }
+#rec2072271691 .t107 img { display:block;width:100%!important;max-width:100%!important;height:auto;margin-inline:auto; }
+#allrecords[data-dd-refinement] #rec1016216116 .dd-application-explanation { grid-column:2;margin:.5rem 0 var(--dd-space-3);max-width:62ch;color:var(--dd-muted);font:400 var(--dd-type-small)/1.5 var(--dd-body-font,'Museo',Arial,sans-serif); }
+@media(max-width:980px) { #allrecords[data-dd-refinement] #rec1016216116 .dd-application-explanation { grid-column:1/-1; } }
+
+/* Three local desktop compositions; one accepted mobile disclosure remains. */
+#allrecords[data-dd-refinement] #rec1016601036.dd-nav-record { position:absolute;inset:0 0 auto;z-index:5;padding:0!important;pointer-events:none; }
+@media(min-width:981px) {
+  #rec1016601036.dd-nav-record::before { content:'';position:absolute;inset:0 0 -96px;z-index:-1;background:linear-gradient(180deg,rgba(0,0,0,.5),rgba(0,0,0,.5) calc(100% - 96px),transparent);pointer-events:none; }
+}
+#rec1016601036 #nav1016601036.dd-nav-experiment { position:relative;box-sizing:border-box;width:calc(100% - 40px);max-width:1160px;margin:20px auto 0;padding:0;background:transparent!important;box-shadow:none!important;pointer-events:none; }
+.dd-nav-experiment a { color:#fff6ec!important;text-decoration:none;pointer-events:auto; }
+.dd-nav-logo { display:block;position:absolute;left:0;top:0;width:220px;max-width:100%; }
+.dd-nav-logo img { display:block;width:100%!important;max-width:100%;height:auto;padding:0;margin:0; }
+.dd-nav-link { box-sizing:border-box;position:relative;display:block;min-width:0;min-height:44px;font:700 clamp(1.25rem,1.5vw,1.375rem)/1.12 'Museo',Arial,sans-serif;letter-spacing:-.025em;hyphens:manual;text-wrap:balance;text-shadow:0 1px 5px rgba(0,0,0,.65); }
+.dd-nav-label { position:relative;z-index:2;display:block; }
+.dd-nav-experiment a:focus-visible { outline:2px solid #fff6ec;outline-offset:6px; }
+.dd-nav-link:focus-visible { transition:none; }
+.dd-nav-link:focus-visible .dd-nav-label { transition:none!important; }
+#allrecords[data-dd-refinement] #rec1016226926 .t-cover__wrapper { padding-top:max(10rem,var(--dd-nav-clearance,0px)); }
+
+/* Staggered starts: each destination has a real open lane and a start line. */
+[data-nav-treatment="course"] { min-height:252px; }
+[data-nav-treatment="course"] .dd-nav-logo { top:17px; }
+[data-nav-treatment="course"] .dd-nav-destinations { width:70%;margin-left:auto;padding-top:0; }
+[data-nav-treatment="course"] .dd-nav-link { --dd-start:0%;display:flex;align-items:center;min-height:60px;width:calc(100% - var(--dd-start));margin-left:var(--dd-start);padding:.3em 18px;border-block:1px solid rgba(255,246,236,.55);border-left:2px solid #fff6ec;margin-top:-1px;font-size:clamp(1.5rem,2.1vw,1.875rem); }
+[data-nav-treatment="course"] .dd-nav-link:nth-child(2) { --dd-start:10%; }
+[data-nav-treatment="course"] .dd-nav-link:nth-child(3) { --dd-start:20%; }
+[data-nav-treatment="course"] .dd-nav-link:nth-child(4) { --dd-start:30%; }
+[data-nav-treatment="course"] .dd-nav-label { transition:transform 150ms cubic-bezier(.23,1,.32,1); }
+[data-nav-treatment="course"] .dd-nav-link:focus-visible { background:rgba(255,246,236,.14); }
+@media(hover:hover) and (pointer:fine) {
+  [data-nav-treatment="course"] .dd-nav-link:hover { background:rgba(255,246,236,.14); }
+  [data-nav-treatment="course"] .dd-nav-link:hover .dd-nav-label { transform:translateX(8px); }
+}
+
+/* A typographic poster over the film, with one temporary photographic scene. */
+[data-nav-treatment="poster"] { min-height:310px; }
+[data-nav-treatment="poster"] .dd-nav-destinations { display:flex;flex-direction:column;align-items:stretch;width:56%;margin-left:auto;gap:.1rem; }
+[data-nav-treatment="poster"] .dd-nav-link { width:100%;padding:.06em 0;font-size:clamp(2rem,3.5vw,3rem);line-height:1.08; }
+[data-nav-treatment="poster"] .dd-nav-label { display:inline-block;transition:transform 150ms cubic-bezier(.23,1,.32,1); }
+[data-nav-treatment="poster"] [data-preview-current] .dd-nav-label { transform:translateX(.05em); }
+#rec1016601036 .dd-nav-image.dd-menu-preview { position:absolute;inset:82px auto auto 22%;width:clamp(135px,14vw,190px);height:clamp(160px,16.2vw,220px);margin:0;border-radius:18px;opacity:1;pointer-events:none;transition:none; }
+#rec1016601036 .dd-nav-image[hidden] { display:none!important; }
+#rec1016601036 .dd-nav-image img { display:block;position:absolute;inset:0;width:100%;height:100%;object-fit:cover; }
+
+/* A photographic montage: pictures interrupt the words, without card containers. */
+[data-nav-treatment="lanes"] { min-height:306px; }
+[data-nav-treatment="lanes"] .dd-nav-destinations { display:grid;grid-template-columns:1fr 1.12fr;gap:20px 36px;width:100%;padding-top:92px; }
+[data-nav-treatment="lanes"] .dd-nav-link { display:flex;flex-wrap:wrap;align-items:center;align-content:center;justify-content:flex-start;gap:.08em .16em;min-height:86px;font-size:clamp(2rem,3.1vw,2.75rem);line-height:1.08; }
+[data-nav-treatment="lanes"] .dd-nav-link>span:not(.dd-nav-window) { max-width:100%;transition:opacity 150ms ease; }
+body[data-dd-photo-weather] #allrecords #rec1016601036 .dd-nav-window.dd-menu-preview { position:relative;inset:auto;flex:0 0 auto;display:block;width:2em;height:1.45em;margin:0 .03em;border-radius:.18em;opacity:1;pointer-events:none;transition:none; }
+body[data-dd-photo-weather] #allrecords #rec1016601036 .dd-nav-link:is(:nth-child(2),:nth-child(4)) .dd-nav-window.dd-menu-preview { width:.95em;height:1.75em; }
+.dd-nav-window>img { position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover;object-position:50% 38%; }
+[data-nav-treatment="lanes"] .dd-nav-link:focus-visible { background:rgba(255,246,236,.12); }
+[data-nav-treatment="lanes"] .dd-nav-link:focus-visible .dd-nav-window { transform:none!important; }
+@media(hover:hover) and (pointer:fine) { [data-nav-treatment="lanes"] .dd-nav-link:hover>span:not(.dd-nav-window) { opacity:.7; } }
+
+/* Large text reflows the same links instead of shrinking or hiding them. */
+#nav1016601036[data-nav-wrap] { height:auto;min-height:0; }
+#nav1016601036[data-nav-wrap] .dd-nav-logo { position:relative;top:0; }
+#nav1016601036[data-nav-wrap] .dd-nav-destinations { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.5rem 1.25rem;width:100%;height:auto;margin:1rem 0 0; }
+#nav1016601036[data-nav-wrap] .dd-nav-destinations { padding-top:0; }
+#nav1016601036[data-nav-wrap] .dd-nav-link { display:block;position:relative;inset:auto;width:auto;max-width:100%;height:auto;padding:.25em 0;margin:0;overflow:visible;transform:none;border:0; }
+#nav1016601036[data-nav-wrap] .dd-nav-label { writing-mode:horizontal-tb;white-space:normal; }
+#nav1016601036[data-nav-wrap] .dd-nav-window { display:none!important; }
+#nav1016601036[data-nav-wrap] .dd-nav-link>span:not(.dd-nav-window) { display:inline; }
+#nav1016601036[data-nav-wrap] .dd-nav-link>span:not(.dd-nav-window)::after { content:' ';white-space:pre-wrap; }
+
+@media(max-width:980px) {
+  #rec1016601036 #nav1016601036.dd-nav-experiment { position:absolute;inset:20px 80px auto 20px;width:auto;max-width:none;margin:0;min-height:0;height:44px; }
+  #rec1016601036 .dd-nav-logo { position:relative;top:0;width:190px; }
+  #rec1016601036 .dd-nav-destinations,#rec1016601036 .dd-nav-image { display:none!important; }
+  #allrecords[data-dd-refinement] #rec1016226926 .t-cover__wrapper { padding-top:10rem; }
+}
+@media(prefers-reduced-motion:reduce) { .dd-nav-experiment * { transition:none!important; }.dd-nav-experiment .dd-nav-label { transform:none!important; } }
+html[data-dd-marquees="paused"] .dd-nav-experiment * { transition:none!important; }
+html[data-dd-marquees="paused"] .dd-nav-experiment .dd-nav-label { transform:none!important; }
+
+/* The selected poster shares the page's type roles. Brand graphics and the
+   photographic tracks keep their accepted scale and composition. */
+:root {
+  --dd-type-display:4.5rem;
+  --dd-display-leading:1.04;
+  --dd-type-heading:2.75rem;
+  --dd-heading-leading:1.14;
+  --dd-type-nav:2rem;
+  --dd-nav-leading:1.18;
+  --dd-type-body:1.25rem;
+  --dd-type-cover-date:1.5rem;
+  --dd-type-action:1.25rem;
+  --dd-type-small:1.125rem;
+  --dd-type-meta:.875rem;
+}
+
+/* One title, two semantic lines; the date belongs to its supporting group. */
+#allrecords[data-dd-refinement] #rec1016226926 .t-section__topwrapper { max-width:60rem; }
+#allrecords[data-dd-refinement] #rec1016226926 .t997__title { line-height:var(--dd-display-leading)!important;letter-spacing:-.025em;margin-bottom:1.5rem; }
+.dd-cover-name,.dd-cover-trip { display:block; }
+.dd-cover-name { text-indent:calc(-1 * min(.64em,max(0px,calc((100vw - 1200px)/2)))); }
+html:root #allrecords[data-dd-refinement] #rec1016226926 .dd-cover-date { margin-top:1.25rem;font-family:var(--dd-body-font)!important;font-size:var(--dd-type-cover-date);line-height:1.3; }
+
+/* Four readable destinations form one compact secondary group. */
+#nav1016601036[data-nav-treatment="poster"] { min-height:280px; }
+#nav1016601036[data-nav-treatment="poster"] .dd-nav-destinations { gap:.25rem; }
+#nav1016601036[data-nav-treatment="poster"] .dd-nav-link { font-size:var(--dd-type-nav);line-height:var(--dd-nav-leading);padding:.12em 0;letter-spacing:-.02em; }
+#rec1016601036 .dd-nav-image.dd-menu-preview { top:64px;width:clamp(140px,13vw,180px);height:clamp(170px,15vw,210px); }
+
+/* An action keeps the same weight and size in the cover, disclosure and form. */
+html:root #allrecords[data-dd-refinement] :is(.dd-cover-join,.dd-menu-apply),
+html:root #allrecords[data-dd-refinement] #form1016216116 button.t-submit { font-size:var(--dd-type-action)!important;line-height:1.25!important;font-weight:700!important; }
+#rec1017771976 #nav1017771976 .t-menu-popover__burgermenu__sidebar { --dd-menu-poster-type:var(--dd-type-nav); }
+
+@media(min-width:1680px) { :root { --dd-type-display:5rem; } }
+@media(min-width:981px) and (max-width:1199px) {
+  :root { --dd-type-display:3.5rem;--dd-type-nav:1.75rem; }
+  #nav1016601036[data-nav-treatment="poster"] { min-height:240px; }
+}
+@media(max-width:980px) {
+  :root { --dd-type-display:3rem;--dd-type-nav:2rem; }
+  .dd-cover-name,.dd-cover-trip { display:inline;text-indent:0; }
+}
+@media(max-width:640px) {
+  :root { --dd-type-display:2rem;--dd-type-heading:1.75rem;--dd-heading-leading:1.2;--dd-type-body:1.125rem;--dd-type-cover-date:1.25rem;--dd-type-action:1.125rem;--dd-type-small:1rem; }
+  html:root #allrecords[data-dd-refinement] #rec1016226926 .dd-cover-date { margin-top:1rem; }
+}
+
+/* A single photographic sentence, carried by the existing weather-painted lanes.
+   Aura is a reference for broad, soft colour masses; this is an independent CSS
+   adaptation, with no exported canvas, new colour palette or image processing. */
+body[data-dd-poster-finish] .dd-track__words { white-space:nowrap; }
+/* The secondary poster column keeps a real right edge after its type was
+   reduced. The middle of the film remains an open part of the composition. */
+@media(min-width:981px) {
+  body[data-dd-poster-finish] #nav1016601036[data-nav-treatment='poster']:not([data-nav-wrap]) .dd-nav-destinations { width:max-content;max-width:50%; }
+  body[data-dd-poster-finish] #rec1016601036 .dd-nav-image.dd-menu-preview { left:auto;right:20rem;top:84px; }
+}
+body[data-dd-poster-finish] .dd-track__surface[data-dd-aura],
+body[data-dd-poster-finish] .dd-aura-field { overflow:hidden; }
+body[data-dd-poster-finish] .dd-track__surface[data-dd-aura]::before,
+body[data-dd-poster-finish] .dd-aura-field::before {
+  content:'';
+  position:absolute;
+  inset:-50% -25%;
+  background:
+    radial-gradient(ellipse at 16% 64%,var(--dd-band) 0%,transparent 62%),
+    radial-gradient(ellipse at 72% 24%,var(--dd-footer-blue) 0%,transparent 64%),
+    linear-gradient(110deg,var(--dd-band),var(--dd-footer-blue));
+  transform:translate3d(-6%,0,0) rotate(-7deg) scale(1.12);
+  transform-origin:50% 50%;
+  animation:dd-aura-tide 72s cubic-bezier(.45,0,.55,1) infinite alternate;
+  animation-play-state:paused;
+  pointer-events:none;
+}
+body[data-dd-poster-finish] .dd-track__surface[data-dd-aura-playing]::before,
+body[data-dd-poster-finish] .dd-aura-field[data-dd-aura-playing]::before { animation-play-state:running; }
+body[data-dd-poster-finish] #t-footer { position:relative;isolation:isolate; }
+body[data-dd-poster-finish] #t-footer>.dd-aura-field { position:absolute;inset:0;z-index:-1;pointer-events:none;background:var(--dd-track-paint); }
+/* The footer's last lane and DUSTY share one field, including when it moves. */
+body[data-dd-poster-finish] #t-footer .dd-track__surface { background:transparent!important; }
+@keyframes dd-aura-tide {
+  from { transform:translate3d(-6%,0,0) rotate(-7deg) scale(1.12); }
+  to { transform:translate3d(6%,0,0) rotate(7deg) scale(1.12); }
+}
+html[data-dd-marquees='paused'] body[data-dd-poster-finish] [data-dd-aura]::before { animation-play-state:paused!important; }
+@media(prefers-reduced-motion:reduce) {
+  html:not([data-dd-marquees='running']) body[data-dd-poster-finish] [data-dd-aura]::before { animation-play-state:paused!important; }
+}
+@media(hover:hover) and (pointer:fine) {
+  body[data-dd-poster-finish] .dd-track:hover .dd-track__surface[data-dd-aura]::before,
+  body[data-dd-poster-finish] #t-footer:has(.dd-track:hover)>.dd-aura-field::before { animation-play-state:paused!important; }
+}
+body[data-dd-poster-finish] #t-footer:focus-within>.dd-aura-field::before { animation-play-state:paused!important; }

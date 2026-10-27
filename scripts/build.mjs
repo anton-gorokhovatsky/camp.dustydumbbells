@@ -10,6 +10,8 @@ import { adaptInterface } from './interface-markup.mjs';
 import { adaptRefinement, adaptPrivacyRefinement } from './refinement-markup.mjs';
 import { season } from '../site/content.js';
 import {composeHotelPreviews,hotelPreviewFiles} from './hotel-markup.mjs';
+import {composePhotoCredits} from './photo-credits-markup.mjs';
+import {composePoster} from './poster-markup.mjs';
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const output = path.join(root, "dist");
@@ -137,11 +139,17 @@ for (const file of [
   "accessibility.css",
   "navigation.css",
   "navigation.js",
+  "action-wordmark.js",
+  "poster.css",
+  "menu-poster.js",
+  "poster-navigation.js",
+  "poster-paint.js",
   "smooth-corners.js",
   "body-type.css",
   "photo-model.js",
   "photo-weather.js",
   "photo-weather.css",
+  "photo-credits.css",
   "photo-stacks.css",
   "photo-stacks.js",
   "track.css",
@@ -183,6 +191,7 @@ for (const file of [
     content = adaptInterface(content, base, assetVersion);
     content = adaptRefinement(content, base, assetVersion);
     content = composeHotelPreviews(content,base,hotels,assetVersion);
+    content = composePoster(content,base,assetVersion);
   }
   // A new publication must also refresh cached styles and module dependencies.
   if (file.endsWith(".html")) {
@@ -201,10 +210,22 @@ for (const file of [
   siteFiles[file] = createHash("sha256").update(content).digest("hex");
 }
 await mkdir(path.join(output, 'media'), {recursive: true});
-for (const file of ['camp-2026.mp4', 'camp-2026-poster.jpg', 'menu-sea.webp', 'menu-stay.webp', 'antalya-after-storm.jpg', 'antalya-evening.jpg', 'antalya-sources.json']) {
+for (const file of ['camp-2026.mp4', 'camp-2026-poster.jpg', 'menu-sea.webp', 'menu-stay.webp', 'antalya-after-storm.jpg', 'antalya-evening.jpg', 'antalya-sources.json', 'dd-menu-people.webp', 'dd-menu-training.webp', 'dd-menu-coast-run.webp']) {
   const bytes = await readFile(path.join(root, 'site/media', file));
   await writeFile(path.join(output, 'media', file), bytes);
   siteFiles[`media/${file}`] = createHash('sha256').update(bytes).digest('hex');
+}
+const trackSources=JSON.parse(await readFile(path.join(root,'site/media/antalya-sources.json'),'utf8'));
+await mkdir(path.join(output,'photographs'),{recursive:true});
+const photoCredits=composePhotoCredits(trackSources,base,assetVersion);
+await writeFile(path.join(output,'photographs/index.html'),photoCredits);
+siteFiles['photographs/index.html']=createHash('sha256').update(photoCredits).digest('hex');
+for(const source of trackSources){
+  if(siteFiles[source.file])continue;
+  if(!/^media\/antalya-[A-Za-z0-9_-]+\.webp$/.test(source.file))throw Error('Unexpected place photograph path.');
+  const bytes=await readFile(path.join(root,'site',source.file));
+  await writeFile(path.join(output,source.file),bytes);
+  siteFiles[source.file]=createHash('sha256').update(bytes).digest('hex');
 }
 const hotelImages = hotels.flatMap(hotel => hotel.photos.map(photo => photo.file));
 if (new Set(hotelImages).size !== hotelImages.length) throw new Error("Hotel photographs must have unique placements");

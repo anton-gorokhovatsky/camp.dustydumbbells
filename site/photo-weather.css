@@ -1,6 +1,7 @@
 body[data-dd-photo-weather] { --dd-photo-radius:24px; }
 body[data-dd-photo-weather] #allrecords .dd-photo-surface { position:relative; border-radius:var(--dd-photo-radius); isolation:isolate; }
 body[data-dd-photo-weather] #allrecords .dd-menu-preview.dd-photo-surface { position:absolute; border-radius:16px; }
+body[data-dd-photo-weather] #allrecords .dd-track__photo.dd-photo-surface { border-radius:.15em; }
 body[data-dd-photo-weather] .dd-full-photo { border-radius:var(--dd-photo-radius); }
 body[data-dd-photo-weather] .dd-photo-atmosphere { position:absolute; inset:0; z-index:2; pointer-events:none; background:linear-gradient(var(--dd-photo-wet-angle,135deg),rgba(255,255,255,var(--dd-photo-wet,0)),transparent 30%,transparent 65%,rgba(255,255,255,var(--dd-photo-veil,0))); box-shadow:inset 0 0 0 1px rgba(255,255,255,var(--dd-photo-wet,0)); }
 body[data-dd-photo-weather] .dd-photo-surface:has(img:focus-visible) .dd-photo-atmosphere { box-shadow:inset 0 0 0 2px #fff6ec,inset 0 0 0 5px var(--dd-blue); }
