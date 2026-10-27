@@ -1,0 +1,38 @@
+[
+  {
+    "file": "media/antalya-after-storm.jpg",
+    "author": "Igor Sporynin",
+    "place": "Konyaalti beach, Antalya, Turkiye",
+    "photographed": "April 2024 (photographer description)",
+    "source": "https://unsplash.com/photos/a-sandy-beach-with-palm-trees-and-a-boat-in-the-water-_hyH6N0IhZw",
+    "image": "https://images.unsplash.com/photo-1719249705359-aa7f0d203255?auto=format&fit=max&fm=jpg&q=85&w=1600",
+    "alt": "Море и волны на пляже Коньяалты в Анталье после шторма.",
+    "width": 1600,
+    "height": 1067,
+    "bytes": 358350,
+    "sha256": "23a8da83e1b51235cb5fb3fb0604d521f244373fcd6467d5ab0123159da062f1",
+    "license": "Unsplash License",
+    "licenseURL": "https://unsplash.com/license",
+    "retrieved": "2026-10-26",
+    "transform": "Provider JPEG resized to1600px; CSS3:2frame with object-fit:cover. No generative edits.",
+    "use": "Documentary place photograph on the DD Camp site. Not a photograph of a DD event."
+  },
+  {
+    "file": "media/antalya-evening.jpg",
+    "author": "Igor Sporynin",
+    "place": "Konyaalti beach, Antalya, Turkiye",
+    "photographed": "November 2022 (photographer description)",
+    "source": "https://unsplash.com/photos/a-beach-with-people-and-a-body-of-water-in-the-background-GxG9P4t7kU4",
+    "image": "https://images.unsplash.com/photo-1669046634188-56618421e35e?auto=format&fit=max&fm=jpg&q=85&w=1600",
+    "alt": "Вечернее море и силуэт гор на пляже Коньяалты в Анталье.",
+    "width": 1600,
+    "height": 1067,
+    "bytes": 176066,
+    "sha256": "287d38093640e6f64f259b816dfcac08b368534aa17ad7ed322d85340a0862c7",
+    "license": "Unsplash License",
+    "licenseURL": "https://unsplash.com/license",
+    "retrieved": "2026-10-26",
+    "transform": "Provider JPEG resized to1600px; CSS3:2frame with object-fit:cover. No generative edits.",
+    "use": "Documentary place photograph on the DD Camp site. Not a photograph of a DD event."
+  }
+]

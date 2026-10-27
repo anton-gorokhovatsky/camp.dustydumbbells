@@ -201,7 +201,7 @@ for (const file of [
   siteFiles[file] = createHash("sha256").update(content).digest("hex");
 }
 await mkdir(path.join(output, 'media'), {recursive: true});
-for (const file of ['camp-2026.mp4', 'camp-2026-poster.jpg', 'menu-sea.webp', 'menu-stay.webp']) {
+for (const file of ['camp-2026.mp4', 'camp-2026-poster.jpg', 'menu-sea.webp', 'menu-stay.webp', 'antalya-after-storm.jpg', 'antalya-evening.jpg', 'antalya-sources.json']) {
   const bytes = await readFile(path.join(root, 'site/media', file));
   await writeFile(path.join(output, 'media', file), bytes);
   siteFiles[`media/${file}`] = createHash('sha256').update(bytes).digest('hex');

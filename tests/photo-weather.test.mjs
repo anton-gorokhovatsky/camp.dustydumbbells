@@ -31,28 +31,42 @@ test('atmospheric treatment remains bounded for calm, gust, fog, rain and extrem
   assert(photoWeather({...wind,humidity:95,code:63,precipitation:4}).wet>photoWeather(wind).wet);
 });
 
-test('the chosen track preserves the original archive, a complete phrase and one keyboard destination',async()=>{
+test('the selected three photographic refrains retain the real archive and its provenance',async()=>{
+  const expectedArchive=['6945','6946','6948','6949','6951_1','6952','6953','6954','6960','6961','6968','6969','6970'];
   for(const route of ['index.html','direction/index.html']){
     const html=await readFile(new URL('../dist/'+route,import.meta.url),'utf8');
-    const scene=html.slice(html.indexOf('<section id="rec1017632716"'),html.indexOf('<div id="rec1017020466"'));
-    assert(scene.includes('class="t1003__content dd-track__motion"'));
-    assert.equal((scene.match(/class="t1003__item"/g)||[]).length,2);
-    assert.equal((scene.match(/tabindex="-1"/g)||[]).length,1);
-    assert(scene.includes('aria-hidden="true"')&&scene.includes('href="#rec2078794451"'));
-    for(const file of ['ca7c99443ce6-IMG_6951_1.jpg','9b0df23f9df7-IMG_6952.JPG'])assert.equal(html.split(file).length-1,2);
-    assert(scene.includes('Ты бронируешь билеты, жильё и трансфер')&&scene.includes('мы берём на себя спорт и развлечения'));
-    const opening=html.slice(html.indexOf('<section id="rec1016358466"'),html.indexOf('<div id="rec1016322141"'));
-    assert(opening.includes('Море,')&&opening.includes('edb1b4c73141-IMG_6953.JPG')&&opening.includes('солнце и тёплый ветер'));
-    assert(scene.includes('Кэмп в Фетхие, 2025'));
-    assert(!scene.includes('t1003_init('),'The old initializer must not clone the new two-lap strip.');
+    for(const[id,file,place]of[
+      ['1016358466','antalya-after-storm.jpg','Анталья, Коньяалты'],
+      ['1017632716','ca7c99443ce6-IMG_6951_1.jpg','Кэмп DD в Фетхие, 2025'],
+      ['2238016901','antalya-evening.jpg','Анталья, Коньяалты'],
+    ]){
+      const start=html.indexOf(`<section id="rec${id}"`),end=html.indexOf('</section>',start);
+      const scene=html.slice(start,end);
+      assert(start>=0&&end>start);
+      assert(scene.includes('class="t1003__content dd-track__motion"'));
+      assert.equal((scene.match(/class="t1003__item"/g)||[]).length,2);
+      assert.equal(scene.split('It costs 0.00 to be a nice camp (21+)').length-1,3);
+      assert.equal(scene.split(file).length-1,2);
+      assert(scene.includes('aria-hidden="true"')&&scene.includes(place));
+      assert(!scene.includes('href='),'The atmospheric refrain must not gain a different navigation action in each scene.');
+      assert(!html.includes(`t1003_init('${id}'`));
+    }
+    const archive=[...new Set([...html.matchAll(/<img\b[^>]*>/g)].flatMap(([tag])=>[...tag.matchAll(/(?:\bsrc|\bdata-original)="[^"]*IMG_(\d+(?:_\d)?)\.(?:JPG|jpg)"/g)].map(m=>m[1])))].sort();
+    assert.deepEqual(archive,expectedArchive,'All13 original IMG photographs must remain real image placements.');
     assert.equal((html.match(/class="t1003 dd-track"/g)||[]).length,3);
-    for(const id of ['1016358466','1017632716','2238016901'])assert(!html.includes(`t1003_init('${id}'`));
-    const ending=html.slice(html.indexOf('<section id="rec2238016901"'),html.indexOf('<div id="rec2072271691"'));
-    assert(ending.includes('It costs 0.00 to be a nice camp (21+)'));
-    assert(!ending.includes('До встречи у моря'));
-    assert(!ending.includes('href="#form"'),'The ending must not invite a visitor backwards through a completed form.');
     assert(html.includes('data-dd-photo-weather')&&html.includes('data-dd-body-type'));
-    assert(!html.includes('review-entry.js')&&!html.includes('local-review'));
+    assert(!html.includes('До встречи у моря'));
+    assert(!html.includes('review-entry.js')&&!html.includes('local-review')&&!html.includes('data-local-qa')&&!html.includes('LocalQAClock'));
+  }
+  const release=JSON.parse(await readFile(new URL('../dist/release.json',import.meta.url),'utf8'));
+  const sources=JSON.parse(await readFile(new URL('../site/media/antalya-sources.json',import.meta.url),'utf8'));
+  const {createHash}=await import('node:crypto');
+  assert.equal(sources.length,2);
+  for(const source of sources){
+    const bytes=await readFile(new URL('../dist/'+source.file,import.meta.url));
+    assert.equal(createHash('sha256').update(bytes).digest('hex'),source.sha256);
+    assert.equal(bytes.length,source.bytes);assert.equal(source.licenseURL,'https://unsplash.com/license');
+    assert.equal(release.siteFiles[source.file],source.sha256);
   }
 });
 

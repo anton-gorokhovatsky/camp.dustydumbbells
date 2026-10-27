@@ -1,3 +1,4 @@
+:root { --dd-track-paint:linear-gradient(90deg,var(--dd-band),var(--dd-footer-blue)); }
 /* One geometry, typographic scale and lane system for all three bands. */
 #allrecords[data-dd-refinement] .dd-track-scene {
   --track-type: clamp(2rem, 3.2vw, 3rem);
@@ -15,7 +16,7 @@
 #allrecords[data-dd-refinement] .dd-track-scene .dd-track__surface {
   position: absolute;
   inset: calc(var(--track-type)*.46) 0;
-  background: linear-gradient(var(--dd-footer-angle),var(--dd-band),var(--dd-footer-blue)) !important;
+  background: var(--dd-track-paint) !important;
   pointer-events: none;
 }
 .dd-track-scene .dd-track__surface::after {
@@ -51,9 +52,9 @@
 .dd-track-scene .dd-track__lap {
   display: flex;
   flex: none;
-  gap: .24em;
+  gap: .65em;
   align-items: center;
-  padding-inline: .36em;
+  padding-inline: .4em;
   white-space: nowrap;
   font: 700 var(--track-type)/1.02 'Museo', Arial, sans-serif;
   letter-spacing: -.035em;
@@ -65,18 +66,18 @@
 .dd-track-scene .dd-track__photo {
   display: block;
   flex: none;
+  width: 2.82em;
   height: 1.88em;
-  aspect-ratio: var(--photo-ratio);
-  margin-inline: -.08em;
+  aspect-ratio: 3/2;
+  margin: 0;
   overflow: hidden;
-  border-radius: .095em;
+  border-radius: .15em;
   position: relative;
   z-index: 1;
-  transform: translateY(-.11em);
+  transform: none;
 }
-.dd-track-scene .dd-track__photo--second { height: 1.76em; transform: translateY(.12em); }
 .dd-track-scene .dd-track__photo.dd-smooth-ready { clip-path: var(--dd-smooth-path); }
-.dd-track-scene .dd-track__photo img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.dd-track-scene .dd-track__photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .dd-track-scene .dd-track__lap:focus-visible { outline: 2px solid var(--dd-on-band); outline-offset: -6px; }
 #allrecords[data-dd-refinement] .dd-track-scene .dd-track__caption {
   box-sizing: border-box;
@@ -90,12 +91,6 @@
   padding-bottom: .75rem;
   font: 400 var(--dd-type-meta, 1rem)/1.5 'Museo', Arial, sans-serif;
   color: var(--dd-muted);
-}
-html[data-dd-marquees='paused'] #allrecords[data-dd-refinement] .dd-track-scene .dd-track__viewport,
-#allrecords[data-dd-refinement] .dd-track-scene .dd-track:focus-within .dd-track__viewport {
-  overflow-x: auto;
-  scrollbar-width: thin;
-  scrollbar-color: var(--dd-band) transparent;
 }
 @keyframes dd-track-lap { to { transform: translateX(var(--track-distance,-50%)); } }
 @media(max-width:640px) {
@@ -112,3 +107,18 @@ html[data-dd-marquees='paused'] #allrecords[data-dd-refinement] .dd-track-scene 
   #allrecords[data-dd-refinement] .dd-track:hover .dd-track__motion { animation-play-state: paused !important; }
   .dd-track__lap[href]:hover { text-decoration: underline !important; text-decoration-thickness: .02em !important; text-underline-offset: .08em; }
 }
+
+/* A still preference is a complete, readable scene, not a frozen crop. */
+html[data-dd-marquees='paused'] #allrecords[data-dd-refinement] .dd-track-scene .dd-track,
+html[data-dd-marquees='paused'] #allrecords[data-dd-refinement] .dd-track-scene .dd-track__viewport { height:auto!important;min-height:0!important;overflow:visible;width:100%;max-width:100%;min-width:0;box-sizing:border-box; }
+html[data-dd-marquees='paused'] .dd-track-scene .dd-track__motion { width:100%;min-width:0;align-items:stretch;animation:none!important;transform:none!important; }
+html[data-dd-marquees='paused'] .dd-track-scene .t1003__item[aria-hidden='true'] { display:none; }
+html[data-dd-marquees='paused'] .dd-track-scene .t1003__item:first-child { width:100%;min-width:0;height:auto; }
+html[data-dd-marquees='paused'] .dd-track-scene .dd-track__lap { box-sizing:border-box;justify-content:center;flex-wrap:wrap;width:100%;padding:.5em min(20px,1.5vw);white-space:normal; }
+html[data-dd-marquees='paused'] .dd-track-scene .dd-track__words { flex:1 1 11em;min-width:0;text-wrap:balance;overflow-wrap:anywhere; }
+html[data-dd-marquees='paused'] .dd-track-scene .dd-track__photo { flex:none;width:min(2.82em,100%);height:auto;aspect-ratio:3/2;max-width:100%; }
+html[data-dd-marquees='paused'] #allrecords[data-dd-refinement] .dd-track-scene .dd-track__surface { inset:0; }
+
+/* The same horizontal weather paint continues through the whole ending. */
+body[data-dd-environment] #allrecords #t-footer { background:var(--dd-track-paint)!important; }
+#allrecords[data-dd-refinement] #t-footer .dd-track__caption { color:var(--dd-footer-muted); }

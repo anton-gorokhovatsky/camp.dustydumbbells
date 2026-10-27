@@ -4,32 +4,23 @@ export function adaptBodyTypography(html, base, version) {
   return html.replace('</head>', `<link rel="stylesheet" href="${base}body-type.css?v=${version}" data-dd-body-type></head>`);
 }
 
+// Selected local track/stacks pass, released by the user on 27 October.
+const refrain = 'It costs 0.00 to be a nice camp (21+)';
 const photographs = [
-  {file:'ca7c99443ce6-IMG_6951_1.jpg',width:1680,height:2239},
-  {file:'9b0df23f9df7-IMG_6952.JPG',width:1680,height:2520},
-  {file:'edb1b4c73141-IMG_6953.JPG',width:1680,height:2520,source:true},
+  {id:'1016358466',file:'antalya-after-storm.jpg',width:1600,height:1067,place:'Анталья, Коньяалты',alt:'Море и волны на пляже Коньяалты в Анталье после шторма.'},
+  {id:'1017632716',file:'ca7c99443ce6-IMG_6951_1.jpg',width:1680,height:2239,archive:true,place:'Кэмп DD в Фетхие, 2025',alt:'Бегуны DD на солнечной дороге между соснами.'},
+  {id:'2238016901',file:'antalya-evening.jpg',width:1600,height:1067,place:'Анталья, Коньяалты',alt:'Вечернее море и силуэт гор на пляже Коньяалты в Анталье.'},
 ];
 
 export function composePhotographicTrack(html, base) {
-  if(photographs.some(photo=>html.includes(photo.file)))throw new Error('A selected track photograph is already placed.');
-  const picture=(photo,second=false)=>`<span class="dd-track__photo${second?' dd-track__photo--second':''}" data-dd-smooth="photo" style="--photo-ratio:${photo.width}/${photo.height}"><img src="${base}assets/${photo.file}"${photo.source?` data-dd-photo-source="${base}assets/${photo.file}"`:''} width="${photo.width}" height="${photo.height}" alt="" loading="lazy" decoding="async"></span>`;
-  const tracks=[
-    {id:'1016358466',text:'Море, солнце и тёплый ветер',href:'#rec1016322141',photo:'sea'},
-    {id:'1017632716',text:'Ты бронируешь билеты, жильё и трансфер — мы берём на себя спорт и развлечения',href:'#rec2078794451',photo:'travel'},
-    {id:'2238016901',text:'It costs 0.00 to be a nice camp (21+)'},
-  ];
-  for(const track of tracks){
-    const start=html.indexOf(`<div id="rec${track.id}"`);
+  for(const photo of photographs){
+    const start=html.indexOf(`<div id="rec${photo.id}"`);
     const next=/<(?:div|section) id="rec\d+"/.exec(html.slice(start+10));
     const end=next?start+10+next.index:-1;
-    if(start<0||end<0||!html.slice(start,end).includes('t1003'))throw new Error('A selected running band changed: '+track.id);
-    const words=track.photo==='sea'
-      ?`<span class="dd-track__words">Море,</span>${picture(photographs[2])}<span class="dd-track__words">солнце и тёплый ветер</span>`
-      :track.photo==='travel'
-        ?`<span class="dd-track__words">Ты бронируешь билеты, жильё и трансфер</span>${picture(photographs[0])}<span class="dd-track__words">— мы берём на себя спорт и развлечения</span>${picture(photographs[1],true)}`
-        :`<span class="dd-track__words">${track.text}</span>`;
-    const lap=(clone=false)=>`<div class="t1003__item"${clone?' aria-hidden="true"':''}>${track.href?`<a class="t1003__item-link dd-track__lap" href="${track.href}" aria-label="${track.text}"${clone?' tabindex="-1"':''}>${words}</a>`:`<span class="dd-track__lap">${words}</span>`}</div>`;
-    const strip=`<section id="rec${track.id}" class="r t-rec dd-track-scene" data-animationappear="off" aria-label="${track.text}"><div class="t1003 dd-track"><div class="dd-track__surface" aria-hidden="true"></div><div class="dd-track__viewport"><div class="t1003__content dd-track__motion">${lap()}${lap(true)}</div></div></div>${track.photo?'<p class="t-container dd-track__caption">Кэмп в Фетхие, 2025</p>':''}</section>`;
+    if(start<0||end<0||!html.slice(start,end).includes('t1003'))throw new Error('A selected running band changed: '+photo.id);
+    const picture=`<span class="dd-track__photo" data-dd-smooth="photo"><img src="${base}${photo.archive?'assets':'media'}/${photo.file}" width="${photo.width}" height="${photo.height}" alt="${photo.alt}" loading="lazy" decoding="async"${photo.archive?' style="object-position:50% 90%"':''}></span>`;
+    const lap=(clone=false)=>`<div class="t1003__item"${clone?' aria-hidden="true"':''}><span class="dd-track__lap"><span class="dd-track__words" lang="en">${refrain}</span>${picture}</span></div>`;
+    const strip=`<section id="rec${photo.id}" class="r t-rec dd-track-scene" data-animationappear="off" aria-label="${refrain}"><div class="t1003 dd-track"><div class="dd-track__surface" aria-hidden="true"></div><div class="dd-track__viewport"><div class="t1003__content dd-track__motion">${lap()}${lap(true)}</div></div></div><p class="t-container dd-track__caption">${photo.place}</p></section>`;
     html=html.slice(0,start)+strip+html.slice(end);
   }
   return html;

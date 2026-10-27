@@ -121,7 +121,9 @@ function composeRhythm(html) {
   if (shoreline.length !== 5 || !harbour) throw new Error('The selected coastal archive changed.');
 
   // Keep the first close encounters large; the same gallery interaction continues in the middle.
-  let memory = withGalleryItems(opening.html, [people[3].html, people[4].html]);
+  const mountainRoad = people[3].html.replace(/[a-f0-9]{12}-IMG_6954\.JPG/g, '9b0df23f9df7-IMG_6952.JPG')
+    .replace(/alt="[^"]*"/, 'alt="Бегуны DD на горной дороге у отбойника. Кэмп в Фетхие, 2025."');
+  let memory = withGalleryItems(opening.html, [people[3].html, mountainRoad, people[4].html]);
   const header = /<div\b[^>]*class="[^"]*\bt1148__col\b[^\"]*"[^>]*>/.exec(memory);
   const oldHeader = divAt(memory, header.index);
   memory = memory.slice(0, oldHeader.start)
@@ -132,7 +134,7 @@ function composeRhythm(html) {
     + memory + "<script>t_onReady(function(){t_onFuncLoad('t_slider__init',function(){t_slider__init('2080000001','t1148');});});</script></div>";
 
   const changedWeather = weather.html.slice(0, coast.start)
-    + withGalleryItems(coast.html, shoreline.filter(item => item !== harbour).map(item => item.html))
+    + withGalleryItems(coast.html, [shoreline[0], harbour, ...shoreline.filter(item => item !== harbour).slice(1)].map(item => item.html))
     + weather.html.slice(coast.end);
   html = html.slice(0, weather.start) + changedWeather + html.slice(weather.end);
   const changedAbout = about.html.slice(0, opening.start)
