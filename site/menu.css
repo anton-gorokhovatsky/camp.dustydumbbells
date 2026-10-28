@@ -13,7 +13,9 @@
 #rec1017771976 #nav1017771976 :is(.t-menu-base__list-item,.t-menu__link-wrapper) { min-width:0; }
 #rec1017771976 #nav1017771976 a.t-menu__link-item {
   --dd-shape-fill:transparent;--dd-shape-edge:transparent;
-  display:block;width:100%;min-height:44px;padding:.3em 12px;
+  display:flex;align-items:center;width:100%;min-height:44px;
+  /* Museo's visible capitals sit high in its line box; keep their optical centre. */
+  padding:.4em 12px .2em;
   isolation:isolate;border-radius:12px;background:var(--dd-shape-fill);
   font:700 1.375rem/1.2 'Museo',Arial,sans-serif;letter-spacing:-.025em;
   text-decoration:none!important;hyphens:manual;overflow-wrap:normal;

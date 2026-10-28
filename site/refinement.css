@@ -380,7 +380,7 @@
 }
 #rec1018079361 .dd-footer-legal > a:is(:hover,:focus-visible) { color: var(--dd-on-band); text-decoration-thickness: 2px; }
 #rec1018079361 .dd-footer-meta a:focus-visible { outline: 2px solid var(--dd-on-band); outline-offset: 4px; }
-#allrecords[data-dd-refinement] #rec1018079361 .dd-motion-preference { position:relative;display:block;box-sizing:border-box;min-height:44px;margin:0;width:auto;min-inline-size:min(12em,100%);max-width:100%;padding:10px 0;border:0;background:none;box-shadow:none;color:var(--dd-footer-muted);font:inherit;line-height:1.5;text-align:left;text-decoration:underline;text-underline-offset:3px;cursor:pointer; }
+#allrecords[data-dd-refinement] #rec1018079361 .dd-motion-preference { position:relative;display:block;box-sizing:border-box;min-height:44px;margin:0;width:auto;min-inline-size:0;max-width:100%;padding:10px 0;border:0;background:none;box-shadow:none;color:var(--dd-footer-muted);font:inherit;line-height:1.5;text-align:left;text-decoration:underline;text-underline-offset:3px;cursor:pointer; }
 #rec1018079361 .dd-motion-preference svg { display:inline-block;width:.6em;height:.8em;margin-inline-end:.5em;vertical-align:-.12em;fill:currentColor; }
 #rec1018079361 .dd-motion-preference:focus-visible { outline:2px solid var(--dd-on-band);outline-offset:4px; }
 @media(hover:hover) and (pointer:fine){#rec1018079361 .dd-motion-preference:hover{color:var(--dd-on-band);text-decoration-thickness:2px;}}
