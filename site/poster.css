@@ -109,9 +109,6 @@ html[data-dd-marquees="paused"] #rec1017771976 #nav1017771976 :is(.dd-menu-inlin
 
 /* Three local desktop compositions; one accepted mobile disclosure remains. */
 #allrecords[data-dd-refinement] #rec1016601036.dd-nav-record { position:absolute;inset:0 0 auto;z-index:5;padding:0!important;pointer-events:none; }
-@media(min-width:981px) {
-  #rec1016601036.dd-nav-record::before { content:'';position:absolute;inset:0 0 -96px;z-index:-1;background:linear-gradient(180deg,rgba(0,0,0,.5),rgba(0,0,0,.5) calc(100% - 96px),transparent);pointer-events:none; }
-}
 #rec1016601036 #nav1016601036.dd-nav-experiment { position:relative;box-sizing:border-box;width:calc(100% - 40px);max-width:1160px;margin:20px auto 0;padding:0;background:transparent!important;box-shadow:none!important;pointer-events:none; }
 .dd-nav-experiment a { color:#fff6ec!important;text-decoration:none;pointer-events:auto; }
 .dd-nav-logo { display:block;position:absolute;left:0;top:0;width:220px;max-width:100%; }
@@ -229,9 +226,7 @@ html:root #allrecords[data-dd-refinement] #form1016216116 button.t-submit { font
   html:root #allrecords[data-dd-refinement] #rec1016226926 .dd-cover-date { margin-top:1rem; }
 }
 
-/* A single photographic sentence, carried by the existing weather-painted lanes.
-   Aura is a reference for broad, soft colour masses; this is an independent CSS
-   adaptation, with no exported canvas, new colour palette or image processing. */
+/* A single photographic sentence, carried by the weather-painted lanes. */
 body[data-dd-poster-finish] .dd-track__words { white-space:nowrap; }
 /* The secondary poster column keeps a real right edge after its type was
    reduced. The middle of the film remains an open part of the composition. */
@@ -239,39 +234,3 @@ body[data-dd-poster-finish] .dd-track__words { white-space:nowrap; }
   body[data-dd-poster-finish] #nav1016601036[data-nav-treatment='poster']:not([data-nav-wrap]) .dd-nav-destinations { width:max-content;max-width:50%; }
   body[data-dd-poster-finish] #rec1016601036 .dd-nav-image.dd-menu-preview { left:auto;right:20rem;top:84px; }
 }
-body[data-dd-poster-finish] .dd-track__surface[data-dd-aura],
-body[data-dd-poster-finish] .dd-aura-field { overflow:hidden; }
-body[data-dd-poster-finish] .dd-track__surface[data-dd-aura]::before,
-body[data-dd-poster-finish] .dd-aura-field::before {
-  content:'';
-  position:absolute;
-  inset:-50% -25%;
-  background:
-    radial-gradient(ellipse at 16% 64%,var(--dd-band) 0%,transparent 62%),
-    radial-gradient(ellipse at 72% 24%,var(--dd-footer-blue) 0%,transparent 64%),
-    linear-gradient(110deg,var(--dd-band),var(--dd-footer-blue));
-  transform:translate3d(-6%,0,0) rotate(-7deg) scale(1.12);
-  transform-origin:50% 50%;
-  animation:dd-aura-tide 72s cubic-bezier(.45,0,.55,1) infinite alternate;
-  animation-play-state:paused;
-  pointer-events:none;
-}
-body[data-dd-poster-finish] .dd-track__surface[data-dd-aura-playing]::before,
-body[data-dd-poster-finish] .dd-aura-field[data-dd-aura-playing]::before { animation-play-state:running; }
-body[data-dd-poster-finish] #t-footer { position:relative;isolation:isolate; }
-body[data-dd-poster-finish] #t-footer>.dd-aura-field { position:absolute;inset:0;z-index:-1;pointer-events:none;background:var(--dd-track-paint); }
-/* The footer's last lane and DUSTY share one field, including when it moves. */
-body[data-dd-poster-finish] #t-footer .dd-track__surface { background:transparent!important; }
-@keyframes dd-aura-tide {
-  from { transform:translate3d(-6%,0,0) rotate(-7deg) scale(1.12); }
-  to { transform:translate3d(6%,0,0) rotate(7deg) scale(1.12); }
-}
-html[data-dd-marquees='paused'] body[data-dd-poster-finish] [data-dd-aura]::before { animation-play-state:paused!important; }
-@media(prefers-reduced-motion:reduce) {
-  html:not([data-dd-marquees='running']) body[data-dd-poster-finish] [data-dd-aura]::before { animation-play-state:paused!important; }
-}
-@media(hover:hover) and (pointer:fine) {
-  body[data-dd-poster-finish] .dd-track:hover .dd-track__surface[data-dd-aura]::before,
-  body[data-dd-poster-finish] #t-footer:has(.dd-track:hover)>.dd-aura-field::before { animation-play-state:paused!important; }
-}
-body[data-dd-poster-finish] #t-footer:focus-within>.dd-aura-field::before { animation-play-state:paused!important; }

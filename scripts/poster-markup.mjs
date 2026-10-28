@@ -62,10 +62,8 @@ export function composePoster(html,base,version) {
   html=html.replace(paired,(_,age,first,second)=>{pairs++;return `<span class="dd-track__words" lang="en" aria-hidden="true">It costs 0.00</span>${first}<span class="dd-track__words" lang="en" aria-hidden="true">to be a nice camp${age}</span>${second}`;});
   if(pairs!==32)throw Error('The selected primary/clone photo pairs changed: '+pairs);
   html=html.replace('<body','<body data-dd-poster-finish');
-  let fields=0;
-  html=html.replace(/<div class="dd-track__surface" aria-hidden="true"><\/div>/g,tag=>++fields<3?tag.replace(' aria-hidden',' data-dd-aura aria-hidden'):tag);
-  if(fields!==3)throw Error('Three selected photographic tracks are required.');
-  html=html.replace(/(<(?:div|footer)\b[^>]*id="t-footer"[^>]*>)/,'$1<span class="dd-aura-field" data-dd-aura aria-hidden="true"></span>');
-  if(!html.includes('class="dd-aura-field"')||!html.includes('dd-menu-apply')||!html.includes('dd-application-explanation'))throw Error('The selected poster composition is incomplete.');
-  return html.replace('</head>',`<link rel="stylesheet" href="${base}poster.css?v=${version}" data-dd-poster><script type="application/json" id="dd-menu-scenes">${JSON.stringify(scenes)}</script><script type="module" src="${base}menu-poster.js?v=${version}"></script><script type="module" src="${base}poster-navigation.js?v=${version}"></script><script type="module" src="${base}poster-paint.js?v=${version}"></script></head>`);
+  const fields=html.match(/<div class="dd-track__surface" aria-hidden="true"><\/div>/g)||[];
+  if(fields.length!==3)throw Error('Three selected photographic tracks are required.');
+  if(!html.includes('dd-menu-apply')||!html.includes('dd-application-explanation'))throw Error('The selected poster composition is incomplete.');
+  return html.replace('</head>',`<link rel="stylesheet" href="${base}poster.css?v=${version}" data-dd-poster><script type="application/json" id="dd-menu-scenes">${JSON.stringify(scenes)}</script><script type="module" src="${base}menu-poster.js?v=${version}"></script><script type="module" src="${base}poster-navigation.js?v=${version}"></script></head>`);
 }

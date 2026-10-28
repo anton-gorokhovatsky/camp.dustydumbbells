@@ -143,7 +143,6 @@ for (const file of [
   "poster.css",
   "menu-poster.js",
   "poster-navigation.js",
-  "poster-paint.js",
   "smooth-corners.js",
   "body-type.css",
   "photo-model.js",

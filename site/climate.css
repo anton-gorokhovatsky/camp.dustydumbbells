@@ -72,7 +72,6 @@ body[data-dd-environment] #allrecords .dd-map-intro button:not(:disabled):focus-
 body[data-dd-environment] #allrecords #rec1016226926 .t-cover__filter {
   background: linear-gradient(90deg,rgba(0,0,0,.5),rgba(0,0,0,.22) 45%,transparent 70%),
     linear-gradient(0deg,rgba(0,0,0,.45),transparent 65%),
-    linear-gradient(180deg,rgba(0,0,0,.6) 0,rgba(0,0,0,.58) 9rem,transparent 19rem),
     linear-gradient(var(--dd-cover-cast),var(--dd-cover-cast)) !important;
 }
 body[data-dd-environment] #allrecords #rec1016226926 :is(.t997__title,.t997__descr,.t997__descr a),
