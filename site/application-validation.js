@@ -26,6 +26,9 @@ export function validateFields(fields) {
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors[`Email${suffix}`] = 'Проверьте адрес электронной почты.';
     const digits = phone.replace(/\D/g, '');
     if (!/^[+\d\s().-]+$/.test(phone) || digits.length < 7 || digits.length > 15) errors[`Phone${suffix}`] = 'Укажите телефон с кодом страны.';
+    const telegramField = suffix ? 'telegram-p' : 'telegram';
+    if (!(fields[telegramField] || '').trim()) errors[telegramField] = suffix
+      ? 'Укажите Телеграм партнёра для связи.' : 'Укажите свой Телеграм для связи.';
   }
   for (const name of fieldNames) {
     if (/_2$|-p$/.test(name) && travel !== 'С партнёром') continue;

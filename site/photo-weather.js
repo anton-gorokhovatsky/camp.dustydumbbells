@@ -21,18 +21,24 @@ export function mountPhotoWeather(weather) {
     new ResizeObserver(update).observe(element); document.fonts.ready.then(update); update();
   }
   const active=state=>!document.hidden&&!document.body.classList.contains('t-zoomer__show')&&!state.element.closest('[hidden],[inert]')&&!reduce.matches&&root.dataset.ddMarquees!=='paused'&&state.visible&&!state.focus&&!state.hover;
-  const sync=state=>{if(state.animation){if(active(state))state.animation.play();else state.animation.pause();}};
+  const sync=state=>{for(const animation of state.animations){if(active(state))animation.play();else animation.pause();}};
   function motion(state,index) {
-    state.animation?.cancel(); state.animation=null;
-    if(!model.sway||reduce.matches)return;
+    state.animations.forEach(animation=>animation.cancel()); state.animations=[];
     const {x,y,tilt,sway,period}=model;
-    const keyframes=[
-      {transform:`translate3d(${x-sway}px,${y-sway*.3}px,0) rotate(${tilt-sway*.15}deg)`},
-      {transform:`translate3d(${x+sway}px,${y+sway*.3}px,0) rotate(${tilt+sway*.15}deg)`},
-      {transform:`translate3d(${x-sway}px,${y-sway*.3}px,0) rotate(${tilt-sway*.15}deg)`},
-    ];
-    state.animation=state.element.animate(keyframes,{duration:period,iterations:Infinity,easing:'cubic-bezier(.77,0,.175,1)'});
-    state.animation.currentTime=(index%5)*period/5; sync(state);
+    // The still state keeps the wind's inclination and the weather material.
+    // A pause stops time; it does not straighten or empty the composition.
+    state.element.style.transform=`translate3d(${x}px,${y}px,0) rotate(${tilt}deg)`;
+    if(reduce.matches)return;
+    if(sway){
+      const keyframes=[
+        {transform:`translate3d(${x-sway}px,${y-sway*.3}px,0) rotate(${tilt-sway*.15}deg)`},
+        {transform:`translate3d(${x+sway}px,${y+sway*.3}px,0) rotate(${tilt+sway*.15}deg)`},
+        {transform:`translate3d(${x-sway}px,${y-sway*.3}px,0) rotate(${tilt-sway*.15}deg)`},
+      ];
+      const drift=state.element.animate(keyframes,{duration:period,iterations:Infinity,easing:'cubic-bezier(.77,0,.175,1)'});
+      drift.currentTime=(index%5)*period/5; state.animations.push(drift);
+    }
+    sync(state);
   }
   const observer=new IntersectionObserver(entries=>{for(const entry of entries){const state=frames.get(entry.target);if(state){state.visible=entry.isIntersecting;sync(state);}}},{rootMargin:'80px'});
   function add(element) {
@@ -40,7 +46,7 @@ export function mountPhotoWeather(weather) {
     element.classList.add('dd-photo-surface'); contour(element);
     let layer=element.querySelector(':scope > .dd-photo-atmosphere');
     if(!layer){layer=document.createElement('span');layer.className='dd-photo-atmosphere';layer.setAttribute('aria-hidden','true');element.append(layer);}
-    const state={element,visible:false,focus:false,hover:false,animation:null};frames.set(element,state);observer.observe(element);
+    const state={element,visible:false,focus:false,hover:false,animations:[]};frames.set(element,state);observer.observe(element);
     if(element.matches('.dd-menu-preview'))new MutationObserver(()=>sync(state)).observe(element.parentElement,{attributes:true,attributeFilter:['inert','data-preview','data-preview-room']});
     element.addEventListener('focusin',()=>{state.focus=true;sync(state);});
     element.addEventListener('focusout',()=>{state.focus=false;sync(state);});
@@ -70,9 +76,10 @@ export function mountPhotoWeather(weather) {
     const next=photoWeather(weather),key=JSON.stringify(next);
     if(key===modelKey)return;
     modelKey=key;model=next;
-    root.style.setProperty('--dd-photo-veil',model.veil);
-    root.style.setProperty('--dd-photo-wet',model.wet);
-    root.style.setProperty('--dd-photo-wet-angle',`${model.angle}deg`);
+    root.style.setProperty('--dd-photo-saturation',model.saturation);
+    root.style.setProperty('--dd-photo-brightness',model.brightness);
+    root.style.setProperty('--dd-photo-contrast',model.contrast);
+    root.style.setProperty('--dd-photo-blur',`${model.blur}px`);
     [...frames.values()].forEach(motion);
   };
   update(weather);return update;

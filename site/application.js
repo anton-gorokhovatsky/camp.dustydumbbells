@@ -2,6 +2,7 @@ import { applicationEndpoint } from './application-config.js';
 import { fieldNames, travelField, validateFields, acceptedReply } from './application-validation.js';
 import { createApplicationStatus } from './application-status.js';
 import { initFormWidgets } from './form-widgets.js';
+import { normaliseBirthday } from './form-values.js';
 
 // The original gallery opens on a photo click; give its images the same keyboard action.
 document.addEventListener('keydown', event => {
@@ -37,22 +38,14 @@ function initApplication(form) {
   form.noValidate = true;
   button.disabled = false;
   form.querySelectorAll('input, textarea').forEach(input => {
-    const label = input.getAttribute('placeholder');
-    if (label && !input.hasAttribute('aria-label')) input.setAttribute('aria-label', label.trim());
     if (input.name && !['hidden', 'radio'].includes(input.type)) input.maxLength = input.name === 'Textarea' ? 4000 : 254;
   });
-  function labelPhoneInputs() {
-    for (const name of ['Phone', 'Phone_2']) {
-      const group = [...form.querySelectorAll('[data-field-name]')].find(group => group.dataset.fieldName === name);
-      const phone = group?.querySelector('input[type="tel"]');
-      phone?.setAttribute('aria-label', name === 'Phone' ? 'Телефон' : 'Телефон партнёра');
-    }
-  }
-  labelPhoneInputs();
-  form.addEventListener('inputReady', labelPhoneInputs, true);
   function readFields() {
     const data = new FormData(form);
-    return Object.fromEntries(fieldNames.map(name => [name, String(data.get(name) || '').trim()]));
+    return Object.fromEntries(fieldNames.map(name => {
+      const value = String(data.get(name) || '').trim();
+      return [name, /^Date(?:_2)?$/.test(name) ? normaliseBirthday(value) : value];
+    }));
   }
   function clearCorrectedError(event) {
     const group = event.target.closest('[data-field-name]');
@@ -65,8 +58,8 @@ function initApplication(form) {
   form.addEventListener('input', clearCorrectedError);
   form.addEventListener('change', clearCorrectedError);
 
-  function message(text, state) {
-    status.show(state, text);
+  function message(text, state, detail = '') {
+    status.show(state, text, detail);
   }
 
   function clearErrors() {
@@ -90,7 +83,7 @@ function initApplication(form) {
     first?.focus();
   }
 
-  function finish(ok, text) {
+  function finish(ok, text, detail = '') {
     if (pending) {
       clearTimeout(pending.timer);
       pending.frame.remove();
@@ -101,7 +94,7 @@ function initApplication(form) {
     for (const input of lockedControls) input.disabled = ok;
     lockedControls = [];
     completed = ok;
-    message(text, ok ? 'success' : 'error');
+    message(text, ok ? 'success' : 'error', detail);
     if (ok) retry = null;
   }
 
@@ -109,7 +102,8 @@ function initApplication(form) {
     if (!acceptedReply(event, pending)) return;
     finish(event.data.ok === true, event.data.ok === true ? 'Заявка отправлена' :
       event.data.code === 'INVALID' ? 'Проверьте заполненные поля и отправьте заявку ещё раз.' :
-      'Не удалось сохранить заявку. Ваши данные остались в форме — попробуйте отправить ещё раз.');
+      'Не удалось сохранить заявку. Ваши данные остались в форме — попробуйте отправить ещё раз.',
+      event.data.ok === true ? 'Участие подтвердит организатор после рассмотрения.' : '');
   });
 
   form.addEventListener('submit', event => {
@@ -119,6 +113,10 @@ function initApplication(form) {
     clearErrors();
     status.show();
     const fields = readFields();
+    for (const name of ['Date','Date_2']) {
+      const input = form.elements.namedItem(name);
+      if (!input.matches(':disabled')) input.value = fields[name];
+    }
     const errors = validateFields(fields);
     if (Object.keys(errors).length) { showErrors(errors); return; }
     if (!/^https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]+\/exec$/.test(applicationEndpoint)) {

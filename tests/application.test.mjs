@@ -8,7 +8,7 @@ import { travelField, validateFields, validBirthday, acceptedReply } from '../si
 const code = await readFile(new URL('../backend/google-apps-script/Code.gs', import.meta.url), 'utf8');
 const serviceCode = await readFile(new URL('../backend/google-apps-script/ServiceAccount.gs', import.meta.url), 'utf8');
 const fields = {Name: 'Проверка формы', Date: '29.02.2000', Email: 'form-test@example.invalid',
-  Phone: '+7 (999) 000-00-00', telegram: '', Instagram: '', Textarea: '', [travelField]: 'Один'};
+  Phone: '+7 (999) 000-00-00', telegram: '@test-main', Instagram: '', Textarea: '', [travelField]: 'Один'};
 const packet = () => ({id: 'a3533d16-5f0a-4219-a9fb-66c629763b66', nonce: 'b'.repeat(64),
   origin: 'http://127.0.0.1:4187', source: 'http://127.0.0.1:4187/camp.dustydumbbells/',
   consent: true, fields: {...fields}});
@@ -50,9 +50,27 @@ test('birthdays are actual past calendar dates, including leap years', () => {
 test('partner requirements follow the selected trip type; solo ignores stale partner fields', () => {
   assert.deepEqual(validateFields(fields), {});
   const partner = {...fields, [travelField]: 'С партнёром'};
-  assert.deepEqual(Object.keys(validateFields(partner)).sort(), ['Name_2', 'Date_2', 'Email_2', 'Phone_2'].sort());
+  assert.deepEqual(Object.keys(validateFields(partner)).sort(), ['Name_2', 'Date_2', 'Email_2', 'Phone_2', 'telegram-p'].sort());
   assert.deepEqual(validateFields({...partner, Name_2: 'Второй участник', Date_2: '01.01.2000',
-    Email_2: 'partner@example.invalid', Phone_2: '+90 555 000 0000'}), {});
+    Email_2: 'partner@example.invalid', Phone_2: '+90 555 000 0000', 'telegram-p': '@test-partner'}), {});
+});
+
+test('Telegram is required for each participating person and blank contacts never reach the sheet', () => {
+  assert.deepEqual(Object.keys(validateFields({[travelField]:'Один'})), ['Name','Date','Email','Phone','telegram']);
+  for (const value of ['', '   ']) {
+    assert.equal(validateFields({...fields, telegram:value}).telegram, 'Укажите свой Телеграм для связи.');
+    const r = receiver(), p = packet(); p.fields.telegram = value;
+    assert.notEqual(reply(r.context.doPost({parameter:{payload:JSON.stringify(p)}}))?.ok, true);
+    assert.equal(r.writes(), 0);
+  }
+  const paired = {...fields, [travelField]:'С партнёром', Name_2:'Тестовый партнёр', Date_2:'01.01.1990',
+    Email_2:'partner@example.invalid', Phone_2:'+905550000000', 'telegram-p':'   '};
+  assert.equal(validateFields(paired)['telegram-p'], 'Укажите Телеграм партнёра для связи.');
+  const r = receiver(), p = packet(); p.fields = paired;
+  assert.notEqual(reply(r.context.doPost({parameter:{payload:JSON.stringify(p)}}))?.ok, true);
+  assert.equal(r.writes(), 0);
+  assert.deepEqual(validateFields({...paired, [travelField]:'Один'}), {});
+  for (const contact of ['@test-main', 'https://t.me/test_main']) assert.deepEqual(validateFields({...fields,telegram:contact}), {});
 });
 
 test('a confirmation requires the pending request ID, nonce and a Google origin', () => {

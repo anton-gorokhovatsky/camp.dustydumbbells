@@ -50,6 +50,7 @@ export function createWeatherReader({ fetcher = fetch, storage = null, now = () 
 export function applyCampPalette(root, state) {
   for (const [name, value] of Object.entries(state.css)) root.style.setProperty(name, value);
   root.dataset.ddLight = state.phase;
+  root.dataset.ddWeather = state.condition;
   root.dataset.ddPalette = 'ready';
   root.dispatchEvent(new CustomEvent('dd-palette-change'));
 }
@@ -64,6 +65,15 @@ function initCampEnvironment() {
   document.querySelectorAll('.dd-track__photo').forEach(smoothCorners);
   const reading = document.querySelector('[data-dd-weather-values]');
   const menuWeather=document.querySelector('[data-dd-menu-weather]');
+  let currentConditions=menuWeather?.querySelector('[data-dd-current-weather]')||null;
+  if(menuWeather){
+    if(!currentConditions){
+      currentConditions=document.createElement('p');
+      currentConditions.className='dd-menu-weather__current';
+      currentConditions.setAttribute('data-dd-current-weather','');
+      menuWeather.prepend(currentConditions);
+    }
+  }
   let triedWeather=false;
   const temperature=value=>`${Math.round(value)>0?'+':''}${Math.round(value)}°`;
   const render = () => {
@@ -79,6 +89,15 @@ function initCampEnvironment() {
       const range=menuWeather.querySelector('[data-dd-forecast-range]');
       const conditions=menuWeather.querySelector('[data-dd-forecast-conditions]');
       const detail=menuWeather.querySelector('[data-dd-forecast-detail]');
+      const currentTime=menuWeather.querySelector('[data-dd-current-time]');
+      // The daily WMO code describes the strongest condition of the day. Keep
+      // it separate from the current reading that colours the page and photos.
+      currentConditions.textContent=currentTime
+        ? weather?`Анталья · ${temperature(weather.temperature)} · ${weatherLabel(weather).toLowerCase()}`
+          : triedWeather?'Анталья · погода недоступна':'Анталья · загружаем погоду…'
+        : weather?`Сейчас · ${temperature(weather.temperature)} · ${weatherLabel(weather).toLowerCase()} · на ${weather.time}`
+          : triedWeather?'Текущая погода недоступна':'Загружаем текущую погоду…';
+      if(currentTime){currentTime.textContent=weather?`Текущая погода на ${weather.time}`:'';currentTime.hidden=!weather;}
       heading.textContent=`Сегодня в Анталье · ${new Intl.DateTimeFormat('ru',{timeZone:'Europe/Istanbul',day:'numeric',month:'long'}).format(date)}`;
       range.hidden=!forecast;
       detail.hidden=!forecast;

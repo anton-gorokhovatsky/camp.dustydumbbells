@@ -30,7 +30,7 @@ function checkConnection() {
 function doGet() {
   var ok = false;
   try { ddReadHeaders_(); ok = true; } catch (error) { /* Never return private exceptions. */ }
-  return ContentService.createTextOutput(JSON.stringify({service: 'dd-camp-applications', version: 2, ok: ok}))
+  return ContentService.createTextOutput(JSON.stringify({service: 'dd-camp-applications', version: 3, ok: ok}))
     .setMimeType(ContentService.MimeType.JSON);
 }
 
@@ -66,6 +66,7 @@ function ddValidate_(raw) {
   });
   ['', '_2'].forEach(function (suffix) {
     if (suffix && travel === 'Один') return;
+    if (!values[suffix ? 'telegram-p' : 'telegram']) throw new Error('INVALID');
     if (values['Name' + suffix].length < 2 || values['Name' + suffix].length > 160) throw new Error('INVALID');
     values['Date' + suffix] = ddDate_(values['Date' + suffix]);
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values['Email' + suffix])) throw new Error('INVALID');

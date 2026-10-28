@@ -13,6 +13,8 @@ import { adaptPrivacyAccessibility } from './accessibility-markup.mjs';
 import { composeFooter } from './footer-markup.mjs';
 import { composeHotelPreviews } from './hotel-markup.mjs';
 import { composePoster } from './poster-markup.mjs';
+import { composeMenuClarity } from './menu-markup.mjs';
+import { composeMetadata } from './metadata-markup.mjs';
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const manifest = JSON.parse(
@@ -77,6 +79,8 @@ for (const name of ['index.html', 'direction/index.html']) {
   expected = adaptRefinement(expected, release.base, encodeURIComponent(release.commit));
   expected = composeHotelPreviews(expected, release.base, JSON.parse(await readFile(path.join(root,'site/data/hotels.json'),'utf8')),encodeURIComponent(release.commit));
   expected = composePoster(expected,release.base,encodeURIComponent(release.commit));
+  expected = composeMenuClarity(expected,release.base,encodeURIComponent(release.commit));
+  expected = composeMetadata(expected,release.site);
   const built = await readFile(path.join(root, 'dist', name), 'utf8');
   assert.equal(built, expected, `Current source fidelity failed: ${name}`);
   assert(!built.includes('js-form-proccess'));
@@ -146,13 +150,15 @@ for (const [sourceName, builtName] of [
     new RegExp(`href=(["'])${escapedBase}(#.*?)?\\1`, "g"),
     (_, quote, anchor = "") => `href=${quote}/${anchor}${quote}`,
   );
-  assert.equal(
-    hash(restored),
-    hash(sourceName === 'privacy.html' ? adaptPrivacyAccessibility(adaptClimate(keepRecordsReadable(
+  let expectedSource = sourceName === 'privacy.html' ? adaptPrivacyAccessibility(adaptClimate(keepRecordsReadable(
       composeFooter(source,release.base,{plainLinks:true})
         .replaceAll(`href="${release.base}privacy/"`,'href="/privacy"')
         .replace('</body>',`<script type="module" src="${release.base}accessibility.js?v=${encodeURIComponent(release.commit)}" data-dd-accessibility></script></body>`)
-    ), release.base, encodeURIComponent(release.commit)), release.base, encodeURIComponent(release.commit)) : source),
+    ), release.base, encodeURIComponent(release.commit)), release.base, encodeURIComponent(release.commit)) : source;
+  if(sourceName==='privacy.html')expectedSource=composeMetadata(expectedSource,release.site,{path:'privacy/',title:'Политика конфиденциальности — DD Camp',description:'Обработка персональных данных при отправке заявки на кэмп «Пыльных гантелей».'});
+  assert.equal(
+    hash(restored),
+    hash(expectedSource),
     `Source fidelity failed for ${sourceName}`,
   );
 }

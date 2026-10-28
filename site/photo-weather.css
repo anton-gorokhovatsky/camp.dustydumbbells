@@ -3,8 +3,14 @@ body[data-dd-photo-weather] #allrecords .dd-photo-surface { position:relative; b
 body[data-dd-photo-weather] #allrecords .dd-menu-preview.dd-photo-surface { position:absolute; border-radius:16px; }
 body[data-dd-photo-weather] #allrecords .dd-track__photo.dd-photo-surface { border-radius:.15em; }
 body[data-dd-photo-weather] .dd-full-photo { border-radius:var(--dd-photo-radius); }
-body[data-dd-photo-weather] .dd-photo-atmosphere { position:absolute; inset:0; z-index:2; pointer-events:none; background:linear-gradient(var(--dd-photo-wet-angle,135deg),rgba(255,255,255,var(--dd-photo-wet,0)),transparent 30%,transparent 65%,rgba(255,255,255,var(--dd-photo-veil,0))); box-shadow:inset 0 0 0 1px rgba(255,255,255,var(--dd-photo-wet,0)); }
+/* Current light grades the image only; archive subjects are never covered by invented weather. */
+body[data-dd-photo-weather] .dd-photo-surface img { filter:saturate(var(--dd-photo-saturation,1)) brightness(var(--dd-photo-brightness,1)) contrast(var(--dd-photo-contrast,1)) blur(var(--dd-photo-blur,0px)); }
+body[data-dd-photo-weather] .dd-photo-atmosphere { position:absolute; inset:0; z-index:2; pointer-events:none; overflow:hidden; border-radius:inherit; }
+body[data-dd-photo-weather] .dd-photo-surface.dd-smooth-ready > .dd-photo-atmosphere { border-radius:0;clip-path:var(--dd-smooth-path); }
 body[data-dd-photo-weather] .dd-photo-surface:has(img:focus-visible) .dd-photo-atmosphere { box-shadow:inset 0 0 0 2px #fff6ec,inset 0 0 0 5px var(--dd-blue); }
 body[data-dd-photo-weather] .dd-photo-surface img:focus-visible { outline:none !important; }
 body[data-dd-photo-weather] #allrecords .t1148__slider { padding-block:8px; }
 @media(max-width:640px) { body[data-dd-photo-weather] { --dd-photo-radius:20px; } }
+
+/* A current observation and the whole-day forecast have different meanings. */
+#rec1017771976 #nav1017771976 .dd-menu-weather .dd-menu-weather__current { flex-basis:100%;font-size:var(--dd-type-meta);line-height:1.45;margin:0 0 .85em;color:var(--dd-matte-ink); }

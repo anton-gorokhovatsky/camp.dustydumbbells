@@ -3,11 +3,13 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { campPalette, contrast } from '../dist/camp-palette.js';
 import { createWeatherReader } from '../dist/camp-environment.js';
-import { normalizeForecast, weatherURL } from '../dist/environment.js';
+import { normalizeWeather, normalizeForecast, weatherURL } from '../dist/environment.js';
 
 const weather = { clouds: 2, code: 0, temperature: 25, humidity: 45, precipitation: 0, wind: 3, direction: 180 };
 const states = [null, weather, { ...weather, clouds: 100, code: 3 },
   { ...weather, clouds: 100, code: 65, precipitation: 12 },
+  { ...weather, clouds: 100, code: 95, precipitation: 0 },
+  { ...weather, clouds: 100, code: 99, precipitation: 10 },
   { ...weather, clouds: 100, code: 48 }, { ...weather, clouds: 90, code: 86, temperature: -5 }];
 
 test('the actual elevation controls the pigments through four seasons and the local midnight', () => {
@@ -61,6 +63,26 @@ test('clouds and weather codes visibly affect the palette, even with zero record
   assert(codedRain.overcast > clear.overcast);
 });
 
+test('current storm, rain and fog retain different light rather than one almost unchanged cloudy surface',()=>{
+  const date=new Date('2026-10-28T13:00:00+03:00');
+  const cloudy=campPalette({date,weather:{...weather,clouds:100,code:3}});
+  const rainy=campPalette({date,weather:{...weather,clouds:100,code:65,precipitation:5}});
+  const storm=campPalette({date,weather:{...weather,clouds:100,code:95,precipitation:5}});
+  const fog=campPalette({date,weather:{...weather,clouds:100,code:48}});
+  const channels=colour=>colour.slice(1).match(/../g).map(value=>parseInt(value,16));
+  const distance=(a,b)=>Math.hypot(...channels(a).map((value,i)=>value-channels(b)[i]));
+  assert(distance(cloudy.page,rainy.page)>25,'Rain changes the whole page sufficiently to require a real visual comparison.');
+  assert(distance(cloudy.page,storm.page)>45,'Storm is not merely the cloudy palette with a different forecast label.');
+  for(const palette of [cloudy,rainy,storm,fog]){
+    const [red,green,blue]=channels(palette.page);
+    assert(Math.abs(red-green)<12&&blue<=red,'Diffuse daylight stays a neutral mineral surface, without a separate cyan cast.');
+  }
+  assert.notEqual(storm.matte.colour,cloudy.matte.colour);
+  assert.notEqual(fog.page,storm.page);
+  assert.equal(storm.condition,'storm');assert.equal(fog.condition,'fog');
+  assert.equal(campPalette({date}).condition,'unknown','No observation is not a clear-weather reading.');
+});
+
 const payloadAt = date => ({ current: {
   time: date.toISOString().slice(0,16), temperature_2m: 22, relative_humidity_2m: 50,
   cloud_cover: 5, precipitation: 0, weather_code: 0, wind_speed_10m: 3, wind_direction_10m: 180,
@@ -102,6 +124,18 @@ test('the forecast is the camp civil day, and incomplete values never become cle
   const url=new URL(weatherURL());
   assert.equal(url.searchParams.get('timezone'),'Europe/Istanbul');
   assert(url.searchParams.get('daily').includes('temperature_2m_min'));
+  assert(url.searchParams.get('current').includes('wind_gusts_10m'));
+});
+
+test('the current observation supplies the palette and gusts while the daily storm remains a forecast',async()=>{
+  const date=new Date('2026-10-24T10:00:00Z');
+  const source={...payload,current:{...payload.current,wind_gusts_10m:13},daily:{...payload.daily,weather_code:[95],precipitation_probability_max:[100]}};
+  const reader=createWeatherReader({now:()=>date,fetcher:async()=>({ok:true,json:async()=>source})});
+  await reader.refresh();
+  assert.equal(reader.peek().code,0);assert.equal(reader.forecast().code,95);
+  assert.equal(normalizeWeather(source,date).gust,13);
+  const palette=campPalette({date,weather:reader.peek()});
+  assert.equal(palette.condition,'clear');assert.equal(palette.effects.storm,0);assert.equal(palette.effects.rain,0);
 });
 
 test('one shared request refreshes the forecast at camp midnight, even inside the normal cache window',async()=>{

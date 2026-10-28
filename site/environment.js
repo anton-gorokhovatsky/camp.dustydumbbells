@@ -199,6 +199,7 @@ export function weatherEffects(weather) {
   const snowing = snowCodes.includes(code);
   const rain = snowing ? 0 : Math.max(precipitation, rainfall.get(code) ?? 0);
   const snow = snowing ? Math.max(precipitation, [75,86].includes(code) ? .8 : .3) : 0;
+  const storm = code === 95 ? .75 : [96,99].includes(code) ? 1 : 0;
   const fog = code === 45 ? .65 : code === 48 ? .9 : 0;
   const clouds = Math.max(clamp((weather?.clouds ?? 0) / 100), code === 3 ? .8 : 0);
   const wind = Math.min(24, weather?.wind ?? 1.5);
@@ -206,7 +207,7 @@ export function weatherEffects(weather) {
   const direction = weather?.direction ?? 230;
   // The meteorological bearing says where the wind comes from.
   const drift = -Math.sin(direction * Math.PI / 180);
-  return { rain, snow, fog, clouds, wind, gust, direction, drift };
+  return { rain, snow, storm, fog, clouds, wind, gust, direction, drift };
 }
 
 export function environmentAt({
@@ -425,7 +426,7 @@ export function weatherURL() {
     latitude: String(PLACE.latitude),
     longitude: String(PLACE.longitude),
     current:
-      "temperature_2m,relative_humidity_2m,precipitation,weather_code,cloud_cover,wind_speed_10m,wind_direction_10m",
+      "temperature_2m,relative_humidity_2m,precipitation,weather_code,cloud_cover,wind_speed_10m,wind_gusts_10m,wind_direction_10m",
     hourly: "uv_index",
     daily: "temperature_2m_min,temperature_2m_max,weather_code,precipitation_probability_max,wind_speed_10m_max",
     timezone: PLACE.zone,

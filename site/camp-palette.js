@@ -47,21 +47,28 @@ export function campPalette({ date = new Date(), weather = null } = {}) {
   const daylight = ease((sun.altitude + 8) / 10);
   const highSun = ease((sun.altitude - 2) / 22);
   const effects = weatherEffects(weather);
-  const overcast = clamp(effects.clouds * .46 + effects.rain * .16 + effects.fog * .2 + effects.snow * .12, 0, .72);
+  const overcast = clamp(effects.clouds * .46 + effects.rain * .24 + effects.storm * .3 + effects.fog * .2 + effects.snow * .12, 0, 1);
   const values = Object.fromEntries(Object.keys(pigments.day).map(role => [role,
     mix(pigments.night[role], mix(horizon[role], pigments.day[role], highSun), daylight),
   ]));
   const isDark = luminance(values.page) < .19;
-  const weatherCast = isDark ? '#263b50' : '#d9dedc';
-  values.page = mix(values.page, weatherCast, overcast);
+  // Diffuse daylight takes warmth out of the sunlit limestone without adding
+  // an unrelated blue coating. Rain deepens that mineral plane; fog lifts it.
+  // At night the same conditions temper the existing ink-blue toward charcoal.
+  // Only current observations reach this model, never the day's worst forecast.
+  values.page = mix(values.page, isDark ? '#282a31' : '#dfddd5', effects.clouds * .5);
+  values.page = mix(values.page, isDark ? '#20252b' : '#c9c8bf', effects.rain * .62);
+  values.page = mix(values.page, isDark ? '#1b2026' : '#b8bbb4', effects.storm * .5);
+  values.page = mix(values.page, isDark ? '#3b3e40' : '#deddd5', effects.fog * .82);
+  values.page = mix(values.page, isDark ? '#45484d' : '#e9e8e0', effects.snow * .7);
   if (Number.isFinite(weather?.temperature)) {
-    values.page = mix(values.page, weather.temperature > 22 ? '#f2c89f' : '#a8d3e4',
+    values.page = mix(values.page, weather.temperature > 22 ? '#f2c89f' : '#e3e2d9',
       clamp(Math.abs(weather.temperature - 22) / 25) * .05 * daylight);
   }
-  values.blue = mix(values.blue, isDark ? '#b9cedd' : '#425a7b', overcast * .38);
-  values.red = mix(values.red, isDark ? '#d9b8bb' : '#88404c', overcast * .28);
-  values.band = mix(values.band, '#513345', overcast * .4);
-  values.deep = mix(values.deep, '#293e55', overcast * .32);
+  values.blue = mix(values.blue, isDark ? '#c4cbd6' : '#3c4c6b', overcast * .38);
+  values.red = mix(values.red, isDark ? '#d9b8b3' : '#834649', overcast * .34);
+  values.band = mix(values.band, '#5a4148', overcast * .5);
+  values.deep = mix(values.deep, '#3d414c', overcast * .45);
   let surface = mix(values.page, isDark ? '#b0c6e1' : '#ffffff', .025);
   let text = textFamily([values.page, surface], values.blue, values.red);
   if (!text) {
@@ -71,7 +78,9 @@ export function campPalette({ date = new Date(), weather = null } = {}) {
 
   // One raised matte plane for menu, burger and movie controls. A continuous
   // lift separates it from flat page fields as well as from moving footage.
-  const matteColour = mix(surface, '#fff6ec', .04 + .12 * (1 - daylight));
+  const wetLight = clamp(effects.rain * .45 + effects.storm * .55);
+  const matteColour = mix(mix(surface, '#fff6ec', .04 + .12 * (1 - daylight)),
+    isDark ? '#49494a' : '#d8d6ce', wetLight * .2 + effects.fog * .22);
   let matteAlpha = .76;
   let matteSurfaces;
   let matte;
@@ -84,10 +93,12 @@ export function campPalette({ date = new Date(), weather = null } = {}) {
   const band = readable(values.band, [onBand], false);
   const deep = readable(values.deep, [onBand], false);
   const phase = sun.altitude < -6 ? 'night' : sun.altitude < 12 ? (rising ? 'morning' : 'evening') : 'day';
+  const condition = !weather ? 'unknown' : effects.storm ? 'storm' : effects.snow ? 'snow'
+    : effects.fog ? 'fog' : effects.rain ? 'rain' : effects.clouds > .7 ? 'cloud' : 'clear';
   const coverCast = mix('#10294e', rising ? '#f1bb8e' : '#eea574', daylight * (1 - highSun));
   const coverOpacity = (.08 + (1 - daylight) * .1 + overcast * .025).toFixed(3);
   return {
-    sun, solar, phase, overcast, page: values.page, surface, text, band, onBand, deep,
+    sun, solar, phase, condition, effects, overcast, page: values.page, surface, text, band, onBand, deep,
     matte: { ...matte, colour: matteColour, alpha: Number(matteAlpha.toFixed(2)), surfaces: matteSurfaces },
     css: {
       '--dd-page': values.page,

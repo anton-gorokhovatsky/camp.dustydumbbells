@@ -189,7 +189,15 @@ test("the main page keeps the user's complete original layout with the agreed 20
   assert(!html.includes('DDLong в&nbsp;воскресенье'));
   assert(html.includes(`<link rel="canonical" href="${release.site}"`));
   assert(html.includes(`<meta property="og:url" content="${release.site}"`));
-  assert(html.includes(`<meta property="og:image" content="${new URL(release.base,release.site).origin}${release.base}assets/`));
+  assert(html.includes(`<meta property="og:image" content="${new URL('media/dd-camp-social-2027.png',release.site).href}"`));
+  assert(html.includes('<meta property="og:image:width" content="1200">'));
+  assert(html.includes('<meta property="og:image:height" content="630">'));
+  assert(html.includes('<meta name="twitter:card" content="summary_large_image">'));
+  assert(html.includes('<title>DD Camp — Анталья, 12–25 октября 2027</title>'));
+  assert.equal((html.match(/<link rel="canonical"/g)||[]).length,1);
+  for(const file of ['branding/favicon.svg','branding/favicon-32.png','branding/favicon.ico','branding/apple-touch-icon.png','media/dd-camp-social-2027.png'])assert(release.siteFiles[file],file);
+  const share=await readFile(new URL('../dist/media/dd-camp-social-2027.png',import.meta.url));
+  assert.equal(share.readUInt32BE(16),1200);assert.equal(share.readUInt32BE(20),630);
   assert(html.includes('data-dd-map'));
   assert(html.includes('data-lat="36.863249" data-lng="30.63773"'));
   assert(!html.includes('api.mapbox.com'));
@@ -224,7 +232,7 @@ test("the original Tilda runtime uses local assets and retained modules keep the
       }
       assert(reference.startsWith(release.base), reference);
       const local = reference.slice(release.base.length).split('?')[0];
-      assert(local.startsWith('assets/') || local.startsWith('media/hotels/') || ['application.css', 'application.js', 'navigation.css', 'navigation.js', 'camp-map.css', 'camp-map.js', 'refinement.css', 'cover-film.js', 'climate.css', 'camp-environment.js', 'accessibility.css', 'accessibility.js', 'phone-flags.css', 'body-type.css', 'photo-weather.css', 'track.css', 'track.js', 'photo-stacks.css', 'photo-stacks.js', 'hotel-previews.css', 'hotel-previews.js', 'poster.css', 'menu-poster.js', 'poster-navigation.js'].includes(local), reference);
+      assert(local.startsWith('assets/') || local.startsWith('media/hotels/') || ['application.css', 'application.js', 'navigation.css', 'navigation.js', 'camp-map.css', 'camp-map.js', 'refinement.css', 'cover-film.js', 'climate.css', 'camp-environment.js', 'accessibility.css', 'accessibility.js', 'phone-flags.css', 'body-type.css', 'photo-weather.css', 'track.css', 'track.js', 'photo-stacks.css', 'photo-stacks.js', 'hotel-previews.css', 'hotel-previews.js', 'poster.css', 'menu.css', 'menu-poster.js', 'poster-navigation.js'].includes(local), reference);
       assert((await stat(new URL(`../dist/${local}`,import.meta.url))).isFile());
     }
   }

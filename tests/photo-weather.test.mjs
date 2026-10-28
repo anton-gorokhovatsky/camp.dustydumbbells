@@ -15,23 +15,38 @@ test('archive drift follows the meteorological bearing without inventing missing
   for(const value of [null,{}, {...wind,wind:null},{...wind,direction:NaN},{...wind,humidity:undefined}]){
     const current=photoWeather(value);
     assert.equal(current.x,0);assert.equal(current.y,0);assert.equal(current.tilt,0);assert.equal(current.sway,0);
-    assert.equal(current.veil,0);assert.equal(current.wet,0);
+    assert.equal(current.saturation,1);assert.equal(current.brightness,1);assert.equal(current.contrast,1);assert.equal(current.blur,0);
   }
 });
 
 test('atmospheric treatment remains bounded for calm, gust, fog, rain and extremes',()=>{
-  for(const speed of [0,2,14,80])for(const humidity of [0,50,100])for(const code of [0,45,63,65,75]){
+  for(const speed of [0,2,14,80])for(const humidity of [0,50,100])for(const code of [0,45,63,65,75,95,96,99]){
     const model=photoWeather({...wind,wind:speed,gust:120,humidity,code,precipitation:300});
     assert(Object.values(model).every(Number.isFinite));
     assert(Math.abs(model.x)+model.sway<9);
     assert(Math.abs(model.y)+model.sway*.3<3.5);
     assert(Math.abs(model.tilt)+model.sway*.15<3.3);
-    assert(model.veil>=0&&model.veil<=.11);
-    assert(model.wet>=0&&model.wet<=.18);
+    assert(model.saturation>=.55&&model.saturation<=1);
+    assert(model.brightness>=.86&&model.brightness<=1);
+    assert(model.contrast>=.87&&model.contrast<=1.061);
+    assert(model.blur>=0&&model.blur<=1.2);
   }
   assert.equal(photoWeather({...wind,wind:0,gust:0}).sway,0);
-  assert(photoWeather({...wind,humidity:98,code:45}).veil>photoWeather(wind).veil);
-  assert(photoWeather({...wind,humidity:95,code:63,precipitation:4}).wet>photoWeather(wind).wet);
+  assert(photoWeather({...wind,humidity:98,code:45}).blur>photoWeather(wind).blur);
+  assert(photoWeather({...wind,humidity:95,code:63,precipitation:4}).brightness<photoWeather(wind).brightness);
+});
+
+test('rain, fog and gusts change light, focus and inclination without drawing fictional weather',()=>{
+  const clear=photoWeather(wind);
+  const storm=photoWeather({...wind,wind:2,gust:2,code:95,clouds:100,precipitation:0});
+  const fog=photoWeather({...wind,code:48,humidity:98});
+  assert.equal(clear.blur,0);assert.equal(clear.saturation,1);assert.equal(clear.brightness,1);
+  assert(storm.saturation<.8&&storm.brightness<.92,'Observed storm deepens photographic light even with a zero precipitation reading.');
+  assert.equal(storm.blur,0,'A storm code alone does not imply a blurred downpour.');
+  assert.equal(photoWeather({...wind,code:63,precipitation:1}).blur,0,'Ordinary rain does not defocus documentary photographs.');
+  assert(photoWeather({...wind,code:65,precipitation:5}).blur>0);
+  assert(fog.blur>0&&fog.contrast<1,'Coded fog softens image detail and contrast; copy remains sharp.');
+  assert(photoWeather({...wind,gust:24}).sway>photoWeather({...wind,gust:14}).sway);
 });
 
 test('the selected three photographic refrains retain the real archive and its provenance',async()=>{

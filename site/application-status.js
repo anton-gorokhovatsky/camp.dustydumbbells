@@ -14,10 +14,15 @@ export function createApplicationStatus(form) {
   status.hidden = true;
   button.parentElement.append(status);
   return {
-    show(state = 'idle', text = '') {
+    show(state = 'idle', text = '', detail = '') {
       form.dataset.applicationState = state;
       status.dataset.state = state;
       status.textContent = text;
+      if (detail) {
+        const title = document.createElement('strong'); title.textContent = text;
+        const explanation = document.createElement('span'); explanation.textContent = detail;
+        status.replaceChildren(title, explanation);
+      }
       status.hidden = !text;
       button.hidden = state === 'pending' || state === 'success';
       button.disabled = button.hidden;

@@ -15,7 +15,9 @@ export function phoneParts(value, iso = 'ru') {
   if (!/^[+\d\s().-]*$/.test(value)) return {iso, national: String(value)};
   const digits = String(value).replace(/\D/g, '');
   if (!String(value).trim().startsWith('+')) return {iso, national: nationalDigits(value,iso)};
-  const entries = Object.entries(phoneCountries).sort((a,b) => b[1].c.replace(/\D/g,'').length - a[1].c.replace(/\D/g,'').length);
+  const entries = Object.entries(phoneCountries).sort((a,b) =>
+    b[1].c.replace(/\D/g,'').length - a[1].c.replace(/\D/g,'').length ||
+    Number(b[0] === 'ru') - Number(a[0] === 'ru'));
   const current = phoneCountries[iso];
   const same = current && digits.startsWith(current.c.replace(/\D/g,''));
   const found = entries.find(([,country]) => digits.startsWith(country.c.replace(/\D/g,'')));
@@ -31,7 +33,10 @@ export function internationalPhone(national, iso) {
 export function normaliseBirthday(value) {
   const text = String(value).trim();
   if (/^\d{8}$/.test(text)) return `${text.slice(0,2)}.${text.slice(2,4)}.${text.slice(4)}`;
-  return text.replace(/[/-]/g,'.');
+  const iso = /^(\d{4})-(\d{2})-(\d{2})$/.exec(text);
+  if (iso) return `${iso[3]}.${iso[2]}.${iso[1]}`;
+  const local = /^(\d{1,2})\s*[./-]\s*(\d{1,2})\s*[./-]\s*(\d{4})$/.exec(text);
+  return local ? `${local[1].padStart(2,'0')}.${local[2].padStart(2,'0')}.${local[3]}` : text;
 }
 export function calendarMove(date, key, shift = false) {
   const next = new Date(date.getFullYear(),date.getMonth(),date.getDate());

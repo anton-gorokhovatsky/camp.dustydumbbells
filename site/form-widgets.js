@@ -20,23 +20,11 @@ export function initFormWidgets(form) {
   const partnerFields = groupForm(form);
   const inputs = [...form.querySelectorAll('input:not([type="radio"]):not([type="hidden"]),textarea')];
   for (const input of inputs) {
-    const label = input.getAttribute('placeholder') || input.getAttribute('aria-label');
-    if (!input.getAttribute('aria-label') && label) input.setAttribute('aria-label', label);
-    if (input.type !== 'tel' && label) {
-      input.classList.add('t-input_pvis');
-      input.placeholder = '';
-      if (!input.nextElementSibling?.classList.contains('t-input__vis-ph')) {
-        const visual = document.createElement('div');
-        visual.className = 't-input__vis-ph'; visual.textContent = label;
-        input.after(visual);
-      }
-      const sync = () => input.classList.toggle('t-input_has-content', !!input.value);
-      input.addEventListener('input',sync); input.addEventListener('change',sync); sync();
-    }
     if (input.name.startsWith('Name')) input.autocomplete = `${partner(input.name) ? 'section-partner' : 'section-main'} name`;
     if (input.type === 'email') input.autocomplete = `${partner(input.name) ? 'section-partner' : 'section-main'} email`;
     if (input.type === 'tel') initPhone(input);
     if (input.classList.contains('t-datepicker')) initCalendar(input,form);
+    labelField(input);
   }
   const groups = [...form.querySelectorAll('[data-field-name]')].filter(group=>partner(group.dataset.fieldName));
   const updatePartner = () => {
@@ -46,6 +34,32 @@ export function initFormWidgets(form) {
   };
   form.addEventListener('change',event=>{ if (event.target.name === travelField) updatePartner(); });
   updatePartner();
+}
+
+// Labels belong to the fields, not to their empty state. Keep the same names
+// and backend fields for both people; only optional information is annotated.
+function labelField(input) {
+  const group = input.closest('[data-field-name]');
+  if (!group) return;
+  const name = group.dataset.fieldName.replace(/_2$|-p$/, '');
+  const labels = {Name:'Имя и фамилия', Date:'Дата рождения', Email:'Электронная почта', Phone:'Телефон', telegram:'Телеграм', Instagram:'Instagram*', Textarea:'Пожелания'};
+  if (!labels[name]) return;
+  const optional = ['Instagram','Textarea'].includes(name);
+  group.querySelectorAll('.t-input__vis-ph').forEach(el => el.remove());
+  input.classList.remove('t-input_pvis');
+  input.id ||= `dd-field-${group.dataset.fieldName}`;
+  input.required = !optional;
+  input.setAttribute('aria-required', String(!optional));
+  input.removeAttribute('aria-label');
+  if (input.type !== 'tel') input.placeholder = name === 'Date' ? 'ДД.ММ.ГГГГ' : '';
+  const label = document.createElement('label');
+  label.className = 'dd-field-label'; label.htmlFor = input.id;
+  label.append(document.createTextNode(labels[name]));
+  if (optional) {
+    const note = document.createElement('span'); note.className = 'dd-field-optional';
+    note.textContent = 'необязательно'; label.append(document.createTextNode(' '), note);
+  }
+  group.prepend(label);
 }
 
 function groupForm(form) {
@@ -190,7 +204,6 @@ function initCalendar(input,form) {
     if(moveFocus) focusDay();
   }
   toggle.addEventListener('click',()=>popup.hidden?open():close());
-  input.addEventListener('click',()=>{if(popup.hidden)open(false);});
   input.addEventListener('blur',()=>{const value=normaliseBirthday(input.value); if(value!==input.value){input.value=value; input.dispatchEvent(new Event('input',{bubbles:true}));}});
   input.addEventListener('keydown',event=>{if(event.altKey&&event.key==='ArrowDown'){event.preventDefault();open();}else if(event.key==='Escape'&&!popup.hidden){event.preventDefault();close();}});
   popup.addEventListener('keydown',event=>{

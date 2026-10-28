@@ -12,6 +12,8 @@ import { season } from '../site/content.js';
 import {composeHotelPreviews,hotelPreviewFiles} from './hotel-markup.mjs';
 import {composePhotoCredits} from './photo-credits-markup.mjs';
 import {composePoster} from './poster-markup.mjs';
+import {composeMenuClarity} from './menu-markup.mjs';
+import {composeMetadata} from './metadata-markup.mjs';
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const output = path.join(root, "dist");
@@ -108,6 +110,7 @@ for (const [input, target] of [
       `<link rel="stylesheet" href="${base}privacy.css?v=${assetVersion}" data-policy-title-wrap></head>`,
     );
     html = adaptPrivacyRefinement(html, base, assetVersion);
+    html = composeMetadata(html,site,{path:'privacy/',title:'Политика конфиденциальности — DD Camp',description:'Обработка персональных данных при отправке заявки на кэмп «Пыльных гантелей».'});
   }
   await writeFile(path.join(output, target), html);
 }
@@ -154,6 +157,7 @@ for (const file of [
   "track.css",
   "track.js",
   "hotel-previews.css",
+  "menu.css",
   "hotel-previews.js",
   "refinement.css",
   "cover-film.js",
@@ -191,7 +195,10 @@ for (const file of [
     content = adaptRefinement(content, base, assetVersion);
     content = composeHotelPreviews(content,base,hotels,assetVersion);
     content = composePoster(content,base,assetVersion);
+    content = composeMenuClarity(content,base,assetVersion);
+    content = composeMetadata(content,site);
   }
+  if(file==='map.html')content=composeMetadata(content,site,{path:'map.html',title:'Карта Антальи — Коньяалты · DD Camp',description:'Район Коньяалты в Анталье — место кэмпа «Пыльных гантелей».'});
   // A new publication must also refresh cached styles and module dependencies.
   if (file.endsWith(".html")) {
     content = content.replace(
@@ -209,6 +216,12 @@ for (const file of [
   siteFiles[file] = createHash("sha256").update(content).digest("hex");
 }
 await mkdir(path.join(output, 'media'), {recursive: true});
+await mkdir(path.join(output, 'branding'), {recursive: true});
+for (const file of ['branding/favicon.svg','branding/favicon-32.png','branding/favicon.ico','branding/apple-touch-icon.png','media/dd-camp-social-2027.png']) {
+  const bytes=await readFile(path.join(root,'site',file));
+  await writeFile(path.join(output,file),bytes);
+  siteFiles[file]=createHash('sha256').update(bytes).digest('hex');
+}
 for (const file of ['camp-2026.mp4', 'camp-2026-poster.jpg', 'menu-sea.webp', 'menu-stay.webp', 'antalya-after-storm.jpg', 'antalya-evening.jpg', 'antalya-sources.json', 'dd-menu-people.webp', 'dd-menu-training.webp', 'dd-menu-coast-run.webp']) {
   const bytes = await readFile(path.join(root, 'site/media', file));
   await writeFile(path.join(output, 'media', file), bytes);
@@ -216,7 +229,7 @@ for (const file of ['camp-2026.mp4', 'camp-2026-poster.jpg', 'menu-sea.webp', 'm
 }
 const trackSources=JSON.parse(await readFile(path.join(root,'site/media/antalya-sources.json'),'utf8'));
 await mkdir(path.join(output,'photographs'),{recursive:true});
-const photoCredits=composePhotoCredits(trackSources,base,assetVersion);
+const photoCredits=composeMetadata(composePhotoCredits(trackSources,base,assetVersion),site,{path:'photographs/',title:'Фотографии — DD Camp',description:'Фотографы и источники снимков Антальи на сайте кэмпа «Пыльных гантелей».'});
 await writeFile(path.join(output,'photographs/index.html'),photoCredits);
 siteFiles['photographs/index.html']=createHash('sha256').update(photoCredits).digest('hex');
 for(const source of trackSources){

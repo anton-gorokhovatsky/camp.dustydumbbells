@@ -11,6 +11,8 @@ test('national numbers, international paste, country changes and invalid text ke
   }
   assert.deepEqual(phoneParts('+90 (555) 111-22-33','ru'),{iso:'tr',national:'5551112233'});
   assert.deepEqual(phoneParts('+7 999 1234567','ru'),{iso:'ru',national:'9991234567'});
+  assert.deepEqual(phoneParts('+7 999 1234567','tr'),{iso:'ru',national:'9991234567'});
+  assert.deepEqual(phoneParts('+7 777 1234567','kz'),{iso:'kz',national:'7771234567'});
   assert.equal(internationalPhone('','tr'),'');
   assert.equal(internationalPhone('8 (999) 123-45-67','ru'),'+79991234567');
   assert.equal(internationalPhone('07911 123456','gb'),'+447911123456');
@@ -21,7 +23,7 @@ test('national numbers, international paste, country changes and invalid text ke
 });
 
 test('owned phone values satisfy the existing paired transport contract without hidden stale partner data', () => {
-  const fields={Name:'Тестовый участник',Date:'01.01.1990',Email:'test@example.invalid',Phone:internationalPhone('9991234567','ru'),[travelField]:'С партнёром',Name_2:'Тестовый партнёр',Date_2:'02.02.1991',Email_2:'partner@example.invalid',Phone_2:internationalPhone('5551112233','tr')};
+  const fields={Name:'Тестовый участник',Date:'01.01.1990',Email:'test@example.invalid',Phone:internationalPhone('9991234567','ru'),telegram:'@test-main',[travelField]:'С партнёром',Name_2:'Тестовый партнёр',Date_2:'02.02.1991',Email_2:'partner@example.invalid',Phone_2:internationalPhone('5551112233','tr'),'telegram-p':'@test-partner'};
   assert.deepEqual(validateFields(fields),{});
   assert.equal(validateFields({...fields,Phone_2:internationalPhone('abc 1234567','tr')}).Phone_2,'Укажите телефон с кодом страны.');
   assert.deepEqual(validateFields({...fields,[travelField]:'Один',Phone_2:'bad',Date_2:'bad'}),{});
@@ -37,6 +39,22 @@ test('calendar keys cross month/year boundaries and clamp month changes without 
   assert.equal(normaliseBirthday('29022000'),'29.02.2000');
   assert(validBirthday(normaliseBirthday('29/02/2000')));
   assert(!validBirthday(normaliseBirthday('31022000')));
+});
+
+test('typed and pasted birthdays use one format without turning invalid dates into valid ones', () => {
+  for (const [input, expected] of [
+    [' 1.2.1990 ', '01.02.1990'], ['1 / 2 / 1990', '01.02.1990'],
+    ['01-02-1990', '01.02.1990'], ['1990-02-01', '01.02.1990'],
+    ['01021990', '01.02.1990'], ['29/2/2000', '29.02.2000'],
+  ]) {
+    assert.equal(normaliseBirthday(input), expected);
+    assert(validBirthday(normaliseBirthday(input)));
+  }
+  for (const input of ['31.2.2000', '29/2/2001', '2000-13-01', '1.2.90', '1.2.2099', 'завтра']) {
+    assert(!validBirthday(normaliseBirthday(input)));
+  }
+  assert.equal(normaliseBirthday(''), '');
+  assert.equal(normaliseBirthday('1.2.'), '1.2.');
 });
 
 test('the published document has one main and a complete heading outline while retaining every photograph and day', async () => {
