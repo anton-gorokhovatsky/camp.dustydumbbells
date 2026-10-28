@@ -19,6 +19,12 @@ const controls = root => [...root.querySelectorAll('button,a[href],input,select,
 if (navigation) {
   const toggle = navigation.querySelector('.t-menu-burger');
   const panel = navigation.querySelector('.t-menu-popover__burgermenu__sidebar');
+  if (document.querySelector('[data-dd-menu-clarity]')) {
+    panel.querySelectorAll('a.t-menu__link-item').forEach(link => {
+      link.dataset.ddSmooth='paint';
+      smoothCorners(link);
+    });
+  }
   const movieTools = document.querySelector('.dd-cover-tools');
   navigation.querySelector('.t-menu-popover__overlay')?.remove();
   document.body.classList.remove('t1362__body_menushowed');

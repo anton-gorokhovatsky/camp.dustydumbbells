@@ -1,28 +1,48 @@
 /* Four destinations follow one vertical reading order. There are no ornamental rules,
    cards or image interruptions; the daily forecast is visible as one subordinate group. */
 #rec1017771976 #nav1017771976 .t-menu-popover__burgermenu__sidebar {
-  width:min(26rem,calc(100% - 24px));max-width:none;border-radius:32px;
+  width:min(23rem,calc(100% - 24px));max-width:none;border-radius:32px;
 }
 #rec1017771976 #nav1017771976 .t-menu-popover__container {
   padding:24px;display:flex;flex-direction:column;gap:0;
 }
 #rec1017771976 #nav1017771976 .t-menu-base__list {
   display:grid;grid-template-columns:minmax(0,1fr);
-  gap:.25rem;align-items:start;
+  gap:.25rem;align-items:start;width:calc(100% + 24px);margin-inline:-12px;
 }
 #rec1017771976 #nav1017771976 :is(.t-menu-base__list-item,.t-menu__link-wrapper) { min-width:0; }
 #rec1017771976 #nav1017771976 a.t-menu__link-item {
-  display:block;width:100%;min-height:44px;padding:.3em 0;
+  --dd-shape-fill:transparent;--dd-shape-edge:transparent;
+  display:block;width:100%;min-height:44px;padding:.3em 12px;
+  isolation:isolate;border-radius:12px;background:var(--dd-shape-fill);
   font:700 1.375rem/1.2 'Museo',Arial,sans-serif;letter-spacing:-.025em;
   text-decoration:none!important;hyphens:manual;overflow-wrap:normal;
+  transition:transform 120ms cubic-bezier(.23,1,.32,1);
 }
+#rec1017771976 #nav1017771976 a.t-menu__link-item.dd-smooth-ready { background:transparent; }
+#rec1017771976 #nav1017771976 a.t-menu__link-item::before { transition:background-color 120ms ease; }
 #rec1017771976 #nav1017771976 a.t-menu__link-item[aria-current="location"] { color:var(--dd-matte-red)!important; }
-#rec1017771976 #nav1017771976 a.t-menu__link-item:is(:hover,:focus-visible) { color:var(--dd-matte-red)!important; }
+@media(hover:hover) and (pointer:fine) {
+  body[data-dd-environment] #rec1017771976 #nav1017771976 a.t-menu__link-item:hover {
+    --dd-shape-fill:var(--dd-matte-blue);color:var(--dd-matte-solid)!important;
+  }
+}
+body[data-dd-environment] #rec1017771976 #nav1017771976 a.t-menu__link-item:focus-visible {
+  --dd-shape-fill:var(--dd-matte-blue);color:var(--dd-matte-solid)!important;
+  outline:2px solid var(--dd-matte-blue);outline-offset:3px;transition:none;
+}
+#rec1017771976 #nav1017771976 a.t-menu__link-item:focus-visible::before { transition:none; }
+body[data-dd-environment] #rec1017771976 #nav1017771976 a.t-menu__link-item:active {
+  --dd-shape-fill:var(--dd-matte-red);color:var(--dd-matte-solid)!important;transform:scale(.985);transition:none;
+}
 #rec1017771976 #nav1017771976 .t-menu-popover__burgermenu__sidebar > .dd-menu-preview { display:none!important; }
 #rec1017771976 #nav1017771976 .dd-menu-application { margin-top:1.25rem; }
 #rec1017771976 #nav1017771976 .dd-menu-join.dd-menu-apply {
-  min-height:48px;padding:12px 22px;font-size:1.125rem;line-height:1.25;
+  width:100%;min-height:48px;padding:12px 22px;font-size:1.125rem;line-height:1.25;
+  transition:transform 120ms cubic-bezier(.23,1,.32,1);
 }
+#rec1017771976 #nav1017771976 .dd-menu-apply:active { transform:scale(.98);transition:none; }
+#rec1017771976 #nav1017771976 .dd-menu-apply:focus-visible { transition:none; }
 #rec1017771976 #nav1017771976 .t1362__additional { margin-top:1.25rem; }
 #rec1017771976 #nav1017771976 .dd-menu-weather {
   display:block;padding:0;border:0;color:var(--dd-matte-ink);font-size:.875rem;line-height:1.45;
@@ -39,4 +59,12 @@
 #rec1017771976 #nav1017771976 .dd-social-wordmark { font-size:1.125rem; }
 @media(max-width:420px) {
   #rec1017771976 #nav1017771976 .t-menu-popover__container { padding:20px; }
+}
+@media(prefers-reduced-motion:reduce) {
+  #rec1017771976 #nav1017771976 :is(a.t-menu__link-item,.dd-menu-apply),
+  #rec1017771976 #nav1017771976 a.t-menu__link-item::before { transition:none; }
+}
+@media(forced-colors:active) {
+  body[data-dd-environment] #rec1017771976 #nav1017771976 a.t-menu__link-item:is(:hover,:focus-visible,:active) { background:Highlight!important;color:HighlightText!important; }
+  #rec1017771976 #nav1017771976 a.t-menu__link-item:is(:hover,:focus-visible,:active)::before { background:Highlight; }
 }
