@@ -1,4 +1,4 @@
-/* Four destinations share a compact field. There are no ornamental rules,
+/* Four destinations follow one vertical reading order. There are no ornamental rules,
    cards or image interruptions; the daily forecast is visible as one subordinate group. */
 #rec1017771976 #nav1017771976 .t-menu-popover__burgermenu__sidebar {
   width:min(26rem,calc(100% - 24px));max-width:none;border-radius:32px;
@@ -7,8 +7,8 @@
   padding:24px;display:flex;flex-direction:column;gap:0;
 }
 #rec1017771976 #nav1017771976 .t-menu-base__list {
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,9rem),1fr));
-  gap:.5rem 1.5rem;align-items:start;
+  display:grid;grid-template-columns:minmax(0,1fr);
+  gap:.25rem;align-items:start;
 }
 #rec1017771976 #nav1017771976 :is(.t-menu-base__list-item,.t-menu__link-wrapper) { min-width:0; }
 #rec1017771976 #nav1017771976 a.t-menu__link-item {
