@@ -131,6 +131,8 @@ export function campPalette({date=new Date(),weather=null}={}) {
       '--dd-matte-fill':`rgba(${channels(matteColour).join(',')},${matteAlpha.toFixed(2)})`,
       '--dd-matte-solid':matteColour,'--dd-matte-edge':matte.lightInk?'rgba(255,246,236,.16)':'rgba(32,43,53,.10)',
       '--dd-matte-ink':matte.ink,'--dd-matte-blue':matte.blue,'--dd-matte-red':matte.red,
+      '--dd-matte-hover-fill':matte.lightInk?'rgba(0,0,0,.14)':'rgba(255,255,255,.24)',
+      '--dd-matte-pressed-fill':matte.lightInk?'rgba(0,0,0,.24)':'rgba(255,255,255,.38)',
       '--dd-cover-cast':`rgba(${channels(coverCast).join(',')},${coverOpacity})`,
       '--dd-scheme':text.lightInk?'dark':'light',
     }};

@@ -26,16 +26,16 @@
 #rec1017771976 #nav1017771976 a.t-menu__link-item[aria-current="location"] { color:var(--dd-matte-red)!important; }
 @media(hover:hover) and (pointer:fine) {
   body[data-dd-environment] #rec1017771976 #nav1017771976 a.t-menu__link-item:hover {
-    --dd-shape-fill:var(--dd-matte-blue);color:var(--dd-matte-solid)!important;
+    --dd-shape-fill:var(--dd-matte-hover-fill);color:var(--dd-matte-red)!important;
   }
 }
 body[data-dd-environment] #rec1017771976 #nav1017771976 a.t-menu__link-item:focus-visible {
-  --dd-shape-fill:var(--dd-matte-blue);color:var(--dd-matte-solid)!important;
+  --dd-shape-fill:var(--dd-matte-hover-fill);color:var(--dd-matte-blue)!important;
   outline:2px solid var(--dd-matte-blue);outline-offset:3px;transition:none;
 }
 #rec1017771976 #nav1017771976 a.t-menu__link-item:focus-visible::before { transition:none; }
 body[data-dd-environment] #rec1017771976 #nav1017771976 a.t-menu__link-item:active {
-  --dd-shape-fill:var(--dd-matte-red);color:var(--dd-matte-solid)!important;transform:scale(.985);transition:none;
+  --dd-shape-fill:var(--dd-matte-pressed-fill);color:var(--dd-matte-red)!important;transform:scale(.985);transition:none;
 }
 #rec1017771976 #nav1017771976 .t-menu-popover__burgermenu__sidebar > .dd-menu-preview { display:none!important; }
 #rec1017771976 #nav1017771976 .dd-menu-application { margin-top:1.25rem; }

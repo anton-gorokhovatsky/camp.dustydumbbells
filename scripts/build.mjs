@@ -14,6 +14,7 @@ import {composePhotoCredits} from './photo-credits-markup.mjs';
 import {composePoster} from './poster-markup.mjs';
 import {composeMenuClarity} from './menu-markup.mjs';
 import {composeMetadata} from './metadata-markup.mjs';
+import {composeActivitySymbols} from './activity-markup.mjs';
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const output = path.join(root, "dist");
@@ -164,6 +165,7 @@ for (const file of [
   "camp-palette.js",
   "palette-colours.js",
   "camp-environment.js",
+  "iconography.js",
   "climate.css",
   "camp-map.css",
   "camp-map.js",
@@ -196,6 +198,7 @@ for (const file of [
     content = composeHotelPreviews(content,base,hotels,assetVersion);
     content = composePoster(content,base,assetVersion);
     content = composeMenuClarity(content,base,assetVersion);
+    content = composeActivitySymbols(content);
     content = composeMetadata(content,site);
   }
   if(file==='map.html')content=composeMetadata(content,site,{path:'map.html',title:'Карта Антальи — Коньяалты · DD Camp',description:'Район Коньяалты в Анталье — место кэмпа «Пыльных гантелей».'});
@@ -216,6 +219,13 @@ for (const file of [
   siteFiles[file] = createHash("sha256").update(content).digest("hex");
 }
 await mkdir(path.join(output, 'media'), {recursive: true});
+await mkdir(path.join(output, 'icons'), {recursive: true});
+for(const file of await readdir(path.join(root,'site/icons'))){
+  if(!/^[a-z-]+\.(?:svg|txt|json)$/i.test(file))throw Error('Unexpected icon asset.');
+  const bytes=await readFile(path.join(root,'site/icons',file));
+  await writeFile(path.join(output,'icons',file),bytes);
+  siteFiles[`icons/${file}`]=createHash('sha256').update(bytes).digest('hex');
+}
 await mkdir(path.join(output, 'branding'), {recursive: true});
 for (const file of ['branding/favicon.svg','branding/favicon-32.png','branding/favicon.ico','branding/apple-touch-icon.png','media/dd-camp-social-2027.png']) {
   const bytes=await readFile(path.join(root,'site',file));

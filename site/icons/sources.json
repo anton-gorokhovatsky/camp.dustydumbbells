@@ -1,0 +1,65 @@
+{
+  "family": "Phosphor Bold",
+  "commit": "2b75f3ad12b420c9504ef05df8d2564a28f8500e",
+  "license": "MIT",
+  "source": "https://github.com/phosphor-icons/core",
+  "discoveredThrough": "https://allsvgicons.com/pack/ph/",
+  "icons": [
+    {
+      "name": "sun",
+      "url": "https://raw.githubusercontent.com/phosphor-icons/core/2b75f3ad12b420c9504ef05df8d2564a28f8500e/assets/bold/sun-bold.svg"
+    },
+    {
+      "name": "moon-stars",
+      "url": "https://raw.githubusercontent.com/phosphor-icons/core/2b75f3ad12b420c9504ef05df8d2564a28f8500e/assets/bold/moon-stars-bold.svg"
+    },
+    {
+      "name": "cloud-sun",
+      "url": "https://raw.githubusercontent.com/phosphor-icons/core/2b75f3ad12b420c9504ef05df8d2564a28f8500e/assets/bold/cloud-sun-bold.svg"
+    },
+    {
+      "name": "cloud-moon",
+      "url": "https://raw.githubusercontent.com/phosphor-icons/core/2b75f3ad12b420c9504ef05df8d2564a28f8500e/assets/bold/cloud-moon-bold.svg"
+    },
+    {
+      "name": "cloud",
+      "url": "https://raw.githubusercontent.com/phosphor-icons/core/2b75f3ad12b420c9504ef05df8d2564a28f8500e/assets/bold/cloud-bold.svg"
+    },
+    {
+      "name": "cloud-rain",
+      "url": "https://raw.githubusercontent.com/phosphor-icons/core/2b75f3ad12b420c9504ef05df8d2564a28f8500e/assets/bold/cloud-rain-bold.svg"
+    },
+    {
+      "name": "cloud-lightning",
+      "url": "https://raw.githubusercontent.com/phosphor-icons/core/2b75f3ad12b420c9504ef05df8d2564a28f8500e/assets/bold/cloud-lightning-bold.svg"
+    },
+    {
+      "name": "cloud-snow",
+      "url": "https://raw.githubusercontent.com/phosphor-icons/core/2b75f3ad12b420c9504ef05df8d2564a28f8500e/assets/bold/cloud-snow-bold.svg"
+    },
+    {
+      "name": "cloud-fog",
+      "url": "https://raw.githubusercontent.com/phosphor-icons/core/2b75f3ad12b420c9504ef05df8d2564a28f8500e/assets/bold/cloud-fog-bold.svg"
+    },
+    {
+      "name": "person-simple-run",
+      "url": "https://raw.githubusercontent.com/phosphor-icons/core/2b75f3ad12b420c9504ef05df8d2564a28f8500e/assets/bold/person-simple-run-bold.svg"
+    },
+    {
+      "name": "person-simple-bike",
+      "url": "https://raw.githubusercontent.com/phosphor-icons/core/2b75f3ad12b420c9504ef05df8d2564a28f8500e/assets/bold/person-simple-bike-bold.svg"
+    },
+    {
+      "name": "person-simple-swim",
+      "url": "https://raw.githubusercontent.com/phosphor-icons/core/2b75f3ad12b420c9504ef05df8d2564a28f8500e/assets/bold/person-simple-swim-bold.svg"
+    },
+    {
+      "name": "mountains",
+      "url": "https://raw.githubusercontent.com/phosphor-icons/core/2b75f3ad12b420c9504ef05df8d2564a28f8500e/assets/bold/mountains-bold.svg"
+    },
+    {
+      "name": "barbell",
+      "url": "https://raw.githubusercontent.com/phosphor-icons/core/2b75f3ad12b420c9504ef05df8d2564a28f8500e/assets/bold/barbell-bold.svg"
+    }
+  ]
+}

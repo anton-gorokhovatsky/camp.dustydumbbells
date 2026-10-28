@@ -2,6 +2,7 @@ import { campPalette } from './camp-palette.js';
 import { normalizeWeather, normalizeForecast, weatherURL, placeClock, clockText, weatherLabel } from './environment.js';
 import { mountPhotoWeather } from './photo-weather.js';
 import { smoothCorners } from './smooth-corners.js';
+import { setWeatherText } from './iconography.js';
 
 const CACHE_KEY = 'dd-camp-antalya-weather-v1';
 const REFRESH = 30 * 60 * 1000;
@@ -92,7 +93,7 @@ function initCampEnvironment() {
       const currentTime=menuWeather.querySelector('[data-dd-current-time]');
       // The daily WMO code describes the strongest condition of the day. Keep
       // it separate from the current reading that colours the page and photos.
-      currentConditions.textContent=menuWeather.hasAttribute('data-dd-weather-open')
+      const currentText=menuWeather.hasAttribute('data-dd-weather-open')
         ? weather?`Сейчас ${temperature(weather.temperature)} · ${weatherLabel(weather).toLowerCase()} · ${weather.time}`
           : triedWeather?'Текущая погода недоступна':'Загружаем текущую погоду…'
         : currentTime
@@ -100,6 +101,7 @@ function initCampEnvironment() {
           : triedWeather?'Анталья · погода недоступна':'Анталья · загружаем погоду…'
         : weather?`Сейчас · ${temperature(weather.temperature)} · ${weatherLabel(weather).toLowerCase()} · на ${weather.time}`
           : triedWeather?'Текущая погода недоступна':'Загружаем текущую погоду…';
+      setWeatherText(currentConditions,currentText,weather,palette.sun.altitude<0);
       if(currentTime){currentTime.textContent=weather?`Текущая погода на ${weather.time}`:'';currentTime.hidden=!weather;}
       heading.textContent=`Сегодня в Анталье · ${new Intl.DateTimeFormat('ru',{timeZone:'Europe/Istanbul',day:'numeric',month:'long'}).format(date)}`;
       range.hidden=!forecast;
@@ -107,7 +109,7 @@ function initCampEnvironment() {
       if(forecast){
         range.textContent=`${temperature(forecast.min)}…${temperature(forecast.max)}`;
         range.setAttribute('aria-label',`От ${Math.round(forecast.min)} до ${Math.round(forecast.max)} градусов`);
-        conditions.textContent=weatherLabel(forecast);
+        setWeatherText(conditions,weatherLabel(forecast),forecast);
         detail.textContent=[forecast.precipitationChance===null?null:`Вероятность осадков ${Math.round(forecast.precipitationChance)}%`,forecast.wind===null?null:`Ветер до ${Math.round(forecast.wind)} м/с`].filter(Boolean).join(' · ');
         detail.hidden=!detail.textContent;
       }else{

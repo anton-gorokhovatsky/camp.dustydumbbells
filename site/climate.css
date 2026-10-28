@@ -14,6 +14,10 @@
   --dd-matte-red: #b21818;
   --dd-cover-cast: rgba(16,41,78,.08);
   --dd-scheme: light;
+  --dd-link-thickness:max(1px,.055em);
+  --dd-link-hover-thickness:max(2px,.085em);
+  --dd-link-offset:.18em;
+  --dd-link-colour:color-mix(in srgb,currentColor 75%,transparent);
 }
 html:has([data-dd-environment]), body[data-dd-environment] {
   background: var(--dd-page) !important;
@@ -56,11 +60,11 @@ body[data-dd-environment] #allrecords .t1148__textwrapper { color: var(--dd-mute
 body[data-dd-environment] #allrecords a { color: var(--dd-red); text-decoration-color: currentColor; }
 body[data-dd-environment] #allrecords :is(.t-descr,.t-text,.t678__form-bottom-text) a {
   color: var(--dd-red) !important;
-  box-shadow: inset 0 -1px 0 currentColor !important;
+  box-shadow: none !important;
 }
 body[data-dd-environment] #allrecords :is(.t-descr,.t-text,.t678__form-bottom-text) a:is(:hover,:focus-visible) {
   color: var(--dd-blue) !important;
-  box-shadow: inset 0 -1px 0 currentColor !important;
+  box-shadow: none !important;
 }
 body[data-dd-environment] #allrecords :is(.t-descr,.t-text,.t678__form-bottom-text) a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
 /* The band's painted field and its text remain one pair in every condition. */
@@ -170,3 +174,53 @@ body[data-dd-environment] .t134__descr a { text-decoration-color: currentColor !
 @supports not (backdrop-filter:blur(16px)) {
   body[data-dd-environment] { --dd-matte-fill: var(--dd-matte-solid) !important; }
 }
+
+/* One visible underline rule for prose, destination names and footer utilities.
+   Split lettering keeps its two halves; the lower half owns the native line. */
+body[data-dd-environment] #allrecords :is(.t-descr,.t-text,.t678__form-bottom-text) a:not(.dd-stay-link),
+#rec1018079361 .dd-footer-legal > a,
+#rec1018079361 .dd-motion-preference > span,
+body[data-dd-environment] .dd-social-wordmark > span:last-child,
+body[data-dd-environment] #allrecords .dd-stay-name,
+body[data-dd-environment] :is(.dd-credit-grid,.dd-credit-intro,.dd-credit-licenses) a,
+body[data-dd-environment] .dd-credit-back,
+body[data-dd-environment] .dd-footer-signature > a,
+body[data-dd-environment] ag-signature::part(name) {
+  /* Captured links may carry an inline border as their old underline. */
+  border-bottom:0!important;
+  box-shadow:none!important;
+  text-decoration-line:underline!important;
+  text-decoration-thickness:var(--dd-link-thickness)!important;
+  text-underline-offset:var(--dd-link-offset)!important;
+  text-decoration-color:var(--dd-link-colour)!important;
+  text-decoration-skip-ink:auto;
+}
+body[data-dd-environment] :is(a,button):is(:hover,:focus-visible),
+body[data-dd-environment] ag-signature:is(:hover,:focus-within) {
+  --dd-link-thickness:var(--dd-link-hover-thickness);
+  --dd-link-colour:currentColor;
+}
+body[data-dd-environment] #rec1018079361 .dd-motion-preference,
+body[data-dd-environment] #rec1017771976 .t-sociallinks__item a,
+body[data-dd-environment] #allrecords .t-text a.dd-stay-link {
+  text-decoration:none!important;box-shadow:none!important;
+}
+
+/* A single local Phosphor Bold family, inheriting the same weather/text roles. */
+.dd-icon { display:inline-block;inline-size:1.15em;block-size:1.15em;vertical-align:-.19em;background:currentColor;-webkit-mask:var(--dd-icon) center/contain no-repeat;mask:var(--dd-icon) center/contain no-repeat; }
+.dd-activity { white-space:nowrap; }
+.dd-activity .dd-icon { inline-size:1.05em;block-size:1.05em;vertical-align:-.16em;margin-inline-end:.24em; }
+[data-dd-icon="sun"] { --dd-icon:url('./icons/sun.svg'); }
+[data-dd-icon="moon-stars"] { --dd-icon:url('./icons/moon-stars.svg'); }
+[data-dd-icon="cloud-sun"] { --dd-icon:url('./icons/cloud-sun.svg'); }
+[data-dd-icon="cloud-moon"] { --dd-icon:url('./icons/cloud-moon.svg'); }
+[data-dd-icon="cloud"] { --dd-icon:url('./icons/cloud.svg'); }
+[data-dd-icon="cloud-rain"] { --dd-icon:url('./icons/cloud-rain.svg'); }
+[data-dd-icon="cloud-lightning"] { --dd-icon:url('./icons/cloud-lightning.svg'); }
+[data-dd-icon="cloud-snow"] { --dd-icon:url('./icons/cloud-snow.svg'); }
+[data-dd-icon="cloud-fog"] { --dd-icon:url('./icons/cloud-fog.svg'); }
+[data-dd-icon="run"] { --dd-icon:url('./icons/person-simple-run.svg'); }
+[data-dd-icon="bike"] { --dd-icon:url('./icons/person-simple-bike.svg'); }
+[data-dd-icon="swim"] { --dd-icon:url('./icons/person-simple-swim.svg'); }
+[data-dd-icon="mountains"] { --dd-icon:url('./icons/mountains.svg'); }
+[data-dd-icon="barbell"] { --dd-icon:url('./icons/barbell.svg'); }

@@ -366,15 +366,10 @@
 .dd-footer-socials .dd-social-wordmark { font-size: 1em; }
 .dd-social-wordmark > span:first-child { display: block; clip-path: inset(0 -.1em 50% -.1em); transform: translateX(.035em); }
 .dd-social-wordmark > span:last-child { position: absolute; inset: 0 .1em; clip-path: inset(50% -.1em -.2em -.1em); transform: translateX(-.035em); }
-.dd-social-wordmark::after { content: ''; position: absolute; left: .1em; right: .1em; bottom: -.14em; height: 1px; background: currentColor; opacity: .45; }
 #rec1018079361 .dd-footer-socials > a.dd-footer-brand { text-decoration: none; }
-.dd-footer-brand:focus-visible .dd-social-wordmark::after,
-#rec1017771976 .t-sociallinks__item a:focus-visible .dd-social-wordmark::after { height: 2px; opacity: 1; }
 .dd-footer-brand:focus-visible .dd-social-wordmark > span,
 #rec1017771976 .t-sociallinks__item a:focus-visible .dd-social-wordmark > span { transform: none; }
 @media(hover:hover) and (pointer:fine) {
-  .dd-footer-brand:hover .dd-social-wordmark::after,
-  #rec1017771976 .t-sociallinks__item a:hover .dd-social-wordmark::after { height: 2px; opacity: 1; }
   .dd-footer-brand:hover .dd-social-wordmark > span,
   #rec1017771976 .t-sociallinks__item a:hover .dd-social-wordmark > span { transform: none; }
 }

@@ -15,6 +15,7 @@ import { composeHotelPreviews } from './hotel-markup.mjs';
 import { composePoster } from './poster-markup.mjs';
 import { composeMenuClarity } from './menu-markup.mjs';
 import { composeMetadata } from './metadata-markup.mjs';
+import { composeActivitySymbols } from './activity-markup.mjs';
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const manifest = JSON.parse(
@@ -80,6 +81,7 @@ for (const name of ['index.html', 'direction/index.html']) {
   expected = composeHotelPreviews(expected, release.base, JSON.parse(await readFile(path.join(root,'site/data/hotels.json'),'utf8')),encodeURIComponent(release.commit));
   expected = composePoster(expected,release.base,encodeURIComponent(release.commit));
   expected = composeMenuClarity(expected,release.base,encodeURIComponent(release.commit));
+  expected = composeActivitySymbols(expected);
   expected = composeMetadata(expected,release.site);
   const built = await readFile(path.join(root, 'dist', name), 'utf8');
   assert.equal(built, expected, `Current source fidelity failed: ${name}`);

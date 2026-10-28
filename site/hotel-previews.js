@@ -16,14 +16,21 @@ for(const link of document.querySelectorAll('[data-dd-hotel]')){
     if(current?.link!==link)hide();
     photo.hidden=false;current={link,photo};
     const anchor=link.getBoundingClientRect(),bounds=photo.getBoundingClientRect();
-    const right=anchor.right+24;
-    const left=right+bounds.width<innerWidth-20?right:Math.max(20,anchor.left-bounds.width-24);
-    const floor=Math.max(20,link.closest('.dd-stays')?.getBoundingClientRect().top??20);
+    const list=link.closest('.dd-stays');
+    // Text owns the preview's position, not the unused width of the linked row.
+    const edges=[...list.querySelectorAll('.dd-stay-name,.dd-stay-kind')].flatMap(label=>{
+      const range=document.createRange();range.selectNodeContents(label);
+      return [...range.getClientRects()].map(rect=>rect.right);
+    });
+    const right=Math.max(anchor.left,...edges)+20;
+    const left=right+bounds.width<=innerWidth-20?right:anchor.left-bounds.width-20;
+    if(left<20){hide();return;}
+    const floor=Math.max(20,list.getBoundingClientRect().top);
     const ceiling=innerHeight-bounds.height-20;
     // A preview belongs beside the stays, below their introduction. If that
     // area cannot fit the full frame, the linked thumbnail remains available.
     if(floor>ceiling){hide();return;}
-    const top=Math.max(floor,Math.min(ceiling,anchor.top-bounds.height*.35));
+    const top=Math.max(floor,Math.min(ceiling,anchor.top+anchor.height/2-bounds.height/2));
     photo.style.left=`${left}px`;photo.style.top=`${top}px`;
   };
   link.addEventListener('pointerenter',()=>{suppressed=null;if(fine.matches)show();});
