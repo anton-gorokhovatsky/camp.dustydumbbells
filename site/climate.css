@@ -26,7 +26,21 @@ html:has([data-dd-environment])::-webkit-scrollbar,
 html:has([data-dd-environment])::-webkit-scrollbar-track { background-color:var(--dd-page); }
 html:has([data-dd-environment])::-webkit-scrollbar-thumb { background-color:var(--dd-red);border-color:var(--dd-page); }
 html:has([data-dd-environment])::-webkit-scrollbar-thumb:hover { background-color:var(--dd-blue); }
-body[data-dd-environment] :is(#allrecords,#dd-main) { color: var(--dd-ink); background: var(--dd-page); }
+/* One viewport-sized daylight field: no section-sized gradients or blobs.
+   Its direction follows the local solar bearing, colours follow solar height.
+   The original film, photographs and footer retain their own surfaces. */
+body[data-dd-environment] { isolation:isolate; }
+body[data-dd-environment]::before {
+  content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:linear-gradient(var(--dd-solar-angle,180deg),var(--dd-sunlit,var(--dd-page)),var(--dd-page) 45%,var(--dd-shaded,var(--dd-page)));
+}
+body[data-dd-environment] :is(#allrecords,#dd-main) { color: var(--dd-ink); background: transparent; }
+/* Ambient colour still reports real conditions; pausing removes the spatial
+   sweep. There is no colour transition through unreadable foreground pairs. */
+html[data-dd-marquees='paused'] body[data-dd-environment]::before { background:var(--dd-page); }
+@media(prefers-reduced-motion:reduce) {
+  body[data-dd-environment]::before { background:var(--dd-page); }
+}
 body[data-dd-environment] :is(#allrecords,#dd-main) > .r {
   background: transparent !important;
 }

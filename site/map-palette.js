@@ -19,23 +19,29 @@ function readable(colour, surfaces, light, minimum) {
     const next = mix(colour, light ? '#ffffff' : '#000000', step / 100);
     if (surfaces.every(surface => contrast(next, surface) >= minimum)) return next;
   }
-  return light ? '#ffffff' : '#000000';
+  return null;
 }
 
 export function mapPalette(css) {
   const land = css['--dd-page'], blue = css['--dd-blue'], red = css['--dd-red'];
   if (![land, blue, red].every(value => typeof value === 'string' && hex.test(value))) return null;
   const dark = css['--dd-scheme'] === 'dark';
-  const water = mix(land, dark ? '#244466' : '#7db6c9', dark ? .37 : .43);
-  const park = mix(land, dark ? '#36574f' : '#8ead95', .23);
-  const building = mix(land, dark ? '#657084' : '#a4a4a1', dark ? .15 : .18);
-  const road = mix(land, dark ? '#a5b5cb' : '#ffffff', dark ? .17 : .65);
-  const surfaces = [land, water, park, building, road];
-  return normaliseMapPalette({ scheme: dark ? 'dark' : 'light', land, water, park, building, road,
-    edge: readable(mix(blue, land, .6), surfaces, dark, 1.5),
-    ink: readable(hex.test(css['--dd-ink'] || '') ? css['--dd-ink'] : blue, surfaces, dark, 4.5),
-    accent: readable(red, surfaces, dark, 3),
-  });
+  let water = mix(land, dark ? '#244466' : '#7db6c9', dark ? .37 : .43);
+  let park = mix(land, dark ? '#36574f' : '#8ead95', .23);
+  let building = mix(land, dark ? '#657084' : '#a4a4a1', dark ? .15 : .18);
+  let road = mix(land, dark ? '#a5b5cb' : '#ffffff', dark ? .17 : .65);
+  // Twilight expands the palette through middle-light fields. Keep the map's
+  // material range on the same side of the shared foreground as its land.
+  for(let attempt=0;attempt<10;attempt++){
+    const surfaces=[land,water,park,building,road];
+    const ink=readable(hex.test(css['--dd-ink'] || '')?css['--dd-ink']:blue,surfaces,dark,4.5);
+    if(ink)return normaliseMapPalette({scheme:dark?'dark':'light',land,water,park,building,road,
+      edge:readable(mix(blue,land,.6),surfaces,dark,1.5)||ink,ink,
+      accent:readable(red,surfaces,dark,3)||ink});
+    water=mix(land,water,.5);park=mix(land,park,.5);
+    building=mix(land,building,.5);road=mix(land,road,.5);
+  }
+  return null;
 }
 
 export const mapPaletteKey = value => JSON.stringify(normaliseMapPalette(value));

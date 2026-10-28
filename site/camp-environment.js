@@ -117,7 +117,7 @@ function initCampEnvironment() {
     }
     if (reading) {
       const clock = clockText(placeClock(date).minutes);
-      const phase = { morning: 'рассвет', day: 'день', evening: 'вечер', night: 'ночь' }[palette.phase];
+      const phase = palette.light.label;
       reading.textContent = weather
         ? `Сейчас в Анталье ${clock} · ${Math.round(weather.temperature) > 0 ? '+' : ''}${Math.round(weather.temperature)}° · ${weatherLabel(weather).toLowerCase()}. Погода на ${weather.time}.`
         : `Сейчас в Анталье ${clock} · ${phase}. Погода недоступна — цвета следуют положению солнца.`;

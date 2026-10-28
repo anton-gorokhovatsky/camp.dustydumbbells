@@ -36,7 +36,7 @@ test('text, links, paint, controls and the translucent material retain contrast 
     for (let minute = 0; minute < 1440; minute += 5) {
       const state = campPalette({ date: new Date(midnight + minute * 60000), weather });
       for (const role of ['ink','muted','blue','red']) {
-        for (const background of [state.page,state.surface])
+        for (const background of state.surfaces)
           assert(contrast(state.text[role], background) >= 4.5, `${month} ${minute} ${role}`);
         for (const background of state.matte.surfaces)
           assert(contrast(state.matte[role], background) >= 4.5, `${month} ${minute} matte ${role}`);
@@ -73,14 +73,55 @@ test('current storm, rain and fog retain different light rather than one almost 
   const distance=(a,b)=>Math.hypot(...channels(a).map((value,i)=>value-channels(b)[i]));
   assert(distance(cloudy.page,rainy.page)>25,'Rain changes the whole page sufficiently to require a real visual comparison.');
   assert(distance(cloudy.page,storm.page)>45,'Storm is not merely the cloudy palette with a different forecast label.');
-  for(const palette of [cloudy,rainy,storm,fog]){
+  for(const palette of [cloudy,rainy,fog]){
     const [red,green,blue]=channels(palette.page);
-    assert(Math.abs(red-green)<12&&blue<=red,'Diffuse daylight stays a neutral mineral surface, without a separate cyan cast.');
+    assert(blue<=red,'Diffuse daylight stays a mineral surface, without a separate cyan cast.');
   }
   assert.notEqual(storm.matte.colour,cloudy.matte.colour);
   assert.notEqual(fog.page,storm.page);
   assert.equal(storm.condition,'storm');assert.equal(fog.condition,'fog');
   assert.equal(campPalette({date}).condition,'unknown','No observation is not a clear-weather reading.');
+});
+
+test('the accepted natural pigments carry the full solar day into lanes and footer',()=>{
+  const date=new Date('2026-10-28T12:00:00+03:00');
+  const solar=campPalette({date}).solar;
+  const at=minute=>campPalette({date:new Date(Date.parse('2026-10-28T00:00:00+03:00')+minute*60000),weather});
+  const times=[solar.sunrise-45,solar.sunrise-10,solar.sunrise+65,solar.noon,
+    solar.noon+(solar.sunset-solar.noon)*.52,solar.sunset-50,solar.sunset,solar.sunset+35,solar.sunset+100];
+  const selected=times.map(at);
+  assert.equal(new Set(selected.map(s=>s.page)).size,9);
+  assert.equal(new Set(selected.map(s=>s.band)).size,9);
+  assert.equal(new Set(selected.map(s=>s.deep)).size,9);
+  assert(at(solar.sunrise+65).light.angle<at(solar.noon).light.angle);
+  assert(at(solar.noon).light.angle<at(solar.sunset-50).light.angle);
+  const noon=at(solar.noon);
+  assert.notEqual(noon.light.lit,noon.light.shaded,'Directional daylight is a real field, not a label.');
+  const cloudy=campPalette({date,weather:{...weather,clouds:100,code:3}});
+  assert(cloudy.light.direct<noon.light.direct*.2,'Clouds scatter the direct sunlight.');
+  assert(contrast(selected.at(-1).text.ink,selected.at(-1).page)>8,'The solar night supplies the dark reading state.');
+});
+
+test('solar colour surfaces remain continuous through every minute and across midnight',()=>{
+  const start=Date.parse('2026-10-28T00:00:00+03:00');
+  const rgb=c=>c.slice(1).match(/../g).map(v=>parseInt(v,16));
+  let previous=campPalette({date:new Date(start)});
+  for(let m=1;m<=1440;m++){
+    const current=campPalette({date:new Date(start+m*60000)});
+    for(const role of ['page','band','deep'])assert(Math.hypot(...rgb(current[role]).map((v,i)=>v-rgb(previous[role])[i]))<12,`${role} at ${m}`);
+    previous=current;
+  }
+});
+
+test('the translucent navigation retains distinct colour roles between the sunset and twilight anchors',()=>{
+  const start=Date.parse('2026-10-28T00:00:00+03:00');
+  const sunset=campPalette({date:new Date(start+12*3600000)}).solar.sunset;
+  const rgb=c=>c.slice(1).match(/../g).map(v=>parseInt(v,16));
+  for(const offset of [12,18,24]){
+    const state=campPalette({date:new Date(start+(sunset+offset)*60000),weather});
+    const separation=Math.hypot(...rgb(state.matte.blue).map((v,i)=>v-rgb(state.matte.red)[i]));
+    assert(separation>12,`The navigation's ordinary and current colours do not collapse at sunset+${offset}.`);
+  }
 });
 
 const payloadAt = date => ({ current: {
