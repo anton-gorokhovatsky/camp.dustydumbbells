@@ -21,6 +21,13 @@
 #allrecords[data-dd-refinement] .dd-photo-stack .dd-gallery-footer { display:grid;grid-template-columns:minmax(0,1fr);gap:.75rem;width:var(--stack-width);max-width:calc(100% - 4rem);padding:0;margin:.5rem auto 0; }
 #allrecords[data-dd-refinement] .dd-photo-stack .dd-gallery-footer .t1148__controls { justify-self:center;margin:0; }
 #allrecords[data-dd-refinement] .dd-photo-stack .dd-stack-count { color:var(--dd-muted);font:400 var(--dd-type-meta)/1.5 var(--dd-body-font);min-width:3em;text-align:center; }
+/* The road is an interval between the weeks; the opening and coast keep their
+   larger encounter. Mobile retains the selected full-size photographic pause. */
+@media(min-width:961px){
+  #allrecords[data-dd-refinement] .dd-programme-memory .dd-photo-stack {
+    --stack-width:min(25rem,calc(62.5svh * 2 / 3),calc(100% - 4rem));
+  }
+}
 #allrecords[data-dd-refinement] .dd-photo-stack[data-stack-input="keyboard"] .t1148__item,
 html[data-dd-marquees="paused"] #allrecords[data-dd-refinement] .dd-photo-stack .t1148__item { transition:none; }
 @media(prefers-reduced-motion:reduce){#allrecords[data-dd-refinement] .dd-photo-stack .t1148__item{transition:none;}}

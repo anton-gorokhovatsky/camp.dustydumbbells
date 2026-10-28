@@ -125,7 +125,9 @@ function composeRhythm(html) {
   // Keep the first close encounters large; the same gallery interaction continues in the middle.
   const mountainRoad = people[3].html.replace(/[a-f0-9]{12}-IMG_6954\.JPG/g, '9b0df23f9df7-IMG_6952.JPG')
     .replace(/alt="[^"]*"/, 'alt="Бегуны DD на горной дороге у отбойника. Кэмп в Фетхие, 2025."');
-  let memory = withGalleryItems(opening.html, [people[3].html, mountainRoad, people[4].html]);
+  // Leave the promenade in the opening; the middle pause opens onto the road,
+  // then the shared walk, before returning to running by the sea.
+  let memory = withGalleryItems(opening.html, [mountainRoad, people[4].html, people[3].html]);
   const header = /<div\b[^>]*class="[^"]*\bt1148__col\b[^\"]*"[^>]*>/.exec(memory);
   const oldHeader = divAt(memory, header.index);
   memory = memory.slice(0, oldHeader.start)

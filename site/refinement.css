@@ -62,7 +62,7 @@
 #allrecords[data-dd-refinement] #rec1016322141 .dd-cover-intro .t997__descr { max-width: 64ch; }
 #allrecords[data-dd-refinement] .dd-about-details { box-sizing: border-box; max-width: 1200px; padding: var(--dd-space-6) 20px 0; }
 #allrecords[data-dd-refinement] .dd-about-details .t-section__descr { max-width: 64ch; }
-#allrecords[data-dd-refinement] #rec1016322141 { padding-bottom: var(--dd-space-6) !important; }
+#allrecords[data-dd-refinement] #rec1016322141 { padding-bottom: 0 !important; }
 #allrecords[data-dd-refinement] .t1148__container_flex { margin-bottom: var(--dd-space-6); }
 #allrecords[data-dd-refinement] .t1148__container_flex > .t1148__col { min-width: 0; flex: 1; }
 #allrecords[data-dd-refinement] .t1148__col .t-section__container { margin-bottom: 0; }
@@ -76,6 +76,9 @@
   padding-bottom: 0 !important;
 }
 #allrecords[data-dd-refinement] :is(#rec2078785181, #rec2078794741) { padding-bottom: var(--dd-space-6) !important; }
+#allrecords[data-dd-refinement] #rec2078785181 { padding-bottom:var(--dd-space-4)!important; }
+#allrecords[data-dd-refinement] #rec2078785181 .t-container { box-sizing:border-box;max-width:1200px;padding-inline:20px; }
+#allrecords[data-dd-refinement] #rec2078785181 .t-col { display:block;float:none;width:100%;max-width:none;margin-inline:0;padding-inline:0; }
 #allrecords[data-dd-refinement] .t004 .t-text { max-width: 64ch; }
 #allrecords[data-dd-refinement] #rec2078706201 { padding-bottom: var(--dd-section-space) !important; }
 #allrecords[data-dd-refinement] .t547__title {
@@ -102,7 +105,6 @@
 #allrecords[data-dd-refinement] .dd-gallery-footer[hidden] { display: none !important; }
 #allrecords[data-dd-refinement] .dd-gallery-footer .t1148__controls { display: flex; flex: none; margin-left: auto; }
 #allrecords[data-dd-refinement] .dd-archive-caption { flex: 1 1 12rem; margin: 0; color: var(--dd-muted); font: 400 var(--dd-type-meta)/1.5 'Museo', Arial, sans-serif; }
-#allrecords[data-dd-refinement] .dd-programme-memory .t1148__img-wrapper { --height: clamp(430px,67svh,600px) !important; }
 #allrecords[data-dd-refinement] :is(.t1003, .t1003__content-wrapper) {
   min-height: var(--dd-band-height) !important;
   height: var(--dd-band-height) !important;
