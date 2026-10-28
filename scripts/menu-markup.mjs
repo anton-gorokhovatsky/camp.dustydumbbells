@@ -1,5 +1,5 @@
 /** Compact nonmodal DD navigation. The page owns the atmosphere; the menu
- * gives its four destinations, the application and a quiet weather disclosure. */
+ * gives its four destinations, the application and an immediately visible forecast. */
 export function composeMenuClarity(html,base,version) {
   if(html.includes('data-dd-menu-clarity'))return html;
   const names=['О кэмпе','Расписание','Погода в Анталье','Дорога и жильё'];
@@ -9,13 +9,11 @@ export function composeMenuClarity(html,base,version) {
     count++;return `${start} aria-label="${names[+index-1]}">${labels[+index-1]}</a>`;
   });
   if(count!==4)throw Error('The compact disclosure needs the four original destinations.');
-  const weather=`<section class="dd-menu-weather" data-dd-menu-weather aria-label="Погода в Анталье">
-    <details class="dd-menu-forecast"><summary><span data-dd-current-weather>Погода в Анталье</span><span class="dd-menu-forecast__cue">Прогноз</span></summary>
-    <div class="dd-menu-forecast__body"><p class="dd-menu-weather__current-time" data-dd-current-time></p>
+  const weather=`<section class="dd-menu-weather" data-dd-menu-weather data-dd-weather-open aria-label="Погода в Анталье">
       <p class="dd-menu-weather__heading" data-dd-forecast-heading>Сегодня в Анталье</p>
-      <p class="dd-menu-weather__range" data-dd-forecast-range hidden></p><p data-dd-forecast-conditions>Загружаем прогноз…</p>
+      <div class="dd-menu-weather__forecast"><p class="dd-menu-weather__range" data-dd-forecast-range hidden></p><p data-dd-forecast-conditions>Загружаем прогноз…</p></div>
       <p class="dd-menu-weather__detail" data-dd-forecast-detail hidden></p>
-    </div></details>
+      <p class="dd-menu-weather__now" data-dd-current-weather>Загружаем текущую погоду…</p>
   </section>`;
   if(!/<section class="dd-menu-weather"/.test(html))throw Error('The menu weather reading is required.');
   html=html.replace(/<section class="dd-menu-weather"[\s\S]*?<\/section>/,weather)

@@ -1,5 +1,5 @@
 /* Four destinations share a compact field. There are no ornamental rules,
-   cards or image interruptions; weather is one subordinate disclosure. */
+   cards or image interruptions; the daily forecast is visible as one subordinate group. */
 #rec1017771976 #nav1017771976 .t-menu-popover__burgermenu__sidebar {
   width:min(26rem,calc(100% - 24px));max-width:none;border-radius:32px;
 }
@@ -27,21 +27,12 @@
 #rec1017771976 #nav1017771976 .dd-menu-weather {
   display:block;padding:0;border:0;color:var(--dd-matte-ink);font-size:.875rem;line-height:1.45;
 }
-#rec1017771976 #nav1017771976 .dd-menu-forecast { margin:0; }
-#rec1017771976 #nav1017771976 .dd-menu-forecast summary {
-  box-sizing:border-box;display:list-item;max-width:100%;min-height:44px;
-  margin:0;padding:12px 0;cursor:pointer;color:var(--dd-matte-ink);font-size:.875rem;line-height:1.4;
-}
-#rec1017771976 #nav1017771976 .dd-menu-forecast summary::marker { font-size:.75em;color:var(--dd-matte-blue); }
-#rec1017771976 #nav1017771976 .dd-menu-forecast__cue { display:inline-block;margin-left:.5em;color:var(--dd-matte-blue);font-size:.8125rem; }
-#rec1017771976 #nav1017771976 .dd-menu-forecast summary:hover :is([data-dd-current-weather],.dd-menu-forecast__cue) { color:var(--dd-matte-red); }
-#rec1017771976 #nav1017771976 .dd-menu-forecast summary:focus-visible { outline:2px solid var(--dd-matte-blue);outline-offset:3px; }
-#rec1017771976 #nav1017771976 .dd-menu-forecast__body { display:flex;flex-wrap:wrap;align-items:baseline;gap:.25rem .5rem;padding:.25rem 0 .5rem; }
-#rec1017771976 #nav1017771976 .dd-menu-weather__current-time,
-#rec1017771976 #nav1017771976 .dd-menu-weather .dd-menu-weather__heading { flex-basis:100%;margin:0 0 .25rem;font-size:.8125rem; }
-#rec1017771976 #nav1017771976 .dd-menu-weather .dd-menu-weather__range { margin:0;font-size:1.125rem;line-height:1.25; }
-#rec1017771976 #nav1017771976 [data-dd-forecast-conditions] { font-size:.875rem;line-height:1.45; }
-#rec1017771976 #nav1017771976 .dd-menu-weather__detail { flex-basis:100%;margin:0;font-size:.8125rem; }
+#rec1017771976 #nav1017771976 .dd-menu-weather .dd-menu-weather__heading { margin:0 0 .4rem;font-size:.875rem; }
+#rec1017771976 #nav1017771976 .dd-menu-weather__forecast { display:flex;flex-wrap:wrap;align-items:baseline;gap:.25rem .5rem; }
+#rec1017771976 #nav1017771976 .dd-menu-weather .dd-menu-weather__range { margin:0;font-size:1.375rem;line-height:1.25; }
+#rec1017771976 #nav1017771976 [data-dd-forecast-conditions] { margin:0;font-size:.875rem;line-height:1.45; }
+#rec1017771976 #nav1017771976 .dd-menu-weather__detail { margin:.4rem 0 0;font-size:.875rem; }
+#rec1017771976 #nav1017771976 .dd-menu-weather__now { margin:.4rem 0 0;font-size:.875rem; }
 #rec1017771976 #nav1017771976 .t-sociallinks { margin-top:.75rem; }
 #rec1017771976 #nav1017771976 .t-sociallinks__wrapper { justify-content:flex-start;align-items:baseline;gap:1.5rem; }
 #rec1017771976 #nav1017771976 .t-sociallinks a { min-height:44px; }

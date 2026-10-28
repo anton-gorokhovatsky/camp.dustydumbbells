@@ -1,14 +1,18 @@
-:root { --dd-track-paint:linear-gradient(90deg,var(--dd-band),var(--dd-footer-blue)); }
+:root {
+  --dd-track-paint:linear-gradient(90deg,var(--dd-band),var(--dd-footer-blue));
+  --dd-track-type:clamp(2rem,3.2vw,3rem);
+  --dd-track-overhang:calc(var(--dd-track-type)*.46);
+}
 /* One geometry, typographic scale and lane system for all three bands. */
 #allrecords[data-dd-refinement] .dd-track-scene {
-  --track-type: clamp(2rem, 3.2vw, 3rem);
+  --track-type:var(--dd-track-type);
   padding: 0 !important;
   position: relative;
   background: transparent !important;
 }
 .dd-track-scene[tabindex="-1"]:focus { outline:none; }
 /* The first lane touches the film; only the photograph crosses that seam. */
-#allrecords[data-dd-refinement] #rec1016358466.dd-track-scene { margin-top:calc(var(--track-type)*-.46);z-index:3; }
+#allrecords[data-dd-refinement] #rec1016358466.dd-track-scene { margin-top:calc(-1*var(--dd-track-overhang));z-index:3; }
 #allrecords[data-dd-refinement] .dd-track-scene .dd-track {
   position: relative;
   /* This owns the full photo envelope, above the shared .t1003 3.5rem rule. */
@@ -84,7 +88,7 @@
 .dd-track-scene .dd-track__lap:focus-visible { outline: 2px solid var(--dd-on-band); outline-offset: -6px; }
 @keyframes dd-track-lap { to { transform: translateX(var(--track-distance,-50%)); } }
 @media(max-width:640px) {
-  #allrecords[data-dd-refinement] .dd-track-scene { --track-type: clamp(3.75rem, 15vw, 5rem); }
+  :root { --dd-track-type:clamp(3.75rem,15vw,5rem); }
 }
 @media(prefers-reduced-motion:reduce) {
   html:not([data-dd-marquees='running']) #allrecords[data-dd-refinement] .dd-track-scene .dd-track__viewport { overflow-x: auto; }
@@ -101,5 +105,9 @@
 /* Pausing preserves the same single lane, position, photo scale and neighbours. */
 html[data-dd-marquees='paused'] .dd-track-scene .dd-track__motion { animation-play-state:paused!important;will-change:auto; }
 
-/* The same horizontal weather paint continues through the whole ending. */
-body[data-dd-environment] #allrecords #t-footer { background:var(--dd-track-paint)!important; }
+/* The lane starts at the form seam. Its photograph envelope crosses that
+   seam; the same paint continues from the lane through the whole ending. */
+body[data-dd-environment] #allrecords #t-footer {
+  margin-top:calc(-1*var(--dd-track-overhang));
+  background:var(--dd-track-paint) 0 bottom / 100% calc(100% - var(--dd-track-overhang)) no-repeat!important;
+}

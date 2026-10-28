@@ -92,7 +92,10 @@ function initCampEnvironment() {
       const currentTime=menuWeather.querySelector('[data-dd-current-time]');
       // The daily WMO code describes the strongest condition of the day. Keep
       // it separate from the current reading that colours the page and photos.
-      currentConditions.textContent=currentTime
+      currentConditions.textContent=menuWeather.hasAttribute('data-dd-weather-open')
+        ? weather?`Сейчас ${temperature(weather.temperature)} · ${weatherLabel(weather).toLowerCase()} · ${weather.time}`
+          : triedWeather?'Текущая погода недоступна':'Загружаем текущую погоду…'
+        : currentTime
         ? weather?`Анталья · ${temperature(weather.temperature)} · ${weatherLabel(weather).toLowerCase()}`
           : triedWeather?'Анталья · погода недоступна':'Анталья · загружаем погоду…'
         : weather?`Сейчас · ${temperature(weather.temperature)} · ${weatherLabel(weather).toLowerCase()} · на ${weather.time}`
