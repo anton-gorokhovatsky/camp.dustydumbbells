@@ -8,15 +8,15 @@ const ease = value => { const t = clamp(value); return t * t * (3 - 2 * t); };
 // not measured atmospheric colours. Solar geometry is real; pigments interpret it.
 // Blue/red remain API role names, not restrictions on the colours of DD.
 const pigments = {
-  night: { page:'#242e36', blue:'#b6d7d2', red:'#efb18f', band:'#245251', deep:'#49304f', light:'#344852', shade:'#222b35' },
-  predawn: { page:'#494258', blue:'#d5c9e8', red:'#f0bda2', band:'#65465d', deep:'#30485d', light:'#6b5c7d', shade:'#343e51' },
-  dawn: { page:'#ddb9a0', blue:'#49405f', red:'#913c28', band:'#a34b25', deep:'#66445d', light:'#f9d9ac', shade:'#afa4b8' },
-  morning: { page:'#f2dfc7', blue:'#245277', red:'#9d3834', band:'#ab5525', deep:'#32635d', light:'#fff0c5', shade:'#c4d7cf' },
-  day: { page:'#f3ecde', blue:'#184c7f', red:'#a43828', band:'#b04522', deep:'#1c6370', light:'#fff8dc', shade:'#cbdad5' },
-  afternoon: { page:'#eed9bc', blue:'#245b61', red:'#984429', band:'#a64d25', deep:'#3c6654', light:'#ffe4a8', shade:'#c3cbbc' },
-  evening: { page:'#ebc7ac', blue:'#443b61', red:'#8e3542', band:'#ae4b30', deep:'#704365', light:'#ffd39b', shade:'#b9aec4' },
-  sunset: { page:'#bd959f', blue:'#393756', red:'#792d47', band:'#914258', deep:'#4a426e', light:'#ebc0a3', shade:'#8b96ae' },
-  twilight: { page:'#424f6a', blue:'#bfd3e3', red:'#edbaaa', band:'#654665', deep:'#245768', light:'#667194', shade:'#2b3b50' },
+  night: { page:'#242e36', blue:'#b6d7d2', red:'#efb18f', band:'#245251', deep:'#49304f', middle:'#374150', light:'#344852', shade:'#222b35' },
+  predawn: { page:'#494258', blue:'#d5c9e8', red:'#f0bda2', band:'#65465d', deep:'#30485d', middle:'#4b475d', light:'#6b5c7d', shade:'#343e51' },
+  dawn: { page:'#ddb9a0', blue:'#49405f', red:'#913c28', band:'#a34b25', deep:'#66445d', middle:'#854841', light:'#f9d9ac', shade:'#afa4b8' },
+  morning: { page:'#e9e8d7', blue:'#185963', red:'#99412d', band:'#a04b27', deep:'#2d6364', middle:'#82475e', light:'#fff0c5', shade:'#b5d1ca' },
+  day: { page:'#f4efdf', blue:'#0b5564', red:'#a13c29', band:'#ac4b21', deep:'#176673', middle:'#85475e', light:'#fff9df', shade:'#c5d6c9' },
+  afternoon: { page:'#eed9bc', blue:'#245b61', red:'#984429', band:'#a64d25', deep:'#3c6654', middle:'#7b504d', light:'#ffe4a8', shade:'#c3cbbc' },
+  evening: { page:'#ebc7ac', blue:'#443b61', red:'#8e3542', band:'#ae4b30', deep:'#704365', middle:'#8f474b', light:'#ffd39b', shade:'#b9aec4' },
+  sunset: { page:'#bd959f', blue:'#393756', red:'#792d47', band:'#914258', deep:'#4a426e', middle:'#6e4263', light:'#ebc0a3', shade:'#8b96ae' },
+  twilight: { page:'#424f6a', blue:'#bfd3e3', red:'#edbaaa', band:'#654665', deep:'#245768', middle:'#454f66', light:'#667194', shade:'#2b3b50' },
 };
 const labels = { night:'ночь',predawn:'предрассветный свет',dawn:'рассвет',morning:'утренний свет',day:'день',afternoon:'послеполуденный свет',evening:'закатный свет',sunset:'заход солнца',twilight:'сумерки' };
 const blend = (left,right,amount) => Object.fromEntries(Object.keys(left).map(role=>[role,mix(left[role],right[role],amount)]));
@@ -55,20 +55,23 @@ function textFamily(surfaces,blue,red) {
   const darkRatio=Math.min(...surfaces.map(s=>contrast('#000000',s)));
   const lightRatio=Math.min(...surfaces.map(s=>contrast('#ffffff',s)));
   const lightInk=lightRatio>darkRatio;
-  const ink=readable(lightInk?'#f6ebdc':'#29322f',surfaces,lightInk);
+  // Reading ink takes a restrained cast from the same deep pigment. Night
+  // retains its accepted warm light ink rather than colouring all the prose.
+  const inkPigment=lightInk?'#f6ebdc':mix('#29322f',blue,.20);
+  const ink=readable(inkPigment,surfaces,lightInk);
   if(!ink)return null;
   return {ink,muted:readable(mix(ink,surfaces[0],.25),surfaces,lightInk),
     blue:readable(blue,surfaces,lightInk),red:readable(red,surfaces,lightInk),lightInk};
 }
 const roleSeparation = text => Math.hypot(...channels(text.blue).map((value,i)=>value-channels(text.red)[i]));
 const weatherPigments={
-  cloud:{page:'#e7dfd3',blue:'#334b63',red:'#97453f',band:'#963e43',deep:'#30456b'},
-  rain:{page:'#c6bdb0',blue:'#214b52',red:'#7d3144',band:'#7b2c43',deep:'#24474e'},
-  storm:{page:'#423a47',blue:'#b9d6d3',red:'#f1ab97',band:'#6d2941',deep:'#253340'},
-  fog:{page:'#e2ddd1',blue:'#405567',red:'#8b4b4f',band:'#8c4a51',deep:'#4b5a68'},
-  snow:{page:'#ede9df',blue:'#315a67',red:'#894b57',band:'#83505b',deep:'#315567'},
+  cloud:{page:'#e7dfd3',blue:'#334b63',red:'#97453f',band:'#963e43',deep:'#30456b',middle:'#634256'},
+  rain:{page:'#c6bdb0',blue:'#214b52',red:'#7d3144',band:'#7b2c43',deep:'#24474e',middle:'#574852'},
+  storm:{page:'#423a47',blue:'#b9d6d3',red:'#f1ab97',band:'#6d2941',deep:'#253340',middle:'#493344'},
+  fog:{page:'#e2ddd1',blue:'#405567',red:'#8b4b4f',band:'#8c4a51',deep:'#4b5a68',middle:'#6b5261'},
+  snow:{page:'#ede9df',blue:'#315a67',red:'#894b57',band:'#83505b',deep:'#315567',middle:'#5a5368'},
 };
-const nightWeather={page:'#252a32',blue:'#bdcdd7',red:'#e1b4a9',band:'#513746',deep:'#223c48'};
+const nightWeather={page:'#252a32',blue:'#bdcdd7',red:'#e1b4a9',band:'#513746',deep:'#223c48',middle:'#3a3a47'};
 
 export function campPalette({date=new Date(),weather=null}={}) {
   const sun=getPosition(date,PLACE.latitude,PLACE.longitude),solar=solarDay(date);
@@ -110,7 +113,10 @@ export function campPalette({date=new Date(),weather=null}={}) {
     if(matte&&matte.blue&&matte.red&&matte.muted)break;
   }
   const onBand='#fff6ec',band=readable(values.band,[onBand],false),deep=readable(values.deep,[onBand],false);
-  const gradient=Array.from({length:21},(_,i)=>mix(band,deep,i/20));
+  // A shared floral pigment keeps the daylight crossing from terracotta
+  // to sea coloured. Lanes and the ending consume the same three stops.
+  const middle=readable(values.middle,[onBand],false);
+  const gradient=Array.from({length:21},(_,i)=>i<=10?mix(band,middle,i/10):mix(middle,deep,(i-10)/10));
   const rising=placeClock(date).minutes<solar.noon;
   const phase=sun.altitude<-6?'night':sun.altitude<12?(rising?'morning':'evening'):'day';
   const condition=!weather?'unknown':effects.storm?'storm':effects.snow?'snow':effects.fog?'fog':effects.rain?'rain':effects.clouds>.7?'cloud':'clear';
@@ -118,11 +124,12 @@ export function campPalette({date=new Date(),weather=null}={}) {
   const coverCast=mix('#10294e',rising?'#f1bb8e':'#eea574',light.daylight*(1-ease((sun.altitude-2)/22)));
   const coverOpacity=(.08+(1-light.daylight)*.1+overcast*.025).toFixed(3);
   return {sun,solar,phase,condition,effects,overcast,light:{...light,lit,shaded,direct},
-    page:values.page,surface,surfaces,text,band,onBand,deep,
+    page:values.page,surface,surfaces,text,band,onBand,deep,middle,
     matte:{...matte,colour:matteColour,alpha:Number(matteAlpha.toFixed(2)),surfaces:matteSurfaces},
     css:{
       '--dd-page':values.page,'--dd-surface':surface,'--dd-ink':text.ink,'--dd-muted':text.muted,
       '--dd-blue':text.blue,'--dd-red':text.red,'--dd-band':band,'--dd-on-band':onBand,
+      '--dd-paint-middle':middle,
       '--dd-action-hover':readable(values.blue,[onBand],false),'--dd-footer-blue':deep,
       '--dd-footer-muted':readable('#ded8d5',gradient,true),
       '--dd-footer-angle':`${light.angle.toFixed(2)}deg`,

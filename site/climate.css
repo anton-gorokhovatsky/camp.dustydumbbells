@@ -1,17 +1,23 @@
 /* One live light model, applied to the selected original composition. */
 :root {
-  --dd-page: #e0ecea;
-  --dd-surface: #e1edeb;
-  --dd-band: #b21818;
+  /* Quiet daylight fallback belongs to the same mineral/sea colour family. */
+  --dd-page: #f4efdf;
+  --dd-surface: #f4efdf;
+  --dd-ink: #243939;
+  --dd-muted: #55635f;
+  --dd-blue: #0b5564;
+  --dd-red: #a13c29;
+  --dd-band: #ac4b21;
+  --dd-paint-middle: #85475e;
   --dd-on-band: #fff6ec;
-  --dd-action-hover: #1a4297;
-  --dd-footer-blue: #1a4297;
+  --dd-action-hover: #0b5564;
+  --dd-footer-blue: #176673;
   --dd-footer-angle: 180deg;
   --dd-line: #607073;
-  --dd-matte-solid: #f7f7f7;
-  --dd-matte-ink: #232323;
-  --dd-matte-blue: #1a4297;
-  --dd-matte-red: #b21818;
+  --dd-matte-solid: #f8f2e4;
+  --dd-matte-ink: #243939;
+  --dd-matte-blue: #0b5564;
+  --dd-matte-red: #a13c29;
   --dd-cover-cast: rgba(16,41,78,.08);
   --dd-scheme: light;
   --dd-link-thickness:max(1px,.055em);
@@ -156,7 +162,7 @@ body[data-dd-environment] #allrecords .dd-climate-source > span { white-space: n
 /* One continuous painted field behind the whole footer, including its credits. */
 body[data-dd-environment] #allrecords #t-footer {
   background-color: var(--dd-footer-blue);
-  background-image: linear-gradient(var(--dd-footer-angle),var(--dd-band),var(--dd-footer-blue)) !important;
+  background-image: linear-gradient(var(--dd-footer-angle),var(--dd-band),var(--dd-paint-middle),var(--dd-footer-blue)) !important;
 }
 body[data-dd-environment] #allrecords #t-footer > .r { background: transparent !important; }
 body[data-dd-environment] #allrecords #t-footer .t1003__content-wrapper { background: transparent !important; }

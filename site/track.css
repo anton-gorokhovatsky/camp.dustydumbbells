@@ -1,5 +1,5 @@
 :root {
-  --dd-track-paint:linear-gradient(90deg,var(--dd-band),var(--dd-footer-blue));
+  --dd-track-paint:linear-gradient(90deg,var(--dd-band),var(--dd-paint-middle),var(--dd-footer-blue));
   --dd-track-type:clamp(2rem,3.2vw,3rem);
   --dd-track-overhang:calc(var(--dd-track-type)*.46);
 }

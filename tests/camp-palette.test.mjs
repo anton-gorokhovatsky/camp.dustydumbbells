@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { campPalette, contrast } from '../dist/camp-palette.js';
+import { campPalette, contrast, mix } from '../dist/camp-palette.js';
 import { createWeatherReader } from '../dist/camp-environment.js';
 import { normalizeWeather, normalizeForecast, weatherURL } from '../dist/environment.js';
 
@@ -44,7 +44,13 @@ test('text, links, paint, controls and the translucent material retain contrast 
       assert(contrast(state.onBand, state.band) >= 4.5);
       assert(contrast(state.onBand, state.css['--dd-action-hover']) >= 4.5);
       assert(contrast(state.onBand, state.deep) >= 4.5);
-      for (const background of [state.band,state.deep]) assert(contrast(state.css['--dd-footer-muted'], background) >= 4.5);
+      // Credits and lane text cross the complete painted field, including its
+      // floral middle. Checking only the two end colours misses that surface.
+      for (let stop=0;stop<=20;stop++) {
+        const background=stop<=10?mix(state.band,state.middle,stop/10):mix(state.middle,state.deep,(stop-10)/10);
+        assert(contrast(state.onBand,background)>=4.5,`${month} ${minute} lane stop ${stop}`);
+        assert(contrast(state.css['--dd-footer-muted'],background)>=4.5,`${month} ${minute} credit stop ${stop}`);
+      }
       assert(state.matte.alpha >= .76 && state.matte.alpha <= 1);
       assert(!Object.values(state.css).some(value => value == null || String(value).includes('NaN')));
     }
@@ -108,7 +114,7 @@ test('solar colour surfaces remain continuous through every minute and across mi
   let previous=campPalette({date:new Date(start)});
   for(let m=1;m<=1440;m++){
     const current=campPalette({date:new Date(start+m*60000)});
-    for(const role of ['page','band','deep'])assert(Math.hypot(...rgb(current[role]).map((v,i)=>v-rgb(previous[role])[i]))<12,`${role} at ${m}`);
+    for(const role of ['page','band','middle','deep'])assert(Math.hypot(...rgb(current[role]).map((v,i)=>v-rgb(previous[role])[i]))<12,`${role} at ${m}`);
     previous=current;
   }
 });
