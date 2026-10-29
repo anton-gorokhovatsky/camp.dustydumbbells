@@ -55,7 +55,7 @@ export function mountPhotoWeather(weather) {
     hoverSurface.addEventListener('pointerleave',()=>{state.hover=false;sync(state);});
     motion(state,frames.size-1);
   }
-  const selector='.t1148__img-wrapper,.dd-form-memory,.dd-menu-preview,.dd-track__photo';
+  const selector='.t1148__img-wrapper,.dd-form-memory:not(.dd-form-people),.dd-form-people__photo,.dd-menu-preview,.dd-track__photo';
   function collect(node) {
     if(node.nodeType!==1)return;
     if(node.matches(selector))add(node);

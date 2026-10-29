@@ -28,11 +28,12 @@ test('the original introduction remains once, after the film inside main even wi
   assert(html.includes('id="dd-cover-video" controls muted loop playsinline'));
 });
 
-test('the archive has one source per photograph, valid gallery positions and a distinct invitation sunset', () => {
+test('the archive has one source per photograph, valid gallery positions and a shared people invitation', () => {
   const coast = record('1017020466');
   const form = record('1016216116');
-  assert(!coast.includes('IMG_6948.JPG'));
-  for (const [id, count] of [['1016322141', 10], ['2080000001', 8], ['1017020466', 13]]) {
+  assert(coast.includes('IMG_6948.JPG'));
+  assert(!form.includes('IMG_6948.JPG'));
+  for (const [id, count] of [['1016322141', 7], ['2080000001', 8], ['1017020466', 12]]) {
     const gallery = record(id);
     assert.equal((gallery.match(/class="t1148__item"/g) || []).length, count);
     for (let index = 0; index < count; index++) {
@@ -48,17 +49,17 @@ test('the archive has one source per photograph, valid gallery positions and a d
   assert(archive > html.indexOf('id="dd-day-17"'));
   assert(archive < html.indexOf('id="dd-day-18"'));
   assert(record('2080000001').includes('Кэмп в Фетхие, 2025'));
-  const image = form.match(/<img\b[^>]*data-dd-memory-photo[^>]*>/)?.[0];
-  assert(image?.includes('d152e032841c-IMG_6948.JPG'));
-  assert(image.includes('width="893" height="1339"'));
-  assert(image.includes('data-zoomable="yes"'));
-  assert(image.includes('role="button" tabindex="0"'));
-  assert(image.includes('Кэмп в Фетхие, 2025.'));
-  assert(form.indexOf('data-dd-memory-photo') < form.indexOf('id="dd-heading-form"'));
-  assert.equal((html.match(/data-dd-memory-photo/g) || []).length, 1);
+  const people=[...form.matchAll(/<img\b[^>]*data-dd-invitation-photo[^>]*>/g)].map(match=>match[0]);
+  assert.equal(people.length,3);
+  for(const image of people){assert(image.includes('Кэмп в Анталье, 2026.'));assert(!image.includes('role="button"'));}
+  assert(form.indexOf('data-dd-invitation-photo') < form.indexOf('id="dd-heading-form"'));
+  assert.equal((html.match(/data-dd-memory-photo/g)||[]).length,0);
+  for(const id of ['04','08'])assert(!html.includes(`camp-antalya-2026-${id}.webp`));
+  const firstCoast=coast.match(/data-dd-photo-source="([^"]+)"/)?.[1];
+  assert(firstCoast?.endsWith('camp-antalya-2026-03.webp'));
   const sources = [...html.matchAll(/<img\b[^>]*data-(?:dd-photo-source|img-zoom-url)="([^"]+)"/g)].map(m => m[1]);
-  assert.equal(sources.length,32);
-  assert.equal(new Set(sources).size,32);
+  assert.equal(sources.length,30);
+  assert.equal(new Set(sources).size,30);
   assert(form.includes('За&shy;явка на кэмп'));
   assert(!form.includes('Количество заявок ограничено'));
   assert(record('2078794741').includes('dd-travel-copy'));
@@ -67,8 +68,8 @@ test('the archive has one source per photograph, valid gallery positions and a d
 
 test('the Antalya report supplements each scene without relabelling the Fethiye archive',async()=>{
   const archive=JSON.parse(await readFile(new URL('../site/data/camp-antalya-2026.json',import.meta.url),'utf8'));
-  assert.equal(archive.photos.length,20);
-  assert.equal(new Set(archive.stacks.flatMap(stack=>stack.photos)).size,20);
+  assert.equal(archive.photos.length,18);
+  assert.equal(new Set([...archive.stacks.flatMap(stack=>stack.photos),...archive.invitation]).size,18);
   for(const stack of archive.stacks){
     const gallery=record(stack.carousel);
     const cards=[...gallery.matchAll(/<div\s+class="t1148__item"[\s\S]*?<img\b[^>]*>/g)].map(match=>match[0]);

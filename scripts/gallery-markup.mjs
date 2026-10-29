@@ -8,16 +8,33 @@ function division(html,start){
   throw Error('A selected photographic group is unbalanced.');
 }
 
-function addArchive(group,base){
+function invitation(html,base){
+  const memory=html.match(/<figure class="dd-form-memory">([\s\S]*?)<\/figure>/);
+  if(!memory)throw Error('The accepted invitation photograph is missing.');
+  const sunset=memory[1].match(/<img\b[^>]*>/)?.[0];
+  if(!sunset?.includes('d152e032841c-IMG_6948.JPG'))throw Error('The invitation sunset source changed.');
+  const images=archive.invitation.map(id=>{
+    const photo=archive.photos.find(photo=>photo.id===id);
+    if(!photo)throw Error('The invitation needs its selected people photographs.');
+    return `<div class="dd-form-people__photo"><img src="${escape(base+photo.file)}" width="${photo.width}" height="${photo.height}" alt="${escape(photo.alt)}" loading="lazy" decoding="async" data-dd-invitation-photo data-dd-photo-source="${escape(base+photo.file)}"></div>`;
+  }).join('');
+  const figure=`<figure class="dd-form-memory dd-form-people"><div class="dd-form-people__photos">${images}</div><figcaption class="dd-archive-caption">${escape(archive.caption)}</figcaption></figure>`;
+  const sunsetCard=`<div class="t1148__item" role="group" aria-roledescription="slide" aria-label="1 из 1"\naria-current="false"><div class="t1148__img-wrapper">${sunset.replace(/\s*data-dd-memory-photo\b/,'').replace(/\s*data-zoomable="[^"]*"/g,'').replace(/data-img-zoom-url="([^"]*)"/,'data-dd-photo-source="$1"').replace(/aria-label="[^"]*"/,'aria-label="Следующая фотография"')}</div></div>`;
+  return {html:html.replace(memory[0],figure),sunsetCard};
+}
+
+function addArchive(group,base,sunsetCard){
   const carousel=group.match(/id="carousel_(\d+)"/)?.[1];
   const selection=archive.stacks.find(stack=>stack.carousel===carousel);
   if(!selection)throw Error('Every photographic scene needs an explicit archive selection.');
   const old=[...group.matchAll(/<div\s+class="t1148__item"/g)].map(match=>division(group,match.index));
-  const retained=old.map(item=>{
-    const source=item.html.match(/data-dd-photo-source="([^"]+)"/)?.[1];
+  const previous=old.map(item=>item.html);
+  if(carousel==='1017020466')previous.push(sunsetCard);
+  const retained=previous.map(item=>{
+    const source=item.match(/data-dd-photo-source="([^"]+)"/)?.[1];
     const format=archive.retainedFormats[source?.slice(base.length)];
     if(!format)throw Error('The retained archive photograph needs its full-image proportions.');
-    return item.html
+    return item
       .replace('class="t1148__item"','class="t1148__item" data-dd-archive-caption="Кэмп в Фетхие, 2025"')
       .replace(/class="t1148__img-wrapper"/,`class="t1148__img-wrapper" data-dd-photo-ratio="${format.width}/${format.height}"`);
   });
@@ -43,10 +60,11 @@ export function composePhotoStacks(html,base,version){
   html=html.replace(/<div class="t1148">/g,()=>{galleries++;return '<div class="t1148 dd-photo-stack" data-dd-stack>';});
   html=html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/g,script=>/t_slider__init\([^)]*['"]t1148['"]/.test(script)?(initializers++,''):script);
   if(galleries!==3||initializers!==3)throw Error('Exactly three existing galleries must become stacks.');
+  const people=invitation(html,base);html=people.html;
   let cursor=0;
   while((cursor=html.indexOf('<div class="t1148 dd-photo-stack"',cursor))>=0){
     const group=division(html,cursor);
-    const changed=addArchive(group.html.replace(/\s*data-zoomable="[^"]*"/g,'').replace(/<img\b[^>]*>/g,tag=>tag.replace(/data-img-zoom-url="([^"]*)"/,'data-dd-photo-source="$1"').replace(/aria-label="[^"]*"/,'aria-label="Следующая фотография"')),base);
+    const changed=addArchive(group.html.replace(/\s*data-zoomable="[^"]*"/g,'').replace(/<img\b[^>]*>/g,tag=>tag.replace(/data-img-zoom-url="([^"]*)"/,'data-dd-photo-source="$1"').replace(/aria-label="[^"]*"/,'aria-label="Следующая фотография"')),base,people.sunsetCard);
     html=html.slice(0,cursor)+changed+html.slice(group.end);cursor+=changed.length;
   }
   return html.replace('</head>',`<link rel="stylesheet" href="${base}photo-stacks.css?v=${version}" data-dd-stacks><script type="module" src="${base}photo-stacks.js?v=${version}" data-dd-stacks></script></head>`);
