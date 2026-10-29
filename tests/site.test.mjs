@@ -251,7 +251,7 @@ test("the original and new archives keep every full-size source while stacks tur
   const html = await read('index.html');
   const release = JSON.parse(await read('release.json'));
   const images = [...html.matchAll(/<img\b[^>]*class="t-img t1148__img"[^>]*>/g)].map(m=>m[0]);
-  assert.equal(images.length,27);
+  assert.equal(images.length,28);
   const sources=[...html.matchAll(/<img\b[^>]*data-(?:dd-photo-source|img-zoom-url)="([^"]+)"/g)].map(m=>m[1]);
   for(const image of images){
     assert(image.includes('role="button"') && image.includes('tabindex="0"'));

@@ -33,7 +33,7 @@ test('the archive has one source per photograph, valid gallery positions and a s
   const form = record('1016216116');
   assert(coast.includes('IMG_6948.JPG'));
   assert(!form.includes('IMG_6948.JPG'));
-  for (const [id, count] of [['1016322141', 7], ['2080000001', 8], ['1017020466', 12]]) {
+  for (const [id, count] of [['1016322141', 7], ['2080000001', 8], ['1017020466', 13]]) {
     const gallery = record(id);
     assert.equal((gallery.match(/class="t1148__item"/g) || []).length, count);
     for (let index = 0; index < count; index++) {
@@ -50,7 +50,7 @@ test('the archive has one source per photograph, valid gallery positions and a s
   assert(archive < html.indexOf('id="dd-day-18"'));
   assert(record('2080000001').includes('Кэмп в Фетхие, 2025'));
   const people=[...form.matchAll(/<img\b[^>]*data-dd-invitation-photo[^>]*>/g)].map(match=>match[0]);
-  assert.equal(people.length,3);
+  assert.equal(people.length,2);
   for(const image of people){assert(image.includes('Кэмп в Анталье, 2026.'));assert(!image.includes('role="button"'));}
   assert(form.indexOf('data-dd-invitation-photo') < form.indexOf('id="dd-heading-form"'));
   assert.equal((html.match(/data-dd-memory-photo/g)||[]).length,0);
