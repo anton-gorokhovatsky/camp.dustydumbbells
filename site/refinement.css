@@ -234,6 +234,7 @@
 #allrecords[data-dd-refinement] .dd-form-people__photos { display:grid;grid-template-columns:minmax(0,1fr);align-items:start;isolation:isolate;padding:8px 12px 0; }
 #allrecords[data-dd-refinement] .dd-form-people__photo { position:relative;min-width:0;width:64%;justify-self:end;aspect-ratio:1;rotate:4deg;z-index:2;margin-top:-36px;overflow:hidden;border-radius:var(--dd-photo-radius,24px); }
 #allrecords[data-dd-refinement] .dd-form-people__photo:first-child { width:100%;justify-self:start;z-index:1;aspect-ratio:5/4;rotate:-2deg;margin-top:0; }
+#allrecords[data-dd-refinement] .dd-form-people__photo:nth-child(2) { translate:clamp(8px,1vw,16px) 0; }
 #allrecords[data-dd-refinement] .dd-form-people__photo img { display:block;width:100%;height:100%;object-fit:cover; }
 #allrecords[data-dd-refinement] .dd-form-people__photo:first-child img { object-position:50% 45%; }
 /* The square selects x=300,y=240,w=700,h=700 from the 1200x1500 source.
