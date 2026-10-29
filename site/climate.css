@@ -57,7 +57,10 @@ body[data-dd-environment] :is(#allrecords,#dd-main) > .r {
 body[data-dd-environment] #allrecords :is(.t-section__descr, .t004 .t-text, .t547__descr, .t547__descr strong, .t678__form-bottom-text) {
   color: var(--dd-ink) !important;
 }
-body[data-dd-environment] #allrecords :is(.t-section__title, .t225__title, .t050__title, .t120__title, .t547__title) { color: var(--dd-blue) !important; }
+body[data-dd-environment] #allrecords :is(.t-section__title, .t225__title, .t050__title, .t120__title) { color: var(--dd-blue) !important; }
+/* Section headings carry the sea pigment; repeated dates belong to reading.
+   Their existing scale and Museo weight keep the calendar's typographic rank. */
+body[data-dd-environment] #allrecords .t547__title { color: var(--dd-ink) !important; }
 body[data-dd-environment] #allrecords .t1148__textwrapper { color: var(--dd-muted) !important; }
 /* Period, label and value form three short climate facts rather than bullets. */
 #allrecords[data-dd-refinement] .dd-climate-facts { display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,13rem),1fr));gap:var(--dd-space-3);margin:var(--dd-space-3) 0;font-family:var(--dd-body-font); }
@@ -76,8 +79,8 @@ body[data-dd-environment] #allrecords :is(.t-descr,.t-text,.t678__form-bottom-te
 /* The band's painted field and its text remain one pair in every condition. */
 body[data-dd-environment] #allrecords .t1003__content-wrapper { background-color: var(--dd-band) !important; }
 body[data-dd-environment] #allrecords :is(.t1003__item-txt, .t1003__item-txt a) { color: var(--dd-on-band) !important; }
-body[data-dd-environment] #allrecords .t547__line { background-color: var(--dd-blue) !important; }
-body[data-dd-environment] #allrecords .t547__circle { background-color: var(--dd-blue) !important; }
+body[data-dd-environment] #allrecords .t547__line { background-color: var(--dd-line) !important; }
+body[data-dd-environment] #allrecords .t547__circle { background-color: var(--dd-line) !important; }
 body[data-dd-environment] #allrecords .t1148 :is(.t1148__arrow, .t1148__arrow-wrapper) { color: var(--dd-on-band); }
 body[data-dd-environment] #allrecords .t1148 .t1148__arrow-wrapper { background-color: var(--dd-band) !important; }
 body[data-dd-environment] #allrecords .t1148__control { background-color: var(--dd-band) !important; border-color: transparent !important; }
