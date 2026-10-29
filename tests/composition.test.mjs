@@ -32,7 +32,7 @@ test('the archive has one source per photograph, valid gallery positions and a d
   const coast = record('1017020466');
   const form = record('1016216116');
   assert(!coast.includes('IMG_6948.JPG'));
-  for (const [id, count] of [['1016322141', 3], ['2080000001', 3], ['1017020466', 5]]) {
+  for (const [id, count] of [['1016322141', 10], ['2080000001', 8], ['1017020466', 13]]) {
     const gallery = record(id);
     assert.equal((gallery.match(/class="t1148__item"/g) || []).length, count);
     for (let index = 0; index < count; index++) {
@@ -57,9 +57,35 @@ test('the archive has one source per photograph, valid gallery positions and a d
   assert(form.indexOf('data-dd-memory-photo') < form.indexOf('id="dd-heading-form"'));
   assert.equal((html.match(/data-dd-memory-photo/g) || []).length, 1);
   const sources = [...html.matchAll(/<img\b[^>]*data-(?:dd-photo-source|img-zoom-url)="([^"]+)"/g)].map(m => m[1]);
-  assert.equal(new Set(sources).size, 12);
+  assert.equal(sources.length,32);
+  assert.equal(new Set(sources).size,32);
   assert(form.includes('За&shy;явка на кэмп'));
   assert(!form.includes('Количество заявок ограничено'));
   assert(record('2078794741').includes('dd-travel-copy'));
   assert(!record('2078794741').includes('dd-travel-column'));
+});
+
+test('the Antalya report supplements each scene without relabelling the Fethiye archive',async()=>{
+  const archive=JSON.parse(await readFile(new URL('../site/data/camp-antalya-2026.json',import.meta.url),'utf8'));
+  assert.equal(archive.photos.length,20);
+  assert.equal(new Set(archive.stacks.flatMap(stack=>stack.photos)).size,20);
+  for(const stack of archive.stacks){
+    const gallery=record(stack.carousel);
+    const cards=[...gallery.matchAll(/<div\s+class="t1148__item"[\s\S]*?<img\b[^>]*>/g)].map(match=>match[0]);
+    assert(gallery.includes('<p class="dd-archive-caption">Кэмп в Анталье, 2026</p>'));
+    for(const [index,id]of stack.photos.entries()){
+      const photo=archive.photos.find(photo=>photo.id===id);
+      assert(cards[index].includes(photo.file));
+      assert(cards[index].includes(`width="${photo.width}" height="${photo.height}"`));
+      assert(cards[index].includes('data-dd-archive-caption="Кэмп в Анталье, 2026"'));
+      assert(cards[index].includes('Кэмп в Анталье, 2026.'));
+    }
+    for(const card of cards.slice(stack.photos.length)){
+      assert(card.includes('/assets/'));
+      assert(card.includes('data-dd-archive-caption="Кэмп в Фетхие, 2025"'));
+      assert(card.includes('Кэмп в Фетхие, 2025.'));
+    }
+  }
+  const credits=await readFile(new URL('../dist/photographs/index.html',import.meta.url),'utf8');
+  assert(credits.includes(archive.source));assert(credits.includes(archive.author));
 });

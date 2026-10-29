@@ -68,8 +68,8 @@ test('the published document has one main and a complete heading outline while r
   assert(html.includes('class="dd-skip-link" href="#dd-main"'));
   assert(html.includes('data-dd-marquee-toggle'));
   assert.equal((html.match(/class="[^\"]*\bt1003\b[^\"]*"/g)||[]).length,3);
-  assert.equal((html.match(/class="t-img t1148__img"/g)||[]).length,12);
-  assert.equal(new Set([...html.matchAll(/data-(?:dd-photo-source|img-zoom-url)="([^"]+)"/g)].map(m=>m[1])).size,12);
+  assert.equal((html.match(/class="t-img t1148__img"/g)||[]).length,32);
+  assert.equal(new Set([...html.matchAll(/data-(?:dd-photo-source|img-zoom-url)="([^"]+)"/g)].map(m=>m[1])).size,32);
   assert.equal((html.match(/третий год подряд/g)||[]).length,1);
 });
 

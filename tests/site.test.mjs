@@ -247,21 +247,21 @@ test("the original Tilda runtime uses local assets and retained modules keep the
   assert((await read('privacy/index.html')).includes(`privacy.css?v=${release.commit}`));
 });
 
-test("the original archive keeps every full-size source while stacks turn without zoom", async () => {
+test("the original and new archives keep every full-size source while stacks turn without zoom", async () => {
   const html = await read('index.html');
   const release = JSON.parse(await read('release.json'));
   const images = [...html.matchAll(/<img\b[^>]*class="t-img t1148__img"[^>]*>/g)].map(m=>m[0]);
-  assert.equal(images.length,12);
+  assert.equal(images.length,32);
   const sources=[...html.matchAll(/<img\b[^>]*data-(?:dd-photo-source|img-zoom-url)="([^"]+)"/g)].map(m=>m[1]);
   for(const image of images){
     assert(image.includes('role="button"') && image.includes('tabindex="0"'));
-    assert(image.includes('Кэмп в Фетхие, 2025.'));
+    assert(image.includes(image.includes('/media/camp-antalya-2026/')?'Кэмп в Анталье, 2026.':'Кэмп в Фетхие, 2025.'));
     assert(image.includes('data-dd-photo-source') || image.includes('data-dd-memory-photo'));
   }
   assert.equal((html.match(/data-zoomable="yes"/g)||[]).length,1,'Only the independent sunset retains full viewing.');
-  assert.equal(new Set(sources).size,12);
+  assert.equal(new Set(sources).size,32);
   for(const source of new Set(sources)){
-    assert(source.startsWith(release.base+'assets/'));
+    assert(source.startsWith(release.base+'assets/')||source.startsWith(release.base+'media/camp-antalya-2026/'));
     assert((await stat(new URL(`../dist/${source.slice(release.base.length)}`,import.meta.url))).size>100_000);
   }
   for(const id of ['1016322141','1017020466']){

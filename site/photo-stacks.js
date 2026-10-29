@@ -1,22 +1,28 @@
 const root=document.documentElement,reduce=matchMedia('(prefers-reduced-motion: reduce)');
 for(const gallery of document.querySelectorAll('[data-dd-stack]')){
-  const cards=[...gallery.querySelectorAll('.t1148__item')],controls=gallery.querySelector('.t1148__controls');
+  const cards=[...gallery.querySelectorAll('.t1148__item')],controls=gallery.querySelector('.t1148__controls'),caption=gallery.querySelector('.dd-archive-caption');
+  for(const card of cards){const frame=card.querySelector('.t1148__img-wrapper');frame.style.setProperty('--dd-photo-ratio',frame.dataset.ddPhotoRatio||'2/3');}
   const previous=controls.querySelector('button[aria-label="Предыдущий слайд"]'),next=controls.querySelector('button[aria-label="Следующий слайд"]');
   previous.setAttribute('aria-label','Предыдущая фотография');next.setAttribute('aria-label','Следующая фотография');
   previous.disabled=next.disabled=false;controls.hidden=false;
   const count=document.createElement('output');count.className='dd-stack-count';count.setAttribute('aria-live','polite');next.before(count);
-  const exits=new Map();let index=0,wanted=0,epoch=0,layer=cards.length;
+  const exits=new Map();let index=0,wanted=0,epoch=0,layer=cards.length,near=false,frontReady=false;
   const still=()=>reduce.matches||root.dataset.ddMarquees==='paused';
   function pose(card,i){
     const rank=(i-index+cards.length)%cards.length,exit=exits.get(card),out=exit?.phase==='out';
     card.style.transitionDuration=out?'160ms':exit?'140ms':'160ms';
     card.style.transform=out?`translate3d(${exit.direction*120}%, -2%, 0) rotate(${exit.direction*6}deg)`:`translate3d(${Math.min(rank,2)*7}px,${Math.min(rank,2)*5}px,0) rotate(${rank===0?0:rank%2?2:-2}deg)`;
-    card.style.zIndex=String(out?exit.layer:cards.length-rank);card.style.visibility=exit||rank<3?'visible':'hidden';
+    card.style.zIndex=String(out?exit.layer:cards.length-rank);card.style.visibility=exit||rank===0||(frontReady&&rank<3)?'visible':'hidden';
     card.inert=rank!==0;card.setAttribute('aria-hidden',String(rank!==0));card.setAttribute('aria-current',String(rank===0));card.setAttribute('aria-label',`${i+1} из ${cards.length}`);
     const image=card.querySelector('img');image.tabIndex=rank===0?0:-1;
     image.setAttribute('aria-label',`Следующая фотография. ${i+1} из ${cards.length}. ${image.alt}`);
   }
-  function render(){cards.forEach(pose);count.textContent=`${index+1} / ${cards.length}`;gallery.toggleAttribute('data-stack-moving',exits.size>0);}
+  function preload(){
+    // Load the visible deck and its next turn, without fetching every later
+    // scene as soon as a longer archive reaches the viewport.
+    if(near)for(const offset of [0,1,2,-1])cards[(index+offset+cards.length)%cards.length].querySelector('img').loading='eager';
+  }
+  function render(){cards.forEach(pose);count.textContent=`${index+1} / ${cards.length}`;caption.textContent=cards[index].dataset.ddArchiveCaption;preload();gallery.toggleAttribute('data-stack-moving',exits.size>0);}
   for(const card of cards)card.addEventListener('transitionend',event=>{
     if(event.target!==card||event.propertyName!=='transform')return;
     const exit=exits.get(card);if(!exit)return;
@@ -27,7 +33,8 @@ for(const gallery of document.querySelectorAll('[data-dd-stack]')){
     }else{exits.delete(card);pose(card,cards.indexOf(card));gallery.toggleAttribute('data-stack-moving',exits.size>0);}
   });
   function commit(step,instant){
-    gallery.removeAttribute('aria-busy');
+    const incoming=cards[wanted].querySelector('img');frontReady=incoming.complete&&incoming.naturalWidth>0;
+    if(frontReady)gallery.removeAttribute('aria-busy');else gallery.setAttribute('aria-busy','true');
     const old=cards[index],focused=old.contains(document.activeElement);
     index=wanted;gallery.dataset.stackInput=instant?'keyboard':'pointer';
     if(instant)exits.clear();
@@ -53,8 +60,19 @@ for(const gallery of document.querySelectorAll('[data-dd-stack]')){
   next.addEventListener('click',event=>{event.preventDefault();turn(1,event.detail===0);});
   gallery.addEventListener('click',event=>{if(!event.target.closest('.t1148__item[aria-current="true"] img'))return;event.preventDefault();event.stopImmediatePropagation();turn(1,event.detail===0);},true);
   gallery.addEventListener('keydown',event=>{if(event.key==='ArrowRight'||event.key==='ArrowLeft'){event.preventDefault();turn(event.key==='ArrowRight'?1:-1,true);}else if((event.key==='Enter'||event.key===' ')&&event.target.matches('img[role="button"]')){event.preventDefault();turn(1,true);}});
-  new IntersectionObserver(entries=>{if(entries.some(e=>e.isIntersecting))cards.forEach(card=>{card.querySelector('img').loading='eager';});},{rootMargin:'600px'}).observe(gallery);
+  new IntersectionObserver(entries=>{if(entries.some(e=>e.isIntersecting)){near=true;preload();}},{rootMargin:'600px'}).observe(gallery);
   new MutationObserver(()=>{if(still()){epoch++;wanted=index;commit(1,true);}}).observe(root,{attributes:true,attributeFilter:['data-dd-marquees']});
   reduce.addEventListener('change',()=>{if(still()){epoch++;wanted=index;commit(1,true);}});
   render();
+  // A slower first image must not expose a different, already loaded card
+  // beneath the first caption. Later turns already wait for decode above.
+  const initial=cards[0].querySelector('img');
+  if(!initial.complete||!initial.naturalWidth)gallery.setAttribute('aria-busy','true');
+  initial.decode().then(()=>{
+    if(cards[index].querySelector('img')!==initial)return;
+    frontReady=true;if(wanted===index)gallery.removeAttribute('aria-busy');render();
+  }).catch(()=>{
+    if(index!==0||wanted!==index)return;
+    gallery.removeAttribute('aria-busy');count.textContent='Не удалось загрузить фотографию';
+  });
 }

@@ -238,8 +238,18 @@ for (const file of ['camp-2026.mp4', 'camp-2026-poster.jpg', 'menu-sea.webp', 'm
   siteFiles[`media/${file}`] = createHash('sha256').update(bytes).digest('hex');
 }
 const trackSources=JSON.parse(await readFile(path.join(root,'site/media/antalya-sources.json'),'utf8'));
+const campArchive=JSON.parse(await readFile(path.join(root,'site/data/camp-antalya-2026.json'),'utf8'));
+await mkdir(path.join(output,'media/camp-antalya-2026'),{recursive:true});
+for(const photo of campArchive.photos){
+  if(!/^media\/camp-antalya-2026\/camp-antalya-2026-\d{2}\.webp$/.test(photo.file))throw Error('Unexpected camp photograph path.');
+  const bytes=await readFile(path.join(root,'site',photo.file));
+  const hash=createHash('sha256').update(bytes).digest('hex');
+  if(hash!==photo.sha256)throw Error('A camp photograph no longer matches its recorded source export.');
+  await writeFile(path.join(output,photo.file),bytes);
+  siteFiles[photo.file]=hash;
+}
 await mkdir(path.join(output,'photographs'),{recursive:true});
-const photoCredits=composeMetadata(composePhotoCredits(trackSources,base,assetVersion),site,{path:'photographs/',title:'Фотографии — DD Camp',description:'Фотографы и источники снимков Антальи на сайте кэмпа «Пыльных гантелей».'});
+const photoCredits=composeMetadata(composePhotoCredits(trackSources,base,assetVersion,campArchive),site,{path:'photographs/',title:'Фотографии — DD Camp',description:'Фотографы и источники снимков Антальи на сайте кэмпа «Пыльных гантелей».'});
 await writeFile(path.join(output,'photographs/index.html'),photoCredits);
 siteFiles['photographs/index.html']=createHash('sha256').update(photoCredits).digest('hex');
 for(const source of trackSources){

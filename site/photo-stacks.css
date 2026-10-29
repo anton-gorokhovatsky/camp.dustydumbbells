@@ -3,19 +3,19 @@
 #allrecords[data-dd-refinement] .dd-photo-stack .t1148__slider {
   display:block;position:relative;box-sizing:border-box;
   width:var(--stack-width);
-  max-width:calc(100% - 4rem);height:auto;aspect-ratio:2/3;
+  max-width:calc(100% - 4rem);height:auto;aspect-ratio:4/5;
   margin:1rem auto 1.75rem;padding:0!important;overflow:visible;
   scroll-snap-type:none;transform:none!important;
 }
 #allrecords[data-dd-refinement] .dd-photo-stack .t1148__item {
-  position:absolute!important;inset:0;display:block!important;
+  position:absolute!important;inset:0;display:grid!important;place-items:center;grid-template:minmax(0,1fr)/minmax(0,1fr);
   width:100%!important;height:100%;margin:0!important;padding:0!important;
   transform:translate3d(calc(var(--stack-depth)*7px),calc(var(--stack-depth)*5px),0) rotate(var(--stack-angle));
   transition:transform 200ms cubic-bezier(.23,1,.32,1);
 }
-#allrecords[data-dd-refinement] .dd-photo-stack .t1148__img-wrapper { display:block;width:100%;height:100%; }
+#allrecords[data-dd-refinement] .dd-photo-stack .t1148__img-wrapper { display:block;width:auto;max-width:100%;height:100%;min-height:0;max-height:100%;aspect-ratio:var(--dd-photo-ratio,4/5);margin-inline:auto; }
 /* The whole card moves; inherited image fades must not delay keyboard focus. */
-#allrecords[data-dd-refinement] .dd-photo-stack .t1148__img { display:block;width:100%;height:100%!important;object-fit:cover;transition:none; }
+#allrecords[data-dd-refinement] .dd-photo-stack .t1148__img { display:block;width:100%;height:100%!important;object-fit:contain;opacity:1!important;transition:none; }
 #allrecords[data-dd-refinement] .dd-photo-stack .t1148__controls { position:relative;inset:auto;display:flex!important;align-items:center;justify-content:center;gap:1rem;margin:0;padding:0; }
 #allrecords[data-dd-refinement] .dd-photo-stack .t1148__controls button { position:relative;inset:auto;flex:none;margin:0; }
 #allrecords[data-dd-refinement] .dd-photo-stack .dd-gallery-footer { display:grid;grid-template-columns:minmax(0,1fr);gap:.75rem;width:var(--stack-width);max-width:calc(100% - 4rem);padding:0;margin:.5rem auto 0; }
