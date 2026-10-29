@@ -215,6 +215,8 @@ body[data-dd-environment] #allrecords .t-text a.dd-stay-link {
 /* A single local Phosphor Bold family, inheriting the same weather/text roles. */
 .dd-icon { display:inline-block;inline-size:1.15em;block-size:1.15em;vertical-align:-.19em;background:currentColor;-webkit-mask:var(--dd-icon) center/contain no-repeat;mask:var(--dd-icon) center/contain no-repeat; }
 .dd-activity { white-space:nowrap; }
+.dd-activity-options { word-spacing:.5em; }
+.dd-activity-options > .dd-activity { word-spacing:normal; }
 .dd-activity .dd-icon { inline-size:1.05em;block-size:1.05em;vertical-align:-.16em;margin-inline-end:.24em; }
 [data-dd-icon="sun"] { --dd-icon:url('./icons/sun.svg'); }
 [data-dd-icon="moon-stars"] { --dd-icon:url('./icons/moon-stars.svg'); }

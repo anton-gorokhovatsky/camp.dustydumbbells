@@ -22,8 +22,11 @@ test('sports marks retain programme copy, time, links and the distinction betwee
     '9:00 — кросс 15–20 км в горах или поход в горы','8:00 — DDLong','Свободный вечер'];
   const source=descriptions.map(text=>`<div class="t547__descr t-text">${text}</div>`).join('');
   const enhanced=composeActivitySymbols(source);
-  const restore=html=>html.replace(/<span class="dd-activity"><span class="dd-icon" data-dd-icon="[a-z]+" aria-hidden="true"><\/span>([^<]*)<\/span>/g,'$1');
-  assert.equal(restore(enhanced),source);
+  const spoken=html=>html.replace(/<[^>]*>/g,'').replace(/\s+/g,' ').trim();
+  assert.equal(spoken(enhanced),spoken(source.replaceAll(' / ',' или ')));
+  assert(!enhanced.includes(' / '),'The symbols supply the visible separation.');
+  assert.equal((enhanced.match(/class="dd-visually-hidden"> или /g)||[]).length,2);
+  assert(enhanced.includes('aria-hidden="true"></span>легкий бег</span>'),'Each alternative keeps its icon and full name together.');
   assert(enhanced.includes('data-dd-icon="bike"'));
   assert(enhanced.includes('data-dd-icon="swim"'));
   assert(!composeActivitySymbols('<p>В свободный вечер — плавание</p>').includes('dd-icon'));
