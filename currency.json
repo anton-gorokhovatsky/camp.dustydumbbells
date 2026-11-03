@@ -1,22 +1,22 @@
 {
-  "source": "https://www.cbr.ru/scripts/XML_daily.asp?date_req=31%2F10%2F2026",
-  "effectiveDate": "2026-10-31",
-  "fetchedAt": "2026-11-01T10:33:18.004Z",
+  "source": "https://www.cbr.ru/scripts/XML_daily.asp?date_req=03%2F11%2F2026",
+  "effectiveDate": "2026-11-03",
+  "fetchedAt": "2026-11-03T10:57:34.560Z",
   "rates": {
     "USD": {
       "nominal": 1,
-      "value": 80.5573,
-      "rubPerUnit": 80.5573
+      "value": 80.9734,
+      "rubPerUnit": 80.9734
     },
     "EUR": {
       "nominal": 1,
-      "value": 89.6603,
-      "rubPerUnit": 89.6603
+      "value": 90.4635,
+      "rubPerUnit": 90.4635
     },
     "TRY": {
       "nominal": 10,
-      "value": 16.1698,
-      "rubPerUnit": 1.61698
+      "value": 16.2181,
+      "rubPerUnit": 1.62181
     }
   }
 }
